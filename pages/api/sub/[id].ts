@@ -5,7 +5,7 @@ export default function Sub(req: NextApiRequest, res: NextApiResponse) {
   const prisma = new PrismaClient();
   if (req.method === "GET") {
     const { id } = req.query;
-    prisma.subscription.findOne({ id: id }).then((sub: any) => {
+    prisma.sub.findUnique({ where: { id: id as string } }).then((sub: any) => {
       res.json(sub);
     });
   } else if (req.method === "POST") {
@@ -14,8 +14,8 @@ export default function Sub(req: NextApiRequest, res: NextApiResponse) {
     const { id } = req.query;
   } else if (req.method === "DELETE") {
     const { id } = req.query;
-    prisma.subscription
-      .delete({ id: id })
+    prisma.sub
+      .delete({ where: { id: id as string } })
       .then(() => {
         return res.status(200).json({ message: "Subscription deleted" });
       })
