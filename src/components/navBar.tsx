@@ -21,7 +21,7 @@ import Links from "./links";
 
 export default function NavBar(): JSX.Element {
   const { colorMode } = useColorMode();
-  const { t } = useTranslation();
+  const { t } = useTranslation("common");
   const [isLarge] = useMediaQuery("(min-width: 840px)");
   const [isMedium] = useMediaQuery("(min-width: 480px)");
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -61,7 +61,7 @@ export default function NavBar(): JSX.Element {
         alignContent="space-between"
       >
         <Heading size="md" marginX="6px" flex={1}>
-          <Link href="/">{t("nav.title")}</Link>
+          <Link href="/">{t("title")}</Link>
         </Heading>
         {!isLarge &&
           (isMedium ? <ToolBar isLarge={true} /> : <ToolBar isLarge={false} />)}

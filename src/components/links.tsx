@@ -10,9 +10,9 @@ type LinksProps = {
 export default function Links({ width }: LinksProps) {
   return (
     <>
-      <LinkButton name="about" width={width} />
-      <LinkButton name="apps" width={width} />
-      <LinkButton name="libs" width={width} />
+      <LinkButton name="contribution" width={width} />
+      <LinkButton name="request" width={width} />
+      <LinkButton name="trending" width={width} />
     </>
   );
 }
@@ -23,7 +23,7 @@ type LinkButtonProps = {
 };
 
 function LinkButton({ name, width }: LinkButtonProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("common");
 
   return (
     <Link href={`/${name}`} passHref>
@@ -33,7 +33,7 @@ function LinkButton({ name, width }: LinkButtonProps) {
         alignItems="start"
         width={width}
       >
-        {t(`nav.${name}`)}
+        {t(`${name}`)}
       </Button>
     </Link>
   );

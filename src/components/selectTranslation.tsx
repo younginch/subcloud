@@ -9,7 +9,6 @@ import {
   MenuList,
   MenuOptionGroup,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -37,7 +36,7 @@ const TranslateIcon = createIcon({
 });
 
 export default function SelectTranslation({ isLarge }: Props): JSX.Element {
-  const { t } = useTranslation();
+  const { t } = useTranslation("common");
   const router = useRouter();
 
   return (
@@ -56,7 +55,7 @@ export default function SelectTranslation({ isLarge }: Props): JSX.Element {
       <MenuList>
         <MenuOptionGroup
           defaultValue={router.locale ?? "ko"}
-          title={t("toolBar.languages")}
+          title={t("languages")}
           type="radio"
         >
           <Link href={router.pathname} locale="ko" passHref>
