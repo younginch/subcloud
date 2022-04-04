@@ -1,0 +1,25 @@
+{
+  "nav": {
+    "title": "Seungbin Oh",
+    "home": "Home",
+    "about": "About",
+    "apps": "Apps",
+    "libs": "Libraries",
+    "blog": "Blog",
+    "notfound": "Page Not Found"
+  },
+  "toolBar": {
+    "languages": "Languages",
+    "theme": "Theme",
+    "sync": "Sync",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "category": {
+    "name": "Category",
+    "all": "All",
+    "android": "Android",
+    "js-ts": "JavaScript & TypeScript",
+    "macOS": "macOS"
+  }
+}
