@@ -1,25 +1,62 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Sub } from "@prisma/client";
+import { getSession } from "next-auth/react";
+import ResError from "../../../utils/apiTypes";
 
-export default function Sub(req: NextApiRequest, res: NextApiResponse) {
+export default async function Sub(
+  req: NextApiRequest,
+  res: NextApiResponse<Sub | ResError>
+) {
+  const session = await getSession({ req });
+  if (!session) {
+    return res.status(401).json({ error: "Not authenticated" });
+  }
   const prisma = new PrismaClient();
   if (req.method === "GET") {
     const { id } = req.query;
-    prisma.sub.findUnique({ where: { id: id as string } }).then((sub: any) => {
-      res.json(sub);
-    });
+    try {
+      const sub = await prisma.sub.findUnique({ where: { id: id as string } });
+      if (!sub) {
+        return res.status(404).json({ error: "Sub not found" });
+      }
+      return res.status(200).json(sub);
+    } catch {
+      return res.status(500).json({ error: "Something went wrong" });
+    }
   } else if (req.method === "POST") {
-    const { id } = req.body;
+    const { link, title, body, user } = req.body;
+    try {
+      const sub = await prisma.sub.create({
+        data: {
+          user: { connect: { id: user.id } },
+          link: link as string,
+          title: title as string,
+          body: body as string,
+        },
+      });
+      return res.status(201).json(sub);
+    } catch {
+      return res.status(500).json({ error: "Something went wrong" });
+    }
   } else if (req.method === "PATCH") {
-    const { id } = req.query;
+    const { id } = req.body;
+    try {
+      const sub = await prisma.sub.findUnique({ where: { id: id as string } });
+      if (!sub) {
+        return res.status(404).json({ error: "Sub not found" });
+      }
+      const updatedSub = await prisma.sub.update({
+        where: { id: id as string },
+        data: {},
+      });
+      return res.status(200).json(updatedSub);
+    } catch {
+      return res.status(500).json({ error: "Something went wrong" });
+    }
   } else if (req.method === "DELETE") {
     const { id } = req.query;
-    prisma.sub
-      .delete({ where: { id: id as string } })
-      .then(() => {
-        return res.status(200).json({ message: "Subscription deleted" });
-      })
-      .catch((e: any) => {});
+    const sub = await prisma.sub.delete({ where: { id: id as string } });
+    return res.status(200).json(sub);
   }
-  res.status(200).json({ name: "John Doe" });
+  return res.status(405).json({ error: "Method not allowed" });
 }

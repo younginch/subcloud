@@ -1,12 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import { User } from "@prisma/client";
+import type { NextApiRequest, NextApiResponse } from "next";
+import ResError from "../../../utils/apiTypes";
 
-type Data = {
-  name: string
-}
-
-export default function handler(
+export default function User(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<User | ResError>
 ) {
-  res.status(200).json({ name: 'John Doe' })
+  return res.status(405).json({ error: "Method not allowed" });
 }
