@@ -3,7 +3,7 @@ import { PrismaClient, Sub } from "@prisma/client";
 import { getSession } from "next-auth/react";
 import ResError from "../../../utils/apiTypes";
 
-export default async function Sub(
+export default async function SubCRUD(
   req: NextApiRequest,
   res: NextApiResponse<Sub | ResError>
 ) {

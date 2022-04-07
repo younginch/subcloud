@@ -2,7 +2,7 @@ import { User } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import ResError from "../../../utils/apiTypes";
 
-export default function User(
+export default function UserCRUD(
   req: NextApiRequest,
   res: NextApiResponse<User | ResError>
 ) {
