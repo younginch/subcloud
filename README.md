@@ -12,6 +12,7 @@ CREATE USER sub PASSWORD 'password' SUPERUSER;
 CREATE DATABASE dev OWNER sub;
 exit
 npx prisma generate
+npx prisma migrate dev
 npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -19,5 +20,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Deploy on Vercel
 
 ### env
-- DATABASE_URL
-- NEXTAUTH_SECRET
+Fill out environment variables listed on .env with production settings.

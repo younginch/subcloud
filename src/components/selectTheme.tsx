@@ -25,7 +25,7 @@ function getThemeIcon(theme: Theme): ReactElement {
 }
 
 export default function SelectTheme({ isLarge }: Props): JSX.Element {
-  const { t } = useTranslation();
+  const { t } = useTranslation("common");
   const { colorMode, toggleColorMode } = useColorMode();
   const systemTheme = useSystemTheme();
   const [theme, setTheme] = useState<Theme>(Theme.SYNC);

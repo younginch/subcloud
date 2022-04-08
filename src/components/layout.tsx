@@ -1,12 +1,14 @@
+import { HStack, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Script from "next/script";
 import NavBar from "./navBar";
 
 type Props = {
+  hideNavBar?: boolean;
   children: React.ReactNode;
 };
 
-export default function Layout({ children }: Props) {
+export default function Layout({ hideNavBar, children }: Props) {
   return (
     <>
       <Head>
@@ -14,8 +16,24 @@ export default function Layout({ children }: Props) {
         <meta name="description" content="Young Inch Lab" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NavBar />
-      {children}
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          minHeight: "calc(100vh - 56px)",
+        }}
+      >
+        {!hideNavBar && <NavBar />}
+        {children}
+      </div>
+
+      <div>
+        <HStack>
+          <Text>이용약관</Text>
+          <Text>개인정보처리방침</Text>
+          <Text>소개</Text>
+        </HStack>
+      </div>
       <Script id="channeltalk" strategy="lazyOnload">
         {`
   (function() {
