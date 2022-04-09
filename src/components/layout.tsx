@@ -1,18 +1,25 @@
-import { HStack, Text } from "@chakra-ui/react";
+import { Heading, HStack, Text } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import Script from "next/script";
+import Footer from "./footer";
 import NavBar from "./navBar";
 
 type Props = {
   hideNavBar?: boolean;
+  hideTitle?: boolean;
   children: React.ReactNode;
 };
 
-export default function Layout({ hideNavBar, children }: Props) {
+export default function Layout({ hideNavBar, hideTitle, children }: Props) {
+  const { t } = useTranslation("routes");
+  const router = useRouter();
+
   return (
     <>
       <Head>
-        <title>Young Inch Lab</title>
+        <title>{t(router.pathname)} - Young Inch Lab</title>
         <meta name="description" content="Young Inch Lab" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -20,20 +27,15 @@ export default function Layout({ hideNavBar, children }: Props) {
         style={{
           width: "100%",
           height: "100%",
-          minHeight: "calc(100vh - 56px)",
+          minHeight: "calc(100vh - 64px)",
         }}
       >
         {!hideNavBar && <NavBar />}
+        {!hideTitle && <Heading margin="36px">{t(router.pathname)}</Heading>}
         {children}
       </div>
 
-      <div>
-        <HStack>
-          <Text>이용약관</Text>
-          <Text>개인정보처리방침</Text>
-          <Text>소개</Text>
-        </HStack>
-      </div>
+      <Footer />
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-ZVP1Q9XQJB"
         strategy="afterInteractive"

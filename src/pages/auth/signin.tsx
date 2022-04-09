@@ -14,7 +14,7 @@ export default function SignIn({ providers }: Props) {
   const router = useRouter();
 
   return (
-    <Layout hideNavBar>
+    <Layout hideNavBar hideTitle>
       <Center marginLeft="-150px" position="absolute" top="30%" left="50%">
         <Box w="300px" borderRadius={12} borderWidth={1}>
           <Stack margin={6}>

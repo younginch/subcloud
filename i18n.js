@@ -2,7 +2,7 @@ module.exports = {
   locales: ["ko", "en"],
   defaultLocale: "ko",
   pages: {
-    "*": ["common"],
+    "*": ["common", "routes"],
     "/": ["common"],
   },
   loadLocaleFrom: (locale, namespace) =>

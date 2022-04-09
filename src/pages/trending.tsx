@@ -1,9 +1,5 @@
 import Layout from "../components/layout";
 
 export default function Trending() {
-  return (
-    <Layout>
-      <h1>Trending</h1>
-    </Layout>
-  );
+  return <Layout>작성중</Layout>;
 }
