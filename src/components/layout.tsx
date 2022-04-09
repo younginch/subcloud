@@ -34,6 +34,19 @@ export default function Layout({ hideNavBar, children }: Props) {
           <Text>소개</Text>
         </HStack>
       </div>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-ZVP1Q9XQJB"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-ZVP1Q9XQJB');
+        `}
+      </Script>
       <Script id="channeltalk" strategy="lazyOnload">
         {`
   (function() {

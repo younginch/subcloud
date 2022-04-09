@@ -12,6 +12,7 @@ import {
   Portal,
 } from "@chakra-ui/react";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 import React from "react";
 import SelectTheme from "./selectTheme";
 import SelectTranslation from "./selectTranslation";
@@ -38,6 +39,9 @@ export default function ToolBar({ isLarge }: Props): JSX.Element {
               <PopoverHeader>Signed in as {session.user?.name}</PopoverHeader>
               <PopoverCloseButton />
               <PopoverBody>
+                <Link href="/sub/create" passHref>
+                  <Button>New subtitle</Button>
+                </Link>
                 <Button
                   colorScheme="blue"
                   onClick={() => {
