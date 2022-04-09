@@ -4,7 +4,15 @@
 
 ## Getting Started
 
+### Install Dependency
+
 Node 14
+
+```bash
+npm i
+```
+
+### Database
 
 ```bash
 psql -U postgres
@@ -13,6 +21,11 @@ CREATE DATABASE dev OWNER sub;
 exit
 npx prisma generate
 npx prisma migrate dev
+```
+
+### Run
+
+```bash
 npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

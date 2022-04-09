@@ -61,3 +61,7 @@ model Sub {
   title  String
   body   String
 }
+
+model Request {
+  id     String @id @default(cuid())
+}
