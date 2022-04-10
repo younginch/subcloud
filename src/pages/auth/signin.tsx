@@ -3,12 +3,23 @@ import type { Provider } from "next-auth/providers";
 import { getProviders, signIn } from "next-auth/react";
 import type { GetServerSidePropsContext } from "next/types";
 import Layout from "../../components/layout";
-import { FaGithub } from "react-icons/fa";
+import { FaGoogle, FaGithub } from "react-icons/fa";
 import { useRouter } from "next/router";
 
 type Props = {
   providers: Provider[];
 };
+
+function getIcon(id: string) {
+  switch (id) {
+    case "google":
+      return <FaGoogle />;
+    case "github":
+      return <FaGithub />;
+    default:
+      return;
+  }
+}
 
 export default function SignIn({ providers }: Props) {
   const router = useRouter();
@@ -22,7 +33,7 @@ export default function SignIn({ providers }: Props) {
             {Object.values(providers).map((provider) => (
               <div key={provider.name}>
                 <Button
-                  leftIcon={<FaGithub />}
+                  leftIcon={getIcon(provider.id)}
                   onClick={() =>
                     signIn(provider.id, {
                       callbackUrl: router.query["callbackUrl"] as string,
