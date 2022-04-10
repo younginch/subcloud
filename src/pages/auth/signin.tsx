@@ -3,7 +3,7 @@ import type { Provider } from "next-auth/providers";
 import { getProviders, signIn } from "next-auth/react";
 import type { GetServerSidePropsContext } from "next/types";
 import Layout from "../../components/layout";
-import { FaGoogle, FaGithub } from "react-icons/fa";
+import { FaGoogle, FaFacebook, FaGithub } from "react-icons/fa";
 import { useRouter } from "next/router";
 
 type Props = {
@@ -13,6 +13,10 @@ type Props = {
 function getIcon(id: string) {
   switch (id) {
     case "google":
+      return <FaGoogle />;
+    case "facebook":
+      return <FaFacebook />;
+    case "kakao":
       return <FaGoogle />;
     case "github":
       return <FaGithub />;
@@ -33,6 +37,7 @@ export default function SignIn({ providers }: Props) {
             {Object.values(providers).map((provider) => (
               <div key={provider.name}>
                 <Button
+                  disabled={provider.id === "facebook"}
                   leftIcon={getIcon(provider.id)}
                   onClick={() =>
                     signIn(provider.id, {
