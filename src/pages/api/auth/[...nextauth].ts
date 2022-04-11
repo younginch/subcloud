@@ -20,7 +20,7 @@ export default NextAuth({
     }),
     FacebookProvider({
       clientId: process.env.FACEBOOK_ID!,
-      clientSecret: process.env.FACEBOOK_SECRET!
+      clientSecret: process.env.FACEBOOK_SECRET!,
     }),
     KakaoProvider({
       clientId: process.env.KAKAO_ID!,
@@ -31,4 +31,10 @@ export default NextAuth({
       clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
+  callbacks: {
+    async session({ session, token, user }: any) {
+      session.id = user.id;
+      return Promise.resolve(session);
+    },
+  },
 });

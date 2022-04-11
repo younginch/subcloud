@@ -36,14 +36,16 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?     @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  Sub           Sub[]
+  subs          Sub[]
+  reviews       SubReview[]
+  requests      Request[]
 }
 
 model VerificationToken {
@@ -55,14 +57,30 @@ model VerificationToken {
 }
 
 model Sub {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  link   String
-  title  String
-  body   String
+  id      String      @id @default(cuid())
+  userId  String
+  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  request Request?
+  reviews SubReview[]
+  link    String      @unique
+  title   String
+  body    String
 }
 
 model Request {
-  id     String @id @default(cuid())
+  id    String  @id @default(cuid())
+  subId String?
+  sub   Sub?    @relation(fields: [subId], references: [id], onDelete: Cascade)
+  users User[]
+  link  String  @unique
+}
+
+model SubReview {
+  id      String   @id @default(cuid())
+  subId   String
+  sub     Sub      @relation(fields: [subId], references: [id], onDelete: Cascade)
+  userId  String
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  score   Decimal?
+  comment String?
 }
