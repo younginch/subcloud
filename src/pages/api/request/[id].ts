@@ -1,7 +1,8 @@
-import { PrismaClient, Request, User } from "@prisma/client";
+import { PrismaClient, Request } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import ResError from "../../../utils/apiTypes";
+import getInfoFromUrl from "../../../utils/getInfoFromUrl";
 
 export default async function RequestCRUD(
   req: NextApiRequest,
@@ -46,11 +47,12 @@ export default async function RequestCRUD(
         });
         return res.status(200).json(updatedRequest);
       }
-      const id = createIdFromLink(link);
+      const { id, type } = getInfoFromUrl(link);
       const createdRequest = await prisma.request.create({
         data: {
           id: id,
           link: link,
+          type: type,
           users: { connect: { id: session.user?.id } },
         },
       });
@@ -84,13 +86,4 @@ export default async function RequestCRUD(
       return res.status(500).json({ error: "Something went wrong" });
     }
   }
-}
-
-function createIdFromLink(link: string) {
-  const url = new URL(link);
-  if (url.hostname === "www.youtube.com") {
-    const videoId = url.searchParams.get("v");
-    return `youtube-${videoId}`;
-  }
-  return undefined;
 }

@@ -57,22 +57,29 @@ model VerificationToken {
 }
 
 model Sub {
-  id      String      @id @default(cuid())
-  userId  String
-  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  request Request?
-  reviews SubReview[]
-  link    String      @unique
-  title   String
-  body    String
+  id       String      @id @default(cuid())
+  userId   String
+  user     User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  request  Request?
+  reviews  SubReview[]
+  link     String
+  language String
+  title    String
+  body     String
+
+  @@unique([link, language])
 }
 
 model Request {
-  id    String  @id @default(cuid())
-  subId String?
-  sub   Sub?    @relation(fields: [subId], references: [id], onDelete: Cascade)
-  users User[]
-  link  String  @unique
+  id       String  @id @default(cuid())
+  subId    String? @unique
+  sub      Sub?    @relation(fields: [subId], references: [id], onDelete: Cascade)
+  users    User[]
+  type     String?
+  link     String
+  language String
+
+  @@unique([link, language])
 }
 
 model SubReview {
@@ -81,6 +88,6 @@ model SubReview {
   sub     Sub      @relation(fields: [subId], references: [id], onDelete: Cascade)
   userId  String
   user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  score   Decimal?
+  score   Decimal
   comment String?
 }
