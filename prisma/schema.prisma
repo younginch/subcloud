@@ -46,6 +46,7 @@ model User {
   subs          Sub[]
   reviews       SubReview[]
   requests      Request[]
+  files         File[]
 }
 
 model VerificationToken {
@@ -56,38 +57,55 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Sub {
-  id       String      @id @default(cuid())
-  userId   String
-  user     User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  request  Request?
-  reviews  SubReview[]
-  link     String
-  language String
-  title    String
-  body     String
+model Video {
+  id       String    @id @default(cuid())
+  subs     Sub[]
+  requests Request[]
+  type     String
+  url      String
+  lang     String
+}
 
-  @@unique([link, language])
+model Sub {
+  id        String      @id @default(cuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  requestId String?
+  request   Request?    @relation(fields: [requestId], references: [id])
+  videoId   String
+  video     Video       @relation(fields: [videoId], references: [id])
+  reviews   SubReview[]
+  lang      String
+  body      String
+
+  @@unique([videoId, lang])
+}
+
+model File {
+  id     String   @id @default(cuid())
+  userId String
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title  String
+  url    String
 }
 
 model Request {
-  id       String  @id @default(cuid())
-  subId    String? @unique
-  sub      Sub?    @relation(fields: [subId], references: [id], onDelete: Cascade)
-  users    User[]
-  type     String?
-  link     String
-  language String
+  id      String @id @default(cuid())
+  videoId String
+  video   Video  @relation(fields: [videoId], references: [id])
+  subs    Sub[]
+  users   User[]
+  lang    String
 
-  @@unique([link, language])
+  @@unique([videoId, lang])
 }
 
 model SubReview {
-  id      String   @id @default(cuid())
+  id      String  @id @default(cuid())
   subId   String
-  sub     Sub      @relation(fields: [subId], references: [id], onDelete: Cascade)
+  sub     Sub     @relation(fields: [subId], references: [id], onDelete: Cascade)
   userId  String
-  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   score   Decimal
   comment String?
 }

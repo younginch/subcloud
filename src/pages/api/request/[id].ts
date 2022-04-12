@@ -29,10 +29,10 @@ export default async function RequestCRUD(
       return res.status(500).json({ error: "Something went wrong" });
     }
   } else if (req.method === "POST") {
-    const { link } = req.body;
+    const { url } = req.body;
     try {
       const request = await prisma.request.findUnique({
-        where: { link: link },
+        where: { url: url },
       });
       if (request) {
         const updatedRequest = await prisma.request.update({
@@ -47,12 +47,10 @@ export default async function RequestCRUD(
         });
         return res.status(200).json(updatedRequest);
       }
-      const { id, type } = getInfoFromUrl(link);
+      const { id, type } = getInfoFromUrl(url);
       const createdRequest = await prisma.request.create({
         data: {
           id: id,
-          link: link,
-          type: type,
           users: { connect: { id: session.user?.id } },
         },
       });
