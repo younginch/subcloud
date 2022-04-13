@@ -2,6 +2,9 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient, Sub } from "@prisma/client";
 import { getSession } from "next-auth/react";
 import ResError from "../../../utils/apiTypes";
+import link from "next/link";
+import { title } from "process";
+import getInfoFromUrl from "../../../utils/getInfoFromUrl";
 
 export default async function SubCRUD(
   req: NextApiRequest,
@@ -24,14 +27,17 @@ export default async function SubCRUD(
       return res.status(500).json({ error: "Something went wrong" });
     }
   } else if (req.method === "POST") {
-    const { link, title, body, user } = req.body;
+    const { fileId, videoId, lang } = req.body;
+    if (!fileId || !videoId || !lang) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
     try {
       const sub = await prisma.sub.create({
         data: {
-          user: { connect: { id: user.id } },
-          link: link as string,
-          title: title as string,
-          body: body as string,
+          user: { connect: { id: session.user.id } },
+          file: { connect: { id: fileId } },
+          video: { connect: { id: videoId } },
+          lang: lang as string,
         },
       });
       return res.status(201).json(sub);

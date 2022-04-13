@@ -62,39 +62,38 @@ model Video {
   subs     Sub[]
   requests Request[]
   type     String
-  url      String
+  url      String    @unique
   lang     String
-}
-
-model Sub {
-  id        String      @id @default(cuid())
-  userId    String
-  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  requestId String?
-  request   Request?    @relation(fields: [requestId], references: [id])
-  videoId   String
-  video     Video       @relation(fields: [videoId], references: [id])
-  reviews   SubReview[]
-  lang      String
-  body      String
-
-  @@unique([videoId, lang])
-}
-
-model File {
-  id     String   @id @default(cuid())
-  userId String
-  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title  String
-  url    String
 }
 
 model Request {
   id      String @id @default(cuid())
   videoId String
   video   Video  @relation(fields: [videoId], references: [id])
-  subs    Sub[]
   users   User[]
+  lang    String
+
+  @@unique([videoId, lang])
+}
+
+model File {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title  String
+  url    String
+  sub    Sub?
+}
+
+model Sub {
+  id      String      @id @default(cuid())
+  userId  String
+  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileId  String      @unique
+  file    File        @relation(fields: [fileId], references: [id])
+  videoId String
+  video   Video       @relation(fields: [videoId], references: [id])
+  reviews SubReview[]
   lang    String
 
   @@unique([videoId, lang])

@@ -39,7 +39,7 @@ export default function RequestPage() {
           <Tbody>
             {requests.map((request) => (
               <Tr key={request.id}>
-                <Td>{request.link}</Td>
+                <Td>{request.videoId}</Td>
                 <Td>millimetres (mm)</Td>
                 <Td isNumeric>25.4</Td>
               </Tr>

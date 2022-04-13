@@ -29,9 +29,9 @@ export default async function RequestCRUD(
       return res.status(500).json({ error: "Something went wrong" });
     }
   } else if (req.method === "POST") {
-    const { url } = req.body;
+    const { url, lang } = req.body;
     try {
-      const request = await prisma.request.findUnique({
+      const request = await prisma.video.findUnique({
         where: { url: url },
       });
       if (request) {
@@ -51,7 +51,9 @@ export default async function RequestCRUD(
       const createdRequest = await prisma.request.create({
         data: {
           id: id,
+          video: { connect: { id: id } },
           users: { connect: { id: session.user?.id } },
+          lang: lang,
         },
       });
       return res.status(201).json(createdRequest);
