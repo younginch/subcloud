@@ -39,7 +39,10 @@ export default function ToolBar({ isLarge }: Props): JSX.Element {
               <PopoverHeader>Signed in as {session.user?.name}</PopoverHeader>
               <PopoverCloseButton />
               <PopoverBody>
-                <Link href="/sub/create" passHref>
+                <Link href="/video/create?next=request" passHref>
+                  <Button>New request</Button>
+                </Link>
+                <Link href="/video/create?next=sub" passHref>
                   <Button>New subtitle</Button>
                 </Link>
                 <Button

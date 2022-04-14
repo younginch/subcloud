@@ -2,9 +2,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient, Sub } from "@prisma/client";
 import { getSession } from "next-auth/react";
 import ResError from "../../../utils/apiTypes";
-import link from "next/link";
-import { title } from "process";
-import getInfoFromUrl from "../../../utils/getInfoFromUrl";
 
 export default async function SubCRUD(
   req: NextApiRequest,

@@ -2,7 +2,6 @@ import { PrismaClient, Request } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import ResError from "../../../utils/apiTypes";
-import getInfoFromUrl from "../../../utils/getInfoFromUrl";
 
 export default async function RequestCRUD(
   req: NextApiRequest,
@@ -29,7 +28,7 @@ export default async function RequestCRUD(
       return res.status(500).json({ error: "Something went wrong" });
     }
   } else if (req.method === "POST") {
-    const { url, lang } = req.body;
+    const { videoId, url, lang } = req.body;
     try {
       const request = await prisma.video.findUnique({
         where: { url: url },
@@ -47,11 +46,9 @@ export default async function RequestCRUD(
         });
         return res.status(200).json(updatedRequest);
       }
-      const { id, type } = getInfoFromUrl(url);
       const createdRequest = await prisma.request.create({
         data: {
-          id: id,
-          video: { connect: { id: id } },
+          video: { connect: { id: videoId } },
           users: { connect: { id: session.user?.id } },
           lang: lang,
         },
