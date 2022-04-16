@@ -15,7 +15,7 @@ export default function SubCreate() {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  function onSubmit(values) {
+  function onSubmit(values: any) {
     return new Promise<void>((resolve) => {
       resolve();
     });

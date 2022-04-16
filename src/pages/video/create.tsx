@@ -22,7 +22,7 @@ export default function VideoCreate() {
     return new Promise<void>((resolve, reject) => {
       const { url, lang } = values;
       axios
-        .post("/api/video/create", { url, lang })
+        .post("/api/video/create", { url, lang: "ko" })
         .then((res) => {
           resolve(res.data);
           router.push(`/video/${res.data.id}/request/create`);
@@ -41,6 +41,7 @@ export default function VideoCreate() {
           <Input
             id="url"
             placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            maxW="540px"
             {...register("url", {
               required: "This is required",
             })}

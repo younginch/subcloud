@@ -15,19 +15,19 @@ export default async function VideoCreate(
     return res.status(401).json({ error: "Not authenticated" });
   }
   const { url, lang } = req.body;
-  if (!url) {
-    return res.status(400).json({ error: "url is required" });
+  if (!url || !lang) {
+    return res.status(400).json({ error: "url and lang is required" });
   }
   const prisma = new PrismaClient();
   try {
-    const video = prisma.video.findUnique({ where: { url: url } });
+    const video = await prisma.video.findUnique({ where: { url: url } });
     if (!video) {
       const createdVideo = await prisma.video.create({
         data: getVideoFromUrl(url, lang),
       });
       return res.status(201).json(createdVideo);
     }
-    return res.status(200).json(video as unknown as Video);
+    return res.status(200).json(video);
   } catch {
     return res.status(500).json({ error: "Internal Server Error" });
   }
