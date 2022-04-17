@@ -39,3 +39,6 @@ yarn-error.log*
 
 # eslint
 .eslintcache
+
+#prisma
+/prisma/migrations
