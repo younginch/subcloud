@@ -31,7 +31,7 @@ export default function ToolBar({ isLarge }: Props): JSX.Element {
       {status === "authenticated" ? (
         <Popover>
           <PopoverTrigger>
-            <Avatar size="sm" />
+            <Avatar size="sm" src={session.user.image ?? undefined} />
           </PopoverTrigger>
           <Portal>
             <PopoverContent>
