@@ -22,18 +22,18 @@ type LinkButtonProps = {
   width?: string;
 };
 
-function LinkButton({ route: name, width }: LinkButtonProps) {
+function LinkButton({ route, width }: LinkButtonProps) {
   const { t } = useTranslation("routes");
 
   return (
-    <Link href={`/${name}`} passHref>
+    <Link href={`${route}`} passHref>
       <Button
         variant="ghost"
         flexDirection="column"
         alignItems="start"
         width={width}
       >
-        {t(`${name}`)}
+        {t(`${route}`)}
       </Button>
     </Link>
   );

@@ -1,5 +1,6 @@
 {
   "/auth/signin": "로그인",
+  "/info/company": "회사정보",
   "/info/privacy": "개인정보처리방침",
   "/info/terms": "이용약관",
   "/sub/[id]": "자막",

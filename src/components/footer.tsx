@@ -19,6 +19,7 @@ function FooterLink({ route }: Props) {
 export default function Footer() {
   return (
     <HStack spacing={12} paddingY={3} paddingStart={12}>
+      <FooterLink route="/info/company" />
       <FooterLink route="/info/terms" />
       <FooterLink route="/info/privacy" />
     </HStack>
