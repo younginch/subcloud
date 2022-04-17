@@ -58,10 +58,7 @@ function Profile({ name, position, summary, email, image }: Props) {
         overflow="hidden"
       >
         <HStack>
-          <Box
-            w="180px"
-            verticalAlign="stretch"
-          >
+          <Box w="180px" verticalAlign="stretch">
             <Image
               src={image}
               alt={name}
@@ -117,6 +114,8 @@ export default function Company() {
           image={carterkim614Pic}
         />
       </Wrap>
+      <Heading>위치</Heading>
+      <Text>경기도 남양주시 별내4로 63, 3408동 703호(별내동, 신일유토빌)</Text>
     </Layout>
   );
 }
