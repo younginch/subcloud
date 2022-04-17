@@ -46,6 +46,7 @@ export default function SelectTranslation({ isLarge }: Props): JSX.Element {
           as={Button}
           leftIcon={<TranslateIcon />}
           rightIcon={<ChevronDownIcon />}
+          variant="outline"
         >
           {router.locale === "en" ? "English" : "한국어"}
         </MenuButton>

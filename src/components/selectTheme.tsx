@@ -58,6 +58,7 @@ export default function SelectTheme({ isLarge }: Props): JSX.Element {
           as={Button}
           leftIcon={themeIcon}
           rightIcon={<ChevronDownIcon />}
+          variant="outline"
         >
           {t("theme")}
         </MenuButton>

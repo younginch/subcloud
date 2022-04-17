@@ -48,8 +48,11 @@ export default function RequestCreate() {
           </FormErrorMessage>
         </FormControl>
         <FormControl as="fieldset">
-          <FormLabel as="legend">Favorite Naruto Character</FormLabel>
+          <FormLabel as="legend">요청할 자막 언어</FormLabel>
           <SelectLanguage register={register("language")} />
+          <FormErrorMessage>
+            {errors.lang && errors.lang.message}
+          </FormErrorMessage>
         </FormControl>
         <Button
           mt={4}

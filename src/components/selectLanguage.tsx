@@ -12,7 +12,7 @@ export default function SelectLanguage({ register }: Props) {
 
   return (
     <RadioGroup onChange={setLanguage} value={language}>
-      <Stack maxH="540px">
+      <Stack maxH="540px" overflow="scroll" scrollBehavior="auto">
         {ISO6391.getAllCodes().map((code) => {
           return (
             <Radio {...register} key={code} value={code}>

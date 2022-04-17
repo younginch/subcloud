@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import Layout from "../../../../components/layout";
 import FileUpload from "../../../../components/fileUpload";
 import { useState } from "react";
+import SelectLanguage from "../../../../components/selectLanguage";
 
 export default function SubCreate() {
   const {
@@ -24,7 +25,7 @@ export default function SubCreate() {
   }
 
   const [newUserInfo, setNewUserInfo] = useState({
-    profileImages: []
+    profileImages: [],
   });
 
   const updateUploadedFile = (files: any) =>
@@ -52,6 +53,13 @@ export default function SubCreate() {
           label="Subtitle file"
           updateFilesCb={updateUploadedFile}
         />
+        <FormControl as="fieldset">
+          <FormLabel as="legend">자막 언어</FormLabel>
+          <SelectLanguage register={register("language")} />
+          <FormErrorMessage>
+            {errors.lang && errors.lang.message}
+          </FormErrorMessage>
+        </FormControl>
         <Button
           mt={4}
           colorScheme="teal"

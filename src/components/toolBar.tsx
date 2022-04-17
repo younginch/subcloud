@@ -61,6 +61,7 @@ export default function ToolBar({ isLarge }: Props): JSX.Element {
       ) : (
         <>
           <Button
+            variant="solid"
             onClick={() => {
               signIn();
             }}
