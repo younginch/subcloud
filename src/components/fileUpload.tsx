@@ -92,7 +92,7 @@ export default function FileUpload({
             let isImageFile = file.type.split("/")[0] === "image";
             return (
               <PreviewContainer key={fileName}>
-                <div onClick={() => removeFile(fileName)}>
+                <div>
                   {isImageFile && (
                     <ImagePreview
                       src={URL.createObjectURL(file)}
@@ -103,10 +103,12 @@ export default function FileUpload({
                     <span>{file.name}</span>
                     <aside>
                       <span>{convertBytesToKB(file.size)} kb</span>
+                      <div onClick={() => removeFile(fileName)}>
+                        <RemoveFileIcon
+                          className="fas fa-trash-alt"
+                        />
+                      </div>
                     </aside>
-                    <RemoveFileIcon
-                      className="fas fa-trash-alt"
-                    />
                   </FileMetaData>
                 </div>
               </PreviewContainer>

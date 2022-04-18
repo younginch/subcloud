@@ -13,7 +13,6 @@ export const FileUploadContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: white;
 `;
 
 export const FormField = styled.input`
@@ -27,8 +26,7 @@ export const FormField = styled.input`
   left: 0;
   right: 0;
   bottom: 0;
-  opacity: 0;
-
+  opacity: 0
   &:focus {
     outline: none;
   }
@@ -37,7 +35,6 @@ export const FormField = styled.input`
 export const InputLabel = styled.label`
   top: -21px;
   font-size: 13px;
-  color: black;
   left: 0;
   position: absolute;
 `;
