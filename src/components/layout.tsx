@@ -4,7 +4,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Script from "next/script";
 import Footer from "./footer";
-import NavBar from "./navBar";
+import NavBar from "./header/navBar";
 
 type Props = {
   hideNavBar?: boolean;

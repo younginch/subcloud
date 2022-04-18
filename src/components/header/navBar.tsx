@@ -12,18 +12,24 @@ import {
   IconButton,
   useMediaQuery,
   VStack,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Flex,
+  Spacer,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { CloseIcon, HamburgerIcon, SearchIcon } from "@chakra-ui/icons";
 import ToolBar from "./toolBar";
 import Links from "./links";
+import Search from "./search";
 
 export default function NavBar(): JSX.Element {
   const { colorMode } = useColorMode();
   const { t } = useTranslation("common");
   const [isLarge] = useMediaQuery("(min-width: 840px)");
-  const [isMedium] = useMediaQuery("(min-width: 480px)");
+  const [isMedium] = useMediaQuery("(min-width: 640px)");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -51,42 +57,46 @@ export default function NavBar(): JSX.Element {
       zIndex={9999}
     >
       <HStack
-        padding="6px"
+        padding="24px"
         h="100%"
-        maxWidth="1024px"
         width="100%"
         zIndex={10}
         marginStart="auto"
         marginEnd="auto"
         alignContent="space-between"
       >
-        <Heading size="md" marginX="6px" flex={1}>
+        {!isLarge && (
+          <IconButton
+            variant="ghost"
+            aria-label="hamburger"
+            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+            onClick={isOpen ? onClose : onOpen}
+          />
+        )}
+        <Heading size="md" marginX="6px">
           <Link href="/">{t("title")}</Link>
         </Heading>
+        <Flex flex={1}>
+          <Spacer />
+          <Search />
+          <Spacer />
+        </Flex>
         {!isLarge &&
           (isMedium ? <ToolBar isLarge={true} /> : <ToolBar isLarge={false} />)}
         {isLarge ? (
           <Links />
         ) : (
-          <>
-            <IconButton
-              variant="ghost"
-              aria-label="hamburger"
-              icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-              onClick={isOpen ? onClose : onOpen}
-            />
-            <Drawer placement="top" onClose={onClose} isOpen={isOpen}>
-              <DrawerOverlay>
-                <DrawerContent>
-                  <DrawerBody marginTop="54px">
-                    <VStack>
-                      <Links width="96vw" />
-                    </VStack>
-                  </DrawerBody>
-                </DrawerContent>
-              </DrawerOverlay>
-            </Drawer>
-          </>
+          <Drawer placement="top" onClose={onClose} isOpen={isOpen}>
+            <DrawerOverlay>
+              <DrawerContent>
+                <DrawerBody marginTop="54px">
+                  <VStack>
+                    <Links width="96vw" />
+                  </VStack>
+                </DrawerBody>
+              </DrawerContent>
+            </DrawerOverlay>
+          </Drawer>
         )}
         {isLarge && <ToolBar isLarge={true} />}
       </HStack>

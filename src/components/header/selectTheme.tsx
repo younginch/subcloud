@@ -14,7 +14,7 @@ import useTranslation from "next-translate/useTranslation";
 import useSystemTheme, {
   getCurrentTheme,
   Theme,
-} from "../utils/useSystemTheme";
+} from "../../utils/useSystemTheme";
 
 type Props = {
   isLarge: boolean;
