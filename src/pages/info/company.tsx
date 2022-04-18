@@ -44,7 +44,10 @@ const sbohSummary = [
   "(주)레인보우 브레인 인턴",
 ];
 
-const carterkim614Summary = ["서울대학교 경영학부 재학 중 (2학년)"];
+const carterkim614Summary = [
+  "서울대학교 경영학부 재학 중 (2학년)",
+  "경제금융연합동아리 FRI 19기(2021)",
+];
 
 function Profile({ name, position, summary, email, image }: Props) {
   return (
