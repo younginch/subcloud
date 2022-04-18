@@ -8,29 +8,43 @@ import GitHubProvider from "next-auth/providers/github";
 
 const prisma = new PrismaClient();
 
+const devProviders = [
+  GoogleProvider({
+    clientId: process.env.GOOGLE_ID!,
+    clientSecret: process.env.GOOGLE_SECRET!,
+  }),
+  FacebookProvider({
+    clientId: process.env.FACEBOOK_ID!,
+    clientSecret: process.env.FACEBOOK_SECRET!,
+  }),
+  KakaoProvider({
+    clientId: process.env.KAKAO_ID!,
+    clientSecret: process.env.KAKAO_SECRET!,
+  }),
+  GitHubProvider({
+    clientId: process.env.GITHUB_ID,
+    clientSecret: process.env.GITHUB_SECRET,
+  }),
+];
+
+const prodProviders = [
+  GoogleProvider({
+    clientId: process.env.GOOGLE_ID!,
+    clientSecret: process.env.GOOGLE_SECRET!,
+  }),
+  GitHubProvider({
+    clientId: process.env.GITHUB_ID,
+    clientSecret: process.env.GITHUB_SECRET,
+  }),
+];
+
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   pages: {
     signIn: "/auth/signin",
   },
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID!,
-      clientSecret: process.env.GOOGLE_SECRET!,
-    }),
-    FacebookProvider({
-      clientId: process.env.FACEBOOK_ID!,
-      clientSecret: process.env.FACEBOOK_SECRET!,
-    }),
-    KakaoProvider({
-      clientId: process.env.KAKAO_ID!,
-      clientSecret: process.env.KAKAO_SECRET!,
-    }),
-    GitHubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    }),
-  ],
+  providers:
+    process.env.NODE_ENV === "production" ? prodProviders : devProviders,
   callbacks: {
     async session({ session, token, user }: any) {
       session.id = user.id;
