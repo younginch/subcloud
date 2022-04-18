@@ -47,12 +47,12 @@ export default function SubCreate() {
           <FormErrorMessage>
             {errors.name && errors.name.message}
           </FormErrorMessage>
+          <FileUpload
+            accept=".srt"
+            label="Subtitle file"
+            updateFilesCb={updateUploadedFile}
+          />
         </FormControl>
-        <FileUpload
-          accept=".srt"
-          label="Subtitle file"
-          updateFilesCb={updateUploadedFile}
-        />
         <FormControl as="fieldset">
           <FormLabel as="legend">자막 언어</FormLabel>
           <SelectLanguage register={register("language")} />
