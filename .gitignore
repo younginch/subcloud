@@ -45,3 +45,5 @@ yarn-error.log*
 
 # IDE
 /.idea
+test-results/
+playwright-report/
