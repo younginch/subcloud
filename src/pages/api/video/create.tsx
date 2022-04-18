@@ -37,10 +37,10 @@ function getVideoFromUrl(urlString: string, lang: string): Video {
   const url = new URL(urlString);
   if (url.hostname === "www.youtube.com") {
     const videoId = url.searchParams.get("v");
-    return { id: `youtube-${videoId}`, type: "youtube", url: urlString, lang };
+    return { id: `youtube.${videoId}`, type: "youtube", url: urlString, lang };
   }
   return {
-    id: `${url.hostname}-${url.search}`,
+    id: `${url.hostname}.${url.search}`,
     type: "unknown",
     url: urlString,
     lang,

@@ -3,7 +3,7 @@ import { PrismaClient, Sub } from "@prisma/client";
 import { getSession } from "next-auth/react";
 import ResError from "../../../utils/apiTypes";
 
-export default async function SubCRUD(
+export default async function SubRUD(
   req: NextApiRequest,
   res: NextApiResponse<Sub | ResError>
 ) {
@@ -20,24 +20,6 @@ export default async function SubCRUD(
         return res.status(404).json({ error: "Sub not found" });
       }
       return res.status(200).json(sub);
-    } catch {
-      return res.status(500).json({ error: "Something went wrong" });
-    }
-  } else if (req.method === "POST") {
-    const { fileId, videoId, lang } = req.body;
-    if (!fileId || !videoId || !lang) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-    try {
-      const sub = await prisma.sub.create({
-        data: {
-          user: { connect: { id: session.user.id } },
-          file: { connect: { id: fileId } },
-          video: { connect: { id: videoId } },
-          lang: lang as string,
-        },
-      });
-      return res.status(201).json(sub);
     } catch {
       return res.status(500).json({ error: "Something went wrong" });
     }
@@ -58,8 +40,19 @@ export default async function SubCRUD(
     }
   } else if (req.method === "DELETE") {
     const { id } = req.query;
-    const sub = await prisma.sub.delete({ where: { id: id as string } });
-    return res.status(200).json(sub);
+    try {
+      const sub = await prisma.sub.findUnique({ where: { id: id as string } });
+      if (!sub) {
+        return res.status(404).json({ error: "Sub not found" });
+      }
+      if (sub.userId !== session.user.id) {
+        return res.status(403).json({ error: "Not authorized" });
+      }
+      const deletedSub = await prisma.sub.delete({ where: { id: id as string } });
+      return res.status(200).json(deletedSub);
+    } catch {
+      return res.status(500).json({ error: "Something went wrong" });
+    }
   }
   return res.status(405).json({ error: "Method not allowed" });
 }

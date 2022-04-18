@@ -27,36 +27,6 @@ export default async function RequestCRUD(
     } catch {
       return res.status(500).json({ error: "Something went wrong" });
     }
-  } else if (req.method === "POST") {
-    const { videoId, url, lang } = req.body;
-    try {
-      const request = await prisma.video.findUnique({
-        where: { url: url },
-      });
-      if (request) {
-        const updatedRequest = await prisma.request.update({
-          where: { id: request.id },
-          data: {
-            users: {
-              connect: {
-                id: session.user.id,
-              },
-            },
-          },
-        });
-        return res.status(200).json(updatedRequest);
-      }
-      const createdRequest = await prisma.request.create({
-        data: {
-          video: { connect: { id: videoId } },
-          users: { connect: { id: session.user?.id } },
-          lang: lang,
-        },
-      });
-      return res.status(201).json(createdRequest);
-    } catch {
-      return res.status(500).json({ error: "Something went wrong" });
-    }
   } else if (req.method === "DELETE") {
     if (!req.query.id) {
       return res.status(400).json({ error: "No id provided" });
