@@ -74,15 +74,15 @@ export default function FileUpload({
         <UploadFileBtn type="button" onClick={handleUploadBtnClick}>
           <i className="fas fa-file-upload" />
           <span> Upload {otherProps.multiple ? "files" : "a file"}</span>
+          <FormField
+            type="file"
+            ref={fileInputField}
+            onChange={handleNewFileUpload}
+            title=""
+            value=""
+            {...otherProps}
+          />
         </UploadFileBtn>
-        <FormField
-          type="file"
-          ref={fileInputField}
-          onChange={handleNewFileUpload}
-          title=""
-          value=""
-          {...otherProps}
-        />
       </FileUploadContainer>
       <FilePreviewContainer>
         <span>To Upload</span>
@@ -103,11 +103,10 @@ export default function FileUpload({
                     <span>{file.name}</span>
                     <aside>
                       <span>{convertBytesToKB(file.size)} kb</span>
-                      <div onClick={() => removeFile(fileName)}>
-                        <RemoveFileIcon
-                          className="fas fa-trash-alt"
-                        />
-                      </div>
+                      <RemoveFileIcon
+                        className="fas fa-trash-alt"
+                        onClick={() => removeFile(fileName)}
+                      />
                     </aside>
                   </FileMetaData>
                 </div>
