@@ -10,8 +10,11 @@ import {
   PopoverHeader,
   PopoverTrigger,
   Portal,
+  Stack,
+  Text,
 } from "@chakra-ui/react";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 import React from "react";
 import SelectTheme from "./selectTheme";
 import SelectTranslation from "./selectTranslation";
@@ -37,7 +40,20 @@ export default function ToolBar({ isLarge }: Props): JSX.Element {
               <PopoverArrow />
               <PopoverHeader>Signed in as {session.user?.name}</PopoverHeader>
               <PopoverCloseButton />
-              <PopoverBody>Body</PopoverBody>
+              <PopoverBody>
+                <Stack>
+                  <Text>{session.user?.email}</Text>
+                  <Link href={`/user/${session.user.id}?tab=request`} passHref>
+                    <Button>내 자막 요청</Button>
+                  </Link>
+                  <Link href={`/user/${session.user.id}?tab=sub`} passHref>
+                    <Button>내 영상 자막</Button>
+                  </Link>
+                  <Link href={`/user/${session.user.id}?tab=file`} passHref>
+                    <Button>내 자막 파일</Button>
+                  </Link>
+                </Stack>
+              </PopoverBody>
               <PopoverFooter>
                 <Button
                   colorScheme="blue"

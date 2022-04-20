@@ -7,11 +7,11 @@ export default async function RequestCreate(
   req: NextApiRequest,
   res: NextApiResponse<Request | ResError>
 ) {
-  if (req.method === "POST") {
+  if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
-  const { videoId, url, lang } = req.body;
-  if (!videoId || !url || !lang) {
+  const { videoId, lang } = req.body;
+  if (!videoId || !lang) {
     return res.status(400).json({ error: "Missing required fields" });
   }
   const session = await getSession({ req });
@@ -20,12 +20,12 @@ export default async function RequestCreate(
   }
   const prisma = new PrismaClient();
   try {
-    const request = await prisma.video.findUnique({
-      where: { url: url },
+    const request = await prisma.request.findUnique({
+      where: { videoId_lang: { videoId, lang } },
     });
     if (request) {
       const updatedRequest = await prisma.request.update({
-        where: { id: request.id },
+        where: { videoId_lang: { videoId, lang } },
         data: {
           users: {
             connect: {
@@ -39,8 +39,8 @@ export default async function RequestCreate(
     const createdRequest = await prisma.request.create({
       data: {
         video: { connect: { id: videoId } },
-        users: { connect: { id: session.user?.id } },
         lang: lang,
+        users: { connect: { id: session.user?.id } },
       },
     });
     return res.status(201).json(createdRequest);
