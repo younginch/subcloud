@@ -10,10 +10,10 @@ export default async function VideoCreate(
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method Not Allowed" });
   }
-  const session = await getSession({ req });
-  if (!session) {
-    return res.status(401).json({ error: "Not authenticated" });
-  }
+  // const session = await getSession({ req });
+  // if (!session) {
+  //   return res.status(401).json({ error: "Not authenticated" });
+  // }
   const { url } = req.body;
   if (!url) {
     return res.status(400).json({ error: "url is required" });

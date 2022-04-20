@@ -6,11 +6,13 @@ import {
   Button,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import Layout from "../../../../components/layout";
 import SelectLanguage from "../../../../components/selectLanguage";
 
 export default function RequestCreate() {
+  const router = useRouter();
   const {
     handleSubmit,
     register,
@@ -34,15 +36,8 @@ export default function RequestCreate() {
     <Layout>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.url}>
-          <FormLabel htmlFor="url">First name</FormLabel>
-          <Input
-            id="url"
-            placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            {...register("url", {
-              required: "This is required",
-              minLength: { value: 4, message: "Minimum length should be 4" },
-            })}
-          />
+          <FormLabel htmlFor="url">영상 URL</FormLabel>
+          <Input id="url" value={router.query.videoId} {...register("url")} />
           <FormErrorMessage>
             {errors.url && errors.url.message}
           </FormErrorMessage>
@@ -60,7 +55,7 @@ export default function RequestCreate() {
           isLoading={isSubmitting}
           type="submit"
         >
-          Submit
+          요청
         </Button>
       </form>
     </Layout>
