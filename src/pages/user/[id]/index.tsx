@@ -18,7 +18,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Request } from "@prisma/client";
+import { File, Request, Sub } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -71,10 +71,10 @@ export default function UserRead() {
             <RequestPanel />
           </TabPanel>
           <TabPanel>
-            <p>two!</p>
+            <SubPanel />
           </TabPanel>
           <TabPanel>
-            <p>three!</p>
+            <FilePanel />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -98,9 +98,9 @@ function RequestPanel() {
         <TableCaption>Imperial to metric conversion factors</TableCaption>
         <Thead>
           <Tr>
-            <Th>To convert</Th>
-            <Th>into</Th>
-            <Th>multiply by</Th>
+            <Th>ID</Th>
+            <Th>Video ID</Th>
+            <Th>요청 언어</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -110,6 +110,94 @@ function RequestPanel() {
                 <Td>{request.id}</Td>
                 <Td>{request.videoId}</Td>
                 <Td>{request.lang}</Td>
+              </Tr>
+            );
+          })}
+        </Tbody>
+        <Tfoot>
+          <Tr>
+            <Th>To convert</Th>
+            <Th>into</Th>
+            <Th isNumeric>multiply by</Th>
+          </Tr>
+        </Tfoot>
+      </Table>
+    </TableContainer>
+  );
+}
+
+function  SubPanel() {
+  const { data, status } = useSession();
+  const [subs, setSubs] = useState<Sub[]>([]);
+
+  useEffect(() => {
+    axios.get("/api/sub/search?userId=" + data?.user.id).then((res) => {
+      setSubs(res.data);
+    });
+  }, [data?.user.id, status]);
+
+  return (
+    <TableContainer>
+      <Table variant="simple">
+        <TableCaption>Imperial to metric conversion factors</TableCaption>
+        <Thead>
+          <Tr>
+            <Th>자막 ID</Th>
+            <Th>영상 ID</Th>
+            <Th>요청 언어</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {subs.map((sub) => {
+            return (
+              <Tr key={sub.id}>
+                <Td>{sub.id}</Td>
+                <Td>{sub.videoId}</Td>
+                <Td>{sub.lang}</Td>
+              </Tr>
+            );
+          })}
+        </Tbody>
+        <Tfoot>
+          <Tr>
+            <Th>To convert</Th>
+            <Th>into</Th>
+            <Th isNumeric>multiply by</Th>
+          </Tr>
+        </Tfoot>
+      </Table>
+    </TableContainer>
+  );
+}
+
+function FilePanel() {
+  const { data, status } = useSession();
+  const [files, setFiles] = useState<File[]>([]);
+
+  useEffect(() => {
+    axios.get("/api/file/search?userId=" + data?.user.id).then((res) => {
+      setFiles(res.data);
+    });
+  }, [data?.user.id, status]);
+
+  return (
+    <TableContainer>
+      <Table variant="simple">
+        <TableCaption>Imperial to metric conversion factors</TableCaption>
+        <Thead>
+          <Tr>
+            <Th>ID</Th>
+            <Th>파일 제목</Th>
+            <Th>URL</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {files.map((file) => {
+            return (
+              <Tr key={file.id}>
+                <Td>{file.id}</Td>
+                <Td>{file.title}</Td>
+                <Td>{file.url}</Td>
               </Tr>
             );
           })}
