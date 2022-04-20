@@ -1,12 +1,18 @@
 import { PrismaClient, Video } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
 import ResError from "../../../utils/apiTypes";
+import NextCors from 'nextjs-cors';
 
 export default async function VideoCreate(
   req: NextApiRequest,
   res: NextApiResponse<Video | ResError>
 ) {
+  await NextCors(req, res, {
+    // Options
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: "*",
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method Not Allowed" });
   }
@@ -28,8 +34,10 @@ export default async function VideoCreate(
       return res.status(201).json(createdVideo);
     }
     return res.status(200).json(video);
-  } catch(e: any) {
-    return res.status(500).json({ error: "Internal Server Error", log: e.message });
+  } catch (e: any) {
+    return res
+      .status(500)
+      .json({ error: "Internal Server Error", log: e.message });
   }
 }
 
