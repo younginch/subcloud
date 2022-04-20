@@ -9,10 +9,11 @@
   "/user/[id]": "사용자",
   "/user/[id]/update": "사용자 수정",
   "/user/settings": "사용자 설정",
-  "/contribution": "기여 순위",
+  "/video/create": "영상 선택",
+  "/video/create?next=request": "자막 요청",
+  "/video/create?next=sub": "자막 제작",
   "/400": "페이지를 찾을 수 없음",
   "/500": "서버 오류",
   "/": "홈",
-  "/request": "자막 요청",
-  "/trending": "인기 자막"
+  "/ranking": "랭킹"
 }
