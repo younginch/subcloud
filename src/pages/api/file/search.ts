@@ -1,10 +1,10 @@
-import { PrismaClient, Sub } from "@prisma/client";
+import { File, PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import ResError from "../../../utils/apiTypes";
 
-export default async function SubSearch(
+export default async function RequestSearch(
   req: NextApiRequest,
-  res: NextApiResponse<Sub[] | ResError>
+  res: NextApiResponse<File[] | ResError>
 ) {
   const prisma = new PrismaClient();
   if (req.method !== "GET") {
@@ -12,10 +12,10 @@ export default async function SubSearch(
   }
   const { userId } = req.query;
   try {
-    const subs = await prisma.sub.findMany({
+    const files = await prisma.file.findMany({
       where: { userId: userId as string },
     });
-    return res.status(200).json(subs);
+    return res.status(200).json(files);
   } catch {
     return res.status(500).json({ error: "Something went wrong" });
   }

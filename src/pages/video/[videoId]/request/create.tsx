@@ -22,7 +22,10 @@ export default function RequestCreate() {
   function onSubmit(values: any) {
     return new Promise<void>((resolve, reject) => {
       axios
-        .post("/api/request/create", {})
+        .post("/api/request", {
+          videoId: router.query.videoId,
+          lang: values.lang,
+        })
         .then((res) => {
           resolve();
         })
@@ -44,7 +47,7 @@ export default function RequestCreate() {
         </FormControl>
         <FormControl as="fieldset">
           <FormLabel as="legend">요청할 자막 언어</FormLabel>
-          <SelectLanguage register={register("language")} />
+          <SelectLanguage register={register("lang")} />
           <FormErrorMessage>
             {errors.lang && errors.lang.message}
           </FormErrorMessage>
