@@ -3,7 +3,13 @@ import multer, { diskStorage } from "multer";
 import multerS3 from "multer-s3";
 import AWS from "aws-sdk";
 import { NextApiRequest, NextApiResponse } from "next";
-import { ApiError } from "next/dist/server/api-utils";
+import { File, PrismaClient } from "@prisma/client";
+import ResError from "../../../utils/apiTypes";
+import { getSession } from "next-auth/react";
+
+interface NextApiRequestWithFile extends NextApiRequest {
+  file: Express.Multer.File;
+}
 
 const localStorage = diskStorage({
   destination: "./public/s3",
@@ -33,7 +39,10 @@ const upload = multer({
   storage: process.env.NODE_ENV === "development" ? localStorage : awsStorage,
 });
 
-const app = nextConnect<NextApiRequest, NextApiResponse<any | ApiError>>({
+const app = nextConnect<
+  NextApiRequestWithFile,
+  NextApiResponse<File | ResError>
+>({
   onError(error, req, res) {
     res
       .status(501)
@@ -46,8 +55,20 @@ const app = nextConnect<NextApiRequest, NextApiResponse<any | ApiError>>({
 
 app.use(upload.single("file"));
 
-app.post((req, res) => {
-  res.status(200).json({ data: "success" });
+app.post(async (req, res) => {
+  const session = await getSession({ req });
+  if (!session) {
+    return res.status(401).json({ error: "Not Logged In" });
+  }
+  const prisma = new PrismaClient();
+  const newFile = await prisma.file.create({
+    data: {
+      user: { connect: { id: session.user.id } },
+      title: req.file.originalname,
+      url: req.file.path,
+    },
+  });
+  res.status(200).json(newFile);
 });
 
 export default app;

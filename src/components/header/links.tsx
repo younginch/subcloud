@@ -10,9 +10,9 @@ type LinksProps = {
 export default function Links({ width }: LinksProps) {
   return (
     <>
-      <LinkButton route="/contribution" width={width} />
-      <LinkButton route="/request" width={width} />
-      <LinkButton route="/trending" width={width} />
+      <LinkButton route="/video/create?next=request" width={width} />
+      <LinkButton route="/video/create?next=sub" width={width} />
+      <LinkButton route="/ranking" width={width} />
     </>
   );
 }
