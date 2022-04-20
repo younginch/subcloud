@@ -47,7 +47,7 @@ export default NextAuth({
     process.env.NODE_ENV === "production" ? prodProviders : devProviders,
   callbacks: {
     async session({ session, token, user }: any) {
-      session.id = user.id;
+      session.user.id = user.id;
       return Promise.resolve(session);
     },
   },

@@ -70,7 +70,6 @@ model Video {
   requests Request[]
   type     String
   url      String    @unique
-  lang     String
 }
 
 model Request {

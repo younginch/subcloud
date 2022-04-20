@@ -1,62 +1,79 @@
 import {
   FormControl,
   FormLabel,
-  Input,
   FormErrorMessage,
   Button,
+  Text,
+  Box,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import Layout from "../../../../components/layout";
-import FileUpload from "../../../../components/fileUpload";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import SelectLanguage from "../../../../components/selectLanguage";
+import { useDropzone } from "react-dropzone";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 export default function SubCreate() {
+  const router = useRouter();
+  const { data, status } = useSession();
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
   } = useForm();
+  const [file, setFile] = useState<string | Blob>();
 
-  function onSubmit(event: any) {
-    event.preventDefault();
-    return new Promise<void>((resolve) => {
+  function onSubmit(values: any) {
+    return new Promise<void>(async (resolve, reject) => {
+      const formData = new FormData();
+      formData.append("file", file!);
+      const newFile = await axios.post("/api/file/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const newSub = await axios.post("/api/sub", {
+        fileId: newFile.data.id,
+        videoId: router.query.videoId,
+        lang: values.lang,
+      });
       resolve();
     });
   }
 
-  const [newUserInfo, setNewUserInfo] = useState({
-    profileImages: [],
+  const onDrop = useCallback((acceptedFiles) => {
+    setFile(acceptedFiles[0]);
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: "text/plain",
+    multiple: false,
+    maxSize: 5 * 1024 * 1024, // 5 MB
   });
-
-  const updateUploadedFile = (files: any) =>
-    setNewUserInfo({ ...newUserInfo, profileImages: files });
 
   return (
     <Layout>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={errors.name}>
-          <FormLabel htmlFor="name">Title</FormLabel>
-          <Input
-            id="fileId"
-            placeholder="name"
-            {...register("name", {
-              required: "This is required",
-              minLength: { value: 4, message: "Minimum length should be 4" },
-            })}
-          />
+        <FormControl isInvalid={errors.file}>
+          <FormLabel htmlFor="name">자막 파일</FormLabel>
+          <Box w="360px" h="120px" borderWidth="1px" borderRadius="6px">
+            <div {...getRootProps()}>
+              <input {...getInputProps()} />
+              <Text>
+                Drag &apos;n&apos; drop some files here, or click to select
+                files
+              </Text>
+            </div>
+          </Box>
           <FormErrorMessage>
-            {errors.name && errors.name.message}
+            {errors.file && errors.file.message}
           </FormErrorMessage>
-          <FileUpload
-            accept=".srt"
-            label="Subtitle file"
-            updateFilesCb={updateUploadedFile}
-          />
         </FormControl>
         <FormControl as="fieldset">
           <FormLabel as="legend">자막 언어</FormLabel>
-          <SelectLanguage register={register("language")} />
+          <SelectLanguage register={register("lang")} />
           <FormErrorMessage>
             {errors.lang && errors.lang.message}
           </FormErrorMessage>
@@ -67,7 +84,7 @@ export default function SubCreate() {
           isLoading={isSubmitting}
           type="submit"
         >
-          Submit
+          업로드
         </Button>
       </form>
     </Layout>

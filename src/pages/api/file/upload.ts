@@ -61,14 +61,18 @@ app.post(async (req, res) => {
     return res.status(401).json({ error: "Not Logged In" });
   }
   const prisma = new PrismaClient();
-  const newFile = await prisma.file.create({
-    data: {
-      user: { connect: { id: session.user.id } },
-      title: req.file.originalname,
-      url: req.file.path,
-    },
-  });
-  res.status(200).json(newFile);
+  try {
+    const newFile = await prisma.file.create({
+      data: {
+        user: { connect: { id: session.user.id ?? undefined } },
+        title: req.file.originalname,
+        url: req.file.path,
+      },
+    });
+    return res.status(200).json(newFile);
+  } catch (e: any) {
+    return res.status(500).json({ error: e.message });
+  }
 });
 
 export default app;
