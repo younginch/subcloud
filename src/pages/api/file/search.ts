@@ -2,7 +2,7 @@ import { File, PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import ResError from "../../../utils/apiTypes";
 
-export default async function RequestSearch(
+export default async function FileSearch(
   req: NextApiRequest,
   res: NextApiResponse<File[] | ResError>
 ) {
