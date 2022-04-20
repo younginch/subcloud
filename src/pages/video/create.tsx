@@ -21,9 +21,9 @@ export default function VideoCreate() {
 
   function onSubmit(values: any) {
     return new Promise<void>((resolve, reject) => {
-      const { url, lang } = values;
+      const { url } = values;
       axios
-        .post("/api/video/create", { url, lang: "ko" })
+        .post("/api/video/create", { url })
         .then((res) => {
           resolve(res.data);
           if (router.query.next === "request") {
@@ -55,20 +55,13 @@ export default function VideoCreate() {
             {errors.url && errors.url.message}
           </FormErrorMessage>
         </FormControl>
-        <FormControl as="fieldset">
-          <FormLabel as="legend">영상의 언어</FormLabel>
-          <SelectLanguage register={register("language")} />
-          <FormErrorMessage>
-            {errors.lang && errors.lang.message}
-          </FormErrorMessage>
-        </FormControl>
         <Button
           mt={4}
           colorScheme="teal"
           isLoading={isSubmitting}
           type="submit"
         >
-          Next
+          다음
         </Button>
       </form>
     </Layout>

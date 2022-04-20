@@ -47,3 +47,6 @@ yarn-error.log*
 /.idea
 test-results/
 playwright-report/
+
+# static files
+/public/s3

@@ -7,9 +7,9 @@ export default async function SubCreate(
   req: NextApiRequest,
   res: NextApiResponse<Sub | ResError>
 ) {
-  if (req.method === "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
+  // if (req.method === "POST") {
+  //   return res.status(405).json({ error: "Method not allowed" });
+  // }
   const session = await getSession({ req });
   if (!session) {
     return res.status(401).json({ error: "Not authenticated" });
@@ -29,7 +29,9 @@ export default async function SubCreate(
       },
     });
     return res.status(201).json(sub);
-  } catch {
-    return res.status(500).json({ error: "Something went wrong" });
+  } catch (e: any) {
+    return res
+      .status(500)
+      .json({ error: "Something went wrong", log: e.message });
   }
 }

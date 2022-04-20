@@ -14,35 +14,34 @@ export default async function VideoCreate(
   if (!session) {
     return res.status(401).json({ error: "Not authenticated" });
   }
-  const { url, lang } = req.body;
-  if (!url || !lang) {
-    return res.status(400).json({ error: "url and lang is required" });
+  const { url } = req.body;
+  if (!url) {
+    return res.status(400).json({ error: "url is required" });
   }
   const prisma = new PrismaClient();
   try {
     const video = await prisma.video.findUnique({ where: { url: url } });
     if (!video) {
       const createdVideo = await prisma.video.create({
-        data: getVideoFromUrl(url, lang),
+        data: getVideoFromUrl(url),
       });
       return res.status(201).json(createdVideo);
     }
     return res.status(200).json(video);
-  } catch {
-    return res.status(500).json({ error: "Internal Server Error" });
+  } catch(e: any) {
+    return res.status(500).json({ error: "Internal Server Error", log: e.message });
   }
 }
 
-function getVideoFromUrl(urlString: string, lang: string): Video {
+function getVideoFromUrl(urlString: string): Video {
   const url = new URL(urlString);
   if (url.hostname === "www.youtube.com") {
     const videoId = url.searchParams.get("v");
-    return { id: `youtube.${videoId}`, type: "youtube", url: urlString, lang };
+    return { id: `youtube.${videoId}`, type: "youtube", url: urlString };
   }
   return {
     id: `${url.hostname}.${url.search}`,
     type: "unknown",
     url: urlString,
-    lang,
   };
 }
