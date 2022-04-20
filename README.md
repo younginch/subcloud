@@ -1,6 +1,8 @@
 # Sub
 
 [![CI](https://github.com/submarine-kr/sub/actions/workflows/ci.yml/badge.svg)](https://github.com/submarine-kr/sub/actions/workflows/ci.yml)
+[![Playwright Tests](https://github.com/younginch/sub/actions/workflows/playwright.yml/badge.svg)](https://github.com/younginch/sub/actions/workflows/playwright.yml)
+[![codecov](https://codecov.io/gh/younginch/sub/branch/main/graph/badge.svg?token=ET2YVQ4FTC)](https://codecov.io/gh/younginch/sub)
 
 ## Getting Started
 
@@ -20,7 +22,7 @@ CREATE USER sub PASSWORD 'password' SUPERUSER;
 CREATE DATABASE dev OWNER sub;
 exit
 npx prisma generate
-npx prisma migrate dev
+npx prisma db push
 ```
 
 ### Run
