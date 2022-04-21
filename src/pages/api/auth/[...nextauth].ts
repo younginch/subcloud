@@ -50,5 +50,14 @@ export default NextAuth({
       session.user.id = user.id;
       return Promise.resolve(session);
     },
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url;
+      else {
+        return `${baseUrl}/auth/callback?open=${encodeURIComponent(url)}`;
+      }
+    },
   },
 });
