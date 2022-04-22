@@ -36,7 +36,6 @@ export default async function VideoCreate(
       where: { url: url },
       include: {
         subs: {
-          select: { id: true, lang: true },
           include: { user: { select: { name: true } } },
         },
       },

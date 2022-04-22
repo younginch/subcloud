@@ -7,19 +7,12 @@ export default function Callback({ cookies }: any) {
   const { query } = useRouter();
 
   useEffect(() => {
-    if (query["open"]) {
-      const csrf = cookies["next-auth.csrf-token"];
-      const callback = cookies["next-auth.callback-url"];
-      const session = cookies["next-auth.session-token"];
-      console.log(`${query.open}?csrf=${csrf}&callback=${callback}&session=${session}`);
-      window.location.assign(
-        `${query.open}?csrf=${csrf}&callback=${callback}&session=${session}`
-      );
+    setTimeout(() => {
       window.close();
-    }
-  }, [cookies, query]);
+    }, 5000);
+  }, []);
 
-  return <Layout>외부 프로그램 여는 중</Layout>;
+  return <Layout>외부 프로그램 여는 중 - 5초 후에 창이 닫힙니다.</Layout>;
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
