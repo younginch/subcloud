@@ -9,7 +9,12 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import SelectLanguage from "../../components/selectLanguage";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { VideoCreateSchema } from "../../utils/schema";
+
+type FormData = {
+  url: string;
+};
 
 export default function VideoCreate() {
   const router = useRouter();
@@ -17,7 +22,7 @@ export default function VideoCreate() {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm<FormData>({ resolver: joiResolver(VideoCreateSchema) });
 
   function onSubmit(values: any) {
     return new Promise<void>((resolve, reject) => {
@@ -41,7 +46,7 @@ export default function VideoCreate() {
   return (
     <Layout>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={errors.url}>
+        <FormControl isInvalid={errors.url !== undefined}>
           <FormLabel htmlFor="url">Video Link</FormLabel>
           <Input
             id="url"

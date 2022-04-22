@@ -4,20 +4,26 @@ import {
   Input,
   FormErrorMessage,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import Layout from "../../../../components/layout";
 import SelectLanguage from "../../../../components/selectLanguage";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { RequestCreateSchema } from "../../../../utils/schema";
+import { useSession } from "next-auth/react";
 
 export default function RequestCreate() {
   const router = useRouter();
+  const toast = useToast();
+  const { data } = useSession();
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({ resolver: joiResolver(RequestCreateSchema) });
 
   function onSubmit(values: any) {
     return new Promise<void>((resolve, reject) => {
@@ -27,6 +33,12 @@ export default function RequestCreate() {
           lang: values.lang,
         })
         .then((res) => {
+          toast({
+            title: "Success",
+            description: "Request created",
+            status: "success",
+          });
+          router.push(`/user/${data?.user.id}?tab=requests`);
           resolve();
         })
         .catch((err) => {
@@ -39,8 +51,8 @@ export default function RequestCreate() {
     <Layout>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.url}>
-          <FormLabel htmlFor="url">영상 URL</FormLabel>
-          <Input id="url" value={router.query.videoId} {...register("url")} />
+          <FormLabel htmlFor="videoId">영상 ID</FormLabel>
+          <Input id="videoId" value={router.query.videoId} {...register("videoId")} />
           <FormErrorMessage>
             {errors.url && errors.url.message}
           </FormErrorMessage>
