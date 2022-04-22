@@ -9,11 +9,11 @@ import {
   Td,
   Tfoot,
 } from "@chakra-ui/react";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 import type { GetServerSidePropsContext } from "next";
 import Layout from "../../components/layout";
 
-export default function AdminUser({ users }: any) {
+export default function AdminUser({ users }: { users: User[] }) {
   return (
     <Layout>
       <TableContainer>
@@ -27,21 +27,15 @@ export default function AdminUser({ users }: any) {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>inches</Td>
-              <Td>millimetres (mm)</Td>
-              <Td isNumeric>25.4</Td>
-            </Tr>
-            <Tr>
-              <Td>feet</Td>
-              <Td>centimetres (cm)</Td>
-              <Td isNumeric>30.48</Td>
-            </Tr>
-            <Tr>
-              <Td>yards</Td>
-              <Td>metres (m)</Td>
-              <Td isNumeric>0.91444</Td>
-            </Tr>
+            {users.map((user) => {
+              return (
+                <Tr key={user.id}>
+                  <Td>{user.id}</Td>
+                  <Td>{user.name}</Td>
+                  <Td>{user.email}</Td>
+                </Tr>
+              );
+            })}
           </Tbody>
           <Tfoot>
             <Tr>
