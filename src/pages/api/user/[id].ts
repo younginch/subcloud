@@ -17,8 +17,11 @@ export default async function UserCRUD(
   } else if (req.method === "POST") {
   } else if (req.method === "PATCH") {
   } else if (req.method === "DELETE") {
+    const { id } = req.query;
+    if (!id) {
+      return res.status(400).json({ error: "No id provided" });
+    }
     try {
-      const { id } = req.query;
       const user = await prisma.user.findUnique({
         where: { id: id as string },
       });

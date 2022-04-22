@@ -2,6 +2,7 @@ import { PrismaClient, Request } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import ResError from "../../../utils/apiTypes";
+import { RequestCreateSchema } from "../../../utils/schema";
 
 export default async function RequestCreate(
   req: NextApiRequest,
@@ -10,10 +11,11 @@ export default async function RequestCreate(
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
-  const { videoId, lang } = req.body;
-  if (!videoId || !lang) {
-    return res.status(400).json({ error: "Missing required fields" });
+  const { value, error } = RequestCreateSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.message });
   }
+  const {videoId, lang} = value;
   const session = await getSession({ req });
   if (!session) {
     return res.status(401).json({ error: "Not authenticated" });

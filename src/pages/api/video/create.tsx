@@ -1,7 +1,9 @@
 import { PrismaClient, Video } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import ResError from "../../../utils/apiTypes";
-import NextCors from 'nextjs-cors';
+import NextCors from "nextjs-cors";
+import { getSession } from "next-auth/react";
+import { VideoCreateSchema } from "../../../utils/schema";
 
 export default async function VideoCreate(
   req: NextApiRequest,
@@ -16,17 +18,29 @@ export default async function VideoCreate(
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method Not Allowed" });
   }
-  // const session = await getSession({ req });
-  // if (!session) {
-  //   return res.status(401).json({ error: "Not authenticated" });
-  // }
+  const session = await getSession({ req });
+  if (!session) {
+    return res.status(401).json({ error: "Not authenticated" });
+  }
   const { url } = req.body;
   if (!url) {
     return res.status(400).json({ error: "url is required" });
   }
+  const { error } = VideoCreateSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: "url is invalid" });
+  }
   const prisma = new PrismaClient();
   try {
-    const video = await prisma.video.findUnique({ where: { url: url } });
+    const video = await prisma.video.findUnique({
+      where: { url: url },
+      include: {
+        subs: {
+          select: { id: true, lang: true },
+          include: { user: { select: { name: true } } },
+        },
+      },
+    });
     if (!video) {
       const createdVideo = await prisma.video.create({
         data: getVideoFromUrl(url),
