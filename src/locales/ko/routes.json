@@ -1,4 +1,5 @@
 {
+  "/auth/callback": "로그인 성공",
   "/auth/signin": "로그인",
   "/info/company": "회사정보",
   "/info/privacy": "개인정보처리방침",
