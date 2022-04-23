@@ -19,9 +19,6 @@ export default async function FileRUD(
     if (!file) {
       return res.status(404).json({ error: "File not found" });
     }
-    if (file.userId !== session.user.id) {
-      return res.status(403).json({ error: "Not authorized" });
-    }
     return res.status(200).json(file);
   } else if (req.method === "DELETE") {
     const { id } = req.query;
