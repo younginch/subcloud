@@ -64,7 +64,7 @@ app.post(async (req, res) => {
   try {
     const newFile = await prisma.file.create({
       data: {
-        user: { connect: { id: session.user.id ?? undefined } },
+        user: { connect: { id: session.user.id! } },
         title: req.file.originalname,
         url: req.file.path,
       },
