@@ -29,32 +29,33 @@ export default function SignIn({ providers }: Props) {
   const router = useRouter();
 
   return (
-    <Layout hideNavBar hideTitle>
-      <Center marginLeft="-150px" position="absolute" top="30%" left="50%">
-        <Box w="300px" borderRadius={12} borderWidth={1}>
-          <Stack margin={6}>
-            <Heading>Sign In</Heading>
-            {Object.values(providers).map((provider) => (
-              <div key={provider.name}>
-                <Button
-                  disabled={provider.id === "facebook"}
-                  leftIcon={getIcon(provider.id)}
-                  onClick={() =>
-                    signIn(provider.id, {
-                      callbackUrl: router.query["callbackUrl"] as string,
-                    })
-                  }
-                >
-                  Sign in with {provider.name}
-                </Button>
-              </div>
-            ))}
-          </Stack>
-        </Box>
-      </Center>
-    </Layout>
+    <Center marginLeft="-150px" position="absolute" top="30%" left="50%">
+      <Box w="300px" borderRadius={12} borderWidth={1}>
+        <Stack margin={6}>
+          <Heading>Sign In</Heading>
+          {Object.values(providers).map((provider) => (
+            <div key={provider.name}>
+              <Button
+                disabled={provider.id === "facebook"}
+                leftIcon={getIcon(provider.id)}
+                onClick={() =>
+                  signIn(provider.id, {
+                    callbackUrl: router.query["callbackUrl"] as string,
+                  })
+                }
+              >
+                Sign in with {provider.name}
+              </Button>
+            </div>
+          ))}
+        </Stack>
+      </Box>
+    </Center>
   );
 }
+
+SignIn.hideHeader = true;
+SignIn.hideTitle = true;
 
 export async function getServerSideProps(_: GetServerSidePropsContext) {
   const providers = await getProviders();

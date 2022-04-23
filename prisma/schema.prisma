@@ -53,6 +53,7 @@ model User {
 
 enum Role {
   ADMIN
+  REVIEWER
   USER
 }
 

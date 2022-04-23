@@ -1,7 +1,7 @@
 import { PrismaClient, User } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import ResError from "../../../utils/apiTypes";
+import ResError from "../../../utils/types";
 
 export default async function UserCRUD(
   req: NextApiRequest,
@@ -14,6 +14,16 @@ export default async function UserCRUD(
   const prisma = new PrismaClient();
 
   if (req.method === "GET") {
+    if(!req.query.id) {
+      return res.status(400).json({ error: "GET requests should not have an ID" });
+    }
+    const user = await prisma.user.findUnique({
+      where: { id: req.query.id as string },
+    });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    return res.status(200).json(user);
   } else if (req.method === "POST") {
   } else if (req.method === "PATCH") {
   } else if (req.method === "DELETE") {

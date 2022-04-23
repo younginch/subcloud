@@ -1,9 +1,8 @@
 import { Center, Heading, Divider, Text, Stack } from "@chakra-ui/react";
-import Layout from "../components/layout";
 
 export default function Page404() {
   return (
-    <Layout hideTitle>
+    <>
       <Center marginTop="20vh">
         <Stack>
           <Heading
@@ -20,6 +19,8 @@ export default function Page404() {
           </Text>
         </Stack>
       </Center>
-    </Layout>
+    </>
   );
 }
+
+Page404.hideTitle = true;

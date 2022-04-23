@@ -4,7 +4,7 @@ import multerS3 from "multer-s3";
 import AWS from "aws-sdk";
 import { NextApiRequest, NextApiResponse } from "next";
 import { File, PrismaClient } from "@prisma/client";
-import ResError from "../../../utils/apiTypes";
+import ResError from "../../../utils/types";
 import { getSession } from "next-auth/react";
 
 interface NextApiRequestWithFile extends NextApiRequest {

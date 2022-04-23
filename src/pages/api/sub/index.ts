@@ -1,7 +1,7 @@
 import { PrismaClient, Sub } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import ResError from "../../../utils/apiTypes";
+import ResError from "../../../utils/types";
 import { SubCreateSchema } from "../../../utils/schema";
 
 export default async function SubCreate(

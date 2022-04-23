@@ -1,5 +1,8 @@
+import { Role } from "@prisma/client";
 import Layout from "../../components/layout";
 
 export default function UserSettings() {
-  return <Layout>작성중</Layout>;
+  return <>작성중</>;
 }
+
+UserSettings.auth = Role.USER;

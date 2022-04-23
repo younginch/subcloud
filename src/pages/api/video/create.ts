@@ -1,6 +1,6 @@
 import { PrismaClient, Video } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import ResError from "../../../utils/apiTypes";
+import ResError from "../../../utils/types";
 import NextCors from "nextjs-cors";
 import { getSession } from "next-auth/react";
 import { VideoCreateSchema } from "../../../utils/schema";

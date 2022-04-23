@@ -85,7 +85,7 @@ function Profile({ name, position, summary, email, image }: Props) {
 
 export default function Company() {
   return (
-    <Layout>
+    <>
       <Heading>사람들</Heading>
       <Wrap>
         <Profile
@@ -119,6 +119,6 @@ export default function Company() {
       </Wrap>
       <Heading>위치</Heading>
       <Text>경기도 남양주시 별내4로 63, 3408동 703호(별내동, 신일유토빌)</Text>
-    </Layout>
+    </>
   );
 }

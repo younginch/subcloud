@@ -1,6 +1,6 @@
 import { Status, Sub, PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import ResError from "../../../utils/apiTypes";
+import ResError from "../../../utils/types";
 
 export default async function SubSearch(
   req: NextApiRequest,
