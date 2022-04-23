@@ -22,18 +22,14 @@ export default async function VideoCreate(
   if (!session) {
     return res.status(401).json({ error: "Not authenticated" });
   }
-  const { url } = req.body;
-  if (!url) {
-    return res.status(400).json({ error: "url is required" });
-  }
-  const { error } = VideoCreateSchema.validate(req.body);
+  const { value, error } = VideoCreateSchema.validate(req.body);
   if (error) {
-    return res.status(400).json({ error: "url is invalid" });
+    return res.status(400).json({ error: error.message });
   }
   const prisma = new PrismaClient();
   try {
     const video = await prisma.video.findUnique({
-      where: { url: url },
+      where: { url: value.url },
       include: {
         subs: {
           include: { user: { select: { name: true } } },
@@ -42,7 +38,7 @@ export default async function VideoCreate(
     });
     if (!video) {
       const createdVideo = await prisma.video.create({
-        data: getVideoFromUrl(url),
+        data: getVideoFromUrl(value.url),
       });
       return res.status(201).json(createdVideo);
     }

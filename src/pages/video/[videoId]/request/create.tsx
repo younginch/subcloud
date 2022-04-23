@@ -15,7 +15,7 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import { RequestCreateSchema } from "../../../../utils/schema";
 import { useSession } from "next-auth/react";
 
-export default function RequestCreate() {
+function RequestCreate() {
   const router = useRouter();
   const toast = useToast();
   const { data } = useSession();
@@ -52,7 +52,11 @@ export default function RequestCreate() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.url}>
           <FormLabel htmlFor="videoId">영상 ID</FormLabel>
-          <Input id="videoId" value={router.query.videoId} {...register("videoId")} />
+          <Input
+            id="videoId"
+            value={router.query.videoId}
+            {...register("videoId")}
+          />
           <FormErrorMessage>
             {errors.url && errors.url.message}
           </FormErrorMessage>
@@ -76,3 +80,5 @@ export default function RequestCreate() {
     </Layout>
   );
 }
+
+export default RequestCreate;

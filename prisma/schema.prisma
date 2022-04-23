@@ -65,7 +65,7 @@ model VerificationToken {
 }
 
 model Video {
-  id       String    @id @default(cuid())
+  id       String    @id
   subs     Sub[]
   requests Request[]
   type     String

@@ -12,7 +12,18 @@ export default async function FileRUD(
     return res.status(401).json({ error: "Not authenticated" });
   }
   const prisma = new PrismaClient();
-  if (req.method === "DELETE") {
+  if (req.method === "GET") {
+    const file = await prisma.file.findUnique({
+      where: { id: req.query.id as string },
+    });
+    if (!file) {
+      return res.status(404).json({ error: "File not found" });
+    }
+    if (file.userId !== session.user.id) {
+      return res.status(403).json({ error: "Not authorized" });
+    }
+    return res.status(200).json(file);
+  } else if (req.method === "DELETE") {
     const { id } = req.query;
     try {
       const file = await prisma.file.findUnique({
