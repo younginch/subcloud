@@ -2,11 +2,19 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient, Sub } from "@prisma/client";
 import { getSession } from "next-auth/react";
 import ResError from "../../../utils/types";
+import NextCors from "nextjs-cors";
 
 export default async function SubRUD(
   req: NextApiRequest,
   res: NextApiResponse<Sub | ResError>
 ) {
+  await NextCors(req, res, {
+    // Options
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: "*",
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
+
   const session = await getSession({ req });
   if (!session) {
     return res.status(401).json({ error: "Not authenticated" });
