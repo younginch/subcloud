@@ -31,7 +31,6 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Layout from "../../../components/layout";
 
 const TAB_LIST = ["request", "sub", "file"];
 
@@ -52,7 +51,7 @@ export default function UserRead() {
   }
 
   function onChangeTabIndex(index: number) {
-    router.push(`/user/${router.query.id}?tab=${TAB_LIST[index]}`);
+    router.push(`/user/${router.query.userId}?tab=${TAB_LIST[index]}`);
   }
 
   return (
@@ -240,7 +239,7 @@ function SubPanel() {
             return (
               <Tr key={sub.id}>
                 <Td>{sub.id}</Td>
-                <Td>{sub.videoUrl}</Td>
+                <Td>{sub.serviceId}.{sub.videoId}</Td>
                 <Td>{sub.lang}</Td>
                 <Td>{sub.status}</Td>
                 <Td>

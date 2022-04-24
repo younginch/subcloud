@@ -67,22 +67,24 @@ model VerificationToken {
 }
 
 model Video {
-  id       String    @id @default(cuid())
-  url      String    @unique
-  service  String?
-  videoId  String?
-  subs     Sub[]
-  requests Request[]
+  url       String    @id @unique
+  serviceId String
+  videoId   String
+  subs      Sub[]
+  requests  Request[]
+
+  @@unique([serviceId, videoId])
 }
 
 model Request {
-  id      String @id @default(cuid())
-  videoId String
-  video   Video  @relation(fields: [videoId], references: [id])
-  users   User[]
-  lang    String
+  id        String @id @default(cuid())
+  serviceId String
+  videoId   String
+  video     Video  @relation(fields: [serviceId, videoId], references: [serviceId, videoId], onDelete: Cascade)
+  users     User[]
+  lang      String
 
-  @@unique([videoId, lang])
+  @@unique([serviceId, videoId, lang])
 }
 
 model File {
@@ -95,19 +97,20 @@ model File {
 }
 
 model Sub {
-  id       String      @id @default(cuid())
-  userId   String
-  user     User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  fileId   String      @unique
-  file     File        @relation(fields: [fileId], references: [id])
-  videoUrl String
-  video    Video       @relation(fields: [videoUrl], references: [url])
-  reviews  SubReview[]
-  lang     String
-  status   Status      @default(PENDING)
-  views    Int         @default(0)
+  id        String      @id @default(cuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileId    String      @unique
+  file      File        @relation(fields: [fileId], references: [id])
+  serviceId String
+  videoId   String
+  video     Video       @relation(fields: [serviceId, videoId], references: [serviceId, videoId])
+  reviews   SubReview[]
+  lang      String
+  status    Status      @default(PENDING)
+  views     Int         @default(0)
 
-  @@unique([videoUrl, lang])
+  @@unique([serviceId, videoId, lang, userId])
 }
 
 enum Status {

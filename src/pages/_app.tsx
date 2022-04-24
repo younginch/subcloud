@@ -47,7 +47,6 @@ function Auth({ children, role }: any) {
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
-    console.log({ router, status });
     if (status === "loading" || !router.isReady) return; // Do nothing while loading
     if (status === "unauthenticated") {
       router.push(`/auth/signin?callbackUrl=${router.asPath}`); // If not authenticated, force log in

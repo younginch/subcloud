@@ -11,7 +11,7 @@ export default async function SubCreate(
 ) {
   await NextCors(req, res, {
     // Options
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    methods: ["POST"],
     origin: "*",
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
@@ -33,7 +33,14 @@ export default async function SubCreate(
       data: {
         user: { connect: { id: session.user.id } },
         file: { connect: { id: value.fileId } },
-        video: { connect: { id: value.videoId } },
+        video: {
+          connect: {
+            serviceId_videoId: {
+              serviceId: value.serviceId,
+              videoId: value.videoId,
+            },
+          },
+        },
         lang: value.lang as string,
       },
     });

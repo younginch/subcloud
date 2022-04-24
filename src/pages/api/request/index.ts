@@ -11,7 +11,7 @@ export default async function RequestCreate(
 ) {
   await NextCors(req, res, {
     // Options
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    methods: ["GET", "PATCH", "POST", "DELETE"],
     origin: "*",
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
@@ -23,7 +23,7 @@ export default async function RequestCreate(
   if (error) {
     return res.status(400).json({ error: error.message });
   }
-  const {videoId, lang} = value;
+  const { serviceId, videoId, lang } = value;
   const session = await getSession({ req });
   if (!session) {
     return res.status(401).json({ error: "Not authenticated" });
@@ -31,11 +31,11 @@ export default async function RequestCreate(
   const prisma = new PrismaClient();
   try {
     const request = await prisma.request.findUnique({
-      where: { videoId_lang: { videoId, lang } },
+      where: { serviceId_videoId_lang: { serviceId, videoId, lang } },
     });
     if (request) {
       const updatedRequest = await prisma.request.update({
-        where: { videoId_lang: { videoId, lang } },
+        where: { serviceId_videoId_lang: { serviceId, videoId, lang } },
         data: {
           users: {
             connect: {
@@ -48,7 +48,7 @@ export default async function RequestCreate(
     }
     const createdRequest = await prisma.request.create({
       data: {
-        video: { connect: { id: videoId } },
+        video: { connect: { serviceId_videoId: { serviceId, videoId } } },
         lang: lang,
         users: { connect: { id: session.user?.id } },
       },
