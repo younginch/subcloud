@@ -240,7 +240,7 @@ function SubPanel() {
             return (
               <Tr key={sub.id}>
                 <Td>{sub.id}</Td>
-                <Td>{sub.videoId}</Td>
+                <Td>{sub.videoUrl}</Td>
                 <Td>{sub.lang}</Td>
                 <Td>{sub.status}</Td>
                 <Td>
