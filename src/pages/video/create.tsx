@@ -11,6 +11,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { VideoCreateSchema } from "../../utils/schema";
+import { Role } from "@prisma/client";
 
 type FormData = {
   url: string;
@@ -44,7 +45,7 @@ export default function VideoCreate() {
   }
 
   return (
-    <Layout>
+    <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.url !== undefined}>
           <FormLabel htmlFor="url">Video Link</FormLabel>
@@ -69,6 +70,8 @@ export default function VideoCreate() {
           다음
         </Button>
       </form>
-    </Layout>
+    </>
   );
 }
+
+VideoCreate.auth = Role.USER;

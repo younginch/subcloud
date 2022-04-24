@@ -56,7 +56,7 @@ export default function UserRead() {
   }
 
   return (
-    <Layout>
+    <>
       <HStack marginBottom="18px">
         <Avatar
           size="2xl"
@@ -86,7 +86,7 @@ export default function UserRead() {
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </Layout>
+    </>
   );
 }
 

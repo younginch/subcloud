@@ -53,7 +53,7 @@ export default function SubCreate() {
   });
 
   return (
-    <Layout>
+    <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.file}>
           <FormLabel htmlFor="name">자막 파일</FormLabel>
@@ -86,6 +86,8 @@ export default function SubCreate() {
           업로드
         </Button>
       </form>
-    </Layout>
+    </>
   );
 }
+
+SubCreate.auth = true;

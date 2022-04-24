@@ -1,5 +1,5 @@
-import Layout from "../components/layout";
+import { Heading } from "@chakra-ui/react";
 
 export default function Home() {
-  return <Layout>작성중</Layout>;
+  return <Heading>작성중</Heading>;
 }

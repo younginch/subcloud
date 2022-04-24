@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient, Sub } from "@prisma/client";
 import { getSession } from "next-auth/react";
-import ResError from "../../../utils/apiTypes";
+import ResError from "../../../utils/types";
 
 export default async function SubRUD(
   req: NextApiRequest,

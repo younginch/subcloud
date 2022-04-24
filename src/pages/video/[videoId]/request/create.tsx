@@ -14,8 +14,9 @@ import SelectLanguage from "../../../../components/selectLanguage";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { RequestCreateSchema } from "../../../../utils/schema";
 import { useSession } from "next-auth/react";
+import { Role } from "@prisma/client";
 
-function RequestCreate() {
+export default function RequestCreate() {
   const router = useRouter();
   const toast = useToast();
   const { data } = useSession();
@@ -48,7 +49,7 @@ function RequestCreate() {
   }
 
   return (
-    <Layout>
+    <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.url}>
           <FormLabel htmlFor="videoId">영상 ID</FormLabel>
@@ -77,8 +78,8 @@ function RequestCreate() {
           요청
         </Button>
       </form>
-    </Layout>
+    </>
   );
 }
 
-export default RequestCreate;
+RequestCreate.auth = Role.USER;
