@@ -60,7 +60,8 @@ function getYoutubeVideo(url: URL): Video {
   }
   return {
     id: `youtube.${videoId}`,
-    type: "youtube",
+    service: "youtube",
+    videoId: videoId,
     url: `https://www.youtube.com/watch?v=${videoId}`,
   };
 }
@@ -72,7 +73,8 @@ function getVideoFromUrl(urlString: string): Video {
   }
   return {
     id: `${url.hostname}.${url.pathname}?${url.search}`,
-    type: "unknown",
+    service: url.hostname,
+    videoId: `${url.pathname}?${url.search}`,
     url: urlString,
   };
 }

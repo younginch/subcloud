@@ -67,21 +67,22 @@ model VerificationToken {
 }
 
 model Video {
-  url      String    @id @unique
+  id       String    @id @default(cuid())
+  url      String    @unique
   service  String?
-  id       String?
+  videoId  String?
   subs     Sub[]
   requests Request[]
 }
 
 model Request {
-  id       String @id @default(cuid())
-  videoUrl String
-  video    Video  @relation(fields: [videoUrl], references: [url])
-  users    User[]
-  lang     String
+  id      String @id @default(cuid())
+  videoId String
+  video   Video  @relation(fields: [videoId], references: [id])
+  users   User[]
+  lang    String
 
-  @@unique([videoUrl, lang])
+  @@unique([videoId, lang])
 }
 
 model File {
