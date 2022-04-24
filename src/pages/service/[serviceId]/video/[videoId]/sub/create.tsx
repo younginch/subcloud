@@ -7,7 +7,6 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import Layout from "../../../../../../components/layout";
 import { useCallback, useState } from "react";
 import SelectLanguage from "../../../../../../components/selectLanguage";
 import { useDropzone } from "react-dropzone";
