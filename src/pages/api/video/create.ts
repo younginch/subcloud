@@ -50,14 +50,28 @@ export default async function VideoCreate(
   }
 }
 
+function getYoutubeVideo(url: URL): Video {
+  const videoId = url.searchParams.get("v");
+  if (url.pathname !== "/watch") {
+    throw new Error("Not a video url");
+  }
+  if (!videoId) {
+    throw new Error("No video id");
+  }
+  return {
+    id: `youtube.${videoId}`,
+    type: "youtube",
+    url: `https://www.youtube.com/watch?v=${videoId}`,
+  };
+}
+
 function getVideoFromUrl(urlString: string): Video {
   const url = new URL(urlString);
   if (url.hostname === "www.youtube.com") {
-    const videoId = url.searchParams.get("v");
-    return { id: `youtube.${videoId}`, type: "youtube", url: urlString };
+    return getYoutubeVideo(url);
   }
   return {
-    id: `${url.hostname}.${url.search}`,
+    id: `${url.hostname}.${url.pathname}?${url.search}`,
     type: "unknown",
     url: urlString,
   };
