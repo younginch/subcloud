@@ -1,4 +1,3 @@
-import Layout from "../../../../components/layout";
 import { useForm } from "react-hook-form";
 import {
   FormControl,
@@ -10,7 +9,7 @@ import {
 import axios from "axios";
 import { useRouter } from "next/router";
 import { joiResolver } from "@hookform/resolvers/joi";
-import { VideoCreateSchema } from "../../../../utils/schema";
+import { VideoCreateSchema } from "../../utils/schema";
 import { Role } from "@prisma/client";
 
 type FormData = {
@@ -31,11 +30,16 @@ export default function VideoCreate() {
       axios
         .post("/api/video/create", { url })
         .then((res) => {
+          console.log(res.data)
           resolve(res.data);
           if (router.query.next === "request") {
-            router.push(`/video/${res.data.id}/request/create`);
+            router.push(
+              `/service/${res.data.serviceId}/video/${res.data.videoId}/request/create`
+            );
           } else if (router.query.next === "sub") {
-            router.push(`/video/${res.data.id}/sub/create`);
+            router.push(
+              `/service/${res.data.serviceId}/video/${res.data.videoId}/sub/create`
+            );
           }
         })
         .catch((err) => {
@@ -45,32 +49,23 @@ export default function VideoCreate() {
   }
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={errors.url !== undefined}>
-          <FormLabel htmlFor="url">Video Link</FormLabel>
-          <Input
-            id="url"
-            placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            maxW="540px"
-            {...register("url", {
-              required: "This is required",
-            })}
-          />
-          <FormErrorMessage>
-            {errors.url && errors.url.message}
-          </FormErrorMessage>
-        </FormControl>
-        <Button
-          mt={4}
-          colorScheme="teal"
-          isLoading={isSubmitting}
-          type="submit"
-        >
-          다음
-        </Button>
-      </form>
-    </>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FormControl isInvalid={errors.url !== undefined}>
+        <FormLabel htmlFor="url">Video Link</FormLabel>
+        <Input
+          id="url"
+          placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          maxW="540px"
+          {...register("url", {
+            required: "This is required",
+          })}
+        />
+        <FormErrorMessage>{errors.url && errors.url.message}</FormErrorMessage>
+      </FormControl>
+      <Button mt={4} colorScheme="teal" isLoading={isSubmitting} type="submit">
+        다음
+      </Button>
+    </form>
   );
 }
 

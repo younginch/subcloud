@@ -36,10 +36,12 @@ export default function SubCreate() {
       });
       const newSub = await axios.post("/api/sub", {
         fileId: newFile.data.id,
+        serviceId: router.query.serviceId,
         videoId: router.query.videoId,
         lang: values.lang,
       });
       resolve();
+      router.push(`/user/${data?.user.id}?tab=sub`);
     });
   }
 

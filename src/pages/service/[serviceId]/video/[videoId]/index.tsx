@@ -6,7 +6,10 @@ export default function Video() {
 
   return (
     <>
-      <Image src={`https://img.youtube.com/vi/6PlkYCfW0_U/maxresdefault.jpg`} alt="Video thumbnail" />
+      <Image
+        src={`https://img.youtube.com/vi/${router.query.videoId}/maxresdefault.jpg`}
+        alt="Video thumbnail"
+      />
     </>
   );
 }

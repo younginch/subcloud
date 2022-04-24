@@ -11,7 +11,7 @@ export default async function VideoCreate(
 ) {
   await NextCors(req, res, {
     // Options
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    methods: ["POST"],
     origin: "*",
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
@@ -59,8 +59,7 @@ function getYoutubeVideo(url: URL): Video {
     throw new Error("No video id");
   }
   return {
-    id: `youtube.${videoId}`,
-    service: "youtube",
+    serviceId: "youtube",
     videoId: videoId,
     url: `https://www.youtube.com/watch?v=${videoId}`,
   };
@@ -72,8 +71,7 @@ function getVideoFromUrl(urlString: string): Video {
     return getYoutubeVideo(url);
   }
   return {
-    id: `${url.hostname}.${url.pathname}?${url.search}`,
-    service: url.hostname,
+    serviceId: url.hostname,
     videoId: `${url.pathname}?${url.search}`,
     url: urlString,
   };

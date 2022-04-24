@@ -30,6 +30,7 @@ export default function RequestCreate() {
     return new Promise<void>((resolve, reject) => {
       axios
         .post("/api/request", {
+          serviceId: router.query.serviceId,
           videoId: router.query.videoId,
           lang: values.lang,
         })
@@ -51,7 +52,18 @@ export default function RequestCreate() {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={errors.url}>
+        <FormControl isInvalid={errors.serviceId}>
+          <FormLabel htmlFor="serviceId">서비스</FormLabel>
+          <Input
+            id="serviceId"
+            value={router.query.serviceId}
+            {...register("serviceId")}
+          />
+          <FormErrorMessage>
+            {errors.serviceId && errors.serviceId.message}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={errors.videoId}>
           <FormLabel htmlFor="videoId">영상 ID</FormLabel>
           <Input
             id="videoId"
@@ -59,7 +71,7 @@ export default function RequestCreate() {
             {...register("videoId")}
           />
           <FormErrorMessage>
-            {errors.url && errors.url.message}
+            {errors.videoId && errors.videoId.message}
           </FormErrorMessage>
         </FormControl>
         <FormControl as="fieldset">
