@@ -1,4 +1,4 @@
-import Layout from "../../components/layout";
+import Layout from "../../../../components/layout";
 import { useForm } from "react-hook-form";
 import {
   FormControl,
@@ -10,7 +10,7 @@ import {
 import axios from "axios";
 import { useRouter } from "next/router";
 import { joiResolver } from "@hookform/resolvers/joi";
-import { VideoCreateSchema } from "../../utils/schema";
+import { VideoCreateSchema } from "../../../../utils/schema";
 import { Role } from "@prisma/client";
 
 type FormData = {

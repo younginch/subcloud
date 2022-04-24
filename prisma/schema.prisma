@@ -43,6 +43,7 @@ model User {
   image         String?
   // custom fields
   role          Role        @default(USER)
+  baseLangs     String[]
   accounts      Account[]
   sessions      Session[]
   subs          Sub[]
@@ -66,21 +67,21 @@ model VerificationToken {
 }
 
 model Video {
-  id       String    @id
+  url      String    @id @unique
+  service  String?
+  id       String?
   subs     Sub[]
   requests Request[]
-  type     String
-  url      String    @unique
 }
 
 model Request {
-  id      String @id @default(cuid())
-  videoId String
-  video   Video  @relation(fields: [videoId], references: [id])
-  users   User[]
-  lang    String
+  id       String @id @default(cuid())
+  videoUrl String
+  video    Video  @relation(fields: [videoUrl], references: [url])
+  users    User[]
+  lang     String
 
-  @@unique([videoId, lang])
+  @@unique([videoUrl, lang])
 }
 
 model File {
@@ -93,19 +94,19 @@ model File {
 }
 
 model Sub {
-  id      String      @id @default(cuid())
-  userId  String
-  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  fileId  String      @unique
-  file    File        @relation(fields: [fileId], references: [id])
-  videoId String
-  video   Video       @relation(fields: [videoId], references: [id])
-  reviews SubReview[]
-  lang    String
-  status  Status      @default(PENDING)
-  views   Int         @default(0)
+  id       String      @id @default(cuid())
+  userId   String
+  user     User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileId   String      @unique
+  file     File        @relation(fields: [fileId], references: [id])
+  videoUrl String
+  video    Video       @relation(fields: [videoUrl], references: [url])
+  reviews  SubReview[]
+  lang     String
+  status   Status      @default(PENDING)
+  views    Int         @default(0)
 
-  @@unique([videoId, lang])
+  @@unique([videoUrl, lang])
 }
 
 enum Status {
