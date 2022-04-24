@@ -3,11 +3,19 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import ResError from "../../../utils/types";
 import { RequestCreateSchema } from "../../../utils/schema";
+import NextCors from "nextjs-cors";
 
 export default async function RequestCreate(
   req: NextApiRequest,
   res: NextApiResponse<Request | ResError>
 ) {
+  await NextCors(req, res, {
+    // Options
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: "*",
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
