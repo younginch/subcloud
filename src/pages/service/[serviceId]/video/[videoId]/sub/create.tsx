@@ -47,11 +47,30 @@ export default function SubCreate() {
   const onDrop = useCallback((acceptedFiles) => {
     setFile(acceptedFiles[0]);
   }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    multiple: false,
-    maxSize: 5 * 1024 * 1024, // 5 MB
-  });
+
+  const { getRootProps, getInputProps, acceptedFiles, fileRejections } =
+    useDropzone({
+      onDrop,
+      multiple: false,
+      maxSize: 5 * 1024 * 1024, // 5 MB
+    });
+
+  const acceptedFileItems = acceptedFiles.map((file) => (
+    <li key={file.name}>
+      {file.name} - {file.size} bytes
+    </li>
+  ));
+
+  const fileRejectionItems = fileRejections.map(({ file, errors }) => (
+    <li key={file.name}>
+      {file.name} - {file.size} bytes
+      <ul>
+        {errors.map((e) => (
+          <li key={e.code}>{e.message}</li>
+        ))}
+      </ul>
+    </li>
+  ));
 
   return (
     <>
@@ -67,9 +86,8 @@ export default function SubCreate() {
               </Text>
             </div>
           </Box>
-          <FormErrorMessage>
-            {errors.file && errors.file.message}
-          </FormErrorMessage>
+          {acceptedFileItems}
+          <FormErrorMessage>{fileRejectionItems}</FormErrorMessage>
         </FormControl>
         <FormControl as="fieldset">
           <FormLabel as="legend">자막 언어</FormLabel>

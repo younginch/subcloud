@@ -28,8 +28,9 @@ export default async function VideoCreate(
   }
   const prisma = new PrismaClient();
   try {
+    const regUrl = getVideoFromUrl(value.url).url;
     const video = await prisma.video.findUnique({
-      where: { url: value.url },
+      where: { url: regUrl },
       include: {
         subs: {
           include: { user: { select: { name: true } } },

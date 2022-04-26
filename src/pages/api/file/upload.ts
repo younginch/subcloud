@@ -9,7 +9,7 @@ import { getSession } from "next-auth/react";
 import NextCors from "nextjs-cors";
 
 interface NextApiRequestWithFile extends NextApiRequest {
-  file: Express.Multer.File;
+  file: Express.Multer.File & Express.MulterS3.File;
 }
 
 const localStorage = diskStorage({
@@ -37,7 +37,7 @@ const awsStorage = multerS3({
 });
 
 const upload = multer({
-  storage: process.env.NODE_ENV === "development" ? awsStorage : awsStorage,
+  storage: process.env.NODE_ENV === "development" ? localStorage : awsStorage,
 });
 
 const app = nextConnect<
@@ -72,7 +72,10 @@ app.post(upload.single("file"), async (req, res) => {
       data: {
         user: { connect: { id: session.user.id! } },
         title: req.file.originalname ?? "unknown",
-        url: req.file.path,
+        url:
+          process.env.NODE_ENV === "development"
+            ? req.file.path
+            : req.file.location,
       },
     });
     return res.status(200).json(newFile);
