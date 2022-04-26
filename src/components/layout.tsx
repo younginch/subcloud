@@ -31,8 +31,12 @@ export default function Layout({ hideNavBar, hideTitle, children }: Props) {
         }}
       >
         {!hideNavBar && <NavBar />}
-        {!hideTitle && <Heading marginX="36px" marginTop="36px">{t(router.pathname)}</Heading>}
-        <div style={{padding: "36px"}}>{children}</div>
+        {!hideTitle && (
+          <Heading marginX="36px" marginTop="36px">
+            {t(router.pathname)}
+          </Heading>
+        )}
+        <div style={hideTitle ? {} : { padding: "36px" }}>{children}</div>
       </div>
 
       <Footer />
