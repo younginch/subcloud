@@ -25,19 +25,19 @@ const s3 = new AWS.S3({
 
 const awsStorage = multerS3({
   s3: s3,
-  bucket: "younginch-sub",
+  bucket: "younginchlab-sub",
   contentType: multerS3.AUTO_CONTENT_TYPE,
   acl: "public-read",
   metadata: function (req, file, cb) {
     cb(null, { fieldName: file.fieldname });
   },
   key: function (req, file, cb) {
-    cb(null, `uploads/${Date.now()}_${file.originalname}`);
+    cb(null, `${Date.now()}_${file.filename}`);
   },
 });
 
 const upload = multer({
-  storage: process.env.NODE_ENV === "development" ? localStorage : awsStorage,
+  storage: process.env.NODE_ENV === "development" ? awsStorage : awsStorage,
 });
 
 const app = nextConnect<
@@ -54,9 +54,7 @@ const app = nextConnect<
   },
 });
 
-app.use(upload.single("file"));
-
-app.post(async (req, res) => {
+app.post(upload.single("file"), async (req, res) => {
   await NextCors(req, res, {
     // Options
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
@@ -73,7 +71,7 @@ app.post(async (req, res) => {
     const newFile = await prisma.file.create({
       data: {
         user: { connect: { id: session.user.id! } },
-        title: req.file.originalname,
+        title: req.file.originalname ?? "unknown",
         url: req.file.path,
       },
     });
