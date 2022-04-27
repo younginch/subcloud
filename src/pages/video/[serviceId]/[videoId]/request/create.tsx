@@ -9,10 +9,10 @@ import {
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import Layout from "../../../../../../components/layout";
-import SelectLanguage from "../../../../../../components/selectLanguage";
+import Layout from "../../../../../components/layout";
+import SelectLanguage from "../../../../../components/selectLanguage";
 import { joiResolver } from "@hookform/resolvers/joi";
-import { RequestCreateSchema } from "../../../../../../utils/schema";
+import { RequestCreateSchema } from "../../../../../utils/schema";
 import { useSession } from "next-auth/react";
 import { Role } from "@prisma/client";
 

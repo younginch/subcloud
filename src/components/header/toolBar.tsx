@@ -1,6 +1,7 @@
 import {
   Avatar,
   Button,
+  HStack,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -13,8 +14,11 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { PrismaClient, Role } from "@prisma/client";
+import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import SelectTheme from "./selectTheme";
 import SelectTranslation from "./selectTranslation";
@@ -24,6 +28,7 @@ type Props = {
 };
 
 export default function ToolBar({ isLarge }: Props): JSX.Element {
+  const router = useRouter();
   const { data: session, status } = useSession();
 
   return (
@@ -55,14 +60,33 @@ export default function ToolBar({ isLarge }: Props): JSX.Element {
                 </Stack>
               </PopoverBody>
               <PopoverFooter>
-                <Button
-                  colorScheme="blue"
-                  onClick={() => {
-                    signOut();
-                  }}
-                >
-                  Sign Out
-                </Button>
+                <HStack>
+                  <Button
+                    colorScheme="blue"
+                    onClick={() => {
+                      signOut();
+                    }}
+                  >
+                    Sign Out
+                  </Button>
+                  {session?.user.role === Role.ADMIN ||
+                  process.env.NODE_ENV !== "production" ? (
+                    <Button
+                      onClick={async () => {
+                        if (process.env.NODE_ENV !== "production") {
+                          await axios.post("/api/user/debug", {
+                            id: session.user.id,
+                          });
+                        }
+                        router.push("/admin");
+                      }}
+                    >
+                      Admin
+                    </Button>
+                  ) : (
+                    <></>
+                  )}
+                </HStack>
               </PopoverFooter>
             </PopoverContent>
           </Portal>

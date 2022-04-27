@@ -5,10 +5,11 @@ import {
   Button,
   Text,
   Box,
+  useToast,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useCallback, useState } from "react";
-import SelectLanguage from "../../../../../../components/selectLanguage";
+import SelectLanguage from "../../../../../components/selectLanguage";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -16,6 +17,7 @@ import { useSession } from "next-auth/react";
 
 export default function SubCreate() {
   const router = useRouter();
+  const toast = useToast();
   const { data, status } = useSession();
   const {
     handleSubmit,
@@ -40,6 +42,11 @@ export default function SubCreate() {
         lang: values.lang,
       });
       resolve();
+      toast({
+        title: "Subtitles created",
+        description: "Subtitles created successfully",
+        status: "success",
+      });
       router.push(`/user/${data?.user.id}?tab=sub`);
     });
   }

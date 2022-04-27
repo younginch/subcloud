@@ -1,5 +1,5 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Role } from "@prisma/client";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
@@ -48,6 +48,7 @@ export default NextAuth({
   callbacks: {
     async session({ session, token, user }: any) {
       session.user.id = user.id;
+      session.user.role = user.role;
       return Promise.resolve(session);
     },
     async redirect({ url, baseUrl }) {

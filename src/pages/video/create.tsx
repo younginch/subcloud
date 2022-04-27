@@ -30,15 +30,14 @@ export default function VideoCreate() {
       axios
         .post("/api/video/create", { url })
         .then((res) => {
-          console.log(res.data)
           resolve(res.data);
           if (router.query.next === "request") {
             router.push(
-              `/service/${res.data.serviceId}/video/${res.data.videoId}/request/create`
+              `/video/${res.data.serviceId}/${res.data.videoId}/request/create`
             );
           } else if (router.query.next === "sub") {
             router.push(
-              `/service/${res.data.serviceId}/video/${res.data.videoId}/sub/create`
+              `/video/${res.data.serviceId}/${res.data.videoId}/sub/create`
             );
           }
         })
