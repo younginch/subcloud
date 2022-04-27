@@ -30,7 +30,6 @@ export default function VideoCreate() {
       axios
         .post("/api/video/create", { url })
         .then((res) => {
-          console.log(res.data);
           resolve(res.data);
           if (router.query.next === "request") {
             router.push(

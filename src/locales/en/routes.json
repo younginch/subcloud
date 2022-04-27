@@ -1,4 +1,5 @@
 {
+  "/admin": "Admin Console",
   "/auth/callback": "Sign in success",
   "/auth/signin": "Sign in",
   "/info/company": "About our company",

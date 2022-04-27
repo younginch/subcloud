@@ -10,7 +10,6 @@ import {
   Tfoot,
 } from "@chakra-ui/react";
 import { Role, User } from "@prisma/client";
-import Layout from "../../components/layout";
 
 export default function AdminUser({ users = [] }: { users: User[] }) {
   return (

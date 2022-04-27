@@ -12,15 +12,12 @@ import {
   IconButton,
   useMediaQuery,
   VStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Flex,
   Spacer,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import { CloseIcon, HamburgerIcon, SearchIcon } from "@chakra-ui/icons";
+import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import ToolBar from "./toolBar";
 import Links from "./links";
 import Search from "./search";
