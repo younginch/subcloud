@@ -20,7 +20,10 @@ const s3 = new AWS.S3({
 
 const awsStorage = multerS3({
   s3: s3,
-  bucket: "younginchlab-sub",
+  bucket:
+    process.env.NODE_ENV === "development"
+      ? "younginch-sub-dev"
+      : "younginch-sub-prod",
   contentType: multerS3.AUTO_CONTENT_TYPE,
   acl: "public-read",
   metadata: function (req, file, cb) {
