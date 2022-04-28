@@ -30,7 +30,7 @@ const awsStorage = multerS3({
     cb(null, { fieldName: file.fieldname });
   },
   key: function (req, file, cb) {
-    cb(null, `${Date.now()}_${file.filename}`);
+    cb(null, `${Date.now()}_${file.originalname}`);
   },
 });
 
