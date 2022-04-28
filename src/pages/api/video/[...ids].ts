@@ -2,7 +2,7 @@ import { PrismaClient, Video } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import ResError from "../../../utils/types";
 
-export default async function Video(
+export default async function VideoRead(
   req: NextApiRequest,
   res: NextApiResponse<Video | ResError>
 ) {
