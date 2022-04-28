@@ -54,7 +54,7 @@ const app = nextConnect<
   },
 });
 
-app.post(async (req, res) => {
+app.post(upload.single("file"), async (req, res) => {
   await NextCors(req, res, {
     // Options
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
@@ -65,11 +65,6 @@ app.post(async (req, res) => {
   const session = await getSession({ req });
   if (!session) {
     return res.status(401).json({ error: "Not Logged In" });
-  }
-  try {
-    upload.single("file");
-  } catch (e: any) {
-    return res.status(500).json({ error: e });
   }
   const prisma = new PrismaClient();
   try {
