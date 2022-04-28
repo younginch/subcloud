@@ -10,6 +10,7 @@
   "/user/settings": "사용자 설정",
   "/video/[serviceId]/[videoId]/request/create": "자막 요청",
   "/video/[serviceId]/[videoId]/sub/create": "자막 제작",
+  "/video/[serviceId]/[videoId]": "영상 정보",
   "/video/create": "영상 선택",
   "/video/create?next=request": "자막 요청",
   "/video/create?next=sub": "자막 제작",
