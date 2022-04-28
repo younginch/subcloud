@@ -8,11 +8,10 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import Image, { StaticImageData } from "next/image";
-import Layout from "../../components/layout";
-import hanwoolmjPic from "../../../public/hanwoolmj.png";
-import red1108Pic from "../../../public/red1108.png";
-import sbohPic from "../../../public/sboh.png";
-import carterkim614Pic from "../../../public/carterkim614.png";
+import hanwoolmjPic from "../../../public/profile/hanwoolmj.png";
+import red1108Pic from "../../../public/profile/red1108.png";
+import sbohPic from "../../../public/profile/sboh.png";
+import carterkim614Pic from "../../../public/profile/carterkim614.png";
 
 type Props = {
   name: string;

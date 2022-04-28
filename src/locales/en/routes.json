@@ -11,6 +11,7 @@
   "/user/settings": "User settings",
   "/video/[serviceId]/[videoId]/request/create": "Request subtitle",
   "/video/[serviceId]/[videoId]/sub/create": "Upload subtitle",
+  "/video/[serviceId]/[videoId]": "Video info",
   "/video/create": "Choose video",
   "/video/create?next=request": "Request subtitle",
   "/video/create?next=sub": "Upload subtitle",
