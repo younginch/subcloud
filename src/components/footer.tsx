@@ -22,6 +22,7 @@ export default function Footer() {
       <FooterLink route="/info/company" />
       <FooterLink route="/info/terms" />
       <FooterLink route="/info/privacy" />
+      <FooterLink route="/info/dmca" />
     </HStack>
   );
 }

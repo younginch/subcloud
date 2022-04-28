@@ -5,6 +5,7 @@
   "/info/company": "About our company",
   "/info/privacy": "Privacy",
   "/info/terms": "Terms of use",
+  "/info/dmca": "DMCA",
   "/user/[userId]": "User profile",
   "/user/[userId]/update": "Edit user profile",
   "/user/settings": "User settings",
