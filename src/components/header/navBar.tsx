@@ -26,7 +26,7 @@ export default function NavBar(): JSX.Element {
   const { colorMode } = useColorMode();
   const { t } = useTranslation("common");
   const [isLarge] = useMediaQuery("(min-width: 840px)");
-  const [isMedium] = useMediaQuery("(min-width: 640px)");
+  const [isMedium] = useMediaQuery("(min-width: 1024px)");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -78,8 +78,7 @@ export default function NavBar(): JSX.Element {
           <Search />
           <Spacer />
         </Flex>
-        {!isLarge &&
-          (isMedium ? <ToolBar isLarge={true} /> : <ToolBar isLarge={false} />)}
+        {!isLarge && <ToolBar isLarge={isMedium} />}
         {isLarge ? (
           <Links />
         ) : (

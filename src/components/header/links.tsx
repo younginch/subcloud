@@ -29,6 +29,7 @@ function LinkButton({ route, width }: LinkButtonProps) {
   return (
     <Link href={`${route}`} passHref>
       <Button
+        as="a"
         variant="ghost"
         flexDirection="column"
         alignItems="start"
