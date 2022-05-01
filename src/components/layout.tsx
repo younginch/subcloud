@@ -1,4 +1,4 @@
-import { Heading, HStack, Text } from "@chakra-ui/react";
+import { Container, Heading, HStack, Text } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -19,8 +19,8 @@ export default function Layout({ hideNavBar, hideTitle, children }: Props) {
   return (
     <>
       <Head>
-        <title>{t(router.pathname)} - Young Inch Lab</title>
-        <meta name="description" content="Young Inch Lab" />
+        <title>{t(router.pathname)} - SubCloud</title>
+        <meta name="description" content="SubCloud" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div
@@ -31,12 +31,10 @@ export default function Layout({ hideNavBar, hideTitle, children }: Props) {
         }}
       >
         {!hideNavBar && <NavBar />}
-        {!hideTitle && (
-          <Heading marginX="36px" marginTop="36px">
-            {t(router.pathname)}
-          </Heading>
-        )}
-        <div style={hideTitle ? {} : { padding: "36px" }}>{children}</div>
+        <Container maxW="6xl" paddingX={hideTitle ? 0 : "36px"}>
+          {!hideTitle && <Heading marginY="18px">{t(router.pathname)}</Heading>}
+          {children}
+        </Container>
       </div>
 
       <Footer />
