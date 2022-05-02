@@ -16,6 +16,7 @@ export default async function AdminDelete(
     await prisma.user.deleteMany({});
     await prisma.verificationToken.deleteMany({});
     await prisma.video.deleteMany({});
+    await prisma.infoYoutube.deleteMany({});
     await prisma.request.deleteMany({});
     await prisma.file.deleteMany({});
     await prisma.sub.deleteMany({});

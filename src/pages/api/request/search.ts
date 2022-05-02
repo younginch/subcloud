@@ -18,12 +18,23 @@ export default async function RequestSearch(
   if (req.method !== "GET") {
     res.status(405).json({ error: "Method not allowed" });
   }
-  const { userId } = req.query;
+  const { userId, serviceId, videoId } = req.query;
   try {
-    const requests = await prisma.request.findMany({
-      where: { users: { some: { id: userId as string } } },
-    });
-    return res.status(200).json(requests);
+    if (userId) {
+      const requests = await prisma.request.findMany({
+        where: { users: { some: { id: userId as string } } },
+      });
+      return res.status(200).json(requests);
+    }
+    if (serviceId && videoId) {
+      const requests = await prisma.request.findMany({
+        where: {
+          serviceId: serviceId as string,
+          videoId: videoId as string,
+        },
+      });
+      return res.status(200).json(requests);
+    }
   } catch {
     return res.status(500).json({ error: "Something went wrong" });
   }

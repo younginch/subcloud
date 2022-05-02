@@ -76,6 +76,16 @@ model Video {
   @@unique([serviceId, videoId])
 }
 
+model InfoYoutube {
+  id          String    @id
+  publishedAt DateTime?
+  channelId   String?
+  title       String?
+  description String?
+  viewCount   Int?
+  likeCount   Int?
+}
+
 model Request {
   id        String @id @default(cuid())
   serviceId String

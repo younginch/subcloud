@@ -2,8 +2,10 @@ import {
   Avatar,
   Button,
   HStack,
+  IconButton,
   Menu,
   MenuButton,
+  MenuItem,
   MenuItemOption,
   MenuList,
   MenuOptionGroup,
@@ -25,12 +27,14 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, DeleteIcon } from "@chakra-ui/icons";
 import { File, Request, Status, Sub } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { MoreIcon } from "../../../utils/icons";
+import Link from "next/link";
 
 const TAB_LIST = ["request", "sub", "file"];
 
@@ -90,6 +94,7 @@ export default function UserRead() {
 }
 
 function RequestPanel() {
+  const router = useRouter();
   const { data, status } = useSession();
   const toast = useToast();
   const [requests, setRequests] = useState<Request[]>([]);
@@ -127,11 +132,20 @@ function RequestPanel() {
           {requests.map((request) => {
             return (
               <Tr key={request.id}>
-                <Td>{request.id}</Td>
+                <Td
+                  onClick={() => {
+                    router.push(
+                      `/video/${request.serviceId}/${request.videoId}`
+                    );
+                  }}
+                >
+                  {request.id}
+                </Td>
                 <Td>{request.videoId}</Td>
                 <Td>{request.lang}</Td>
                 <Td>
                   <Button
+                    leftIcon={<DeleteIcon />}
                     colorScheme="red"
                     onClick={() => {
                       axios
@@ -155,6 +169,17 @@ function RequestPanel() {
                   >
                     취소
                   </Button>
+                  <Menu>
+                    <MenuButton
+                      as={IconButton}
+                      aria-label="Options"
+                      icon={<MoreIcon />}
+                      variant="outline"
+                    />
+                    <MenuList>
+                      <MenuItem onClick={() => {}}>요청 ID 복사</MenuItem>
+                    </MenuList>
+                  </Menu>
                 </Td>
               </Tr>
             );
@@ -239,7 +264,9 @@ function SubPanel() {
             return (
               <Tr key={sub.id}>
                 <Td>{sub.id}</Td>
-                <Td>{sub.serviceId}.{sub.videoId}</Td>
+                <Td>
+                  {sub.serviceId}.{sub.videoId}
+                </Td>
                 <Td>{sub.lang}</Td>
                 <Td>{sub.status}</Td>
                 <Td>

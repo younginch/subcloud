@@ -1,8 +1,8 @@
-import { Button, Center, Heading, HStack, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 
 export default function Home() {
   return (
-    <>
+    <Box paddingX="36px">
       <Text fontSize="2xl" marginTop="48px">
         우리 모두를 위한
       </Text>
@@ -25,7 +25,7 @@ export default function Home() {
           <Text>Comming soon</Text>
         </Stack>
       </HStack>
-    </>
+    </Box>
   );
 }
 
