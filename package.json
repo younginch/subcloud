@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
@@ -55,6 +56,7 @@
     "husky": "^7.0.4",
     "jest": "^27.5.1",
     "lint-staged": "^12.3.8",
+    "next-sitemap": "^2.5.20",
     "prettier": "2.6.2",
     "prisma": "^3.13.0",
     "styled-components": "^5.3.5",
