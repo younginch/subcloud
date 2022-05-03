@@ -1,4 +1,3 @@
-import { StarIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Heading,
@@ -16,7 +15,7 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import { Request } from "@prisma/client";
+import { Request, Sub } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -59,6 +58,52 @@ function RequestList() {
               <Tr key={request.id}>
                 <Td>{request.lang}</Td>
                 <Td isNumeric>계획중</Td>
+              </Tr>
+            );
+          })}
+        </Tbody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+function SubList() {
+  const router = useRouter();
+  const serviceId = router.query.serviceId as string;
+  const videoId = router.query.videoId as string;
+  const [subs, setSubs] = useState<Sub[]>([]);
+  const toast = useToast();
+
+  useEffect(() => {
+    axios
+      .get(`/api/sub?serviceId=${serviceId}&videoId=${videoId}`)
+      .then((res) => {
+        setSubs(res.data);
+      })
+      .catch((err) => {
+        toast({
+          title: "에러",
+          description: err.message,
+          status: "error",
+        });
+      });
+  }, [serviceId, toast, videoId]);
+
+  return (
+    <TableContainer>
+      <Table variant="simple">
+        <Thead>
+          <Tr>
+            <Th>언어</Th>
+            <Th>재생 수</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {subs.map((sub) => {
+            return (
+              <Tr key={sub.id}>
+                <Td>{sub.lang}</Td>
+                <Td isNumeric>{sub.views}</Td>
               </Tr>
             );
           })}
@@ -118,84 +163,12 @@ export default function Video() {
       <HStack marginTop="32px">
         <Stack flex={1} verticalAlign="stretch">
           <Heading size="lg">요청 목록</Heading>
+          <RequestList />
         </Stack>
         <Stack w="24px" />
         <Stack flex={2} verticalAlign="stretch">
           <Heading size="lg">자막 목록</Heading>
-          <TableContainer>
-            <Table variant="simple">
-              <Thead>
-                <Tr>
-                  <Th>언어</Th>
-                  <Th>제작자</Th>
-                  <Th>평점</Th>
-                  <Th>조회수</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                <Tr>
-                  <Td>English (English)</Td>
-                  <Td>Platypus</Td>
-                  <Td>
-                    {Array(5)
-                      .fill("")
-                      .map((_, i) => (
-                        <StarIcon
-                          key={i}
-                          color={i < 5 ? "teal.500" : "gray.300"}
-                        />
-                      ))}
-                  </Td>
-                  <Td isNumeric>2356</Td>
-                </Tr>
-                <Tr>
-                  <Td>English (English)</Td>
-                  <Td>Godthinkun</Td>
-                  <Td>
-                    {Array(5)
-                      .fill("")
-                      .map((_, i) => (
-                        <StarIcon
-                          key={i}
-                          color={i < 3 ? "teal.500" : "gray.300"}
-                        />
-                      ))}
-                  </Td>
-                  <Td isNumeric>74</Td>
-                </Tr>
-                <Tr>
-                  <Td>Japanese (日本語)</Td>
-                  <Td>Insense</Td>
-                  <Td>
-                    {Array(5)
-                      .fill("")
-                      .map((_, i) => (
-                        <StarIcon
-                          key={i}
-                          color={i < 5 ? "teal.500" : "gray.300"}
-                        />
-                      ))}
-                  </Td>
-                  <Td isNumeric>789</Td>
-                </Tr>
-                <Tr>
-                  <Td>Korean (한국어)</Td>
-                  <Td>Platypus</Td>
-                  <Td>
-                    {Array(5)
-                      .fill("")
-                      .map((_, i) => (
-                        <StarIcon
-                          key={i}
-                          color={i < 4 ? "teal.500" : "gray.300"}
-                        />
-                      ))}
-                  </Td>
-                  <Td isNumeric>193</Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </TableContainer>
+          <SubList />
         </Stack>
       </HStack>
     </>
