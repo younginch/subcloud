@@ -1,13 +1,17 @@
-import { PrismaClient, Video } from "@prisma/client";
+import { InfoYoutube, PrismaClient, Video } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import ResError from "../../../utils/types";
+import ResError, {
+  handleServerError,
+  VideoWithInfo,
+} from "../../../utils/types";
 import NextCors from "nextjs-cors";
 import { getSession } from "next-auth/react";
 import { VideoCreateSchema } from "../../../utils/schema";
+import axios from "axios";
 
 export default async function VideoCreate(
   req: NextApiRequest,
-  res: NextApiResponse<Video | ResError>
+  res: NextApiResponse<Video | VideoWithInfo | ResError>
 ) {
   await NextCors(req, res, {
     // Options
@@ -41,13 +45,15 @@ export default async function VideoCreate(
       const createdVideo = await prisma.video.create({
         data: getVideoFromUrl(value.url),
       });
-      return res.status(201).json(createdVideo);
+      let info;
+      if (createdVideo.serviceId === "youtube") {
+        info = await addYoutubeVideoInfos(createdVideo.videoId);
+      }
+      return res.status(201).json({ ...createdVideo, info });
     }
     return res.status(200).json(video);
   } catch (e: any) {
-    return res
-      .status(500)
-      .json({ error: "Internal Server Error", log: e.message });
+    return handleServerError(res, e);
   }
 }
 
@@ -76,4 +82,24 @@ function getVideoFromUrl(urlString: string): Video {
     videoId: `${url.pathname}?${url.search}`,
     url: urlString,
   };
+}
+
+async function addYoutubeVideoInfos(videoId: string): Promise<InfoYoutube> {
+  const res =
+    await axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${process.env.YOUTUBE_API_KEY}
+      &part=snippet,statistics`);
+  const video = res.data.videos[0];
+  const prisma = new PrismaClient();
+  const info = await prisma.infoYoutube.update({
+    where: { id: videoId },
+    data: {
+      publishedAt: video.snippet.publishedAt,
+      channelId: video.snippet.channelId,
+      title: video.snippet.title,
+      description: video.snippet.description,
+      viewCount: video.statistics.viewCount,
+      likeCount: video.statistics.likeCount,
+    },
+  });
+  return info;
 }

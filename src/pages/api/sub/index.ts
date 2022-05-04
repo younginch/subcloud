@@ -1,7 +1,7 @@
 import { PrismaClient, Sub } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import ResError from "../../../utils/types";
+import ResError, { handleServerError } from "../../../utils/types";
 import { SubCreateSchema } from "../../../utils/schema";
 import NextCors from "nextjs-cors";
 
@@ -46,8 +46,6 @@ export default async function SubCreate(
     });
     return res.status(201).json(sub);
   } catch (e: any) {
-    return res
-      .status(500)
-      .json({ error: "Something went wrong", log: e.message });
+    return handleServerError(res, e);
   }
 }

@@ -1,7 +1,7 @@
 import { Status, Sub, PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import NextCors from "nextjs-cors";
-import ResError from "../../../utils/types";
+import ResError, { handleServerError } from "../../../utils/types";
 
 export default async function SubSearch(
   req: NextApiRequest,
@@ -32,8 +32,6 @@ export default async function SubSearch(
     }
     return res.status(200).json(subs);
   } catch (e: any) {
-    return res
-      .status(500)
-      .json({ error: "Something went wrong", log: e.message });
+    return handleServerError(res, e);
   }
 }
