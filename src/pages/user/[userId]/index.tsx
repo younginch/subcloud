@@ -101,7 +101,7 @@ function RequestPanel() {
 
   function getRequests() {
     axios
-      .get("/api/request/search", { params: { userId: data?.user.id } })
+      .get("/api/request/search", { params: { userId: router.query.userId } })
       .then((res) => {
         setRequests(res.data);
       })
@@ -198,6 +198,7 @@ function RequestPanel() {
 }
 
 function SubPanel() {
+  const router = useRouter();
   const { data, status } = useSession();
   const toast = useToast();
   const [subs, setSubs] = useState<Sub[]>([]);
@@ -208,7 +209,7 @@ function SubPanel() {
   function getSubs() {
     axios
       .get("/api/sub/search", {
-        params: { userId: data?.user.id, status: subStatus },
+        params: { userId: router.query.userId, status: subStatus },
       })
       .then((res) => {
         setSubs(res.data);
@@ -315,15 +316,16 @@ function SubPanel() {
 }
 
 function FilePanel() {
+  const router = useRouter();
   const { data, status } = useSession();
   const toast = useToast();
   const [files, setFiles] = useState<File[]>([]);
 
-  useEffect(getFiles, [data?.user.id, status, toast]);
+  useEffect(getFiles, [router.query.userId, status, toast]);
 
   function getFiles() {
     axios
-      .get("/api/file/search?userId=" + data?.user.id)
+      .get("/api/file/search?userId=" + router.query.userId)
       .then((res) => {
         setFiles(res.data);
       })
