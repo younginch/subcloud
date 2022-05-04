@@ -1,25 +1,7 @@
-import { File, PrismaClient } from "@prisma/client";
-import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
-import NextCors from "nextjs-cors";
-import ResError from "../../../utils/types";
+import { File } from "@prisma/client";
+import { handleRoute, RouteParams } from "../../../utils/types";
 
-export default async function FileRUD(
-  req: NextApiRequest,
-  res: NextApiResponse<File | ResError>
-) {
-  await NextCors(req, res, {
-    // Options
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-    origin: "*",
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  });
-
-  const session = await getSession({ req });
-  if (!session) {
-    return res.status(401).json({ error: "Not authenticated" });
-  }
-  const prisma = new PrismaClient();
+async function FileRead({ req, res, prisma, session }: RouteParams<File>) {
   if (req.method === "GET") {
     const file = await prisma.file.findUnique({
       where: { id: req.query.id as string },
@@ -29,24 +11,30 @@ export default async function FileRUD(
     }
     return res.status(200).json(file);
   } else if (req.method === "DELETE") {
-    const { id } = req.query;
-    try {
-      const file = await prisma.file.findUnique({
-        where: { id: id as string },
-      });
-      if (!file) {
-        return res.status(404).json({ error: "File not found" });
-      }
-      if (file.userId !== session.user.id) {
-        return res.status(403).json({ error: "Not authorized" });
-      }
-      const deletedFile = await prisma.file.delete({
-        where: { id: id as string },
-      });
-      return res.status(200).json(deletedFile);
-    } catch {
-      return res.status(500).json({ error: "Something went wrong" });
-    }
   }
-  return res.status(405).json({ error: "Method not allowed" });
 }
+
+async function FileDelete({ req, res, prisma, session }: RouteParams<File>) {
+  const { id } = req.query;
+  const file = await prisma.file.findUnique({
+    where: { id: id as string },
+  });
+  if (!file) {
+    return res.status(404).json({ error: "File not found" });
+  }
+  if (file.userId !== session?.user.id) {
+    return res.status(403).json({ error: "Not authorized" });
+  }
+  const deletedFile = await prisma.file.delete({
+    where: { id: id as string },
+  });
+  return res.status(200).json(deletedFile);
+}
+
+export default handleRoute(
+  {
+    GET: FileRead,
+    DELETE: FileDelete,
+  },
+  { useSession: true }
+);
