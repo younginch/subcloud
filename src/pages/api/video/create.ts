@@ -1,6 +1,9 @@
 import { InfoYoutube, PrismaClient, Video } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import ResError, { VideoWithInfo } from "../../../utils/types";
+import ResError, {
+  handleServerError,
+  VideoWithInfo,
+} from "../../../utils/types";
 import NextCors from "nextjs-cors";
 import { getSession } from "next-auth/react";
 import { VideoCreateSchema } from "../../../utils/schema";
@@ -50,9 +53,7 @@ export default async function VideoCreate(
     }
     return res.status(200).json(video);
   } catch (e: any) {
-    return res
-      .status(500)
-      .json({ error: "Internal Server Error", log: e.message });
+    return handleServerError(res, e);
   }
 }
 

@@ -1,6 +1,9 @@
 import { PrismaClient, Video } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import ResError, { VideoWithInfo } from "../../../utils/types";
+import ResError, {
+  handleServerError,
+  VideoWithInfo,
+} from "../../../utils/types";
 
 export default async function VideoRead(
   req: NextApiRequest,
@@ -28,7 +31,7 @@ export default async function VideoRead(
       }
       return res.status(200).json({ ...video, info });
     } catch (e: any) {
-      return res.status(500).json({ error: e.message });
+      return handleServerError(res, e);
     }
   }
 }
