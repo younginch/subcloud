@@ -50,7 +50,7 @@ export function handleRoute<Data>(
     await NextCors(req, res, {
       // Options
       methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-      origin: "*",
+      origin: "chrome-extension://jomohjeldemfddibgokobknlgmdmfnfb",
       optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
     const prisma = new PrismaClient();
@@ -80,7 +80,7 @@ export function handleRoute<Data>(
   };
 }
 
-export function handleServerError(res: NextApiResponse, e: any) {
+function handleServerError(res: NextApiResponse, e: any) {
   if (e instanceof PrismaClientValidationError) {
     return res.status(400).json({ error: "Validation Error" });
   } else if (e instanceof PrismaClientKnownRequestError) {

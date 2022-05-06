@@ -1,60 +1,33 @@
 import { InfoYoutube, PrismaClient, Video } from "@prisma/client";
-import { NextApiRequest, NextApiResponse } from "next";
-import ResError, {
-  handleServerError,
-  VideoWithInfo,
-} from "../../../utils/types";
-import NextCors from "nextjs-cors";
-import { getSession } from "next-auth/react";
+import { handleRoute, RouteParams } from "../../../utils/types";
 import { VideoCreateSchema } from "../../../utils/schema";
 import axios from "axios";
 
-export default async function VideoCreate(
-  req: NextApiRequest,
-  res: NextApiResponse<Video | VideoWithInfo | ResError>
-) {
-  await NextCors(req, res, {
-    // Options
-    methods: ["POST"],
-    origin: "*",
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  });
-  if (req.method !== "POST") {
-    res.status(405).json({ error: "Method Not Allowed" });
-  }
-  const session = await getSession({ req });
-  if (!session) {
-    return res.status(401).json({ error: "Not authenticated" });
-  }
+async function VideoCreate({ req, res, prisma }: RouteParams<any>) {
   const { value, error } = VideoCreateSchema.validate(req.body);
   if (error) {
     return res.status(400).json({ error: error.message });
   }
-  const prisma = new PrismaClient();
-  try {
-    const regUrl = getVideoFromUrl(value.url).url;
-    const video = await prisma.video.findUnique({
-      where: { url: regUrl },
-      include: {
-        subs: {
-          include: { user: { select: { name: true } } },
-        },
+  const regUrl = getVideoFromUrl(value.url).url;
+  const video = await prisma.video.findUnique({
+    where: { url: regUrl },
+    include: {
+      subs: {
+        include: { user: { select: { name: true } } },
       },
+    },
+  });
+  if (!video) {
+    const createdVideo = await prisma.video.create({
+      data: getVideoFromUrl(value.url),
     });
-    if (!video) {
-      const createdVideo = await prisma.video.create({
-        data: getVideoFromUrl(value.url),
-      });
-      let info;
-      if (createdVideo.serviceId === "youtube") {
-        info = await addYoutubeVideoInfos(createdVideo.videoId);
-      }
-      return res.status(201).json({ ...createdVideo, info });
+    let info;
+    if (createdVideo.serviceId === "youtube") {
+      info = await addYoutubeVideoInfos(createdVideo.videoId);
     }
-    return res.status(200).json(video);
-  } catch (e: any) {
-    return handleServerError(res, e);
+    return res.status(201).json({ ...createdVideo, info });
   }
+  return res.status(200).json(video);
 }
 
 function getYoutubeVideo(url: URL): Video {
@@ -84,10 +57,15 @@ function getVideoFromUrl(urlString: string): Video {
   };
 }
 
-async function addYoutubeVideoInfos(videoId: string): Promise<InfoYoutube> {
+async function addYoutubeVideoInfos(
+  videoId: string
+): Promise<InfoYoutube | null> {
   const res =
     await axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${process.env.YOUTUBE_API_KEY}
       &part=snippet,statistics`);
+  if (!res.data.videos) {
+    return null;
+  }
   const video = res.data.videos[0];
   const prisma = new PrismaClient();
   const info = await prisma.infoYoutube.update({
@@ -103,3 +81,5 @@ async function addYoutubeVideoInfos(videoId: string): Promise<InfoYoutube> {
   });
   return info;
 }
+
+export default handleRoute({ POST: VideoCreate }, { useSession: true });

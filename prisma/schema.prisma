@@ -52,12 +52,6 @@ model User {
   files         File[]
 }
 
-enum Role {
-  ADMIN
-  REVIEWER
-  USER
-}
-
 model VerificationToken {
   identifier String
   token      String   @unique
@@ -123,13 +117,6 @@ model Sub {
   @@unique([serviceId, videoId, lang, userId])
 }
 
-enum Status {
-  PENDING
-  APPROVED
-  REJECTED
-  REPORTED
-}
-
 model SubReview {
   id      String  @id @default(cuid())
   subId   String
@@ -138,4 +125,17 @@ model SubReview {
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   score   Decimal
   comment String?
+}
+
+enum Role {
+  ADMIN
+  REVIEWER
+  USER
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
+  REPORTED
 }

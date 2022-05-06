@@ -1,10 +1,10 @@
 import nextConnect from "next-connect";
-import multer, { diskStorage } from "multer";
+import multer from "multer";
 import multerS3 from "multer-s3";
 import AWS from "aws-sdk";
 import { NextApiRequest, NextApiResponse } from "next";
 import { File, PrismaClient } from "@prisma/client";
-import ResError, { handleServerError } from "../../../utils/types";
+import ResError from "../../../utils/types";
 import { getSession } from "next-auth/react";
 import NextCors from "nextjs-cors";
 
@@ -75,7 +75,7 @@ app.post(upload.single("file"), async (req, res) => {
     });
     return res.status(200).json(newFile);
   } catch (e: any) {
-    handleServerError(res, e);
+    return res.status(500).json({ error: e.message });
   }
 });
 

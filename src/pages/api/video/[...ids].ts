@@ -1,37 +1,24 @@
-import { PrismaClient, Video } from "@prisma/client";
-import type { NextApiRequest, NextApiResponse } from "next";
-import ResError, {
-  handleServerError,
-  VideoWithInfo,
-} from "../../../utils/types";
+import { handleRoute, RouteParams } from "../../../utils/types";
 
-export default async function VideoRead(
-  req: NextApiRequest,
-  res: NextApiResponse<any | ResError>
-) {
+async function VideoRead({ req, res, prisma }: RouteParams<any>) {
   const serviceId = req.query.ids[0];
   const videoId = req.query.ids[1];
   if (!serviceId || !videoId) {
     return res.status(400).json({ error: "Missing id" });
   }
-  const prisma = new PrismaClient();
-  if (req.method === "GET") {
-    try {
-      let video = await prisma.video.findUnique({
-        where: { serviceId_videoId: { serviceId, videoId } },
-      });
-      if (!video) {
-        return res.status(404).json({ error: "Video not found" });
-      }
-      let info;
-      if (video.serviceId === "youtube") {
-        info = await prisma.infoYoutube.findUnique({
-          where: { id: video.videoId },
-        });
-      }
-      return res.status(200).json({ ...video, info });
-    } catch (e: any) {
-      return handleServerError(res, e);
-    }
+  let video = await prisma.video.findUnique({
+    where: { serviceId_videoId: { serviceId, videoId } },
+  });
+  if (!video) {
+    return res.status(404).json({ error: "Video not found" });
   }
+  let info;
+  if (video.serviceId === "youtube") {
+    info = await prisma.infoYoutube.findUnique({
+      where: { id: video.videoId },
+    });
+  }
+  return res.status(200).json({ ...video, info });
 }
+
+export default handleRoute({ GET: VideoRead });
