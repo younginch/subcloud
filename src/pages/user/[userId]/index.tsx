@@ -356,7 +356,7 @@ function FilePanel() {
               <Tr key={file.id}>
                 <Td>{file.id}</Td>
                 <Td>{file.title}</Td>
-                <Td>{file.url}</Td>
+                <Td>{file.key}</Td>
                 <Td>
                   <Button
                     colorScheme="red"

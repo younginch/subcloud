@@ -1,29 +1,20 @@
 import nextConnect from "next-connect";
 import multer from "multer";
 import multerS3 from "multer-s3";
-import AWS from "aws-sdk";
 import { NextApiRequest, NextApiResponse } from "next";
 import { File, PrismaClient } from "@prisma/client";
 import ResError from "../../../utils/types";
 import { getSession } from "next-auth/react";
 import NextCors from "nextjs-cors";
+import { configuredBucket, configuredS3 } from "../../../utils/aws";
 
 interface NextApiRequestWithFile extends NextApiRequest {
   file: Express.MulterS3.File;
 }
 
-const s3 = new AWS.S3({
-  accessKeyId: process.env.S3_ACCESS_KEY_ID,
-  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-  region: "ap-northeast-2",
-});
-
 const awsStorage = multerS3({
-  s3: s3,
-  bucket:
-    process.env.NODE_ENV === "development"
-      ? "younginch-sub-dev"
-      : "younginch-sub-prod",
+  s3: configuredS3,
+  bucket: configuredBucket,
   contentType: multerS3.AUTO_CONTENT_TYPE,
   acl: "public-read",
   metadata: function (req, file, cb) {
@@ -70,7 +61,7 @@ app.post(upload.single("file"), async (req, res) => {
       data: {
         user: { connect: { id: session.user.id! } },
         title: req.file.originalname ?? "unknown",
-        url: req.file.location,
+        key: req.file.key,
       },
     });
     return res.status(200).json(newFile);
