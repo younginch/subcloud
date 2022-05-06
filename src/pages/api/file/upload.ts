@@ -3,7 +3,7 @@ import multer from "multer";
 import multerS3 from "multer-s3";
 import { NextApiRequest, NextApiResponse } from "next";
 import { File, PrismaClient } from "@prisma/client";
-import ResError from "../../../utils/types";
+import SubError, { SubErrorType } from "../../../utils/types";
 import { getSession } from "next-auth/react";
 import NextCors from "nextjs-cors";
 import { configuredBucket, configuredS3 } from "../../../utils/aws";
@@ -31,15 +31,18 @@ const upload = multer({
 
 const app = nextConnect<
   NextApiRequestWithFile,
-  NextApiResponse<File | ResError>
+  NextApiResponse<File | SubError>
 >({
   onError(error, req, res) {
     res
       .status(501)
-      .json({ error: `Sorry something Happened! ${error.message}` });
+      .json({ error: SubErrorType.Unknown, message: error.message });
   },
   onNoMatch(req, res) {
-    res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
+    res.status(405).json({
+      error: SubErrorType.MethodNotAllowed,
+      message: `Method '${req.method}' Not Allowed`,
+    });
   },
 });
 
@@ -53,7 +56,10 @@ app.post(upload.single("file"), async (req, res) => {
 
   const session = await getSession({ req });
   if (!session) {
-    return res.status(401).json({ error: "Not Logged In" });
+    return res.status(401).json({
+      error: SubErrorType.NotAnonymousAuthenticated,
+      message: "Not Anonymous Authenticated",
+    });
   }
   const prisma = new PrismaClient();
   try {
@@ -66,7 +72,9 @@ app.post(upload.single("file"), async (req, res) => {
     });
     return res.status(200).json(newFile);
   } catch (e: any) {
-    return res.status(500).json({ error: e.message });
+    return res
+      .status(500)
+      .json({ error: SubErrorType.Unknown, message: e.message });
   }
 });
 

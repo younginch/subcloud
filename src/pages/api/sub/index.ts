@@ -1,11 +1,13 @@
 import { Sub } from "@prisma/client";
-import { handleRoute, RouteParams } from "../../../utils/types";
+import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 import { SubCreateSchema } from "../../../utils/schema";
 
 async function SubCreate({ req, res, prisma, session }: RouteParams<Sub>) {
   const { value, error } = SubCreateSchema.validate(req.body);
   if (error) {
-    return res.status(400).json({ error: "Missing required fields" });
+    return res
+      .status(400)
+      .json({ error: SubErrorType.FormValidation, message: error.message });
   }
   const sub = await prisma.sub.create({
     data: {

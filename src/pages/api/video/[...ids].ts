@@ -1,16 +1,25 @@
-import { handleRoute, RouteParams } from "../../../utils/types";
+import {
+  handleRoute,
+  RouteParams,
+  SubErrorType,
+  VideoWithInfo,
+} from "../../../utils/types";
 
-async function VideoRead({ req, res, prisma }: RouteParams<any>) {
+async function VideoRead({ req, res, prisma }: RouteParams<VideoWithInfo>) {
   const serviceId = req.query.ids[0];
   const videoId = req.query.ids[1];
   if (!serviceId || !videoId) {
-    return res.status(400).json({ error: "Missing id" });
+    return res
+      .status(400)
+      .json({ error: SubErrorType.Validation, message: "id" });
   }
   let video = await prisma.video.findUnique({
     where: { serviceId_videoId: { serviceId, videoId } },
   });
   if (!video) {
-    return res.status(404).json({ error: "Video not found" });
+    return res
+      .status(404)
+      .json({ error: SubErrorType.NotFound, message: "Video" });
   }
   let info;
   if (video.serviceId === "youtube") {

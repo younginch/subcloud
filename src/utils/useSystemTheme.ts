@@ -23,7 +23,7 @@ export default function useSystemTheme() {
   function mediaQueryListener(
     this: MediaQueryList,
     event: MediaQueryListEvent
-  ): any {
+  ): void {
     if (event.matches) {
       setSystemTheme(Theme.DARK);
     } else {

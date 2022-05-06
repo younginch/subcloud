@@ -41,7 +41,12 @@ export default function MyApp({
   );
 }
 
-function Auth({ children, role }: any) {
+type AuthProps = {
+  children: JSX.Element;
+  role?: Role;
+};
+
+function Auth({ children, role }: AuthProps): JSX.Element {
   const router = useRouter();
   const { data, status } = useSession();
   const [user, setUser] = useState<User>();
