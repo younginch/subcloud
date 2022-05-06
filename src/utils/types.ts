@@ -7,7 +7,7 @@ import {
   PrismaClientUnknownRequestError,
   PrismaClientValidationError,
 } from "@prisma/client/runtime";
-import { AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { Session } from "next-auth";
 import { getSession } from "next-auth/react";
@@ -40,7 +40,7 @@ export type RouteParams<Data> = {
   session?: Session;
 };
 
-type RouteFunction<Data> = (params: RouteParams<Data>) => any;
+type RouteFunction<Data> = (params: RouteParams<Data>) => void;
 
 type HandleRouteProps<Data> = {
   GET?: RouteFunction<Data>;
@@ -56,7 +56,10 @@ type HandleRouteOption = {
 export function handleRoute<Data>(
   method: HandleRouteProps<Data>,
   options: HandleRouteOption = { useSession: false }
-): any {
+): (
+  req: NextApiRequest,
+  res: NextApiResponse<Data | SubError>
+) => Promise<void> {
   const { GET, POST, PATCH, DELETE } = method;
   const { useSession } = options;
   return async (req: NextApiRequest, res: NextApiResponse<Data | SubError>) => {
@@ -99,7 +102,7 @@ export function handleRoute<Data>(
   };
 }
 
-function handleServerError(res: NextApiResponse<SubError>, e: any) {
+function handleServerError(res: NextApiResponse<SubError>, e: Error) {
   if (e instanceof PrismaClientValidationError) {
     return res
       .status(400)
@@ -128,8 +131,27 @@ function handleServerError(res: NextApiResponse<SubError>, e: any) {
 }
 
 export function handleClientError(
-  res: AxiosResponse,
+  error: AxiosError,
   toast: CreateStandAloneToastParam
-) {}
+) {
+  if (error.response) {
+    // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+    console.log(error.response.data);
+    console.log(error.response.status);
+    console.log(error.response.headers);
+  } else if (error.request) {
+    // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+    // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+    // Node.js의 http.ClientRequest 인스턴스입니다.
+    console.log(error.request);
+  } else {
+    // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+    console.log("Error", error.message);
+  }
+}
 
-export type VideoWithInfo = Video & { info: InfoYoutube };
+export type VideoWithInfo = Video & { info?: InfoYoutube | null };
+
+export type JangJoProps = {
+  children: string;
+};

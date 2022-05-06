@@ -1,12 +1,19 @@
 import { InfoYoutube, PrismaClient, Video } from "@prisma/client";
-import { handleRoute, RouteParams } from "../../../utils/types";
+import {
+  handleRoute,
+  RouteParams,
+  SubErrorType,
+  VideoWithInfo,
+} from "../../../utils/types";
 import { VideoCreateSchema } from "../../../utils/schema";
 import axios from "axios";
 
-async function VideoCreate({ req, res, prisma }: RouteParams<any>) {
+async function VideoCreate({ req, res, prisma }: RouteParams<VideoWithInfo>) {
   const { value, error } = VideoCreateSchema.validate(req.body);
   if (error) {
-    return res.status(400).json({ error: error.message });
+    return res
+      .status(400)
+      .json({ error: SubErrorType.FormValidation, message: error.message });
   }
   const regUrl = getVideoFromUrl(value.url).url;
   const video = await prisma.video.findUnique({

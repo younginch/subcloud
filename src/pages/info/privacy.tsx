@@ -5,8 +5,9 @@ import {
   Heading,
   OrderedList,
 } from "@chakra-ui/react";
+import { JangJoProps } from "../../utils/types";
 
-function Jo({ children }: any) {
+function Jo({ children }: JangJoProps) {
   return (
     <Heading size="md" marginTop="12px" marginBottom="6px">
       {children}

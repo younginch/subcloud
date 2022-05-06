@@ -24,7 +24,7 @@ export default function VideoCreate() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>({ resolver: joiResolver(VideoCreateSchema) });
 
-  function onSubmit(values: any) {
+  function onSubmit(values: FormData) {
     return new Promise<void>((resolve, reject) => {
       const { url } = values;
       axios

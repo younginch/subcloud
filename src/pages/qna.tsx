@@ -1,7 +1,4 @@
-import Layout from "../components/layout";
 import {
-  Text,
-  Container,
   Accordion,
   AccordionButton,
   AccordionIcon,
@@ -11,7 +8,12 @@ import {
   Heading,
 } from "@chakra-ui/react";
 
-function QnAAccordion({ title, children }: any) {
+type QnAProps = {
+  title: string;
+  children: string;
+};
+
+function QnAAccordion({ title, children }: QnAProps) {
   return (
     <AccordionItem>
       <AccordionButton>

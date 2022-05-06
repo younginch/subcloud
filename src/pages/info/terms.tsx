@@ -1,6 +1,7 @@
 import { Heading, Text } from "@chakra-ui/react";
+import { JangJoProps } from "../../utils/types";
 
-function Jang({ children }: any) {
+function Jang({ children }: JangJoProps) {
   return (
     <Heading size="lg" marginTop="18px" marginBottom="12px">
       {children}
@@ -8,7 +9,7 @@ function Jang({ children }: any) {
   );
 }
 
-function Jo({ children }: any) {
+function Jo({ children }: JangJoProps) {
   return (
     <Heading size="md" margin="6px">
       {children}

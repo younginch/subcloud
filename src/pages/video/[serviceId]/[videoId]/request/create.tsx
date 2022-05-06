@@ -16,6 +16,12 @@ import { RequestCreateSchema } from "../../../../../utils/schema";
 import { useSession } from "next-auth/react";
 import { Role } from "@prisma/client";
 
+type FormData = {
+  serviceId: string;
+  videoId: string;
+  lang: string;
+};
+
 export default function RequestCreate() {
   const router = useRouter();
   const toast = useToast();
@@ -24,9 +30,9 @@ export default function RequestCreate() {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm({ resolver: joiResolver(RequestCreateSchema) });
+  } = useForm<FormData>({ resolver: joiResolver(RequestCreateSchema) });
 
-  function onSubmit(values: any) {
+  function onSubmit(values: FormData) {
     return new Promise<void>((resolve, reject) => {
       axios
         .post("/api/request", {
@@ -52,7 +58,7 @@ export default function RequestCreate() {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={errors.serviceId}>
+        <FormControl isInvalid={errors.serviceId !== undefined}>
           <FormLabel htmlFor="serviceId">서비스</FormLabel>
           <Input
             id="serviceId"
@@ -63,7 +69,7 @@ export default function RequestCreate() {
             {errors.serviceId && errors.serviceId.message}
           </FormErrorMessage>
         </FormControl>
-        <FormControl isInvalid={errors.videoId}>
+        <FormControl isInvalid={errors.videoId !== undefined}>
           <FormLabel htmlFor="videoId">영상 ID</FormLabel>
           <Input
             id="videoId"

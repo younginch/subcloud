@@ -1,10 +1,11 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient, Role } from "@prisma/client";
-import NextAuth from "next-auth";
+import { PrismaClient } from "@prisma/client";
+import NextAuth, { Session, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import KakaoProvider from "next-auth/providers/kakao";
 import GitHubProvider from "next-auth/providers/github";
+import { JWT } from "next-auth/jwt";
 
 const prisma = new PrismaClient();
 
@@ -38,6 +39,12 @@ const prodProviders = [
   }),
 ];
 
+type SessionParams = {
+  session: Session;
+  user: User;
+  token: JWT;
+};
+
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   pages: {
@@ -46,7 +53,7 @@ export default NextAuth({
   providers:
     process.env.NODE_ENV === "production" ? prodProviders : devProviders,
   callbacks: {
-    async session({ session, token, user }: any) {
+    async session({ session, user }: SessionParams) {
       session.user.id = user.id;
       session.user.role = user.role;
       return Promise.resolve(session);

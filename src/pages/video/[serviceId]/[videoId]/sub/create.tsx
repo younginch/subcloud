@@ -15,18 +15,23 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
+type FormData = {
+  lang: string;
+  file: File;
+};
+
 export default function SubCreate() {
   const router = useRouter();
   const toast = useToast();
-  const { data, status } = useSession();
+  const { data } = useSession();
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm<FormData>();
   const [file, setFile] = useState<string | Blob>();
 
-  function onSubmit(values: any) {
+  function onSubmit(values: FormData) {
     return new Promise<void>(async (resolve, reject) => {
       const formData = new FormData();
       formData.append("file", file!);
@@ -82,7 +87,7 @@ export default function SubCreate() {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={errors.file}>
+        <FormControl isInvalid={errors.file !== undefined}>
           <FormLabel htmlFor="name">자막 파일</FormLabel>
           <Box w="360px" h="120px" borderWidth="1px" borderRadius="6px">
             <div {...getRootProps()}>

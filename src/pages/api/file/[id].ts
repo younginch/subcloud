@@ -2,13 +2,19 @@ import { File } from "@prisma/client";
 import { configuredBucket, configuredS3 } from "../../../utils/aws";
 import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 
-async function FileRead({ req, res, prisma }: RouteParams<any>) {
+type FileWithUrl = File & {
+  url: string;
+};
+
+async function FileRead({ req, res, prisma }: RouteParams<FileWithUrl>) {
   if (req.method === "GET") {
     const file = await prisma.file.findUnique({
       where: { id: req.query.id as string },
     });
     if (!file) {
-      return res.status(404).json({ error: "File not found" });
+      return res
+        .status(404)
+        .json({ error: SubErrorType.NotFound, message: "File" });
     }
     const url = await configuredS3.getSignedUrlPromise("getObject", {
       Bucket: configuredBucket,
