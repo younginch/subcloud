@@ -347,7 +347,7 @@ function FilePanel() {
             <Th>ID</Th>
             <Th>파일 제목</Th>
             <Th>URL</Th>
-            <Th>삭제</Th>
+            <Th>작업</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -358,6 +358,16 @@ function FilePanel() {
                 <Td>{file.title}</Td>
                 <Td>{file.key}</Td>
                 <Td>
+                  <Button
+                    marginEnd="6px"
+                    onClick={() => {
+                      axios.get(`/api/file/${file.id}`).then((res) => {
+                        window.open(res.data.url);
+                      });
+                    }}
+                  >
+                    다운로드
+                  </Button>
                   <Button
                     colorScheme="red"
                     onClick={() => {
