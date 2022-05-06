@@ -30,7 +30,7 @@ function RequestList() {
 
   useEffect(() => {
     axios
-      .get(`/api/request?serviceId=${serviceId}&videoId=${videoId}`)
+      .get(`/api/request/search?serviceId=${serviceId}&videoId=${videoId}`)
       .then((res) => {
         setRequests(res.data);
       })
@@ -76,7 +76,7 @@ function SubList() {
 
   useEffect(() => {
     axios
-      .get(`/api/sub?serviceId=${serviceId}&videoId=${videoId}`)
+      .get(`/api/sub/search?serviceId=${serviceId}&videoId=${videoId}`)
       .then((res) => {
         setSubs(res.data);
       })

@@ -95,7 +95,7 @@ export default function UserRead() {
 
 function RequestPanel() {
   const router = useRouter();
-  const { data, status } = useSession();
+  const { status } = useSession();
   const toast = useToast();
   const [requests, setRequests] = useState<Request[]>([]);
 
@@ -114,7 +114,7 @@ function RequestPanel() {
       });
   }
 
-  useEffect(getRequests, [data?.user.id, status, toast]);
+  useEffect(getRequests, [router.query.userId, status, toast]);
 
   return (
     <TableContainer>
@@ -199,12 +199,12 @@ function RequestPanel() {
 
 function SubPanel() {
   const router = useRouter();
-  const { data, status } = useSession();
+  const { status } = useSession();
   const toast = useToast();
   const [subs, setSubs] = useState<Sub[]>([]);
   const [subStatus, setSubStatus] = useState<Status | "all">("all");
 
-  useEffect(getSubs, [data?.user.id, status, subStatus, toast]);
+  useEffect(getSubs, [router.query.userId, status, subStatus, toast]);
 
   function getSubs() {
     axios

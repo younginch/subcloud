@@ -1,41 +1,25 @@
-import { PrismaClient, Request } from "@prisma/client";
-import type { NextApiRequest, NextApiResponse } from "next";
-import NextCors from "nextjs-cors";
-import ResError from "../../../utils/types";
+import { Request } from "@prisma/client";
+import { handleRoute, RouteParams } from "../../../utils/types";
 
-export default async function RequestSearch(
-  req: NextApiRequest,
-  res: NextApiResponse<Request[] | ResError>
-) {
-  await NextCors(req, res, {
-    // Options
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-    origin: "*",
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  });
-
-  const prisma = new PrismaClient();
-  if (req.method !== "GET") {
-    res.status(405).json({ error: "Method not allowed" });
-  }
+async function searchSubtitles({ req, res, prisma }: RouteParams<Request[]>) {
   const { userId, serviceId, videoId } = req.query;
-  try {
-    if (userId) {
-      const requests = await prisma.request.findMany({
-        where: { users: { some: { id: userId as string } } },
-      });
-      return res.status(200).json(requests);
-    }
-    if (serviceId && videoId) {
-      const requests = await prisma.request.findMany({
-        where: {
-          serviceId: serviceId as string,
-          videoId: videoId as string,
-        },
-      });
-      return res.status(200).json(requests);
-    }
-  } catch {
-    return res.status(500).json({ error: "Something went wrong" });
+  if (userId) {
+    const requests = await prisma.request.findMany({
+      where: { users: { some: { id: userId as string } } },
+    });
+    return res.status(200).json(requests);
+  }
+  if (serviceId && videoId) {
+    const requests = await prisma.request.findMany({
+      where: {
+        serviceId: serviceId as string,
+        videoId: videoId as string,
+      },
+    });
+    return res.status(200).json(requests);
   }
 }
+
+export default handleRoute({
+  GET: searchSubtitles,
+});
