@@ -15,8 +15,14 @@ async function RequestCreate({
   const { serviceId, videoId, lang } = value;
   const request = await prisma.request.findUnique({
     where: { serviceId_videoId_lang: { serviceId, videoId, lang } },
+    include: { users: { where: { id: session?.user.id } } },
   });
   if (request) {
+    if (request.users.find((user) => user.id === session?.user.id)) {
+      return res
+        .status(409)
+        .json({ error: "You already requested this video" });
+    }
     const updatedRequest = await prisma.request.update({
       where: { serviceId_videoId_lang: { serviceId, videoId, lang } },
       data: {
