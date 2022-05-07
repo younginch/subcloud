@@ -1,21 +1,4 @@
-import { Heading, Text } from "@chakra-ui/react";
-import { JangJoProps } from "../../utils/types";
-
-function Jang({ children }: JangJoProps) {
-  return (
-    <Heading size="lg" marginTop="18px" marginBottom="12px">
-      {children}
-    </Heading>
-  );
-}
-
-function Jo({ children }: JangJoProps) {
-  return (
-    <Heading size="md" margin="6px">
-      {children}
-    </Heading>
-  );
-}
+import { Jang, Jo } from "../../components/list";
 
 export default function Terms() {
   return (

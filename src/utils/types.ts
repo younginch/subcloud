@@ -151,7 +151,3 @@ export function handleClientError(
 }
 
 export type VideoWithInfo = Video & { info?: InfoYoutube | null };
-
-export type JangJoProps = {
-  children: string;
-};
