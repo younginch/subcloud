@@ -2,7 +2,6 @@ import { Box, Button, Center, Heading, Stack } from "@chakra-ui/react";
 import type { Provider } from "next-auth/providers";
 import { getProviders, signIn } from "next-auth/react";
 import type { GetServerSidePropsContext } from "next/types";
-import Layout from "../../components/layout";
 import { FaGoogle, FaFacebook, FaGithub } from "react-icons/fa";
 import { useRouter } from "next/router";
 
