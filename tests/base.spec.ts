@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const baseUrl = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+const baseUrl = "https://subcloud.app";
 
 test.describe("main page", () => {
   test.beforeEach(async ({ page }) => {
