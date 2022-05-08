@@ -15,7 +15,7 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import { Request, Sub } from "@prisma/client";
+import { Sub } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -138,9 +138,7 @@ export default function Video() {
         />
         {video?.info ? (
           <Stack>
-            <Skeleton>
-              <Heading size="lg">{video?.info.title}</Heading>
-            </Skeleton>
+            <Heading size="lg">{video?.info.title}</Heading>
             <Text>
               조회수 {video?.info.viewCount}회 | {video?.info.publishedAt}
             </Text>
@@ -151,8 +149,8 @@ export default function Video() {
                 src="https://yt3.ggpht.com/6xOBiHC0rSAa74kQ8MLBDW_sYN0KRCebJGlGODREsjypB9zOEx63TXR1oSslLLe9ptDIAcjV6Q=s176-c-k-c0x00ffffff-no-rj"
               />
               <Stack>
-                <Heading size="md">KBS Kpop</Heading>
-                <Text>구독자 686만명</Text>
+                <Heading size="md">{video?.info.channel.title}</Heading>
+                <Text>구독자 {video?.info.channel.subscriberCount}명</Text>
               </Stack>
             </HStack>
           </Stack>
