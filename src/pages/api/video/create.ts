@@ -1,9 +1,10 @@
-import { InfoYoutube, PrismaClient, Video } from "@prisma/client";
+import { PrismaClient, Video } from "@prisma/client";
 import {
   handleRoute,
   RouteParams,
   SubErrorType,
   VideoWithInfo,
+  YoutubeVideoWithChannel,
 } from "../../../utils/types";
 import { VideoCreateSchema } from "../../../utils/schema";
 import axios from "axios";
@@ -30,7 +31,7 @@ async function VideoCreate({ req, res, prisma }: RouteParams<VideoWithInfo>) {
     });
     let info;
     if (createdVideo.serviceId === "youtube") {
-      info = await addYoutubeVideoInfos(createdVideo.videoId);
+      info = await addYoutubeInfos(createdVideo.videoId);
     }
     return res.status(201).json({ ...createdVideo, info });
   }
@@ -64,29 +65,55 @@ function getVideoFromUrl(urlString: string): Video {
   };
 }
 
-async function addYoutubeVideoInfos(
+async function addYoutubeInfos(
   videoId: string
-): Promise<InfoYoutube | null> {
-  const res =
+): Promise<YoutubeVideoWithChannel | null> {
+  const videoRes =
     await axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${process.env.YOUTUBE_API_KEY}
       &part=snippet,statistics`);
-  if (!res.data.videos) {
+  if (!videoRes.data.items) {
     return null;
   }
-  const video = res.data.videos[0];
+  const video = videoRes.data.items[0];
+  const channelId = video.snippet.channelId;
   const prisma = new PrismaClient();
-  const info = await prisma.infoYoutube.update({
-    where: { id: videoId },
+  const channel = await prisma.youtubeChannel.findUnique({
+    where: { id: channelId },
+  });
+  if (!channel) {
+    const channelRes = await axios.get(
+      `https://www.googleapis.com/youtube/v3/channels?id=${channelId}&key=${process.env.YOUTUBE_API_KEY}&part=snippet,statistics`
+    );
+    if (!channelRes.data.items) {
+      return null;
+    }
+    const channelData = channelRes.data.items[0];
+    await prisma.youtubeChannel.create({
+      data: {
+        id: channelId,
+        title: channelData.snippet.title,
+        description: channelData.snippet.description,
+        subscriberCount: Number.parseInt(
+          channelData.statistics.subscriberCount
+        ),
+      },
+    });
+  }
+  await prisma.youtubeVideo.create({
     data: {
+      id: videoId,
       publishedAt: video.snippet.publishedAt,
-      channelId: video.snippet.channelId,
+      channelId,
       title: video.snippet.title,
       description: video.snippet.description,
-      viewCount: video.statistics.viewCount,
-      likeCount: video.statistics.likeCount,
+      viewCount: Number.parseInt(video.statistics.viewCount),
+      likeCount: Number.parseInt(video.statistics.likeCount),
     },
   });
-  return info;
+  return await prisma.youtubeVideo.findUnique({
+    where: { id: videoId },
+    include: { channel: {} },
+  });
 }
 
 export default handleRoute({ POST: VideoCreate }, { useSession: true });

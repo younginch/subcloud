@@ -70,14 +70,23 @@ model Video {
   @@unique([serviceId, videoId])
 }
 
-model InfoYoutube {
-  id          String    @id
-  publishedAt DateTime?
-  channelId   String?
-  title       String?
-  description String?
-  viewCount   Int?
-  likeCount   Int?
+model YoutubeVideo {
+  id          String         @id
+  channelId   String
+  channel     YoutubeChannel @relation(fields: [channelId], references: [id])
+  publishedAt DateTime
+  title       String
+  description String
+  viewCount   Int
+  likeCount   Int
+}
+
+model YoutubeChannel {
+  id              String         @id
+  videos          YoutubeVideo[]
+  title           String
+  description     String
+  subscriberCount Int
 }
 
 model Request {
