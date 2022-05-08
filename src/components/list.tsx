@@ -33,18 +33,32 @@ export function Jo({ index, title, children }: JangJoProps) {
   );
 }
 
-type HangProps = {
-  index: number;
-  children: ReactNode;
+const circledNumbers = ["\u2460", "\u2461", "\u2462", "\u2463"];
+
+type HangListProps = {
+  children?: ReactNode;
 };
 
-const circledNumbers = ["", "\u2460", "\u2461", "\u2462", "\u2463"];
-
-export function Hang({ children, index }: HangProps) {
-  return (
-    <ListItem>
-      {`${circledNumbers[index]} `}
-      {children}
-    </ListItem>
-  );
+export function HangList({ children }: HangListProps) {
+  if (Array.isArray(children)) {
+    return (
+      <List>
+        {children?.map((child, index) => {
+          return (
+            <ListItem key={index}>
+              {`${circledNumbers[index]} `}
+              {child}
+            </ListItem>
+          );
+        })}
+      </List>
+    );
+  } else {
+    return (
+      <ListItem>
+        {`${circledNumbers[0]} `}
+        {children}
+      </ListItem>
+    );
+  }
 }
