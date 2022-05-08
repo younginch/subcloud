@@ -1,5 +1,11 @@
 import type { CreateStandAloneToastParam } from "@chakra-ui/react";
-import { InfoYoutube, PrismaClient, Request, Video } from "@prisma/client";
+import {
+  YoutubeVideo,
+  PrismaClient,
+  Request,
+  Video,
+  YoutubeChannel,
+} from "@prisma/client";
 import {
   PrismaClientInitializationError,
   PrismaClientKnownRequestError,
@@ -150,6 +156,10 @@ export function handleClientError(
   }
 }
 
-export type VideoWithInfo = Video & { info?: InfoYoutube | null };
+export type YoutubeVideoWithChannel = YoutubeVideo & {
+  channel: YoutubeChannel;
+};
+
+export type VideoWithInfo = Video & { info?: YoutubeVideoWithChannel | null };
 
 export type RequestWithUserCount = Request & { _count: { users: number } };

@@ -1,9 +1,10 @@
-import { YoutubeVideo, PrismaClient, Video } from "@prisma/client";
+import { PrismaClient, Video } from "@prisma/client";
 import {
   handleRoute,
   RouteParams,
   SubErrorType,
   VideoWithInfo,
+  YoutubeVideoWithChannel,
 } from "../../../utils/types";
 import { VideoCreateSchema } from "../../../utils/schema";
 import axios from "axios";
@@ -64,7 +65,9 @@ function getVideoFromUrl(urlString: string): Video {
   };
 }
 
-async function addYoutubeInfos(videoId: string): Promise<YoutubeVideo | null> {
+async function addYoutubeInfos(
+  videoId: string
+): Promise<YoutubeVideoWithChannel | null> {
   const videoRes =
     await axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${process.env.YOUTUBE_API_KEY}
       &part=snippet,statistics`);
