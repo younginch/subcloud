@@ -1,4 +1,4 @@
-import { Heading, List, ListItem } from "@chakra-ui/react";
+import { Heading, List, ListItem, OrderedList } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
 type JangJoProps = {
@@ -33,7 +33,18 @@ export function Jo({ index, title, children }: JangJoProps) {
   );
 }
 
-const circledNumbers = ["\u2460", "\u2461", "\u2462", "\u2463"];
+const circledNumbers = [
+  "\u2460",
+  "\u2461",
+  "\u2462",
+  "\u2463",
+  "\u2464",
+  "\u2465",
+  "\u2466",
+  "\u2467",
+  "\u2468",
+  "\u2469",
+];
 
 type HangListProps = {
   children?: ReactNode;
@@ -61,4 +72,18 @@ export function HangList({ children }: HangListProps) {
       </ListItem>
     );
   }
+}
+
+type HoListProps = {
+  children: (JSX.Element | string)[];
+};
+
+export function HoList({ children }: HoListProps) {
+  return (
+    <OrderedList marginStart="24px">
+      {children.map((item, index) => {
+        return <ListItem key={index}>{item}</ListItem>;
+      })}
+    </OrderedList>
+  );
 }
