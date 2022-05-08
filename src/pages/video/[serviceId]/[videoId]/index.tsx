@@ -19,13 +19,13 @@ import { Request, Sub } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { VideoWithInfo } from "../../../../utils/types";
+import { RequestWithUserCount, VideoWithInfo } from "../../../../utils/types";
 
 function RequestList() {
   const router = useRouter();
   const serviceId = router.query.serviceId as string;
   const videoId = router.query.videoId as string;
-  const [requests, setRequests] = useState<Request[]>([]);
+  const [requests, setRequests] = useState<RequestWithUserCount[]>([]);
   const toast = useToast();
 
   useEffect(() => {
@@ -57,7 +57,7 @@ function RequestList() {
             return (
               <Tr key={request.id}>
                 <Td>{request.lang}</Td>
-                <Td isNumeric>계획중</Td>
+                <Td isNumeric>{request._count.users}</Td>
               </Tr>
             );
           })}
