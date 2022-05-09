@@ -93,6 +93,7 @@ async function addYoutubeInfos(
         id: channelId,
         title: channelData.snippet.title,
         description: channelData.snippet.description,
+        thumbnailUrl: channelData.snippet.thumbnails.medium.url,
         subscriberCount: Number.parseInt(
           channelData.statistics.subscriberCount
         ),

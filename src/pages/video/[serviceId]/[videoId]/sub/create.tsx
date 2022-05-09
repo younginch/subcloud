@@ -6,6 +6,8 @@ import {
   Text,
   Box,
   useToast,
+  Wrap,
+  WrapItem,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useCallback, useState } from "react";
@@ -14,6 +16,7 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import VideoInfo from "../../../../../components/videoInfo";
 
 type FormData = {
   lang: string;
@@ -22,6 +25,8 @@ type FormData = {
 
 export default function SubCreate() {
   const router = useRouter();
+  const serviceId = router.query.serviceId as string;
+  const videoId = router.query.videoId as string;
   const toast = useToast();
   const { data } = useSession();
   const {
@@ -42,8 +47,8 @@ export default function SubCreate() {
       });
       const newSub = await axios.post("/api/sub", {
         fileId: newFile.data.id,
-        serviceId: router.query.serviceId,
-        videoId: router.query.videoId,
+        serviceId,
+        videoId,
         lang: values.lang,
       });
       resolve();
@@ -85,39 +90,44 @@ export default function SubCreate() {
   ));
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={errors.file !== undefined}>
-          <FormLabel htmlFor="name">자막 파일</FormLabel>
-          <Box w="360px" h="120px" borderWidth="1px" borderRadius="6px">
-            <div {...getRootProps()}>
-              <input {...getInputProps()} />
-              <Text>
-                Drag &apos;n&apos; drop some files here, or click to select
-                files
-              </Text>
-            </div>
-          </Box>
-          {acceptedFileItems}
-          <FormErrorMessage>{fileRejectionItems}</FormErrorMessage>
-        </FormControl>
-        <FormControl as="fieldset">
-          <FormLabel as="legend">자막 언어</FormLabel>
-          <SelectLanguage register={register("lang")} />
-          <FormErrorMessage>
-            {errors.lang && errors.lang.message}
-          </FormErrorMessage>
-        </FormControl>
-        <Button
-          mt={4}
-          colorScheme="teal"
-          isLoading={isSubmitting}
-          type="submit"
-        >
-          업로드
-        </Button>
-      </form>
-    </>
+    <Wrap>
+      <WrapItem>
+        <VideoInfo serviceId={serviceId} videoId={videoId} />
+      </WrapItem>
+      <WrapItem>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FormControl isInvalid={errors.file !== undefined}>
+            <FormLabel htmlFor="name">자막 파일</FormLabel>
+            <Box w="360px" h="120px" borderWidth="1px" borderRadius="6px">
+              <div {...getRootProps()}>
+                <input {...getInputProps()} />
+                <Text>
+                  Drag &apos;n&apos; drop some files here, or click to select
+                  files
+                </Text>
+              </div>
+            </Box>
+            {acceptedFileItems}
+            <FormErrorMessage>{fileRejectionItems}</FormErrorMessage>
+          </FormControl>
+          <FormControl as="fieldset">
+            <FormLabel as="legend">자막 언어</FormLabel>
+            <SelectLanguage register={register("lang")} />
+            <FormErrorMessage>
+              {errors.lang && errors.lang.message}
+            </FormErrorMessage>
+          </FormControl>
+          <Button
+            mt={4}
+            colorScheme="teal"
+            isLoading={isSubmitting}
+            type="submit"
+          >
+            업로드
+          </Button>
+        </form>
+      </WrapItem>
+    </Wrap>
   );
 }
 
