@@ -144,10 +144,7 @@ export default function Video() {
             </Text>
             <div style={{ height: "12px" }} />
             <HStack>
-              <Avatar
-                marginEnd="12px"
-                src="https://yt3.ggpht.com/6xOBiHC0rSAa74kQ8MLBDW_sYN0KRCebJGlGODREsjypB9zOEx63TXR1oSslLLe9ptDIAcjV6Q=s176-c-k-c0x00ffffff-no-rj"
-              />
+              <Avatar marginEnd="12px" src={video?.info.channel.thumbnailUrl} />
               <Stack>
                 <Heading size="md">{video?.info.channel.title}</Heading>
                 <Text>구독자 {video?.info.channel.subscriberCount}명</Text>

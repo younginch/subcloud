@@ -86,6 +86,7 @@ model YoutubeChannel {
   videos          YoutubeVideo[]
   title           String
   description     String
+  thumbnailUrl    String
   subscriberCount Int
 }
 
