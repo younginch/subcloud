@@ -3,7 +3,6 @@ import {
   Heading,
   HStack,
   Image,
-  Skeleton,
   Stack,
   Table,
   TableContainer,
@@ -13,36 +12,14 @@ import {
   Th,
   Thead,
   Tr,
-  useToast,
 } from "@chakra-ui/react";
 import { Sub } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import type { GetServerSideProps } from "next";
 import { RequestWithUserCount, VideoWithInfo } from "../../../../utils/types";
 
-function RequestList() {
-  const router = useRouter();
-  const serviceId = router.query.serviceId as string;
-  const videoId = router.query.videoId as string;
-  const [requests, setRequests] = useState<RequestWithUserCount[]>([]);
-  const toast = useToast();
-
-  useEffect(() => {
-    axios
-      .get(`/api/request/search?serviceId=${serviceId}&videoId=${videoId}`)
-      .then((res) => {
-        setRequests(res.data);
-      })
-      .catch((err) => {
-        toast({
-          title: "Error",
-          description: err.message,
-          status: "error",
-        });
-      });
-  }, [serviceId, toast, videoId]);
-
+function RequestList({ requests }: { requests: RequestWithUserCount[] }) {
   return (
     <TableContainer>
       <Table variant="simple">
@@ -67,28 +44,7 @@ function RequestList() {
   );
 }
 
-function SubList() {
-  const router = useRouter();
-  const serviceId = router.query.serviceId as string;
-  const videoId = router.query.videoId as string;
-  const [subs, setSubs] = useState<Sub[]>([]);
-  const toast = useToast();
-
-  useEffect(() => {
-    axios
-      .get(`/api/sub/search?serviceId=${serviceId}&videoId=${videoId}`)
-      .then((res) => {
-        setSubs(res.data);
-      })
-      .catch((err) => {
-        toast({
-          title: "에러",
-          description: err.message,
-          status: "error",
-        });
-      });
-  }, [serviceId, toast, videoId]);
-
+function SubList({ subs }: { subs: Sub[] }) {
   return (
     <TableContainer>
       <Table variant="simple">
@@ -113,19 +69,14 @@ function SubList() {
   );
 }
 
-export default function Video() {
-  const router = useRouter();
-  const [video, setVideo] = useState<VideoWithInfo>();
+type VideoProps = {
+  video: VideoWithInfo;
+  requests: RequestWithUserCount[];
+  subs: Sub[];
+};
 
-  const { serviceId, videoId } = router.query;
-  useEffect(() => {
-    axios
-      .get(`/api/video/${serviceId}/${videoId}`)
-      .then((res) => {
-        setVideo(res.data);
-      })
-      .catch((err) => {});
-  }, [serviceId, videoId]);
+export default function Video({ video, requests, subs }: VideoProps) {
+  const router = useRouter();
 
   return (
     <>
@@ -158,14 +109,34 @@ export default function Video() {
       <HStack marginTop="32px">
         <Stack flex={1} verticalAlign="stretch">
           <Heading size="lg">요청 목록</Heading>
-          <RequestList />
+          <RequestList requests={requests} />
         </Stack>
         <Stack w="24px" />
         <Stack flex={2} verticalAlign="stretch">
           <Heading size="lg">자막 목록</Heading>
-          <SubList />
+          <SubList subs={subs} />
         </Stack>
       </HStack>
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { serviceId, videoId } = context.query;
+  const videoRes = await axios.get(
+    `${process.env.NEXTAUTH_URL}/api/video/${serviceId}/${videoId}`
+  );
+  const requestsRes = await axios.get(
+    `${process.env.NEXTAUTH_URL}/api/request/search?serviceId=${serviceId}&videoId=${videoId}`
+  );
+  const subsRes = await axios.get(
+    `${process.env.NEXTAUTH_URL}/api/sub/search?serviceId=${serviceId}&videoId=${videoId}`
+  );
+  return {
+    props: {
+      video: videoRes.data,
+      requests: requestsRes.data,
+      subs: subsRes.data,
+    },
+  };
+};
