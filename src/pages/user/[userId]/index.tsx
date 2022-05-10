@@ -28,7 +28,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, DeleteIcon } from "@chakra-ui/icons";
-import { File, Request, Status, Sub } from "@prisma/client";
+import { File, Status, Sub } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";

@@ -16,7 +16,8 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import { RequestCreateSchema } from "../../../../../utils/schema";
 import { useSession } from "next-auth/react";
 import { Role } from "@prisma/client";
-import VideoInfo from "../../../../../components/videoInfo";
+import VideoInfo from "../../../../../components/create/videoInfo";
+import CreateHeader from "../../../../../components/create/createHeader";
 
 type FormData = {
   serviceId: string;
@@ -60,53 +61,57 @@ export default function RequestCreate() {
   }
 
   return (
-    <Wrap>
-      <WrapItem>
-        <VideoInfo serviceId={serviceId} videoId={videoId} />
-      </WrapItem>
-      <WrapItem>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl isInvalid={errors.serviceId !== undefined} hidden>
-            <FormLabel htmlFor="serviceId">서비스</FormLabel>
-            <Input
-              id="serviceId"
-              value={router.query.serviceId}
-              {...register("serviceId")}
-            />
-            <FormErrorMessage>
-              {errors.serviceId && errors.serviceId.message}
-            </FormErrorMessage>
-          </FormControl>
-          <FormControl isInvalid={errors.videoId !== undefined} hidden>
-            <FormLabel htmlFor="videoId">영상 ID</FormLabel>
-            <Input
-              id="videoId"
-              value={router.query.videoId}
-              {...register("videoId")}
-            />
-            <FormErrorMessage>
-              {errors.videoId && errors.videoId.message}
-            </FormErrorMessage>
-          </FormControl>
-          <FormControl as="fieldset">
-            <FormLabel as="legend">요청할 자막 언어</FormLabel>
-            <SelectLanguage register={register("lang")} />
-            <FormErrorMessage>
-              {errors.lang && errors.lang.message}
-            </FormErrorMessage>
-          </FormControl>
-          <Button
-            mt={4}
-            colorScheme="teal"
-            isLoading={isSubmitting}
-            type="submit"
-          >
-            요청
-          </Button>
-        </form>
-      </WrapItem>
-    </Wrap>
+    <>
+      <CreateHeader type="request" step={2} />
+      <Wrap>
+        <WrapItem>
+          <VideoInfo serviceId={serviceId} videoId={videoId} />
+        </WrapItem>
+        <WrapItem>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <FormControl isInvalid={errors.serviceId !== undefined} hidden>
+              <FormLabel htmlFor="serviceId">서비스</FormLabel>
+              <Input
+                id="serviceId"
+                value={router.query.serviceId}
+                {...register("serviceId")}
+              />
+              <FormErrorMessage>
+                {errors.serviceId && errors.serviceId.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={errors.videoId !== undefined} hidden>
+              <FormLabel htmlFor="videoId">영상 ID</FormLabel>
+              <Input
+                id="videoId"
+                value={router.query.videoId}
+                {...register("videoId")}
+              />
+              <FormErrorMessage>
+                {errors.videoId && errors.videoId.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl as="fieldset">
+              <FormLabel as="legend">요청할 자막 언어</FormLabel>
+              <SelectLanguage register={register("lang")} />
+              <FormErrorMessage>
+                {errors.lang && errors.lang.message}
+              </FormErrorMessage>
+            </FormControl>
+            <Button
+              mt={4}
+              colorScheme="teal"
+              isLoading={isSubmitting}
+              type="submit"
+            >
+              요청
+            </Button>
+          </form>
+        </WrapItem>
+      </Wrap>
+    </>
   );
 }
 
 RequestCreate.auth = Role.USER;
+RequestCreate.hideTitle = true;

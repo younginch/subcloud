@@ -7,10 +7,13 @@ import {
   Avatar,
   HStack,
   Stack,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { VideoWithInfo } from "../utils/types";
+import { VideoWithInfo } from "../../utils/types";
+import VideoForm from "./videoForm";
 
 type Props = {
   serviceId: string;
@@ -27,29 +30,28 @@ export default function VideoInfo({ serviceId, videoId }: Props) {
 
   return (
     <Stack>
-      <Input />
-      <Box>
+      <VideoForm value={video?.url} />
+      <Box maxW="28em" borderWidth={1} borderRadius="6px" overflow="hidden">
         <Image
-          w="360px"
+          maxW="28em"
           marginEnd="24px"
           src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
           alt="Video thumbnail"
         />
         {video?.info ? (
-          <>
-            <Heading size="lg">{video?.info.title}</Heading>
-            <Text>
+          <Box padding="12px">
+            <Heading size="md">{video?.info.title}</Heading>
+            <Text marginY="12px">
               조회수 {video?.info.viewCount}회 | {video?.info.publishedAt}
             </Text>
-            <div style={{ height: "12px" }} />
             <HStack>
               <Avatar marginEnd="12px" src={video?.info.channel.thumbnailUrl} />
               <Stack>
-                <Heading size="md">{video?.info.channel.title}</Heading>
+                <Heading size="sm">{video?.info.channel.title}</Heading>
                 <Text>구독자 {video?.info.channel.subscriberCount}명</Text>
               </Stack>
             </HStack>
-          </>
+          </Box>
         ) : (
           <Text>정보 없음</Text>
         )}
