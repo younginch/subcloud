@@ -20,10 +20,7 @@ async function SubCreate({ req, res, prisma, session }: RouteParams<Sub>) {
     },
   });
   if (sub) {
-    return res.status(409).json({
-      error: SubErrorType.InvalidRequest,
-      message: "Sub already exists",
-    });
+    return res.status(409).json(sub);
   }
   const createdSub = await prisma.sub.create({
     data: {

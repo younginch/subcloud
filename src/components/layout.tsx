@@ -31,7 +31,7 @@ export default function Layout({ hideNavBar, hideTitle, children }: Props) {
         }}
       >
         {!hideNavBar && <NavBar />}
-        <Container maxW="6xl" paddingX={hideTitle ? 0 : "36px"}>
+        <Container maxW="6xl" paddingX="36px">
           {!hideTitle && <Heading marginY="18px">{t(router.pathname)}</Heading>}
           {children}
         </Container>

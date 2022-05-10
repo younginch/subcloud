@@ -8,6 +8,10 @@ import {
   useToast,
   Wrap,
   WrapItem,
+  ListItem,
+  ListIcon,
+  UnorderedList,
+  List,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useCallback, useState } from "react";
@@ -16,7 +20,9 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import VideoInfo from "../../../../../components/videoInfo";
+import VideoInfo from "../../../../../components/create/videoInfo";
+import CreateHeader from "../../../../../components/create/createHeader";
+import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 
 type FormData = {
   lang: string;
@@ -73,62 +79,74 @@ export default function SubCreate() {
     });
 
   const acceptedFileItems = acceptedFiles.map((file) => (
-    <li key={file.name}>
-      {file.name} - {file.size} bytes
-    </li>
+    <ListItem key={file.name}>
+      <ListIcon as={CheckCircleIcon} />
+      <Text>
+        {file.name} - {file.size} bytes
+      </Text>
+    </ListItem>
   ));
 
   const fileRejectionItems = fileRejections.map(({ file, errors }) => (
-    <li key={file.name}>
-      {file.name} - {file.size} bytes
-      <ul>
+    <ListItem key={file.name}>
+      <ListIcon as={WarningIcon} />
+      <Text>
+        {file.name} - {file.size} bytes
+      </Text>
+      <UnorderedList>
         {errors.map((e) => (
-          <li key={e.code}>{e.message}</li>
+          <ListItem key={e.code}>{e.message}</ListItem>
         ))}
-      </ul>
-    </li>
+      </UnorderedList>
+    </ListItem>
   ));
 
   return (
-    <Wrap>
-      <WrapItem>
-        <VideoInfo serviceId={serviceId} videoId={videoId} />
-      </WrapItem>
-      <WrapItem>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl isInvalid={errors.file !== undefined}>
-            <FormLabel htmlFor="name">자막 파일</FormLabel>
-            <Box w="360px" h="120px" borderWidth="1px" borderRadius="6px">
-              <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                <Text>
-                  Drag &apos;n&apos; drop some files here, or click to select
-                  files
-                </Text>
-              </div>
-            </Box>
-            {acceptedFileItems}
-            <FormErrorMessage>{fileRejectionItems}</FormErrorMessage>
-          </FormControl>
-          <FormControl as="fieldset">
-            <FormLabel as="legend">자막 언어</FormLabel>
-            <SelectLanguage register={register("lang")} />
-            <FormErrorMessage>
-              {errors.lang && errors.lang.message}
-            </FormErrorMessage>
-          </FormControl>
-          <Button
-            mt={4}
-            colorScheme="teal"
-            isLoading={isSubmitting}
-            type="submit"
-          >
-            업로드
-          </Button>
-        </form>
-      </WrapItem>
-    </Wrap>
+    <>
+      <CreateHeader type="sub" step={2} />
+      <Wrap>
+        <WrapItem>
+          <VideoInfo serviceId={serviceId} videoId={videoId} />
+        </WrapItem>
+        <WrapItem>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <FormControl isInvalid={errors.file !== undefined}>
+              <FormLabel htmlFor="name">자막 파일</FormLabel>
+              <Box w="360px" h="120px" borderWidth="1px" borderRadius="6px">
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <Text>
+                    Drag &apos;n&apos; drop some files here, or click to select
+                    files
+                  </Text>
+                </div>
+              </Box>
+              <List>{acceptedFileItems}</List>
+              <FormErrorMessage>
+                <List>{fileRejectionItems}</List>
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl as="fieldset">
+              <FormLabel as="legend">자막 언어</FormLabel>
+              <SelectLanguage register={register("lang")} />
+              <FormErrorMessage>
+                {errors.lang && errors.lang.message}
+              </FormErrorMessage>
+            </FormControl>
+            <Button
+              mt={4}
+              colorScheme="teal"
+              isLoading={isSubmitting}
+              type="submit"
+            >
+              업로드
+            </Button>
+          </form>
+        </WrapItem>
+      </Wrap>
+    </>
   );
 }
 
 SubCreate.auth = true;
+SubCreate.hideTitle = true;
