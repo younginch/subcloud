@@ -39,7 +39,7 @@ export default function Layout({ hideNavBar, hideTitle, children }: Props) {
 
       <Footer />
       <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-ZVP1Q9XQJB"
+        src="https://www.googletagmanager.com/gtag/js?id=G-HW4MKMPX9Y"
         strategy="afterInteractive"
       />
       <Script id="google-analytics" strategy="afterInteractive">
@@ -48,7 +48,7 @@ export default function Layout({ hideNavBar, hideTitle, children }: Props) {
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
 
-          gtag('config', 'G-ZVP1Q9XQJB');
+          gtag('config', 'G-HW4MKMPX9Y');
         `}
       </Script>
       <Script id="channeltalk" strategy="lazyOnload">

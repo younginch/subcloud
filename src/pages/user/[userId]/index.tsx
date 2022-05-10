@@ -34,13 +34,20 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { MoreIcon } from "../../../utils/icons";
-import Link from "next/link";
+import { GetServerSideProps } from "next";
+import { RequestWithUserCount } from "../../../utils/types";
 
 const TAB_LIST = ["request", "sub", "file"];
 
-export default function UserRead() {
+type UserReadProps = {
+  requests: RequestWithUserCount[];
+  subs: Sub[];
+  files: File[];
+};
+
+export default function UserRead({ requests, subs, files }: UserReadProps) {
   const router = useRouter();
-  const { data, status } = useSession();
+  const { data } = useSession();
 
   function getTabIndex() {
     if (router.query.tab === "request") {
@@ -79,13 +86,13 @@ export default function UserRead() {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <RequestPanel />
+            <RequestPanel requests={requests} />
           </TabPanel>
           <TabPanel>
-            <SubPanel />
+            <SubPanel subs={subs} />
           </TabPanel>
           <TabPanel>
-            <FilePanel />
+            <FilePanel files={files} />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -93,11 +100,12 @@ export default function UserRead() {
   );
 }
 
-function RequestPanel() {
+function RequestPanel(props: { requests: RequestWithUserCount[] }) {
   const router = useRouter();
-  const { status } = useSession();
   const toast = useToast();
-  const [requests, setRequests] = useState<Request[]>([]);
+  const [requests, setRequests] = useState<RequestWithUserCount[]>(
+    props.requests
+  );
 
   function getRequests() {
     axios
@@ -113,8 +121,6 @@ function RequestPanel() {
         });
       });
   }
-
-  useEffect(getRequests, [router.query.userId, status, toast]);
 
   return (
     <TableContainer>
@@ -197,11 +203,11 @@ function RequestPanel() {
   );
 }
 
-function SubPanel() {
+function SubPanel(props: { subs: Sub[] }) {
   const router = useRouter();
   const { status } = useSession();
   const toast = useToast();
-  const [subs, setSubs] = useState<Sub[]>([]);
+  const [subs, setSubs] = useState<Sub[]>(props.subs);
   const [subStatus, setSubStatus] = useState<Status | "all">("all");
 
   useEffect(getSubs, [router.query.userId, status, subStatus, toast]);
@@ -315,13 +321,12 @@ function SubPanel() {
   );
 }
 
-function FilePanel() {
-  const router = useRouter();
-  const { data, status } = useSession();
+function FilePanel(props: { files: File[] }) {
   const toast = useToast();
-  const [files, setFiles] = useState<File[]>([]);
+  const router = useRouter();
+  const [files, setFiles] = useState<File[]>(props.files);
 
-  useEffect(getFiles, [router.query.userId, status, toast]);
+  useEffect(getFiles, [router.query.userId, toast]);
 
   function getFiles() {
     axios
@@ -408,3 +413,25 @@ function FilePanel() {
     </TableContainer>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<UserReadProps> = async (
+  context
+) => {
+  const { userId } = context.query;
+  const requestsRes = await axios.get(
+    `${process.env.NEXTAUTH_URL}/api/request/search?userId=${userId}`
+  );
+  const subsRes = await axios.get(
+    `${process.env.NEXTAUTH_URL}/api/sub/search?userId=${userId}`
+  );
+  const filesRes = await axios.get(
+    `${process.env.NEXTAUTH_URL}/api/file/search?userId=${userId}`
+  );
+  return {
+    props: {
+      requests: requestsRes.data,
+      subs: subsRes.data,
+      files: filesRes.data,
+    },
+  };
+};
