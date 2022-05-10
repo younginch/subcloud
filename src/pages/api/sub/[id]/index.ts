@@ -1,5 +1,9 @@
 import { Sub } from "@prisma/client";
-import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
+import {
+  handleRoute,
+  RouteParams,
+  SubErrorType,
+} from "../../../../utils/types";
 
 async function SubRead({ req, res, prisma }: RouteParams<Sub>) {
   const { id } = req.query;
