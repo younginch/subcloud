@@ -7,6 +7,7 @@ import {
   useToast,
   Wrap,
   WrapItem,
+  Box,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -67,7 +68,7 @@ export default function RequestCreate() {
         <WrapItem>
           <VideoInfo serviceId={serviceId} videoId={videoId} />
         </WrapItem>
-        <WrapItem>
+        <WrapItem paddingX="36px">
           <form onSubmit={handleSubmit(onSubmit)}>
             <FormControl isInvalid={errors.serviceId !== undefined} hidden>
               <FormLabel htmlFor="serviceId">서비스</FormLabel>

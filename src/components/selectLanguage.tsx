@@ -10,10 +10,12 @@ type Props = {
 export default function SelectLanguage({ register }: Props) {
   const [language, setLanguage] = useState("");
 
+  const codeList = ["en", "fr", "de", "it", "es", "pt", "ru", "ja", "zh", "ko"];
+
   return (
     <RadioGroup onChange={setLanguage} value={language}>
-      <Stack maxH="540px" overflow="scroll" scrollBehavior="auto">
-        {ISO6391.getAllCodes().map((code) => {
+      <Stack>
+        {codeList.map((code) => {
           return (
             <Radio {...register} key={code} value={code}>
               {`${ISO6391.getName(code)} (${ISO6391.getNativeName(code)})`}
