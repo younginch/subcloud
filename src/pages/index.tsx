@@ -58,17 +58,15 @@ export default function Home() {
     <>
       <HStack h="100vh" alignItems="top">
         <Stack marginTop="28vh" width="560px">
-          <Heading fontSize="40px" h="76px">
-            최소한의 검색으로, 최고의 정보를
+          <Heading fontSize="31px" h="76px">
+            우리 모두를 위한 단 하나의 자막 플랫폼.
           </Heading>
-          <Text fontSize="20px">라이너는 정보의 홍수 속에서, 여러분이</Text>
-          <Text fontSize="20px">
-            믿을 수 있는 정보를 빠르게 찾고 습득할 수 있도록 돕습니다.
-          </Text>
+          <Text fontSize="20px">SubCloud는 유튜브의 모든 영상에</Text>
+          <Text fontSize="20px">양질의 자막을 제공하는것을 목표로 합니다.</Text>
           <Box paddingTop="3vh">
             <Link href="/auth/signin?callbackUrl=/" passHref>
               <Button h="54px" borderRadius="12px">
-                무료로 라이너 이용하기
+                무료로 SubCloud 이용하기
               </Button>
             </Link>
           </Box>
