@@ -108,7 +108,7 @@ export default function SubCreate() {
         <WrapItem>
           <VideoInfo serviceId={serviceId} videoId={videoId} />
         </WrapItem>
-        <WrapItem>
+        <WrapItem paddingX="36px">
           <form onSubmit={handleSubmit(onSubmit)}>
             <FormControl isInvalid={errors.file !== undefined}>
               <FormLabel htmlFor="name">자막 파일</FormLabel>
