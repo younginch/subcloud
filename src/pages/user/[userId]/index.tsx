@@ -36,6 +36,7 @@ import { useEffect, useState } from "react";
 import { MoreIcon } from "../../../utils/icons";
 import { GetServerSideProps } from "next";
 import { RequestWithUserCount } from "../../../utils/types";
+import { FaYoutube } from "react-icons/fa";
 
 const TAB_LIST = ["request", "sub", "file"];
 
@@ -145,7 +146,10 @@ function RequestPanel(props: { requests: RequestWithUserCount[] }) {
                     );
                   }}
                 >
-                  {request.id}
+                  <HStack>
+                    <FaYoutube size={36} />
+                    {request.id}
+                  </HStack>
                 </Td>
                 <Td>{request.videoId}</Td>
                 <Td>{request.lang}</Td>
@@ -191,13 +195,6 @@ function RequestPanel(props: { requests: RequestWithUserCount[] }) {
             );
           })}
         </Tbody>
-        <Tfoot>
-          <Tr>
-            <Th>To convert</Th>
-            <Th>into</Th>
-            <Th isNumeric>multiply by</Th>
-          </Tr>
-        </Tfoot>
       </Table>
     </TableContainer>
   );
@@ -309,13 +306,6 @@ function SubPanel(props: { subs: Sub[] }) {
             );
           })}
         </Tbody>
-        <Tfoot>
-          <Tr>
-            <Th>To convert</Th>
-            <Th>into</Th>
-            <Th isNumeric>multiply by</Th>
-          </Tr>
-        </Tfoot>
       </Table>
     </TableContainer>
   );
@@ -402,13 +392,6 @@ function FilePanel(props: { files: File[] }) {
             );
           })}
         </Tbody>
-        <Tfoot>
-          <Tr>
-            <Th>To convert</Th>
-            <Th>into</Th>
-            <Th isNumeric>multiply by</Th>
-          </Tr>
-        </Tfoot>
       </Table>
     </TableContainer>
   );

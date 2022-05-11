@@ -3,8 +3,10 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Heading,
   HStack,
+  Spacer,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -75,35 +77,37 @@ export default function Home() {
           <Image src={TitleImage} alt="title" width="580px" height="372px" />
         </Box>
       </HStack>
-      <HStack>
+      <Flex marginY="48px">
         <Stack>
           <Heading>무료 자막 요청</Heading>
           <Text>자막이 필요한 영상이 생기면</Text>
           <Text>언제든지 요청하세요.</Text>
           <Text>자막이 생기면 바로 알림으로 알려드릴게요.</Text>
         </Stack>
+        <Spacer />
         <Box backgroundColor="green" borderRadius="24px" padding="24px">
           <CheckCircleIcon />
           <Heading>요청 전송 완료</Heading>
           <Text>52명이 같은 영상에 요청했어요.</Text>
         </Box>
-      </HStack>
-      <HStack>
+      </Flex>
+      <Flex marginY="48px">
         <Box backgroundColor="green" borderRadius="24px" padding="24px">
           <CheckCircleIcon />
           <Heading>요청 전송 완료</Heading>
           <Text>52명이 같은 영상에 요청했어요.</Text>
         </Box>
+        <Spacer />
         <Stack>
           <Heading>자유로운 자막 제작</Heading>
           <Text>자막을 만들어 돈도 벌고,</Text>
           <Text>경력도 쌓아보세요.</Text>
           <Text>자막이 생기면 바로 알림으로 알려드릴게요.</Text>
         </Stack>
-      </HStack>
+      </Flex>
       <Heading>확장 프로그램</Heading>
-      <Text>지금 바로 다운로드하세요.</Text>
-      <HStack>
+      <Text marginY="24px">지금 바로 다운로드하세요.</Text>
+      <HStack marginBottom="192px">
         <Stack>
           <ExtensionButton browser="chrome" />
           <Text paddingStart="18px">1000 + Users</Text>

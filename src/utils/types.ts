@@ -165,4 +165,7 @@ export type YoutubeVideoWithChannel = YoutubeVideo & {
 
 export type VideoWithInfo = Video & { info?: YoutubeVideoWithChannel | null };
 
-export type RequestWithUserCount = Request & { _count: { users: number } };
+export type RequestWithUserCount = Request & {
+  _count: { users: number };
+  youtubeVideo?: YoutubeVideoWithChannel;
+};
