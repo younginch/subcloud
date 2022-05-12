@@ -14,7 +14,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
-import { RequestWithUserCount } from "../../../utils/types";
+import { RequestWithUserCount, SubWithVideo } from "../../../utils/types";
 import RequestPanel from "../../../components/user/requestPanel";
 import SubPanel from "../../../components/user/subPanel";
 import FilePanel from "../../../components/user/filePanel";
@@ -23,7 +23,7 @@ const TAB_LIST = ["request", "sub", "file"];
 
 type UserReadProps = {
   requests: RequestWithUserCount[];
-  subs: Sub[];
+  subs: SubWithVideo[];
   files: File[];
 };
 
