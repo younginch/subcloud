@@ -5,6 +5,7 @@ import {
   Request,
   Video,
   YoutubeChannel,
+  Sub,
 } from "@prisma/client";
 import {
   PrismaClientInitializationError,
@@ -163,9 +164,18 @@ export type YoutubeVideoWithChannel = YoutubeVideo & {
   channel: YoutubeChannel;
 };
 
-export type VideoWithInfo = Video & { info?: YoutubeVideoWithChannel | null };
+export type VideoWithInfo = Video & {
+  youtubeVideo?: YoutubeVideoWithChannel | null;
+};
 
 export type RequestWithUserCount = Request & {
   _count: { users: number };
-  youtubeVideo?: YoutubeVideoWithChannel;
+};
+
+export type RequestWithUserCountAndYoutube = RequestWithUserCount & {
+  video?: VideoWithInfo;
+};
+
+export type SubWithVideo = Sub & {
+  video: VideoWithInfo;
 };

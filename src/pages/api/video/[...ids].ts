@@ -15,20 +15,14 @@ async function VideoRead({ req, res, prisma }: RouteParams<VideoWithInfo>) {
   }
   let video = await prisma.video.findUnique({
     where: { serviceId_videoId: { serviceId, videoId } },
+    include: { youtubeVideo: { include: { channel: true } } },
   });
   if (!video) {
     return res
       .status(404)
       .json({ error: SubErrorType.NotFound, message: "Video" });
   }
-  let info;
-  if (video.serviceId === "youtube") {
-    info = await prisma.youtubeVideo.findUnique({
-      where: { id: video.videoId },
-      include: { channel: true },
-    });
-  }
-  return res.status(200).json({ ...video, info });
+  return res.status(200).json(video);
 }
 
 export default handleRoute({ GET: VideoRead });

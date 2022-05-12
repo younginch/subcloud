@@ -1,4 +1,4 @@
-import { Container, Heading, HStack, Text } from "@chakra-ui/react";
+import { Box, Container, Heading, HStack, Text } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -36,7 +36,6 @@ export default function Layout({ hideNavBar, hideTitle, children }: Props) {
           {children}
         </Container>
       </div>
-
       <Footer />
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-HW4MKMPX9Y"

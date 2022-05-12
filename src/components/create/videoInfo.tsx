@@ -38,17 +38,23 @@ export default function VideoInfo({ serviceId, videoId }: Props) {
           src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
           alt="Video thumbnail"
         />
-        {video?.info ? (
+        {video?.youtubeVideo ? (
           <Box padding="12px">
-            <Heading size="md">{video?.info.title}</Heading>
+            <Heading size="md">{video?.youtubeVideo.title}</Heading>
             <Text marginY="12px">
-              조회수 {video?.info.viewCount}회 | {video?.info.publishedAt}
+              조회수 {video?.youtubeVideo.viewCount}회 |{" "}
+              {video?.youtubeVideo.publishedAt}
             </Text>
             <HStack>
-              <Avatar marginEnd="12px" src={video?.info.channel.thumbnailUrl} />
+              <Avatar
+                marginEnd="12px"
+                src={video?.youtubeVideo.channel.thumbnailUrl}
+              />
               <Stack>
-                <Heading size="sm">{video?.info.channel.title}</Heading>
-                <Text>구독자 {video?.info.channel.subscriberCount}명</Text>
+                <Heading size="sm">{video?.youtubeVideo.channel.title}</Heading>
+                <Text>
+                  구독자 {video?.youtubeVideo.channel.subscriberCount}명
+                </Text>
               </Stack>
             </HStack>
           </Box>

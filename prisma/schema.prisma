@@ -61,17 +61,20 @@ model VerificationToken {
 }
 
 model Video {
-  url       String    @id @unique
-  serviceId String
-  videoId   String
-  subs      Sub[]
-  requests  Request[]
+  url            String        @id @unique
+  serviceId      String
+  videoId        String        @unique
+  subs           Sub[]
+  requests       Request[]
+  youtubeVideoId String?
+  youtubeVideo   YoutubeVideo? @relation(fields: [youtubeVideoId], references: [id])
 
   @@unique([serviceId, videoId])
 }
 
 model YoutubeVideo {
   id          String         @id
+  Video       Video?
   channelId   String
   channel     YoutubeChannel @relation(fields: [channelId], references: [id])
   publishedAt DateTime
