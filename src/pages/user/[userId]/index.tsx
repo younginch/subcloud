@@ -35,7 +35,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { MoreIcon } from "../../../utils/icons";
 import { GetServerSideProps } from "next";
-import { RequestWithUserCount } from "../../../utils/types";
+import {
+  RequestWithUserCount,
+  RequestWithUserCountAndYoutube,
+} from "../../../utils/types";
 import { FaYoutube } from "react-icons/fa";
 
 const TAB_LIST = ["request", "sub", "file"];
@@ -101,10 +104,10 @@ export default function UserRead({ requests, subs, files }: UserReadProps) {
   );
 }
 
-function RequestPanel(props: { requests: RequestWithUserCount[] }) {
+function RequestPanel(props: { requests: RequestWithUserCountAndYoutube[] }) {
   const router = useRouter();
   const toast = useToast();
-  const [requests, setRequests] = useState<RequestWithUserCount[]>(
+  const [requests, setRequests] = useState<RequestWithUserCountAndYoutube[]>(
     props.requests
   );
 
@@ -126,13 +129,12 @@ function RequestPanel(props: { requests: RequestWithUserCount[] }) {
   return (
     <TableContainer>
       <Table variant="simple" size="sm">
-        <TableCaption>Imperial to metric conversion factors</TableCaption>
         <Thead>
           <Tr>
-            <Th>ID</Th>
-            <Th>Video ID</Th>
+            <Th>비디오</Th>
+            <Th>채널</Th>
             <Th>요청 언어</Th>
-            <Th>취소</Th>
+            <Th>작업</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -148,10 +150,27 @@ function RequestPanel(props: { requests: RequestWithUserCount[] }) {
                 >
                   <HStack>
                     <FaYoutube size={36} />
-                    {request.id}
+                    <Text>
+                      {request.youtubeVideo?.title ?? "비디오 정보없음"}
+                    </Text>
                   </HStack>
                 </Td>
-                <Td>{request.videoId}</Td>
+                <Td>
+                  <HStack>
+                    <Avatar
+                      name={
+                        request.youtubeVideo?.channel.title ?? "채널 정보없음"
+                      }
+                      src={
+                        request.youtubeVideo?.channel.thumbnailUrl ?? undefined
+                      }
+                      size="sm"
+                    />
+                    <Text>
+                      {request.youtubeVideo?.channel.title ?? "채널 정보없음"}
+                    </Text>
+                  </HStack>
+                </Td>
                 <Td>{request.lang}</Td>
                 <Td>
                   <Button

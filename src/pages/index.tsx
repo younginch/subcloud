@@ -77,30 +77,66 @@ export default function Home() {
       </HStack>
       <Flex marginY="48px">
         <Stack>
-          <Heading>무료 자막 요청</Heading>
-          <Text>자막이 필요한 영상이 생기면</Text>
-          <Text>언제든지 요청하세요.</Text>
-          <Text>자막이 생기면 바로 알림으로 알려드릴게요.</Text>
+          <Heading color="blue.400" size="md">
+            무료 자막 요청
+          </Heading>
+          <Text h={9} fontSize="4xl" fontWeight="bold">
+            자막이 필요한 영상이 생기면
+          </Text>
+          <Text fontSize="4xl" fontWeight="bold">
+            언제든지 요청하세요.
+          </Text>
+          <Text fontSize="2xl">자막이 생기면 바로 알림으로 알려드릴게요.</Text>
         </Stack>
         <Spacer />
-        <Box backgroundColor="green" borderRadius="24px" padding="24px">
-          <CheckCircleIcon />
-          <Heading>요청 전송 완료</Heading>
-          <Text>52명이 같은 영상에 요청했어요.</Text>
+        <Box
+          boxShadow="2xl"
+          w="420px"
+          h="300px"
+          borderRadius="24px"
+          padding="24px"
+        >
+          <Center flexDir="column">
+            <CheckCircleIcon w={14} h={14} color="blue.400" marginTop={8} />
+            <Heading marginTop={6} size="lg">
+              요청 전송 완료
+            </Heading>
+            <Text color="blue.400" marginTop={7}>
+              52명이 같은 영상에 요청했어요.
+            </Text>
+          </Center>
         </Box>
       </Flex>
-      <Flex marginY="48px">
-        <Box backgroundColor="green" borderRadius="24px" padding="24px">
-          <CheckCircleIcon />
-          <Heading>요청 전송 완료</Heading>
-          <Text>52명이 같은 영상에 요청했어요.</Text>
+      <Flex marginY="128px">
+        <Box
+          boxShadow="2xl"
+          w="420px"
+          h="300px"
+          borderRadius="24px"
+          padding="24px"
+        >
+          <Center flexDir="column">
+            <CheckCircleIcon w={14} h={14} color="blue.400" marginTop={8} />
+            <Heading marginTop={6} size="lg">
+              자막 제작 완료
+            </Heading>
+            <Text color="blue.400" marginTop={7}>
+              52명이 이 영상에 자막을 요청했어요.
+            </Text>
+          </Center>
         </Box>
         <Spacer />
         <Stack>
-          <Heading>자유로운 자막 제작</Heading>
-          <Text>자막을 만들어 돈도 벌고,</Text>
-          <Text>경력도 쌓아보세요.</Text>
-          <Text>자막이 생기면 바로 알림으로 알려드릴게요.</Text>
+          <Heading color="blue.400" size="md">
+            자유로운 자막 제작
+          </Heading>
+          <Text h={9} fontSize="4xl" fontWeight="bold">
+            자막을 만들어 돈도 벌고,
+          </Text>
+          <Text fontSize="4xl" fontWeight="bold">
+            경력도 쌓아보세요.
+          </Text>
+          <Text fontSize="2xl">자막이 생기면 바로 알림으로 알려드릴게요.</Text>
         </Stack>
       </Flex>
       <Heading>확장 프로그램</Heading>

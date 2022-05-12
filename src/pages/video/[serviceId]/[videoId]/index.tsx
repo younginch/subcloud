@@ -87,18 +87,24 @@ export default function Video({ video, requests, subs }: VideoProps) {
           src={`https://img.youtube.com/vi/${router.query.videoId}/maxresdefault.jpg`}
           alt="Video thumbnail"
         />
-        {video?.info ? (
+        {video?.youtubeVideo ? (
           <Stack>
-            <Heading size="lg">{video?.info.title}</Heading>
+            <Heading size="lg">{video?.youtubeVideo.title}</Heading>
             <Text>
-              조회수 {video?.info.viewCount}회 | {video?.info.publishedAt}
+              조회수 {video?.youtubeVideo.viewCount}회 |{" "}
+              {video?.youtubeVideo.publishedAt}
             </Text>
             <div style={{ height: "12px" }} />
             <HStack>
-              <Avatar marginEnd="12px" src={video?.info.channel.thumbnailUrl} />
+              <Avatar
+                marginEnd="12px"
+                src={video?.youtubeVideo.channel.thumbnailUrl}
+              />
               <Stack>
-                <Heading size="md">{video?.info.channel.title}</Heading>
-                <Text>구독자 {video?.info.channel.subscriberCount}명</Text>
+                <Heading size="md">{video?.youtubeVideo.channel.title}</Heading>
+                <Text>
+                  구독자 {video?.youtubeVideo.channel.subscriberCount}명
+                </Text>
               </Stack>
             </HStack>
           </Stack>

@@ -1,6 +1,6 @@
 import {
   handleRoute,
-  RequestWithUserCount,
+  RequestWithUserCountAndYoutube,
   RouteParams,
 } from "../../../utils/types";
 
@@ -8,7 +8,7 @@ async function searchSubtitles({
   req,
   res,
   prisma,
-}: RouteParams<RequestWithUserCount[]>) {
+}: RouteParams<RequestWithUserCountAndYoutube[]>) {
   const { userId, serviceId, videoId } = req.query;
   if (userId) {
     const requests = await prisma.request.findMany({
@@ -16,6 +16,15 @@ async function searchSubtitles({
       include: {
         _count: {
           select: { users: true },
+        },
+        video: {
+          include: {
+            youtubeVideo: {
+              include: {
+                channel: true,
+              },
+            },
+          },
         },
       },
     });
