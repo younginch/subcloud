@@ -3,15 +3,20 @@ import { handleRoute, RouteParams } from "../../../utils/types";
 
 async function SubSearch({ req, res, prisma }: RouteParams<Sub[]>) {
   const { serviceId, videoId, userId, status } = req.query;
+  const include = {
+    video: { include: { youtubeVideo: { include: { channel: true } } } },
+  };
   let subs: Sub[] = [];
   if (userId) {
     if (status === "all") {
       subs = await prisma.sub.findMany({
         where: { userId: userId as string },
+        include,
       });
     } else {
       subs = await prisma.sub.findMany({
         where: { userId: userId as string, status: status as Status },
+        include,
       });
     }
   } else if (serviceId && videoId) {

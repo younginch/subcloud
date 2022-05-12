@@ -15,7 +15,6 @@ export default function AdminUser({ users = [] }: { users: User[] }) {
   return (
     <TableContainer>
       <Table variant="simple">
-        <TableCaption>Imperial to metric conversion factors</TableCaption>
         <Thead>
           <Tr>
             <Th>To convert</Th>

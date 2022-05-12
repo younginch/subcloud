@@ -30,17 +30,17 @@ async function VideoCreate({ req, res, prisma }: RouteParams<ResponseType>) {
       },
     },
   });
-  if (!video) {
-    const createdVideo = await prisma.video.create({
-      data: getVideoFromUrl(value.url),
-    });
-    if (createdVideo.serviceId === "youtube") {
-      const videoFromYoutube = await addYoutubeInfo(createdVideo.videoId);
-      return res.status(201).json(videoFromYoutube);
-    }
-    return res.status(201).json(createdVideo);
+  if (video) {
+    return res.status(200).json(video);
   }
-  return res.status(200).json(video);
+  const createdVideo = await prisma.video.create({
+    data: getVideoFromUrl(value.url),
+  });
+  if (createdVideo.serviceId === "youtube") {
+    const videoFromYoutube = await addYoutubeInfo(createdVideo.videoId);
+    return res.status(201).json(videoFromYoutube);
+  }
+  return res.status(201).json(createdVideo);
 }
 
 function getYoutubeVideo(url: URL): Video {
