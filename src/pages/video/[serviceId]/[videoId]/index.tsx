@@ -128,9 +128,9 @@ export default function Video({ video, requests, subs }: VideoProps) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { serviceId, videoId } = context.query;
-  const videoRes = await axios.get(
-    `${process.env.NEXTAUTH_URL}/api/video/${serviceId}/${videoId}`
-  );
+  const videoRes = await axios.get(`${process.env.NEXTAUTH_URL}/api/video`, {
+    params: { serviceId, videoId },
+  });
   const requestsRes = await axios.get(
     `${process.env.NEXTAUTH_URL}/api/request/search?serviceId=${serviceId}&videoId=${videoId}`
   );

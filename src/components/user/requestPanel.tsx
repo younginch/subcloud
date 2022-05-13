@@ -105,7 +105,7 @@ export default function RequestPanel(props: {
                     colorScheme="red"
                     onClick={() => {
                       axios
-                        .delete(`/api/request/${request.id}`)
+                        .delete(`/api/request`, { params: { id: request.id } })
                         .then(() => {
                           toast({
                             title: "성공",

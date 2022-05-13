@@ -23,9 +23,11 @@ type Props = {
 export default function VideoInfo({ serviceId, videoId }: Props) {
   const [video, setVideo] = useState<VideoWithInfo>();
   useEffect(() => {
-    axios.get(`/api/video/${serviceId}/${videoId}`).then(({ data }) => {
-      setVideo(data);
-    });
+    axios
+      .get(`/api/video`, { params: { serviceId, videoId } })
+      .then(({ data }) => {
+        setVideo(data);
+      });
   }, [serviceId, videoId]);
 
   return (

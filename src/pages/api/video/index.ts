@@ -1,12 +1,12 @@
 import {
+  YoutubeVideo,
+  YoutubeChannel,
   PrismaClient,
   Video,
-  YoutubeChannel,
-  YoutubeVideo,
 } from "@prisma/client";
-import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
-import { VideoCreateSchema } from "../../../utils/schema";
 import axios from "axios";
+import { VideoCreateSchema } from "../../../utils/schema";
+import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 
 type ResponseType =
   | (Video & {
@@ -129,4 +129,27 @@ async function addYoutubeInfo(videoId: string): Promise<ResponseType> {
   }
 }
 
-export default handleRoute({ POST: VideoCreate }, { useSession: true });
+async function VideoRead({ req, res, prisma }: RouteParams<ResponseType>) {
+  const serviceId = req.query.ids[0];
+  const videoId = req.query.ids[1];
+  if (!serviceId || !videoId) {
+    return res
+      .status(400)
+      .json({ error: SubErrorType.Validation, message: "id" });
+  }
+  let video = await prisma.video.findUnique({
+    where: { serviceId_videoId: { serviceId, videoId } },
+    include: { youtubeVideo: { include: { channel: true } } },
+  });
+  if (!video) {
+    return res
+      .status(404)
+      .json({ error: SubErrorType.NotFound, message: "Video" });
+  }
+  return res.status(200).json(video);
+}
+
+export default handleRoute(
+  { POST: VideoCreate, GET: VideoRead },
+  { useSession: true }
+);

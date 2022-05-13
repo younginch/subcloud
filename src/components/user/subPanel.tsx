@@ -135,7 +135,7 @@ export default function SubPanel(props: SubPanelProps) {
                     colorScheme="red"
                     onClick={() => {
                       axios
-                        .delete(`/api/sub/${sub.id}`)
+                        .delete(`/api/sub`, { params: { id: sub.id } })
                         .then(() => {
                           toast({
                             title: "성공",
