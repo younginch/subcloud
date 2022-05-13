@@ -6,12 +6,14 @@ import {
   Flex,
   Heading,
   HStack,
+  ScaleFade,
   Spacer,
   Stack,
   Text,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useInView } from "react-hook-inview";
 import ChromeIcon from "../../public/browsers/chrome.png";
 import FirefoxIcon from "../../public/browsers/firefox.svg";
 import SafariIcon from "../../public/browsers/safari.png";
@@ -50,6 +52,44 @@ export function ExtensionButton({ browser, isDisabled = false }: Props) {
       <Image src={icon} alt="icon" width="24px" height="24px" />
       <Text marginStart="12px">{"SubCloud for " + name}</Text>
     </Button>
+  );
+}
+
+export function Extensions() {
+  const [ref, isVisible] = useInView({
+    threshold: 0.3,
+    unobserveOnEnter: true,
+  });
+
+  return (
+    <ScaleFade
+      ref={ref}
+      initialScale={0.9}
+      in={isVisible}
+      whileHover={{ scale: 1.01 }}
+    >
+      <Flex direction="column" alignItems="center" mt="200px">
+        <Heading mb="30px">지금 바로 다운로드하세요</Heading>
+        <HStack marginBottom="192px">
+          <Stack>
+            <ExtensionButton browser="chrome" />
+            <Text align="center">1000 + Users</Text>
+          </Stack>
+          <Stack>
+            <ExtensionButton browser="safari" isDisabled />
+            <Text align="center" color="gray">
+              Comming soon
+            </Text>
+          </Stack>
+          <Stack>
+            <ExtensionButton browser="firefox" isDisabled />
+            <Text align="center" color="gray">
+              Comming soon
+            </Text>
+          </Stack>
+        </HStack>
+      </Flex>
+    </ScaleFade>
   );
 }
 
@@ -139,26 +179,7 @@ export default function Home() {
           <Text fontSize="2xl">자막이 생기면 바로 알림으로 알려드릴게요.</Text>
         </Stack>
       </Flex>
-      <Heading>확장 프로그램</Heading>
-      <Text marginY="24px">지금 바로 다운로드하세요.</Text>
-      <HStack marginBottom="192px">
-        <Stack>
-          <ExtensionButton browser="chrome" />
-          <Text paddingStart="18px">1000 + Users</Text>
-        </Stack>
-        <Stack>
-          <ExtensionButton browser="safari" isDisabled />
-          <Text paddingStart="18px" color="gray">
-            Comming soon
-          </Text>
-        </Stack>
-        <Stack>
-          <ExtensionButton browser="firefox" isDisabled />
-          <Text paddingStart="18px" color="gray">
-            Comming soon
-          </Text>
-        </Stack>
-      </HStack>
+      <Extensions />
     </>
   );
 }
