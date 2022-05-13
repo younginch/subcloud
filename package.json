@@ -21,6 +21,7 @@
     "@hookform/resolvers": "^2.8.8",
     "@next-auth/prisma-adapter": "^1.0.3",
     "@prisma/client": "^3.13.0",
+    "@tosspayments/payment-sdk": "^1.1.0",
     "aws-sdk": "^2.1116.0",
     "axios": "^0.26.1",
     "framer-motion": "^6.3.0",
