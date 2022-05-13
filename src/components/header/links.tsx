@@ -13,6 +13,7 @@ export default function Links({ width }: LinksProps) {
       <LinkButton route="/video/create?next=request" width={width} />
       <LinkButton route="/video/create?next=sub" width={width} />
       <LinkButton route="/ranking" width={width} />
+      <LinkButton route="/buy" width={width} />
       <LinkButton route="/qna" width={width} />
     </>
   );

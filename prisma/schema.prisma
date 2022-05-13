@@ -140,6 +140,11 @@ model SubReview {
   comment String?
 }
 
+model Order {
+  id        String @id @default(cuid())
+  amount    Int
+}
+
 enum Role {
   ADMIN
   REVIEWER
