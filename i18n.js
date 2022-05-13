@@ -5,6 +5,4 @@ module.exports = {
     "*": ["common", "routes"],
     "/": ["common"],
   },
-  loadLocaleFrom: (locale, namespace) =>
-    import(`./src/locales/${locale}/${namespace}`).then((m) => m.default),
 };

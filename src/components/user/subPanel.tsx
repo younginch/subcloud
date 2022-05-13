@@ -101,7 +101,7 @@ export default function SubPanel(props: SubPanelProps) {
                 <Td>
                   <HStack>
                     <FaYoutube size={36} />
-                    <Text maxW={480} isTruncated>
+                    <Text maxW={480} noOfLines={1}>
                       {sub.video?.youtubeVideo?.title ?? "비디오 정보없음"}
                     </Text>
                   </HStack>
@@ -119,7 +119,7 @@ export default function SubPanel(props: SubPanelProps) {
                       }
                       size="sm"
                     />
-                    <Text maxW={120} isTruncated>
+                    <Text maxW={120} noOfLines={1}>
                       {sub.video?.youtubeVideo?.channel.title ??
                         "채널 정보없음"}
                     </Text>
