@@ -93,6 +93,14 @@ export function Extensions() {
   );
 }
 
+const SelectSubtitleSvg = () => (
+  <div>
+    <object type="image/svg+xml" data="tutorial_popup_sub.svg" width="500px">
+      svg-animation
+    </object>
+  </div>
+);
+
 export default function Home() {
   return (
     <>
@@ -179,6 +187,22 @@ export default function Home() {
           <Text fontSize="2xl">자막이 생기면 바로 알림으로 알려드릴게요.</Text>
         </Stack>
       </Flex>
+      <HStack>
+        <Stack>
+          <Heading color="blue.400" size="md">
+            간편한 자막 시청
+          </Heading>
+          <Text h={9} fontSize="4xl" fontWeight="bold">
+            웹사이트 이동 없이
+          </Text>
+          <Text fontSize="4xl" fontWeight="bold">
+            보던 영상에서 그대로.
+          </Text>
+          <Text fontSize="2xl">클릭 몇 번이면 자막을 불러올 수 있어요</Text>
+        </Stack>
+        <Spacer />
+        <SelectSubtitleSvg />
+      </HStack>
       <Extensions />
     </>
   );
