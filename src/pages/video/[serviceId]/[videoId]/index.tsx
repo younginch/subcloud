@@ -91,8 +91,7 @@ export default function Video({ video, requests, subs }: VideoProps) {
           <Stack>
             <Heading size="lg">{video?.youtubeVideo.title}</Heading>
             <Text>
-              조회수 {video?.youtubeVideo.viewCount}회 |{" "}
-              {video?.youtubeVideo.publishedAt}
+              {`조회수 ${video?.youtubeVideo.viewCount}회 | ${video?.youtubeVideo.publishedAt}`}
             </Text>
             <div style={{ height: "12px" }} />
             <HStack>

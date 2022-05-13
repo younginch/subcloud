@@ -14,7 +14,7 @@ import {
   List,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { useCallback, useState } from "react";
+import { SetStateAction, useCallback, useState } from "react";
 import SelectLanguage from "../../../../../components/selectLanguage";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
@@ -67,9 +67,12 @@ export default function SubCreate() {
     });
   }
 
-  const onDrop = useCallback((acceptedFiles) => {
-    setFile(acceptedFiles[0]);
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles: SetStateAction<string | Blob | undefined>[]) => {
+      setFile(acceptedFiles[0]);
+    },
+    []
+  );
 
   const { getRootProps, getInputProps, acceptedFiles, fileRejections } =
     useDropzone({

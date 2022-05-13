@@ -42,8 +42,7 @@ export default function VideoInfo({ serviceId, videoId }: Props) {
           <Box padding="12px">
             <Heading size="md">{video?.youtubeVideo.title}</Heading>
             <Text marginY="12px">
-              조회수 {video?.youtubeVideo.viewCount}회 |{" "}
-              {video?.youtubeVideo.publishedAt}
+              {`조회수 ${video?.youtubeVideo.viewCount}회 | ${video?.youtubeVideo.publishedAt}`}
             </Text>
             <HStack>
               <Avatar
