@@ -6,12 +6,14 @@ import {
   Flex,
   Heading,
   HStack,
+  ScaleFade,
   Spacer,
   Stack,
   Text,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useInView } from "react-hook-inview";
 import ChromeIcon from "../../public/browsers/chrome.png";
 import FirefoxIcon from "../../public/browsers/firefox.svg";
 import SafariIcon from "../../public/browsers/safari.png";
@@ -52,6 +54,52 @@ export function ExtensionButton({ browser, isDisabled = false }: Props) {
     </Button>
   );
 }
+
+export function Extensions() {
+  const [ref, isVisible] = useInView({
+    threshold: 0.3,
+    unobserveOnEnter: true,
+  });
+
+  return (
+    <ScaleFade
+      ref={ref}
+      initialScale={0.9}
+      in={isVisible}
+      whileHover={{ scale: 1.01 }}
+    >
+      <Flex direction="column" alignItems="center" mt="200px">
+        <Heading mb="30px">지금 바로 다운로드하세요</Heading>
+        <HStack marginBottom="192px">
+          <Stack>
+            <ExtensionButton browser="chrome" />
+            <Text align="center">1000 + Users</Text>
+          </Stack>
+          <Stack>
+            <ExtensionButton browser="safari" isDisabled />
+            <Text align="center" color="gray">
+              Comming soon
+            </Text>
+          </Stack>
+          <Stack>
+            <ExtensionButton browser="firefox" isDisabled />
+            <Text align="center" color="gray">
+              Comming soon
+            </Text>
+          </Stack>
+        </HStack>
+      </Flex>
+    </ScaleFade>
+  );
+}
+
+const SelectSubtitleSvg = () => (
+  <div>
+    <object type="image/svg+xml" data="tutorial_popup_sub.svg" width="500px">
+      svg-animation
+    </object>
+  </div>
+);
 
 export default function Home() {
   return (
@@ -139,26 +187,23 @@ export default function Home() {
           <Text fontSize="2xl">자막이 생기면 바로 알림으로 알려드릴게요.</Text>
         </Stack>
       </Flex>
-      <Heading>확장 프로그램</Heading>
-      <Text marginY="24px">지금 바로 다운로드하세요.</Text>
-      <HStack marginBottom="192px">
+      <HStack>
         <Stack>
-          <ExtensionButton browser="chrome" />
-          <Text paddingStart="18px">1000 + Users</Text>
-        </Stack>
-        <Stack>
-          <ExtensionButton browser="safari" isDisabled />
-          <Text paddingStart="18px" color="gray">
-            Comming soon
+          <Heading color="blue.400" size="md">
+            간편한 자막 시청
+          </Heading>
+          <Text h={9} fontSize="4xl" fontWeight="bold">
+            웹사이트 이동 없이
           </Text>
-        </Stack>
-        <Stack>
-          <ExtensionButton browser="firefox" isDisabled />
-          <Text paddingStart="18px" color="gray">
-            Comming soon
+          <Text fontSize="4xl" fontWeight="bold">
+            보던 영상에서 그대로.
           </Text>
+          <Text fontSize="2xl">클릭 몇 번이면 자막을 불러올 수 있어요</Text>
         </Stack>
+        <Spacer />
+        <SelectSubtitleSvg />
       </HStack>
+      <Extensions />
     </>
   );
 }
