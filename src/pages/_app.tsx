@@ -93,7 +93,7 @@ function Auth({ children, role }: AuthProps): JSX.Element {
     if (status !== "authenticated") {
       return;
     }
-    axios.get(`/api/user/${data?.user.id}`).then((res) => {
+    axios.get(`/api/user`, { params: { id: data?.user.id } }).then((res) => {
       setUser(res.data);
     });
   }, [data?.user.id, status]);

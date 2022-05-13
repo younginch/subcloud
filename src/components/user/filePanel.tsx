@@ -24,7 +24,7 @@ export default function FilePanel(props: { files: File[] }) {
 
   function getFiles() {
     axios
-      .get("/api/file/search?userId=" + router.query.userId)
+      .get("/api/file/search", { params: { userId: router.query.userId } })
       .then((res) => {
         setFiles(res.data);
       })
@@ -59,9 +59,11 @@ export default function FilePanel(props: { files: File[] }) {
                   <Button
                     marginEnd="6px"
                     onClick={() => {
-                      axios.get(`/api/file/${file.id}`).then((res) => {
-                        window.open(res.data.url);
-                      });
+                      axios
+                        .get(`/api/file/`, { params: { id: file.id } })
+                        .then((res) => {
+                          window.open(res.data.url);
+                        });
                     }}
                   >
                     다운로드
@@ -70,7 +72,7 @@ export default function FilePanel(props: { files: File[] }) {
                     colorScheme="red"
                     onClick={() => {
                       axios
-                        .delete(`/api/file/${file.id}`)
+                        .delete(`/api/file`, { params: { id: file.id } })
                         .then(() => {
                           toast({
                             title: "성공",
