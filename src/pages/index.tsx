@@ -18,6 +18,7 @@ import ChromeIcon from "../../public/browsers/chrome.png";
 import FirefoxIcon from "../../public/browsers/firefox.svg";
 import SafariIcon from "../../public/browsers/safari.png";
 import TitleImage from "../../public/title.png";
+import InViewProvider from "../components/inviewProvider";
 
 type Props = {
   browser: string;
@@ -55,52 +56,6 @@ export function ExtensionButton({ browser, isDisabled = false }: Props) {
   );
 }
 
-export function Extensions() {
-  const [ref, isVisible] = useInView({
-    threshold: 0.3,
-    unobserveOnEnter: true,
-  });
-
-  return (
-    <ScaleFade
-      ref={ref}
-      initialScale={0.9}
-      in={isVisible}
-      whileHover={{ scale: 1.01 }}
-    >
-      <Flex direction="column" alignItems="center" mt="200px">
-        <Heading mb="30px">지금 바로 다운로드하세요</Heading>
-        <HStack marginBottom="192px">
-          <Stack>
-            <ExtensionButton browser="chrome" />
-            <Text align="center">1000 + Users</Text>
-          </Stack>
-          <Stack>
-            <ExtensionButton browser="safari" isDisabled />
-            <Text align="center" color="gray">
-              Comming soon
-            </Text>
-          </Stack>
-          <Stack>
-            <ExtensionButton browser="firefox" isDisabled />
-            <Text align="center" color="gray">
-              Comming soon
-            </Text>
-          </Stack>
-        </HStack>
-      </Flex>
-    </ScaleFade>
-  );
-}
-
-const SelectSubtitleSvg = () => (
-  <div>
-    <object type="image/svg+xml" data="tutorial_popup_sub.svg" width="500px">
-      svg-animation
-    </object>
-  </div>
-);
-
 export default function Home() {
   return (
     <>
@@ -123,87 +78,125 @@ export default function Home() {
           <Image src={TitleImage} alt="title" width="580px" height="372px" />
         </Box>
       </HStack>
-      <Flex marginY="48px">
-        <Stack>
-          <Heading color="blue.400" size="md">
-            무료 자막 요청
-          </Heading>
-          <Text h={9} fontSize="4xl" fontWeight="bold">
-            자막이 필요한 영상이 생기면
-          </Text>
-          <Text fontSize="4xl" fontWeight="bold">
-            언제든지 요청하세요.
-          </Text>
-          <Text fontSize="2xl">자막이 생기면 바로 알림으로 알려드릴게요.</Text>
-        </Stack>
-        <Spacer />
-        <Box
-          boxShadow="2xl"
-          w="420px"
-          h="300px"
-          borderRadius="24px"
-          padding="24px"
-        >
-          <Center flexDir="column">
-            <CheckCircleIcon w={14} h={14} color="blue.400" marginTop={8} />
-            <Heading marginTop={6} size="lg">
-              요청 전송 완료
+      <InViewProvider>
+        <Flex marginY="48px">
+          <Stack>
+            <Heading color="blue.400" size="md">
+              무료 자막 요청
             </Heading>
-            <Text color="blue.400" marginTop={7}>
-              52명이 같은 영상에 요청했어요.
+            <Text h={9} fontSize="4xl" fontWeight="bold">
+              자막이 필요한 영상이 생기면
             </Text>
-          </Center>
-        </Box>
-      </Flex>
-      <Flex marginY="128px">
-        <Box
-          boxShadow="2xl"
-          w="420px"
-          h="300px"
-          borderRadius="24px"
-          padding="24px"
-        >
-          <Center flexDir="column">
-            <CheckCircleIcon w={14} h={14} color="blue.400" marginTop={8} />
-            <Heading marginTop={6} size="lg">
-              자막 제작 완료
+            <Text fontSize="4xl" fontWeight="bold">
+              언제든지 요청하세요.
+            </Text>
+            <Text fontSize="2xl">
+              자막이 생기면 바로 알림으로 알려드릴게요.
+            </Text>
+          </Stack>
+          <Spacer />
+          <Box
+            boxShadow="2xl"
+            w="420px"
+            h="300px"
+            borderRadius="24px"
+            padding="24px"
+          >
+            <Center flexDir="column">
+              <CheckCircleIcon w={14} h={14} color="blue.400" marginTop={8} />
+              <Heading marginTop={6} size="lg">
+                요청 전송 완료
+              </Heading>
+              <Text color="blue.400" marginTop={7}>
+                52명이 같은 영상에 요청했어요.
+              </Text>
+            </Center>
+          </Box>
+        </Flex>
+        <Flex marginY="128px">
+          <Box
+            boxShadow="2xl"
+            w="420px"
+            h="300px"
+            borderRadius="24px"
+            padding="24px"
+          >
+            <Center flexDir="column">
+              <CheckCircleIcon w={14} h={14} color="blue.400" marginTop={8} />
+              <Heading marginTop={6} size="lg">
+                자막 제작 완료
+              </Heading>
+              <Text color="blue.400" marginTop={7}>
+                52명이 이 영상에 자막을 요청했어요.
+              </Text>
+            </Center>
+          </Box>
+          <Spacer />
+          <Stack>
+            <Heading color="blue.400" size="md">
+              자유로운 자막 제작
             </Heading>
-            <Text color="blue.400" marginTop={7}>
-              52명이 이 영상에 자막을 요청했어요.
+            <Text h={9} fontSize="4xl" fontWeight="bold">
+              자막을 만들어 돈도 벌고,
             </Text>
-          </Center>
-        </Box>
-        <Spacer />
-        <Stack>
-          <Heading color="blue.400" size="md">
-            자유로운 자막 제작
-          </Heading>
-          <Text h={9} fontSize="4xl" fontWeight="bold">
-            자막을 만들어 돈도 벌고,
-          </Text>
-          <Text fontSize="4xl" fontWeight="bold">
-            경력도 쌓아보세요.
-          </Text>
-          <Text fontSize="2xl">자막이 생기면 바로 알림으로 알려드릴게요.</Text>
-        </Stack>
-      </Flex>
-      <HStack>
-        <Stack>
-          <Heading color="blue.400" size="md">
-            간편한 자막 시청
-          </Heading>
-          <Text h={9} fontSize="4xl" fontWeight="bold">
-            웹사이트 이동 없이
-          </Text>
-          <Text fontSize="4xl" fontWeight="bold">
-            보던 영상에서 그대로.
-          </Text>
-          <Text fontSize="2xl">클릭 몇 번이면 자막을 불러올 수 있어요</Text>
-        </Stack>
-        <Spacer />
-        <SelectSubtitleSvg />
-      </HStack>
-      <Extensions />
+            <Text fontSize="4xl" fontWeight="bold">
+              경력도 쌓아보세요.
+            </Text>
+            <Text fontSize="2xl">
+              자막이 생기면 바로 알림으로 알려드릴게요.
+            </Text>
+          </Stack>
+        </Flex>
+      </InViewProvider>
+      <InViewProvider>
+        <HStack>
+          <Stack>
+            <Heading color="blue.400" size="md">
+              간편한 자막 시청
+            </Heading>
+            <Text h={9} fontSize="4xl" fontWeight="bold">
+              웹사이트 이동 없이
+            </Text>
+            <Text fontSize="4xl" fontWeight="bold">
+              보던 영상에서 그대로.
+            </Text>
+            <Text fontSize="2xl">클릭 몇 번이면 자막을 불러올 수 있어요</Text>
+          </Stack>
+          <Spacer />
+          <div>
+            <object
+              type="image/svg+xml"
+              data="tutorial_popup_sub.svg"
+              width="500px"
+            >
+              svg-animation
+            </object>
+          </div>
+        </HStack>
+      </InViewProvider>
+      <InViewProvider>
+        <Flex direction="column" alignItems="center" mt="200px">
+          <Heading mb="30px">지금 바로 다운로드하세요</Heading>
+          <HStack marginBottom="192px">
+            <Stack>
+              <ExtensionButton browser="chrome" />
+              <Text align="center">1000 + Users</Text>
+            </Stack>
+            <Stack>
+              <ExtensionButton browser="safari" isDisabled />
+              <Text align="center" color="gray">
+                Comming soon
+              </Text>
+            </Stack>
+            <Stack>
+              <ExtensionButton browser="firefox" isDisabled />
+              <Text align="center" color="gray">
+                Comming soon
+              </Text>
+            </Stack>
+          </HStack>
+        </Flex>
+      </InViewProvider>
     </>
   );
 }
