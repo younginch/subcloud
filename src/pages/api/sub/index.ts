@@ -1,10 +1,12 @@
 import {
   handleRoute,
   ResSub,
+  ResSubRead,
   RouteParams,
   SubErrorType,
 } from "../../../utils/types";
 import { SubCreateSchema } from "../../../utils/schema";
+import { configuredBucket, configuredS3 } from "../../../utils/aws";
 
 async function SubCreate({ req, res, prisma, session }: RouteParams<ResSub>) {
   const { value, error } = SubCreateSchema.validate(req.body);
@@ -44,15 +46,22 @@ async function SubCreate({ req, res, prisma, session }: RouteParams<ResSub>) {
   return res.status(201).json(createdSub);
 }
 
-async function SubRead({ req, res, prisma }: RouteParams<ResSub>) {
+async function SubRead({ req, res, prisma }: RouteParams<ResSubRead>) {
   const { id } = req.query;
-  const sub = await prisma.sub.findUnique({ where: { id: id as string } });
+  const sub = await prisma.sub.findUnique({
+    where: { id: id as string },
+    include: { file: { select: { key: true } } },
+  });
   if (!sub) {
     return res
       .status(404)
       .json({ error: SubErrorType.NotFound, message: "Sub" });
   }
-  return res.status(200).json(sub);
+  const url = await configuredS3.getSignedUrlPromise("getObject", {
+    Bucket: configuredBucket,
+    Key: sub.file.key,
+  });
+  return res.status(200).json({ ...sub, url });
 }
 
 async function SubUpdate({ req, res, prisma }: RouteParams<ResSub>) {

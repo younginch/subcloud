@@ -9,6 +9,8 @@
   "/info/privacy": "Privacy",
   "/info/terms": "Terms of use",
   "/info/dmca": "DMCA",
+  "/review": "Review List",
+  "/review/[subId]": "Review video subtitle",
   "/user/[userId]": "User profile",
   "/user/[userId]/update": "Edit user profile",
   "/user/settings": "User settings",

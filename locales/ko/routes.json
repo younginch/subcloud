@@ -9,6 +9,8 @@
   "/info/privacy": "개인정보처리방침",
   "/info/terms": "이용약관",
   "/info/dmca": "DMCA",
+  "/review": "검토 목록",
+  "/review/[subId]": "영상 자막 검토",
   "/user/[userId]": "사용자 정보",
   "/user/[userId]/update": "사용자 수정",
   "/user/settings": "사용자 설정",
