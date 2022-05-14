@@ -1,7 +1,11 @@
-import { Sub } from "@prisma/client";
-import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
+import {
+  handleRoute,
+  ResSubView,
+  RouteParams,
+  SubErrorType,
+} from "../../../utils/types";
 
-async function SubViewAdd({ req, res, prisma }: RouteParams<Sub>) {
+async function SubViewAdd({ req, res, prisma }: RouteParams<ResSubView>) {
   const { id } = req.query;
   const sub = await prisma.sub.findUnique({ where: { id: id as string } });
   if (!sub) {

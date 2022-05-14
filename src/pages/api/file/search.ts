@@ -1,7 +1,6 @@
-import { File } from "@prisma/client";
-import { handleRoute, RouteParams } from "../../../utils/types";
+import { handleRoute, ResFileSearch, RouteParams } from "../../../utils/types";
 
-async function FileSearch({ req, res, prisma }: RouteParams<File[]>) {
+async function FileSearch({ req, res, prisma }: RouteParams<ResFileSearch>) {
   const { userId } = req.query;
   const files = await prisma.file.findMany({
     where: { userId: userId as string },

@@ -1,20 +1,14 @@
-import {
-  YoutubeVideo,
-  YoutubeChannel,
-  PrismaClient,
-  Video,
-} from "@prisma/client";
+import { PrismaClient, Video } from "@prisma/client";
 import axios from "axios";
 import { VideoCreateSchema } from "../../../utils/schema";
-import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
+import {
+  handleRoute,
+  ResVideo,
+  RouteParams,
+  SubErrorType,
+} from "../../../utils/types";
 
-type ResponseType =
-  | (Video & {
-      youtubeVideo?: (YoutubeVideo & { channel: YoutubeChannel }) | null;
-    })
-  | null;
-
-async function VideoCreate({ req, res, prisma }: RouteParams<ResponseType>) {
+async function VideoCreate({ req, res, prisma }: RouteParams<ResVideo>) {
   const { value, error } = VideoCreateSchema.validate(req.body);
   if (error) {
     return res
@@ -72,14 +66,14 @@ function getVideoFromUrl(urlString: string): Video {
   };
 }
 
-async function addYoutubeInfo(videoId: string): Promise<ResponseType> {
+async function addYoutubeInfo(videoId: string): Promise<ResVideo> {
   const prisma = new PrismaClient();
   try {
     const videoRes =
       await axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${process.env.YOUTUBE_API_KEY}
       &part=snippet,statistics`);
     if (!videoRes.data.items) {
-      return null;
+      throw new Error("No video found");
     }
     const video = videoRes.data.items[0];
     const channelId = video.snippet.channelId;
@@ -91,7 +85,7 @@ async function addYoutubeInfo(videoId: string): Promise<ResponseType> {
         `https://www.googleapis.com/youtube/v3/channels?id=${channelId}&key=${process.env.YOUTUBE_API_KEY}&part=snippet,statistics`
       );
       if (!channelRes.data.items) {
-        return null;
+        throw new Error("No channel found");
       }
       const channelData = channelRes.data.items[0];
       await prisma.youtubeChannel.create({
@@ -125,11 +119,11 @@ async function addYoutubeInfo(videoId: string): Promise<ResponseType> {
     return prisma.video.findUnique({
       where: { serviceId_videoId: { serviceId: "youtube", videoId } },
       include: { youtubeVideo: { include: { channel: true } } },
-    });
+    }) as unknown as ResVideo;
   }
 }
 
-async function VideoRead({ req, res, prisma }: RouteParams<ResponseType>) {
+async function VideoRead({ req, res, prisma }: RouteParams<ResVideo>) {
   const serviceId = req.query.ids[0];
   const videoId = req.query.ids[1];
   if (!serviceId || !videoId) {

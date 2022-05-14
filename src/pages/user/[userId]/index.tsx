@@ -14,20 +14,18 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
-import { RequestWithUserCount, SubWithVideo } from "../../../utils/types";
 import RequestPanel from "../../../components/user/requestPanel";
 import SubPanel from "../../../components/user/subPanel";
-import FilePanel from "../../../components/user/filePanel";
+import { ResRequestSearch, ResSubSearch } from "../../../utils/types";
 
 const TAB_LIST = ["request", "sub", "file"];
 
 type UserReadProps = {
-  requests: RequestWithUserCount[];
-  subs: SubWithVideo[];
-  files: File[];
+  requests: ResRequestSearch;
+  subs: ResSubSearch;
 };
 
-export default function UserRead({ requests, subs, files }: UserReadProps) {
+export default function UserRead({ requests, subs }: UserReadProps) {
   const router = useRouter();
   const { data } = useSession();
 
@@ -36,8 +34,6 @@ export default function UserRead({ requests, subs, files }: UserReadProps) {
       return 0;
     } else if (router.query.tab === "sub") {
       return 1;
-    } else if (router.query.tab === "file") {
-      return 2;
     } else {
       return 0;
     }
@@ -64,7 +60,6 @@ export default function UserRead({ requests, subs, files }: UserReadProps) {
         <TabList>
           <Tab>자막 요청</Tab>
           <Tab>영상 자막</Tab>
-          <Tab>자막 파일</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -72,9 +67,6 @@ export default function UserRead({ requests, subs, files }: UserReadProps) {
           </TabPanel>
           <TabPanel>
             <SubPanel subs={subs} />
-          </TabPanel>
-          <TabPanel>
-            <FilePanel files={files} />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -92,14 +84,10 @@ export const getServerSideProps: GetServerSideProps<UserReadProps> = async (
   const subsRes = await axios.get(
     `${process.env.NEXTAUTH_URL}/api/sub/search?userId=${userId}`
   );
-  const filesRes = await axios.get(
-    `${process.env.NEXTAUTH_URL}/api/file/search?userId=${userId}`
-  );
   return {
     props: {
       requests: requestsRes.data,
       subs: subsRes.data,
-      files: filesRes.data,
     },
   };
 };

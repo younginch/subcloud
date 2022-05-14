@@ -1,10 +1,10 @@
 import { PrismaClient, Role, User } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import SubError, { SubErrorType } from "../../../utils/types";
+import ResError, { SubErrorType } from "../../../utils/types";
 
 export default async function UserDebug(
   req: NextApiRequest,
-  res: NextApiResponse<User | SubError>
+  res: NextApiResponse<User | ResError>
 ) {
   if (process.env.NODE_ENV === "production") {
     return res.status(401).json({

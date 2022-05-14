@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import YouTube, { YouTubePlayer } from "react-youtube";
 import { parseSrt, useInterval } from "../../utils/subtitle";
 
-export default function Review() {
+export default function ReviewDetail() {
   const router = useRouter();
   const [player, setPlayer] = useState<YouTubePlayer>();
   const [width, setWidth] = useState(1024);
