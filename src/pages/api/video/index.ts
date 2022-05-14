@@ -124,8 +124,8 @@ async function addYoutubeInfo(videoId: string): Promise<ResVideo> {
 }
 
 async function VideoRead({ req, res, prisma }: RouteParams<ResVideo>) {
-  const serviceId = req.query.ids[0];
-  const videoId = req.query.ids[1];
+  const serviceId = req.query.serviceId as string;
+  const videoId = req.query.videoId as string;
   if (!serviceId || !videoId) {
     return res
       .status(400)

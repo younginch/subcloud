@@ -9,7 +9,6 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { File, Sub } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";

@@ -194,6 +194,10 @@ type SubWithVideo = Sub & {
   video: VideoWithInfo;
 };
 
+type SubWithFileUrl = Sub & {
+  url: string;
+};
+
 export type ResFileRead = FileWithUrl;
 export type ResFileDelete = File;
 export type ResFileSearch = File[];
@@ -202,6 +206,7 @@ export type ResOrder = Order;
 export type ResRequest = Request;
 export type ResRequestSearch = RequestWithUserCountAndYoutube[];
 export type ResSub = Sub;
+export type ResSubRead = SubWithFileUrl;
 export type ResSubSearch = SubWithVideo[];
 export type ResSubView = Sub;
 export type ResUser = User;
