@@ -32,7 +32,9 @@ export default function QnaPage() {
     <>
       <Accordion>
         <QnAAccordion title="서비스는 어떻게 사용하나요?">
-          (스토어 링크)확장 프로그램 스토어에서 다운받으시면 됩니다.
+          (스토어 링크)확장 프로그램 스토어에서 다운받으시면 됩니다. 현재는
+          Chrome, Naver Whale, Edge만 지원하고 있습니다. 곧 모바일
+          어플리케이션과 Safari, Firefox도 지원할 예정입니다.
         </QnAAccordion>
         <QnAAccordion title="영상에 자막이 보이지 않아요. 어떻게 해야하나요?">
           브라우저에 확장 프로그램을 설치했는지 먼저 확인해주세요. 만약
@@ -51,7 +53,7 @@ export default function QnaPage() {
         </QnAAccordion>
         <QnAAccordion title="제가 업로드한 자막이 왜 바로 보이지 않나요?">
           SubCloud는 양질의 자막을 제공하기 위헤 모든 자막을 검토한 후 등록하고
-          있습니다. 업로드한 자막은 [ 프로필 `&gt;` 영상 자막 ]에서 검토의
+          있습니다. 업로드한 자막은 [ 프로필 &gt; 영상 자막 ]에서 검토의
           진행도를 확인하실 수 있습니다. 자막은 승인과 동시에 모두에게
           공개됩니다. 자막이 반려되었다면 재업로드시 자동으로 재검토됩니다.
         </QnAAccordion>
