@@ -23,20 +23,18 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { FaYoutube } from "react-icons/fa";
 import { MoreIcon } from "../../utils/icons";
-import { RequestWithUserCountAndYoutube } from "../../utils/types";
+import { ResRequestSearch } from "../../utils/types";
 
-export default function RequestPanel(props: {
-  requests: RequestWithUserCountAndYoutube[];
-}) {
+export default function RequestPanel(props: { requests: ResRequestSearch }) {
   const router = useRouter();
   const toast = useToast();
-  const [requests, setRequests] = useState<RequestWithUserCountAndYoutube[]>(
-    props.requests
-  );
+  const [requests, setRequests] = useState<ResRequestSearch>(props.requests);
 
   function getRequests() {
     axios
-      .get("/api/request/search", { params: { userId: router.query.userId } })
+      .get<ResRequestSearch>("/api/request/search", {
+        params: { userId: router.query.userId },
+      })
       .then((res) => {
         setRequests(res.data);
       })

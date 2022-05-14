@@ -1,18 +1,15 @@
 import {
   Box,
   Heading,
-  Input,
   Text,
   Image,
   Avatar,
   HStack,
   Stack,
-  FormControl,
-  FormLabel,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { VideoWithInfo } from "../../utils/types";
+import ResError, { ResVideo } from "../../utils/types";
 import VideoForm from "./videoForm";
 
 type Props = {
@@ -21,10 +18,10 @@ type Props = {
 };
 
 export default function VideoInfo({ serviceId, videoId }: Props) {
-  const [video, setVideo] = useState<VideoWithInfo>();
+  const [video, setVideo] = useState<ResVideo>();
   useEffect(() => {
     axios
-      .get(`/api/video`, { params: { serviceId, videoId } })
+      .get<ResVideo>(`/api/video`, { params: { serviceId, videoId } })
       .then(({ data }) => {
         setVideo(data);
       });

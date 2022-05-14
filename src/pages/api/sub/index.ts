@@ -1,8 +1,12 @@
-import { Sub } from "@prisma/client";
-import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
+import {
+  handleRoute,
+  ResSub,
+  RouteParams,
+  SubErrorType,
+} from "../../../utils/types";
 import { SubCreateSchema } from "../../../utils/schema";
 
-async function SubCreate({ req, res, prisma, session }: RouteParams<Sub>) {
+async function SubCreate({ req, res, prisma, session }: RouteParams<ResSub>) {
   const { value, error } = SubCreateSchema.validate(req.body);
   if (error) {
     return res
@@ -40,7 +44,7 @@ async function SubCreate({ req, res, prisma, session }: RouteParams<Sub>) {
   return res.status(201).json(createdSub);
 }
 
-async function SubRead({ req, res, prisma }: RouteParams<Sub>) {
+async function SubRead({ req, res, prisma }: RouteParams<ResSub>) {
   const { id } = req.query;
   const sub = await prisma.sub.findUnique({ where: { id: id as string } });
   if (!sub) {
@@ -51,7 +55,7 @@ async function SubRead({ req, res, prisma }: RouteParams<Sub>) {
   return res.status(200).json(sub);
 }
 
-async function SubUpdate({ req, res, prisma }: RouteParams<Sub>) {
+async function SubUpdate({ req, res, prisma }: RouteParams<ResSub>) {
   const { id } = req.body;
   const sub = await prisma.sub.findUnique({ where: { id: id as string } });
   if (!sub) {
@@ -66,7 +70,7 @@ async function SubUpdate({ req, res, prisma }: RouteParams<Sub>) {
   return res.status(200).json(updatedSub);
 }
 
-async function SubDelete({ req, res, prisma, session }: RouteParams<Sub>) {
+async function SubDelete({ req, res, prisma, session }: RouteParams<ResSub>) {
   const { id } = req.query;
   const sub = await prisma.sub.findUnique({ where: { id: id as string } });
   if (!sub) {

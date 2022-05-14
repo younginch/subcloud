@@ -1,7 +1,11 @@
-import { User } from "@prisma/client";
-import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
+import {
+  handleRoute,
+  ResUser,
+  RouteParams,
+  SubErrorType,
+} from "../../../utils/types";
 
-async function UserRead({ req, res, prisma, session }: RouteParams<User>) {
+async function UserRead({ req, res, prisma }: RouteParams<ResUser>) {
   if (!req.query.id) {
     return res.status(400).json({
       error: SubErrorType.Validation,
@@ -19,7 +23,7 @@ async function UserRead({ req, res, prisma, session }: RouteParams<User>) {
   return res.status(200).json(user);
 }
 
-async function UserDelete({ req, res, prisma, session }: RouteParams<User>) {
+async function UserDelete({ req, res, prisma, session }: RouteParams<ResUser>) {
   const { id } = req.query;
   if (!id) {
     return res

@@ -6,6 +6,9 @@ import {
   Video,
   YoutubeChannel,
   Sub,
+  File,
+  Order,
+  User,
 } from "@prisma/client";
 import {
   PrismaClientInitializationError,
@@ -20,7 +23,7 @@ import type { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import NextCors from "nextjs-cors";
 
-export default interface SubError {
+export default interface ResError {
   error: SubErrorType;
   message: string;
   code?: string;
@@ -40,36 +43,39 @@ export enum SubErrorType {
   Unknown,
 }
 
-export type RouteParams<Data> = {
+export type RouteParams<ResponseType> = {
   req: NextApiRequest;
-  res: NextApiResponse<Data | SubError>;
+  res: NextApiResponse<ResponseType | ResError>;
   prisma: PrismaClient;
   session?: Session;
 };
 
-type RouteFunction<Data> = (params: RouteParams<Data>) => void;
+type RouteFunction<ResponseType> = (params: RouteParams<ResponseType>) => void;
 
-type HandleRouteProps<Data> = {
-  GET?: RouteFunction<Data>;
-  POST?: RouteFunction<Data>;
-  PATCH?: RouteFunction<Data>;
-  DELETE?: RouteFunction<Data>;
+type HandleRouteProps<GetRes, PostRes, PatchRes, DeleteRes> = {
+  GET?: RouteFunction<GetRes>;
+  POST?: RouteFunction<PostRes>;
+  PATCH?: RouteFunction<PatchRes>;
+  DELETE?: RouteFunction<DeleteRes>;
 };
 
 type HandleRouteOption = {
   useSession?: boolean;
 };
 
-export function handleRoute<Data>(
-  method: HandleRouteProps<Data>,
+export function handleRoute<GetRes, PostRes, PatchRes, DeleteRes>(
+  method: HandleRouteProps<GetRes, PostRes, PatchRes, DeleteRes>,
   options: HandleRouteOption = { useSession: false }
 ): (
   req: NextApiRequest,
-  res: NextApiResponse<Data | SubError>
+  res: NextApiResponse<GetRes | PostRes | PatchRes | DeleteRes | ResError>
 ) => Promise<void> {
   const { GET, POST, PATCH, DELETE } = method;
   const { useSession } = options;
-  return async (req: NextApiRequest, res: NextApiResponse<Data | SubError>) => {
+  return async (
+    req: NextApiRequest,
+    res: NextApiResponse<GetRes | PostRes | PatchRes | DeleteRes | ResError>
+  ) => {
     await NextCors(req, res, {
       // Options
       methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
@@ -80,7 +86,11 @@ export function handleRoute<Data>(
       optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
     const prisma = new PrismaClient();
-    let params: RouteParams<Data> = { req, res, prisma };
+    let params: RouteParams<GetRes | PostRes | PatchRes | DeleteRes> = {
+      req,
+      res,
+      prisma,
+    };
     if (useSession) {
       const session = await getSession({ req });
       if (!session) {
@@ -112,7 +122,7 @@ export function handleRoute<Data>(
   };
 }
 
-function handleServerError(res: NextApiResponse<SubError>, e: Error) {
+function handleServerError(res: NextApiResponse<ResError>, e: Error) {
   if (e instanceof PrismaClientValidationError) {
     return res
       .status(400)
@@ -160,22 +170,39 @@ export function handleClientError(
   }
 }
 
-export type YoutubeVideoWithChannel = YoutubeVideo & {
+type YoutubeVideoWithChannel = YoutubeVideo & {
   channel: YoutubeChannel;
 };
 
-export type VideoWithInfo = Video & {
+type VideoWithInfo = Video & {
   youtubeVideo?: YoutubeVideoWithChannel | null;
 };
 
-export type RequestWithUserCount = Request & {
+type RequestWithUserCount = Request & {
   _count: { users: number };
 };
 
-export type RequestWithUserCountAndYoutube = RequestWithUserCount & {
+type RequestWithUserCountAndYoutube = RequestWithUserCount & {
   video?: VideoWithInfo;
 };
 
-export type SubWithVideo = Sub & {
+type FileWithUrl = File & {
+  url: string;
+};
+
+type SubWithVideo = Sub & {
   video: VideoWithInfo;
 };
+
+export type ResFileRead = FileWithUrl;
+export type ResFileDelete = File;
+export type ResFileSearch = File[];
+export type ResFileUpload = File;
+export type ResOrder = Order;
+export type ResRequest = Request;
+export type ResRequestSearch = RequestWithUserCountAndYoutube[];
+export type ResSub = Sub;
+export type ResSubSearch = SubWithVideo[];
+export type ResSubView = Sub;
+export type ResUser = User;
+export type ResVideo = VideoWithInfo;

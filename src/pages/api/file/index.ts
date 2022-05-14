@@ -1,12 +1,13 @@
-import { File } from "@prisma/client";
 import { configuredBucket, configuredS3 } from "../../../utils/aws";
-import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
+import {
+  handleRoute,
+  ResFileDelete,
+  ResFileRead,
+  RouteParams,
+  SubErrorType,
+} from "../../../utils/types";
 
-type FileWithUrl = File & {
-  url: string;
-};
-
-async function FileRead({ req, res, prisma }: RouteParams<FileWithUrl>) {
+async function FileRead({ req, res, prisma }: RouteParams<ResFileRead>) {
   if (req.method === "GET") {
     const file = await prisma.file.findUnique({
       where: { id: req.query.id as string },
@@ -25,7 +26,12 @@ async function FileRead({ req, res, prisma }: RouteParams<FileWithUrl>) {
   }
 }
 
-async function FileDelete({ req, res, prisma, session }: RouteParams<File>) {
+async function FileDelete({
+  req,
+  res,
+  prisma,
+  session,
+}: RouteParams<ResFileDelete>) {
   const { id } = req.query;
   const file = await prisma.file.findUnique({
     where: { id: id as string },

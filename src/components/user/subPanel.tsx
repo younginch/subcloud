@@ -10,7 +10,6 @@ import {
   MenuOptionGroup,
   MenuItemOption,
   Table,
-  TableCaption,
   Thead,
   Tr,
   Th,
@@ -19,31 +18,30 @@ import {
   Avatar,
   Text,
 } from "@chakra-ui/react";
-import { request } from "@playwright/test";
-import { Sub, Status } from "@prisma/client";
+import { Status } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { FaYoutube } from "react-icons/fa";
-import { SubWithVideo } from "../../utils/types";
+import { ResSubSearch } from "../../utils/types";
 
 type SubPanelProps = {
-  subs: SubWithVideo[];
+  subs: ResSubSearch;
 };
 
 export default function SubPanel(props: SubPanelProps) {
   const router = useRouter();
   const { status } = useSession();
   const toast = useToast();
-  const [subs, setSubs] = useState<SubWithVideo[]>(props.subs);
+  const [subs, setSubs] = useState<ResSubSearch>(props.subs);
   const [subStatus, setSubStatus] = useState<Status | "all">("all");
 
   useEffect(getSubs, [router.query.userId, status, subStatus, toast]);
 
   function getSubs() {
     axios
-      .get("/api/sub/search", {
+      .get<ResSubSearch>("/api/sub/search", {
         params: { userId: router.query.userId, status: subStatus },
       })
       .then((res) => {

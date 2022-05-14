@@ -17,9 +17,13 @@ import { Sub } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import type { GetServerSideProps } from "next";
-import { RequestWithUserCount, VideoWithInfo } from "../../../../utils/types";
+import {
+  ResRequestSearch,
+  ResSubSearch,
+  ResVideo,
+} from "../../../../utils/types";
 
-function RequestList({ requests }: { requests: RequestWithUserCount[] }) {
+function RequestList({ requests }: { requests: ResRequestSearch }) {
   return (
     <TableContainer>
       <Table variant="simple">
@@ -70,9 +74,9 @@ function SubList({ subs }: { subs: Sub[] }) {
 }
 
 type VideoProps = {
-  video: VideoWithInfo;
-  requests: RequestWithUserCount[];
-  subs: Sub[];
+  video: ResVideo;
+  requests: ResRequestSearch;
+  subs: ResSubSearch;
 };
 
 export default function Video({ video, requests, subs }: VideoProps) {
@@ -126,15 +130,20 @@ export default function Video({ video, requests, subs }: VideoProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps<VideoProps> = async (
+  context
+) => {
   const { serviceId, videoId } = context.query;
-  const videoRes = await axios.get(`${process.env.NEXTAUTH_URL}/api/video`, {
-    params: { serviceId, videoId },
-  });
-  const requestsRes = await axios.get(
+  const videoRes = await axios.get<ResVideo>(
+    `${process.env.NEXTAUTH_URL}/api/video`,
+    {
+      params: { serviceId, videoId },
+    }
+  );
+  const requestsRes = await axios.get<ResRequestSearch>(
     `${process.env.NEXTAUTH_URL}/api/request/search?serviceId=${serviceId}&videoId=${videoId}`
   );
-  const subsRes = await axios.get(
+  const subsRes = await axios.get<ResSubSearch>(
     `${process.env.NEXTAUTH_URL}/api/sub/search?serviceId=${serviceId}&videoId=${videoId}`
   );
   return {

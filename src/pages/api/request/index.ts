@@ -1,5 +1,9 @@
-import { Request } from "@prisma/client";
-import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
+import {
+  handleRoute,
+  ResRequest,
+  RouteParams,
+  SubErrorType,
+} from "../../../utils/types";
 import { RequestCreateSchema } from "../../../utils/schema";
 
 async function RequestCreate({
@@ -7,7 +11,7 @@ async function RequestCreate({
   res,
   prisma,
   session,
-}: RouteParams<Request>) {
+}: RouteParams<ResRequest>) {
   const { value, error } = RequestCreateSchema.validate(req.body);
   if (error) {
     return res
@@ -48,7 +52,7 @@ async function RequestCreate({
   return res.status(201).json(createdRequest);
 }
 
-async function RequestRead({ req, res, prisma }: RouteParams<Request>) {
+async function RequestRead({ req, res, prisma }: RouteParams<ResRequest>) {
   if (!req.query.id) {
     return res
       .status(400)
@@ -70,7 +74,7 @@ async function RequestDelete({
   res,
   prisma,
   session,
-}: RouteParams<Request>) {
+}: RouteParams<ResRequest>) {
   if (!req.query.id) {
     return res
       .status(400)

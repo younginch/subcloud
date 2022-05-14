@@ -3,7 +3,7 @@ import multer from "multer";
 import multerS3 from "multer-s3";
 import { NextApiRequest, NextApiResponse } from "next";
 import { File, PrismaClient } from "@prisma/client";
-import SubError, { SubErrorType } from "../../../utils/types";
+import ResError, { ResFileUpload, SubErrorType } from "../../../utils/types";
 import { getSession } from "next-auth/react";
 import NextCors from "nextjs-cors";
 import { configuredBucket, configuredS3 } from "../../../utils/aws";
@@ -31,7 +31,7 @@ const upload = multer({
 
 const app = nextConnect<
   NextApiRequestWithFile,
-  NextApiResponse<File | SubError>
+  NextApiResponse<ResFileUpload | ResError>
 >({
   onError(error, req, res) {
     res
