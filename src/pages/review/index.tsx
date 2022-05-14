@@ -6,13 +6,27 @@ import {
   Th,
   Tbody,
   Td,
-  Tfoot,
+  Avatar,
+  HStack,
+  Text,
+  Button,
 } from "@chakra-ui/react";
+import { Role } from "@prisma/client";
+import axios from "axios";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { FaYoutube } from "react-icons/fa";
+import { ResSubSearch } from "../../utils/types";
 
 export default function Review() {
-  const [subs, setSubs] = useState<string[]>([]);
-  useEffect(() => {});
+  const [subs, setSubs] = useState<ResSubSearch>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    axios.get<ResSubSearch>("/api/sub/search").then((res) => {
+      setSubs(res.data);
+    });
+  });
 
   return (
     <>
@@ -26,31 +40,57 @@ export default function Review() {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>inches</Td>
-              <Td>millimetres (mm)</Td>
-              <Td isNumeric>25.4</Td>
-            </Tr>
-            <Tr>
-              <Td>feet</Td>
-              <Td>centimetres (cm)</Td>
-              <Td isNumeric>30.48</Td>
-            </Tr>
-            <Tr>
-              <Td>yards</Td>
-              <Td>metres (m)</Td>
-              <Td isNumeric>0.91444</Td>
-            </Tr>
+            {subs.map((sub) => {
+              return (
+                <Tr key={sub.id}>
+                  <Td
+                    onClick={() => {
+                      router.push(`/video/${sub.serviceId}/${sub.videoId}`);
+                    }}
+                  >
+                    <HStack>
+                      <FaYoutube size={36} />
+                      <Text maxW={480} noOfLines={1}>
+                        {sub.video?.youtubeVideo?.title ?? "비디오 정보없음"}
+                      </Text>
+                    </HStack>
+                  </Td>
+                  <Td>
+                    <HStack>
+                      <Avatar
+                        name={
+                          sub.video?.youtubeVideo?.channel.title ??
+                          "채널 정보없음"
+                        }
+                        src={
+                          sub.video?.youtubeVideo?.channel.thumbnailUrl ??
+                          undefined
+                        }
+                        size="sm"
+                      />
+                      <Text maxW={120} noOfLines={1}>
+                        {sub.video?.youtubeVideo?.channel.title ??
+                          "채널 정보없음"}
+                      </Text>
+                    </HStack>
+                  </Td>
+                  <Td>
+                    <Button
+                      onClick={() => {
+                        router.push(`/review/${sub.id}`);
+                      }}
+                    >
+                      검토하기
+                    </Button>
+                  </Td>
+                </Tr>
+              );
+            })}
           </Tbody>
-          <Tfoot>
-            <Tr>
-              <Th>To convert</Th>
-              <Th>into</Th>
-              <Th isNumeric>multiply by</Th>
-            </Tr>
-          </Tfoot>
         </Table>
       </TableContainer>
     </>
   );
 }
+
+Review.auth = Role.USER;

@@ -1,4 +1,3 @@
-import { Status, Sub } from "@prisma/client";
 import { handleRoute, ResSubSearch, RouteParams } from "../../../utils/types";
 
 async function SubSearch({ req, res, prisma }: RouteParams<ResSubSearch>) {
@@ -6,25 +5,24 @@ async function SubSearch({ req, res, prisma }: RouteParams<ResSubSearch>) {
   const include = {
     video: { include: { youtubeVideo: { include: { channel: true } } } },
   };
-  let subs: ResSubSearch = [];
+  let where: any = {};
   if (userId) {
-    if (status === "all") {
-      subs = await prisma.sub.findMany({
-        where: { userId: userId as string },
-        include,
-      });
-    } else {
-      subs = await prisma.sub.findMany({
-        where: { userId: userId as string, status: status as Status },
-        include,
-      });
-    }
-  } else if (serviceId && videoId) {
-    subs = await prisma.sub.findMany({
-      where: { serviceId: serviceId as string, videoId: videoId as string },
-      include,
-    });
+    where.userId = userId;
   }
+  if (serviceId && videoId) {
+    where.serviceId = serviceId;
+    where.videoId = videoId;
+  }
+  if (status) {
+    if (status !== "all") {
+      where.status = status;
+    }
+  }
+
+  const subs = await prisma.sub.findMany({
+    where,
+    include,
+  });
 
   return res.status(200).json(subs);
 }
