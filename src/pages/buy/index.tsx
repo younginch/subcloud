@@ -31,7 +31,6 @@ const titleList = [
 ];
 const pointList = [80, 500, 1200, 2500, 6500];
 const priceList = [1200, 5900, 12000, 25000, 65000];
-//const addList = [undefined, 100, 400, 900, 2400];
 const addList = Array<number>(5)
   .fill(0)
   .map((_, i) =>
@@ -45,7 +44,6 @@ const discountRate = Array<number>(5)
       100 * (1 - (pointList[0] * priceList[i]) / pointList[i] / priceList[0])
     )
   );
-//[undefined, 10, 20, 30, 40];
 console.log(discountRate);
 
 type PointCardProps = {
