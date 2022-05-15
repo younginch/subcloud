@@ -23,6 +23,7 @@
   "/404": "Not found",
   "/500": "Server error",
   "/": "Home",
+  "/qna": "Qna",
   "/ranking": "Ranking",
-  "/qna": "Qna"
+  "/search": "Search result"
 }

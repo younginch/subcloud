@@ -177,6 +177,11 @@ type VideoWithInfo = Video & {
   youtubeVideo?: YoutubeVideoWithChannel | null;
 };
 
+type VideoWithCount = Video & {
+  youtubeVideo?: YoutubeVideoWithChannel | null;
+  _count: { reqeusts: number; subs: number };
+};
+
 type RequestWithUserCount = Request & {
   _count: { users: number };
 };
@@ -210,3 +215,4 @@ export type ResSubSearch = SubWithVideo[];
 export type ResSubView = Sub;
 export type ResUser = User;
 export type ResVideo = VideoWithInfo;
+export type ResVideoSearch = VideoWithCount[];
