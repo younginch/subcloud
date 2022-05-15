@@ -44,7 +44,6 @@ const discountRate = Array<number>(5)
       100 * (1 - (pointList[0] * priceList[i]) / pointList[i] / priceList[0])
     )
   );
-console.log(discountRate);
 
 type PointCardProps = {
   title: string;
