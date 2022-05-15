@@ -20,7 +20,6 @@ import {
 } from "@chakra-ui/react";
 import { Status } from "@prisma/client";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { FaYoutube } from "react-icons/fa";
@@ -32,12 +31,11 @@ type SubPanelProps = {
 
 export default function SubPanel(props: SubPanelProps) {
   const router = useRouter();
-  const { status } = useSession();
   const toast = useToast();
   const [subs, setSubs] = useState<ResSubSearch>(props.subs);
   const [subStatus, setSubStatus] = useState<Status | "all">("all");
 
-  useEffect(getSubs, [router.query.userId, status, subStatus, toast]);
+  useEffect(getSubs, [router.query.userId, subStatus, toast]);
 
   function getSubs() {
     axios

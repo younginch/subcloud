@@ -5,6 +5,7 @@ import {
   Flex,
   HStack,
   Text,
+  useToast,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
@@ -55,6 +56,7 @@ type PointCardProps = {
 };
 
 export default function Buy() {
+  const toast = useToast();
   const [tossPayments, setTossPayments] = useState<any>();
 
   useEffect(() => {
@@ -116,15 +118,34 @@ export default function Buy() {
           <Center paddingTop="10x" mt="10px">
             <Button
               onClick={() => {
-                axios.post("/api/order", { amount: price }).then((res) => {
-                  tossPayments.requestPayment("카드", {
-                    amount: res.data.amount,
-                    orderId: res.data.id,
-                    orderName: `${point} 포인트`,
-                    successUrl: `${window.location.origin}/buy/success`,
-                    failUrl: `${window.location.origin}/buy/fail`,
+                axios
+                  .post("/api/order", { amount: price })
+                  .then((res) => {
+                    tossPayments
+                      .requestPayment("카드", {
+                        amount: res.data.amount,
+                        orderId: res.data.id,
+                        orderName: `${point} 포인트`,
+                        successUrl: `${window.location.origin}/buy/success`,
+                        failUrl: `${window.location.origin}/buy/fail`,
+                      })
+                      .catch(() => {
+                        toast({
+                          title: "결제 취소",
+                          description: "사용자가 결제를 취소하였습니다.",
+                          status: "error",
+                          isClosable: true,
+                        });
+                      });
+                  })
+                  .catch(() => {
+                    toast({
+                      title: "주문 생성 실패",
+                      description: "주문 생성에 실패하였습니다.",
+                      status: "error",
+                      isClosable: true,
+                    });
                   });
-                });
               }}
               w="120px"
               colorScheme="green"
