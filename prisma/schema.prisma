@@ -4,7 +4,8 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 model Account {
@@ -66,7 +67,7 @@ model Video {
   videoId        String        @unique
   subs           Sub[]
   requests       Request[]
-  youtubeVideoId String?
+  youtubeVideoId String?       @unique
   youtubeVideo   YoutubeVideo? @relation(fields: [youtubeVideoId], references: [id])
 
   @@unique([serviceId, videoId])
@@ -141,8 +142,8 @@ model SubReview {
 }
 
 model Order {
-  id        String @id @default(cuid())
-  amount    Int
+  id     String @id @default(cuid())
+  amount Int
 }
 
 enum Role {
