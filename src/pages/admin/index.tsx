@@ -9,7 +9,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { PrismaClient, Role } from "@prisma/client";
+import { Role } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useRef } from "react";

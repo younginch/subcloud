@@ -1,4 +1,4 @@
-import { PrismaClient, Video } from "@prisma/client";
+import { Video } from "@prisma/client";
 import axios from "axios";
 import { VideoCreateSchema } from "../../../utils/schema";
 import {
@@ -67,7 +67,6 @@ function getVideoFromUrl(urlString: string): Video {
 }
 
 async function addYoutubeInfo(videoId: string): Promise<ResVideo> {
-  const prisma = new PrismaClient();
   try {
     const videoRes =
       await axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${process.env.YOUTUBE_API_KEY}
