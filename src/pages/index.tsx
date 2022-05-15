@@ -78,7 +78,7 @@ export default function Home() {
           <Image src={TitleImage} alt="title" width="580px" height="372px" />
         </Box>
       </HStack>
-      <InViewProvider>
+      <InViewProvider initialScale={0.95}>
         <Flex marginY="48px">
           <Stack>
             <Heading color="blue.400" size="md">
@@ -159,7 +159,7 @@ export default function Home() {
           </Stack>
         </Flex>
       </InViewProvider>
-      <InViewProvider>
+      <InViewProvider initialScale={0.95}>
         <HStack>
           <Stack>
             <Heading color="blue.400" size="md">
