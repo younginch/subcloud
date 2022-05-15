@@ -2,7 +2,6 @@ import nextConnect from "next-connect";
 import multer from "multer";
 import multerS3 from "multer-s3";
 import { NextApiRequest, NextApiResponse } from "next";
-import { File, PrismaClient } from "@prisma/client";
 import ResError, { ResFileUpload, SubErrorType } from "../../../utils/types";
 import { getSession } from "next-auth/react";
 import NextCors from "nextjs-cors";
@@ -64,7 +63,6 @@ app.post(upload.single("file"), async (req, res) => {
       message: "Not Anonymous Authenticated",
     });
   }
-  const prisma = new PrismaClient();
   try {
     const newFile = await prisma.file.create({
       data: {

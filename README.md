@@ -39,6 +39,12 @@ rm -f /usr/local/var/postgres/postmaster.pid
 brew services restart postgresql && brew services list
 ```
 
+- prisma 연결
+```javascipt
+//const prisma = new PrismaClient();
+prisma
+```
+
 ## Deploy on Vercel
 
 ### env

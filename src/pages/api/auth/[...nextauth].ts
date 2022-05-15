@@ -1,13 +1,11 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
 import NextAuth, { Session, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import KakaoProvider from "next-auth/providers/kakao";
 import GitHubProvider from "next-auth/providers/github";
 import { JWT } from "next-auth/jwt";
-
-const prisma = new PrismaClient();
+import prisma from "../../../utils/prisma";
 
 const devProviders = [
   GoogleProvider({
