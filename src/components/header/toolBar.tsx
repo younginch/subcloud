@@ -19,9 +19,6 @@ import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
-import SelectTheme from "../footer/selectTheme";
-import SelectTranslation from "../footer/selectTranslation";
 
 type Props = {
   isLarge: boolean;

@@ -54,7 +54,8 @@ export default function NavBar(): JSX.Element {
       zIndex={9999}
     >
       <HStack
-        padding="24px"
+        paddingStart={isLarge ? 9 : 3}
+        paddingEnd={isLarge ? 9 : 3}
         h="100%"
         width="100%"
         zIndex={10}
