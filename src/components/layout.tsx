@@ -3,7 +3,7 @@ import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Script from "next/script";
-import Footer from "./footer";
+import Footer from "./footer/footer";
 import NavBar from "./header/navBar";
 
 type Props = {
@@ -34,6 +34,8 @@ export default function Layout({
           width: "100%",
           height: "100%",
           minHeight: "calc(100vh - 64px)",
+          margin: 0,
+          padding: 0,
         }}
       >
         {!hideNavBar && <NavBar />}

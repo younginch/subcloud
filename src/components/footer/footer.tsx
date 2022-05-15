@@ -6,9 +6,15 @@ import {
   Heading,
   Link,
   useColorMode,
+  HStack,
+  Flex,
+  Spacer,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import NextLink from "next/link";
+import SelectTheme from "./selectTheme";
+import SelectTranslation from "./selectTranslation";
 
 type Props = {
   route: string;
@@ -24,20 +30,9 @@ function FooterLink({ route }: Props) {
   );
 }
 
-export default function Footer() {
-  const { colorMode } = useColorMode();
-
+function SiteMap() {
   return (
-    <Wrap
-      borderTopColor={
-        colorMode === "light"
-          ? "rgba(200, 200, 200, 0.7)"
-          : "rgba(255, 255, 255, 0.2)"
-      }
-      borderWidth="1px"
-      padding={6}
-      spacing={24}
-    >
+    <Wrap padding={6} spacing={24}>
       <WrapItem>
         <Stack>
           <Heading size="sm">다운로드</Heading>
@@ -75,5 +70,48 @@ export default function Footer() {
         </Stack>
       </WrapItem>
     </Wrap>
+  );
+}
+
+export default function Footer() {
+  const { colorMode } = useColorMode();
+  const [isLargerThan1280] = useMediaQuery("(min-width: 1280px)");
+
+  if (isLargerThan1280) {
+    return (
+      <Flex
+        borderTopColor={
+          colorMode === "light"
+            ? "rgba(200, 200, 200, 0.7)"
+            : "rgba(255, 255, 255, 0.2)"
+        }
+        borderWidth="1px"
+        margin={0}
+      >
+        <SiteMap />
+        <Spacer />
+        <HStack margin={6} align="flex-start">
+          <SelectTranslation isLarge={true} />
+          <SelectTheme isLarge={true} />
+        </HStack>
+      </Flex>
+    );
+  }
+  return (
+    <Stack
+      borderTopColor={
+        colorMode === "light"
+          ? "rgba(200, 200, 200, 0.7)"
+          : "rgba(255, 255, 255, 0.2)"
+      }
+      borderWidth="1px"
+      margin={0}
+    >
+      <HStack margin={6} align="flex-start">
+        <SelectTranslation isLarge={true} />
+        <SelectTheme isLarge={true} />
+      </HStack>
+      <SiteMap />
+    </Stack>
   );
 }

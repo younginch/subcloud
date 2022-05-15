@@ -20,8 +20,8 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import SelectTheme from "./selectTheme";
-import SelectTranslation from "./selectTranslation";
+import SelectTheme from "../footer/selectTheme";
+import SelectTranslation from "../footer/selectTranslation";
 
 type Props = {
   isLarge: boolean;
@@ -33,8 +33,6 @@ export default function ToolBar({ isLarge }: Props): JSX.Element {
 
   return (
     <>
-      <SelectTranslation isLarge={isLarge} />
-      <SelectTheme isLarge={isLarge} />
       {status === "authenticated" ? (
         <Popover>
           <PopoverTrigger>
