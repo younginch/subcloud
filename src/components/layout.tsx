@@ -9,10 +9,16 @@ import NavBar from "./header/navBar";
 type Props = {
   hideNavBar?: boolean;
   hideTitle?: boolean;
+  maxWidth?: string | number;
   children: React.ReactNode;
 };
 
-export default function Layout({ hideNavBar, hideTitle, children }: Props) {
+export default function Layout({
+  hideNavBar,
+  hideTitle,
+  maxWidth = "6xl",
+  children,
+}: Props) {
   const { t } = useTranslation("routes");
   const router = useRouter();
 
@@ -31,7 +37,7 @@ export default function Layout({ hideNavBar, hideTitle, children }: Props) {
         }}
       >
         {!hideNavBar && <NavBar />}
-        <Container maxW="6xl" paddingX="36px">
+        <Container maxW={maxWidth} paddingX="36px">
           {!hideTitle && <Heading marginY="18px">{t(router.pathname)}</Heading>}
           {children}
         </Container>
