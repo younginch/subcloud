@@ -64,7 +64,7 @@ export default function Buy() {
     src,
   }: PointCardProps) {
     return (
-      <InViewProvider whileHover={1.05}>
+      <InViewProvider whileHover={1.05} initialScale={0.95}>
         <Box
           bg="#c2a88b"
           borderRadius="7px"

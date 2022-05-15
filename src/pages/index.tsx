@@ -1,4 +1,6 @@
 import { CheckCircleIcon } from "@chakra-ui/icons";
+import { AiFillHeart } from "react-icons/ai";
+import { IconContext } from "react-icons";
 import {
   Box,
   Button,
@@ -120,12 +122,23 @@ export default function Home() {
             padding="24px"
           >
             <Center flexDir="column">
-              <CheckCircleIcon w={14} h={14} color="blue.400" marginTop={8} />
+              <Box w={14} h={14} mt={8} color="red.400">
+                <IconContext.Provider
+                  value={{ color: "inherit", className: "global-class-name" }}
+                >
+                  <div>
+                    <AiFillHeart size="100%" />
+                  </div>
+                </IconContext.Provider>
+              </Box>
               <Heading marginTop={6} size="lg">
-                자막 제작 완료
+                현재까지 18730명이
+              </Heading>
+              <Heading marginTop={1} size="lg">
+                영인치님의 자막을 사용했어요
               </Heading>
               <Text color="blue.400" marginTop={7}>
-                검토가 완료되면 모두에게 공개됩니다
+                자막 제작자 상위 28%
               </Text>
             </Center>
           </Box>
