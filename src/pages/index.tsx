@@ -6,14 +6,12 @@ import {
   Flex,
   Heading,
   HStack,
-  ScaleFade,
   Spacer,
   Stack,
   Text,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useInView } from "react-hook-inview";
 import ChromeIcon from "../../public/browsers/chrome.png";
 import FirefoxIcon from "../../public/browsers/firefox.svg";
 import SafariIcon from "../../public/browsers/safari.png";
@@ -127,7 +125,7 @@ export default function Home() {
                 자막 제작 완료
               </Heading>
               <Text color="blue.400" marginTop={7}>
-                52명이 이 영상에 자막을 요청했어요.
+                검토가 완료되면 모두에게 공개됩니다
               </Text>
             </Center>
           </Box>
@@ -143,7 +141,7 @@ export default function Home() {
               경력도 쌓아보세요.
             </Text>
             <Text fontSize="2xl">
-              자막이 생기면 바로 알림으로 알려드릴게요.
+              유저들의 감사를 알림으로 받아볼 수 있어요
             </Text>
           </Stack>
         </Flex>
