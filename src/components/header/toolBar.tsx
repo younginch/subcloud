@@ -14,7 +14,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { PrismaClient, Role } from "@prisma/client";
+import { Role } from "@prisma/client";
 import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";

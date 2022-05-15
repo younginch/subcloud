@@ -1,7 +1,6 @@
 import type { CreateStandAloneToastParam } from "@chakra-ui/react";
 import {
   YoutubeVideo,
-  PrismaClient,
   Request,
   Video,
   YoutubeChannel,
@@ -9,6 +8,7 @@ import {
   File,
   Order,
   User,
+  PrismaClient,
 } from "@prisma/client";
 import {
   PrismaClientInitializationError,
@@ -85,7 +85,6 @@ export function handleRoute<GetRes, PostRes, PatchRes, DeleteRes>(
       ],
       optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
-    const prisma = new PrismaClient();
     let params: RouteParams<GetRes | PostRes | PatchRes | DeleteRes> = {
       req,
       res,

@@ -23,24 +23,6 @@ export default function MyApp({
   pageProps: { session, ...pageProps },
 }: AppPropsWithAuth) {
   const { auth, hideHeader, hideTitle } = Component;
-  const [hasMounted, setHasMounted] = useState(false);
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
-  if (!hasMounted) {
-    return (
-      <ChakraProvider>
-        <CircularProgress
-          isIndeterminate
-          w="10vw"
-          h="10vh"
-          marginX="45vw"
-          marginY="45vh"
-        />
-      </ChakraProvider>
-    );
-  }
 
   return (
     <SessionProvider session={session}>
