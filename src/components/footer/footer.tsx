@@ -85,7 +85,7 @@ export default function Footer() {
             ? "rgba(200, 200, 200, 0.7)"
             : "rgba(255, 255, 255, 0.2)"
         }
-        borderWidth="1px"
+        borderTopWidth="1px"
         margin={0}
       >
         <SiteMap />
@@ -104,7 +104,7 @@ export default function Footer() {
           ? "rgba(200, 200, 200, 0.7)"
           : "rgba(255, 255, 255, 0.2)"
       }
-      borderWidth="1px"
+      borderTopWidth="1px"
       margin={0}
     >
       <HStack margin={6} align="flex-start">
