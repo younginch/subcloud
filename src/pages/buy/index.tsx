@@ -24,23 +24,33 @@ import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 
 const titleList = [
-  "starter pack",
-  "small pack",
-  "normal pack",
-  "large pack",
-  "point bucket",
+  "Starter pack",
+  "Small pack",
+  "Normal pack",
+  "Large pack",
+  "Point bucket",
 ];
 const pointList = [80, 500, 1200, 2500, 6500];
 const priceList = [1200, 5900, 12000, 25000, 65000];
-const addList = [undefined, 100, 400, 900, 2400];
+const addList = Array<number>(5)
+  .fill(0)
+  .map((_, i) =>
+    Math.round(pointList[i] - (pointList[0] * priceList[i]) / priceList[0])
+  );
 const imageList = [Point80, Point500, Point1200, Point2500, Point6500];
-const discountRate = [undefined, 10, 20, 30, 40];
+const discountRate = Array<number>(5)
+  .fill(0)
+  .map((_, i) =>
+    Math.round(
+      100 * (1 - (pointList[0] * priceList[i]) / pointList[i] / priceList[0])
+    )
+  );
 
 type PointCardProps = {
   title: string;
-  discountRate?: number;
+  discountRate: number;
   point: number;
-  add?: number;
+  add: number;
   price: number;
   src: StaticImageData;
 };
@@ -80,8 +90,8 @@ export default function Buy() {
             </Text>
           </Center>
           <Flex justifyContent="flex-end" h="30px" mt="2px" mb="-5x">
-            {discountRate && (
-              <Text color="red" mr="7px" fontSize="lg" fontWeight="bold">
+            {discountRate !== 0 && (
+              <Text color="red.500" mr="7px" fontSize="lg" fontWeight="bold">
                 -{discountRate}%
               </Text>
             )}
@@ -90,13 +100,13 @@ export default function Buy() {
             <Image src={src} alt="title" width="130px" height="130px" />
           </Center>
           <Center paddingTop="10x">
-            <Text fontSize="3xl" fontWeight="bold" color="white">
-              {point}&nbsp;
+            <Text fontSize="4xl" fontWeight="bold" color="white" mr="4px">
+              {point}
             </Text>
-            <Image src={PointIcon} alt="title" width="35px" height="35px" />
+            <Image src={PointIcon} alt="point" width="33px" height="33px" />
           </Center>
-          <Center h="25px">
-            {discountRate && (
+          <Center h="25px" mt={-2}>
+            {discountRate !== 0 && (
               <Flex alignItems="center">
                 <Text color="#ffd949">+ {add}&nbsp;</Text>
                 <Box width="20px" height="20px">
@@ -105,7 +115,7 @@ export default function Buy() {
               </Flex>
             )}
           </Center>
-          <Center paddingTop="10x" mt="15px">
+          <Center paddingTop="10x" mt="10px">
             <Button
               onClick={() => {
                 axios
@@ -138,7 +148,7 @@ export default function Buy() {
                   });
               }}
               w="120px"
-              bg="#00c067"
+              colorScheme="green"
               shadow="md"
               borderRadius="15px"
               fontWeight="bold"
