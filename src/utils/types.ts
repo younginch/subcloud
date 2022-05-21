@@ -85,7 +85,7 @@ export function handleRoute<GetRes, PostRes, PatchRes, DeleteRes>(
       ],
       optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
-    res.setHeader("Cache-Control", "s-maxage=0");
+    const prisma = new PrismaClient();
     let params: RouteParams<GetRes | PostRes | PatchRes | DeleteRes> = {
       req,
       res,
