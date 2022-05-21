@@ -51,9 +51,9 @@ export default function VideoCreate() {
   }
 
   return (
-    <Stack>
-      <CreateHeader type={router.query.next as "request" | "sub"} step={1} />
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Stack alignItems="center" w="fit-content" m="auto" mt="10em">
+        <CreateHeader type={router.query.next as "request" | "sub"} step={1} />
         <VideoForm
           registeredProps={register("url", {
             required: "This is required",
@@ -61,15 +61,19 @@ export default function VideoCreate() {
           error={errors.url}
         />
         <Button
-          mt={4}
-          colorScheme="teal"
+          colorScheme="blue"
           isLoading={isSubmitting}
           type="submit"
+          fontSize="20px"
+          w="90px"
+          h="50px"
+          borderRadius="10px"
+          marginTop="20px!important"
         >
           다음
         </Button>
-      </form>
-    </Stack>
+      </Stack>
+    </form>
   );
 }
 
