@@ -17,7 +17,7 @@ npm i
 ### Database
 
 ```bash
-psql -U postgres
+psql -U sboh -d postgres
 CREATE USER sub PASSWORD 'password' SUPERUSER;
 CREATE DATABASE dev OWNER sub;
 exit
