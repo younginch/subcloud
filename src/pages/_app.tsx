@@ -1,12 +1,26 @@
 import type { AppProps } from "next/app";
 import { SessionProvider, useSession } from "next-auth/react";
-import { Center, ChakraProvider, CircularProgress } from "@chakra-ui/react";
+import {
+  Center,
+  ChakraProvider,
+  CircularProgress,
+  extendTheme,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import axios from "axios";
 import { Role, User } from "@prisma/client";
 import Layout from "../components/layout";
+
+const font = `-apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', Pretendard, Roboto, 'Noto Sans KR', 'Segoe UI', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif`;
+
+const theme = extendTheme({
+  fonts: {
+    heading: font,
+    body: font,
+  },
+});
 
 type NextPageWithAuth = NextPage & {
   auth?: Role;
@@ -26,7 +40,7 @@ export default function MyApp({
 
   return (
     <SessionProvider session={session}>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <Layout hideNavBar={hideHeader} hideTitle={hideTitle}>
           {Component.auth ? (
             <Auth role={auth}>
