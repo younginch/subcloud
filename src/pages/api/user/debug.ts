@@ -1,5 +1,6 @@
 import { Role, User } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
+import prisma from "../../../utils/prisma";
 import ResError, { SubErrorType } from "../../../utils/types";
 
 export default async function UserDebug(
