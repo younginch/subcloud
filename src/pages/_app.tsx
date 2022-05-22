@@ -13,7 +13,7 @@ import axios from "axios";
 import { Role, User } from "@prisma/client";
 import Layout from "../components/layout";
 
-const font = `-apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', Pretendard, Roboto, 'Noto Sans KR', 'Segoe UI', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif`;
+const font = `'Pretendard', sans-serif`;
 
 const theme = extendTheme({
   fonts: {
