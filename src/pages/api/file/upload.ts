@@ -6,6 +6,7 @@ import ResError, { ResFileUpload, SubErrorType } from "../../../utils/types";
 import { getSession } from "next-auth/react";
 import NextCors from "nextjs-cors";
 import { configuredBucket, configuredS3 } from "../../../utils/aws";
+import prisma from "../../../utils/prisma";
 
 interface NextApiRequestWithFile extends NextApiRequest {
   file: Express.MulterS3.File;

@@ -1,5 +1,6 @@
 import { Video } from "@prisma/client";
 import axios from "axios";
+import prisma from "../../../utils/prisma";
 import { VideoCreateSchema } from "../../../utils/schema";
 import {
   handleRoute,
