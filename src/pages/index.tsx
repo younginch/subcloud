@@ -60,7 +60,7 @@ export default function Home() {
   return (
     <>
       <HStack h="100vh" alignItems="top">
-        <Stack marginTop="28vh" width="560px">
+        <Stack marginTop="28vh" width="570px">
           <Heading fontSize="31px" h="76px">
             우리 모두를 위한 단 하나의 자막 플랫폼.
           </Heading>
