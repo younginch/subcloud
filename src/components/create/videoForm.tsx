@@ -3,6 +3,7 @@ import {
   FormLabel,
   Input,
   FormErrorMessage,
+  Box,
 } from "@chakra-ui/react";
 import { FieldError, UseFormRegisterReturn } from "react-hook-form";
 
@@ -15,16 +16,24 @@ type Props = {
 export default function VideoForm({ error, registeredProps, value }: Props) {
   return (
     <FormControl isInvalid={error !== undefined}>
-      <FormLabel htmlFor="url">Video Link</FormLabel>
       <Input
         id="url"
         value={value}
         contentEditable={value === undefined}
-        placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        maxW="28em"
+        placeholder="이곳에 유튜브 링크 입력"
+        w="35em"
+        h="3.2em"
+        fontSize="25px"
+        borderRadius="5em"
+        pl="1em"
+        shadow="md"
         {...registeredProps}
       />
-      <FormErrorMessage>{error && error.message}</FormErrorMessage>
+      <Box alignItems="center">
+        <FormErrorMessage w="fit-content" m="auto" fontSize="15px">
+          {error && error.message}
+        </FormErrorMessage>
+      </Box>
     </FormControl>
   );
 }
