@@ -22,12 +22,25 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import NextCors from "nextjs-cors";
+import prisma from "./prisma";
 
 export default interface ResError {
   error: SubErrorType;
   message: string;
   code?: string;
   meta?: Record<string, unknown>;
+}
+
+export async function setCORS(req: NextApiRequest, res: NextApiResponse) {
+  await NextCors(req, res, {
+    // Options
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: [
+      `chrome-extension://${process.env.CHROME_EXTENSION_ID}`,
+      "https://www.youtube.com",
+    ],
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
 }
 
 export enum SubErrorType {
@@ -76,16 +89,7 @@ export function handleRoute<GetRes, PostRes, PatchRes, DeleteRes>(
     req: NextApiRequest,
     res: NextApiResponse<GetRes | PostRes | PatchRes | DeleteRes | ResError>
   ) => {
-    await NextCors(req, res, {
-      // Options
-      methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-      origin: [
-        "chrome-extension://jomohjeldemfddibgokobknlgmdmfnfb",
-        "https://www.youtube.com",
-      ],
-      optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-    });
-    const prisma = new PrismaClient();
+    setCORS(req, res);
     let params: RouteParams<GetRes | PostRes | PatchRes | DeleteRes> = {
       req,
       res,
