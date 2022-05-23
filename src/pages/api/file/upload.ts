@@ -2,9 +2,12 @@ import nextConnect from "next-connect";
 import multer from "multer";
 import multerS3 from "multer-s3";
 import { NextApiRequest, NextApiResponse } from "next";
-import ResError, { ResFileUpload, SubErrorType } from "../../../utils/types";
+import ResError, {
+  ResFileUpload,
+  setCORS,
+  SubErrorType,
+} from "../../../utils/types";
 import { getSession } from "next-auth/react";
-import NextCors from "nextjs-cors";
 import { configuredBucket, configuredS3 } from "../../../utils/aws";
 import prisma from "../../../utils/prisma";
 
@@ -47,15 +50,7 @@ const app = nextConnect<
 });
 
 app.post(upload.single("file"), async (req, res) => {
-  await NextCors(req, res, {
-    // Options
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-    origin: [
-      "chrome-extension://jomohjeldemfddibgokobknlgmdmfnfb",
-      "https://www.youtube.com",
-    ],
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  });
+  await setCORS(req, res);
 
   const session = await getSession({ req });
   if (!session) {
