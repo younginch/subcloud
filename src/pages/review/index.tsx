@@ -93,4 +93,4 @@ export default function Review() {
   );
 }
 
-Review.auth = Role.USER;
+Review.auth = Role.User;

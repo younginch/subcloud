@@ -244,4 +244,4 @@ function DeleteButton({ id }: DeleteButtonProps) {
   );
 }
 
-AdminUser.auth = Role.ADMIN;
+AdminUser.auth = Role.Admin;

@@ -53,5 +53,5 @@ async function UserDelete({ req, res, prisma, session }: RouteParams<ResUser>) {
 
 export default handleRoute(
   { GET: UserRead, DELETE: UserDelete },
-  { role: Role.USER }
+  { role: Role.User }
 );

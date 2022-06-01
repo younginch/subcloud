@@ -23,5 +23,5 @@ export default handleRoute(
   {
     GET: AdminDelete,
   },
-  { role: Role.ADMIN }
+  { role: Role.Admin }
 );

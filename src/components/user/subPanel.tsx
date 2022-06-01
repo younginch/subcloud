@@ -72,10 +72,10 @@ export default function SubPanel(props: SubPanelProps) {
               }}
             >
               <MenuItemOption value="all">전체</MenuItemOption>
-              <MenuItemOption value={Status.PENDING}>대기중</MenuItemOption>
-              <MenuItemOption value={Status.APPROVED}>승인</MenuItemOption>
-              <MenuItemOption value={Status.REJECTED}>거부</MenuItemOption>
-              <MenuItemOption value={Status.REPORTED}>신고</MenuItemOption>
+              <MenuItemOption value={Status.Pending}>대기중</MenuItemOption>
+              <MenuItemOption value={Status.Approved}>승인</MenuItemOption>
+              <MenuItemOption value={Status.Rejected}>거부</MenuItemOption>
+              <MenuItemOption value={Status.Reported}>신고</MenuItemOption>
             </MenuOptionGroup>
           </MenuList>
         </Menu>

@@ -37,14 +37,14 @@ model Session {
 }
 
 model User {
-  id            String         @id @default(cuid())
+  id            String          @id @default(cuid())
   name          String?
-  email         String?        @unique
+  email         String?         @unique
   emailVerified DateTime?
   image         String?
   // custom fields
-  role          Role           @default(USER)
-  point         Int            @default(0)
+  role          Role            @default(User)
+  point         Int             @default(0)
   baseLangs     String[]
   accounts      Account[]
   sessions      Session[]
@@ -53,6 +53,7 @@ model User {
   requests      Request[]
   files         File[]
   requestPoints RequestPoint[]
+  ReviewComment ReviewComment[]
 }
 
 model VerificationToken {
@@ -129,10 +130,24 @@ model Sub {
   video     Video       @relation(fields: [serviceId, videoId], references: [serviceId, videoId])
   reviews   SubReview[]
   lang      String
-  status    Status      @default(PENDING)
+  status    Status      @default(Pending)
   views     Int         @default(0)
 
+  ReviewComment ReviewComment[]
   @@unique([serviceId, videoId, lang, userId])
+}
+
+model ReviewComment {
+  id         String     @id @default(cuid())
+  reviewerId String
+  reviewer   User       @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+  subId      String
+  sub        Sub        @relation(fields: [subId], references: [id])
+  type       ReviewType
+  content    String?
+  startTime  Int
+  endTime    Int
+  resolved   Boolean    @default(false)
 }
 
 model SubReview {
@@ -160,14 +175,24 @@ model RequestPoint {
 }
 
 enum Role {
-  ADMIN
-  REVIEWER
-  USER
+  Admin
+  Reviewer
+  User
 }
 
 enum Status {
-  PENDING
-  APPROVED
-  REJECTED
-  REPORTED
+  Pending
+  Approved
+  Rejected
+  Reported
+}
+
+enum ReviewType {
+  Mistranslation
+  IncorrectTiming
+  NoSubtitle
+  IncorrectTitle
+  IncorrectLanguage
+  GuidelineViolation
+  Etc
 }

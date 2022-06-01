@@ -75,17 +75,18 @@ type HandleRouteProps<GetRes, PostRes, PatchRes, DeleteRes> = {
 
 type HandleRouteOption = {
   role?: Role;
+  debugOnly?: boolean;
 };
 
 export function handleRoute<GetRes, PostRes, PatchRes, DeleteRes>(
   method: HandleRouteProps<GetRes, PostRes, PatchRes, DeleteRes>,
-  options: HandleRouteOption = { role: undefined }
+  options: HandleRouteOption = { role: undefined, debugOnly: false }
 ): (
   req: NextApiRequest,
   res: NextApiResponse<GetRes | PostRes | PatchRes | DeleteRes | ResError>
 ) => Promise<void> {
   const { GET, POST, PATCH, DELETE } = method;
-  const { role } = options;
+  const { role, debugOnly } = options;
   return async (
     req: NextApiRequest,
     res: NextApiResponse<GetRes | PostRes | PatchRes | DeleteRes | ResError>
@@ -96,6 +97,14 @@ export function handleRoute<GetRes, PostRes, PatchRes, DeleteRes>(
       res,
       prisma,
     };
+    if (debugOnly) {
+      if (process.env.NODE_ENV === "production") {
+        return res.status(401).json({
+          error: SubErrorType.DebugOnly,
+          message: "Unauthorized in production",
+        });
+      }
+    }
     if (role) {
       const session = await getSession({ req });
       if (!session) {
@@ -104,17 +113,17 @@ export function handleRoute<GetRes, PostRes, PatchRes, DeleteRes>(
           message: "Please sign in",
         });
       }
-      if (role === Role.ADMIN) {
-        if (session.user.role !== Role.ADMIN) {
+      if (role === Role.Admin) {
+        if (session.user.role !== Role.Admin) {
           return res.status(403).json({
             error: SubErrorType.NotUserSpecificAuthenticated,
             message: "You are not an admin",
           });
         }
-      } else if (role === Role.REVIEWER) {
+      } else if (role === Role.Reviewer) {
         if (
-          session.user.role !== Role.REVIEWER &&
-          session.user.role !== Role.ADMIN
+          session.user.role !== Role.Reviewer &&
+          session.user.role !== Role.Admin
         ) {
           return res.status(403).json({
             error: SubErrorType.NotUserSpecificAuthenticated,

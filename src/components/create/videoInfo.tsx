@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import ResError, { ResVideo } from "../../utils/types";
+import { ResVideo } from "../../utils/types";
 import VideoForm from "./videoForm";
 
 type Props = {

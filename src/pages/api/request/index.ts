@@ -146,5 +146,5 @@ async function RequestDelete({
 
 export default handleRoute(
   { GET: RequestRead, POST: RequestCreate, DELETE: RequestDelete },
-  { role: Role.USER }
+  { role: Role.User }
 );
