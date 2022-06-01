@@ -235,6 +235,10 @@ type SubWithFileUrl = Sub & {
   url: string;
 };
 
+type SubWithVideoWithUser = SubWithVideo & {
+  user: User;
+};
+
 export type ResFileRead = FileWithUrl;
 export type ResFileDelete = File;
 export type ResFileSearch = File[];
@@ -249,3 +253,6 @@ export type ResSubView = Sub;
 export type ResUser = User;
 export type ResVideo = VideoWithInfo;
 export type ResVideoSearch = VideoWithCount[];
+export type ResRankingSub = SubWithVideoWithUser[];
+export type ResRankingVideo = Video[];
+export type ResRankingUser = User[];
