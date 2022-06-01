@@ -9,6 +9,7 @@ import {
   Order,
   User,
   PrismaClient,
+  Role,
 } from "@prisma/client";
 import {
   PrismaClientInitializationError,
@@ -73,18 +74,18 @@ type HandleRouteProps<GetRes, PostRes, PatchRes, DeleteRes> = {
 };
 
 type HandleRouteOption = {
-  useSession?: boolean;
+  role?: Role;
 };
 
 export function handleRoute<GetRes, PostRes, PatchRes, DeleteRes>(
   method: HandleRouteProps<GetRes, PostRes, PatchRes, DeleteRes>,
-  options: HandleRouteOption = { useSession: false }
+  options: HandleRouteOption = { role: undefined }
 ): (
   req: NextApiRequest,
   res: NextApiResponse<GetRes | PostRes | PatchRes | DeleteRes | ResError>
 ) => Promise<void> {
   const { GET, POST, PATCH, DELETE } = method;
-  const { useSession } = options;
+  const { role } = options;
   return async (
     req: NextApiRequest,
     res: NextApiResponse<GetRes | PostRes | PatchRes | DeleteRes | ResError>
@@ -95,13 +96,31 @@ export function handleRoute<GetRes, PostRes, PatchRes, DeleteRes>(
       res,
       prisma,
     };
-    if (useSession) {
+    if (role) {
       const session = await getSession({ req });
       if (!session) {
         return res.status(401).json({
           error: SubErrorType.NotAnonymousAuthenticated,
           message: "Please sign in",
         });
+      }
+      if (role === Role.ADMIN) {
+        if (session.user.role !== Role.ADMIN) {
+          return res.status(403).json({
+            error: SubErrorType.NotUserSpecificAuthenticated,
+            message: "You are not an admin",
+          });
+        }
+      } else if (role === Role.REVIEWER) {
+        if (
+          session.user.role !== Role.REVIEWER &&
+          session.user.role !== Role.ADMIN
+        ) {
+          return res.status(403).json({
+            error: SubErrorType.NotUserSpecificAuthenticated,
+            message: "You are not a reviewer",
+          });
+        }
       }
       params = { ...params, session };
     }
