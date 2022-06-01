@@ -24,6 +24,7 @@ type FormData = {
   serviceId: string;
   videoId: string;
   lang: string;
+  point: number;
 };
 
 export default function RequestCreate() {
@@ -97,6 +98,18 @@ export default function RequestCreate() {
               <SelectLanguage register={register("lang")} />
               <FormErrorMessage>
                 {errors.lang && errors.lang.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={errors.point !== undefined}>
+              <FormLabel htmlFor="point">포인트</FormLabel>
+              <Input
+                id="point"
+                value={router.query.point}
+                type="number"
+                {...register("point")}
+              />
+              <FormErrorMessage>
+                {errors.point && errors.point.message}
               </FormErrorMessage>
             </FormControl>
             <Button
