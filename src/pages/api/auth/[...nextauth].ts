@@ -1,5 +1,6 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import NextAuth, { Session, User } from "next-auth";
+import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import KakaoProvider from "next-auth/providers/kakao";
@@ -7,7 +8,18 @@ import GitHubProvider from "next-auth/providers/github";
 import { JWT } from "next-auth/jwt";
 import prisma from "../../../utils/prisma";
 
-const devProviders = [
+const providers = [
+  EmailProvider({
+    server: {
+      host: "email-smtp.ap-northeast-2.amazonaws.com",
+      port: 587,
+      auth: {
+        user: "AKIAYG6VFG2R33NRRLFP",
+        pass: "BDFuwxG7EZGO/NtrRQuIkdyEOpucqjAgXI0f99lWExmS",
+      },
+    },
+    from: "account@younginch.com",
+  }),
   GoogleProvider({
     clientId: process.env.GOOGLE_ID!,
     clientSecret: process.env.GOOGLE_SECRET!,
@@ -26,17 +38,6 @@ const devProviders = [
   }),
 ];
 
-const prodProviders = [
-  GoogleProvider({
-    clientId: process.env.GOOGLE_ID!,
-    clientSecret: process.env.GOOGLE_SECRET!,
-  }),
-  GitHubProvider({
-    clientId: process.env.GITHUB_ID,
-    clientSecret: process.env.GITHUB_SECRET,
-  }),
-];
-
 type SessionParams = {
   session: Session;
   user: User;
@@ -48,8 +49,7 @@ export default NextAuth({
   pages: {
     signIn: "/auth/signin",
   },
-  providers:
-    process.env.NODE_ENV === "production" ? prodProviders : devProviders,
+  providers,
   callbacks: {
     async session({ session, user }: SessionParams) {
       session.user.id = user.id;
