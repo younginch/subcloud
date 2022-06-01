@@ -33,6 +33,7 @@ function FooterLink({ route }: Props) {
 }
 
 function SiteMap() {
+  const { t } = useTranslation("menu");
   return (
     <Wrap padding={6} spacing={20}>
       <WrapItem>
@@ -43,12 +44,12 @@ function SiteMap() {
               SubCloud
             </Text>
           </HStack>
-          <Text color="muted">Request or Upload subtitles for Youtube</Text>
+          <Text color="muted">{t("punchline")}</Text>
         </Stack>
       </WrapItem>
       <WrapItem>
         <Stack>
-          <Heading size="sm">다운로드</Heading>
+          <Heading size="sm">{t("download")}</Heading>
           <NextLink
             href="https://chrome.google.com/webstore/detail/subcloud/jekpacppociidhmfenohpnajdmjdddel"
             passHref
@@ -69,7 +70,7 @@ function SiteMap() {
       </WrapItem>
       <WrapItem>
         <Stack>
-          <Heading size="sm">법률 및 정보</Heading>
+          <Heading size="sm">{t("legal")}</Heading>
           <FooterLink route="/info/company" />
           <FooterLink route="/info/terms" />
           <FooterLink route="/info/privacy" />
@@ -78,7 +79,7 @@ function SiteMap() {
       </WrapItem>
       <WrapItem>
         <Stack>
-          <Heading size="sm">사업자 정보</Heading>
+          <Heading size="sm">{t("business")}</Heading>
           <Text fontSize="xs">상호명: 주식회사 영인치랩 (young inch lab)</Text>
           <Text fontSize="xs">사업자등록번호: 468-81-02692</Text>
           <Text fontSize="xs">대표자명: 신명진, 이민규</Text>
