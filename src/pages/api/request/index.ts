@@ -8,7 +8,7 @@ import { RequestCreateSchema } from "../../../utils/schema";
 import { Session } from "next-auth";
 import { NextApiResponse } from "next";
 import prisma from "../../../utils/prisma";
-import { Request } from "@prisma/client";
+import { Request, Role } from "@prisma/client";
 
 async function RequestCreate({
   req,
@@ -146,5 +146,5 @@ async function RequestDelete({
 
 export default handleRoute(
   { GET: RequestRead, POST: RequestCreate, DELETE: RequestDelete },
-  { useSession: true }
+  { role: Role.USER }
 );

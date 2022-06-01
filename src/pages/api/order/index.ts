@@ -1,3 +1,4 @@
+import { Role } from "@prisma/client";
 import axios from "axios";
 import { handleRoute, RouteParams } from "../../../utils/types";
 
@@ -39,5 +40,5 @@ async function completeOrder({ req, res, prisma }: RouteParams<any>) {
 
 export default handleRoute(
   { POST: createOrder, PATCH: completeOrder },
-  { useSession: true }
+  { role: Role.USER }
 );

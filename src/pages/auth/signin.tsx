@@ -1,12 +1,13 @@
-import { Box, Button, Center, Heading, Stack } from "@chakra-ui/react";
+import { Box, Button, Center, Heading, Input, Stack } from "@chakra-ui/react";
 import type { Provider } from "next-auth/providers";
-import { getProviders, signIn } from "next-auth/react";
+import { getCsrfToken, getProviders, signIn } from "next-auth/react";
 import type { GetServerSidePropsContext } from "next/types";
 import { FaGoogle, FaFacebook, FaGithub } from "react-icons/fa";
 import { useRouter } from "next/router";
 
 type Props = {
   providers: Provider[];
+  csrfToken: string;
 };
 
 function getIcon(id: string) {
@@ -24,7 +25,7 @@ function getIcon(id: string) {
   }
 }
 
-export default function SignIn({ providers }: Props) {
+export default function SignIn({ providers, csrfToken }: Props) {
   const router = useRouter();
 
   return (
@@ -32,21 +33,34 @@ export default function SignIn({ providers }: Props) {
       <Box w="300px" borderRadius={12} borderWidth={1}>
         <Stack margin={6}>
           <Heading>Sign In</Heading>
-          {Object.values(providers).map((provider) => (
-            <div key={provider.name}>
-              <Button
-                disabled={provider.id === "facebook"}
-                leftIcon={getIcon(provider.id)}
-                onClick={() =>
-                  signIn(provider.id, {
-                    callbackUrl: router.query["callbackUrl"] as string,
-                  })
-                }
-              >
-                Sign in with {provider.name}
-              </Button>
-            </div>
-          ))}
+          <form method="post" action="/api/auth/signin/email">
+            <Input name="csrfToken" hidden defaultValue={csrfToken} />
+            <label>
+              Email address
+              <Input type="email" id="email" name="email" />
+            </label>
+            <Button type="submit">Sign in with Email</Button>
+          </form>
+          {Object.values(providers).map((provider) => {
+            if (provider.id === "email") {
+              return;
+            }
+            return (
+              <div key={provider.name}>
+                <Button
+                  disabled={provider.id === "facebook"}
+                  leftIcon={getIcon(provider.id)}
+                  onClick={() =>
+                    signIn(provider.id, {
+                      callbackUrl: router.query["callbackUrl"] as string,
+                    })
+                  }
+                >
+                  Sign in with {provider.name}
+                </Button>
+              </div>
+            );
+          })}
         </Stack>
       </Box>
     </Center>
@@ -56,9 +70,10 @@ export default function SignIn({ providers }: Props) {
 SignIn.hideHeader = true;
 SignIn.hideTitle = true;
 
-export async function getServerSideProps(_: GetServerSidePropsContext) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const providers = await getProviders();
+  const csrfToken = await getCsrfToken(context);
   return {
-    props: { providers },
+    props: { providers, csrfToken },
   };
 }

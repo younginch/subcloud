@@ -1,3 +1,4 @@
+import { Role } from "@prisma/client";
 import { configuredBucket, configuredS3 } from "../../../utils/aws";
 import {
   handleRoute,
@@ -58,5 +59,5 @@ export default handleRoute(
     GET: FileRead,
     DELETE: FileDelete,
   },
-  { useSession: true }
+  { role: Role.USER }
 );
