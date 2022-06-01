@@ -13,15 +13,6 @@ import axios from "axios";
 import { Role, User } from "@prisma/client";
 import Layout from "../components/layout";
 
-const font = `'Pretendard', sans-serif`;
-
-const theme = extendTheme({
-  fonts: {
-    heading: font,
-    body: font,
-  },
-});
-
 type NextPageWithAuth = NextPage & {
   auth?: Role;
   hideHeader?: boolean;
@@ -40,7 +31,7 @@ export default function MyApp({
 
   return (
     <SessionProvider session={session}>
-      <ChakraProvider theme={theme}>
+      <ChakraProvider>
         <Layout hideNavBar={hideHeader} hideTitle={hideTitle}>
           {Component.auth ? (
             <Auth role={auth}>
