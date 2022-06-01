@@ -41,7 +41,7 @@
     "react-hook-form": "^7.31.1",
     "react-hook-inview": "^4.5.0",
     "react-icons": "^4.3.1",
-    "react-youtube": "^9.0.1"
+    "react-youtube": "^9.0.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.22.0",
