@@ -49,9 +49,6 @@ export default function ToolBar({ isLarge }: Props): JSX.Element {
                   <Link href={`/user/${session.user.id}?tab=sub`} passHref>
                     <Button>내 영상 자막</Button>
                   </Link>
-                  <Link href={`/user/${session.user.id}?tab=file`} passHref>
-                    <Button>내 자막 파일</Button>
-                  </Link>
                 </Stack>
               </PopoverBody>
               <PopoverFooter>

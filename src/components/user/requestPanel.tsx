@@ -60,7 +60,6 @@ export default function RequestPanel(props: { requests: ResRequestSearch }) {
         </Thead>
         <Tbody>
           {requests.map((request) => {
-            console.log(request);
             return (
               <Tr key={request.id}>
                 <Td

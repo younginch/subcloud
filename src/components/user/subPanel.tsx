@@ -23,7 +23,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { FaYoutube } from "react-icons/fa";
-import { ResSubSearch } from "../../utils/types";
+import { ResFileRead, ResSubSearch } from "../../utils/types";
 
 type SubPanelProps = {
   subs: ResSubSearch;
@@ -126,6 +126,19 @@ export default function SubPanel(props: SubPanelProps) {
                 <Td>
                   <Button marginEnd="6px" isDisabled>
                     수정
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      axios
+                        .get<ResFileRead>(`/api/file`, {
+                          params: { id: sub.fileId },
+                        })
+                        .then((res) => {
+                          window.open(res.data.url);
+                        });
+                    }}
+                  >
+                    자막 파일 다운로드
                   </Button>
                   <Button
                     colorScheme="red"
