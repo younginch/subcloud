@@ -7,6 +7,7 @@ import {
 } from "../../../utils/types";
 import { SubCreateSchema } from "../../../utils/schema";
 import { configuredBucket, configuredS3 } from "../../../utils/aws";
+import { Role } from "@prisma/client";
 
 async function SubCreate({ req, res, prisma, session }: RouteParams<ResSub>) {
   const { value, error } = SubCreateSchema.validate(req.body);
@@ -101,5 +102,5 @@ async function SubDelete({ req, res, prisma, session }: RouteParams<ResSub>) {
 
 export default handleRoute(
   { POST: SubCreate, GET: SubRead, PATCH: SubUpdate, DELETE: SubDelete },
-  { useSession: true }
+  { role: Role.USER }
 );
