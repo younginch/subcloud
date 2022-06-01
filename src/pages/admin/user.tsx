@@ -1,47 +1,70 @@
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   TableContainer,
   Table,
-  TableCaption,
   Thead,
   Tr,
   Th,
   Tbody,
   Td,
-  Tfoot,
+  Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
 import { Role, User } from "@prisma/client";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import AdminLayout from "../../components/adminLayout";
 
-export default function AdminUser({ users = [] }: { users: User[] }) {
+export default function AdminUser() {
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    axios.get(`/api/admin/user`).then((res) => {
+      setUsers(res.data);
+    });
+  }, []);
+
   return (
-    <TableContainer>
-      <Table variant="simple">
-        <Thead>
-          <Tr>
-            <Th>To convert</Th>
-            <Th>into</Th>
-            <Th isNumeric>multiply by</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {users.map((user) => {
-            return (
-              <Tr key={user.id}>
-                <Td>{user.id}</Td>
-                <Td>{user.name}</Td>
-                <Td>{user.email}</Td>
-              </Tr>
-            );
-          })}
-        </Tbody>
-        <Tfoot>
-          <Tr>
-            <Th>To convert</Th>
-            <Th>into</Th>
-            <Th isNumeric>multiply by</Th>
-          </Tr>
-        </Tfoot>
-      </Table>
-    </TableContainer>
+    <AdminLayout>
+      <TableContainer>
+        <Table variant="simple">
+          <Thead>
+            <Tr>
+              <Th>ID</Th>
+              <Th>이름</Th>
+              <Th>이메일</Th>
+              <Th>역할</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {users.map((user) => {
+              return (
+                <Tr key={user.id}>
+                  <Td>{user.id}</Td>
+                  <Td>{user.name}</Td>
+                  <Td>{user.email}</Td>
+                  <Td>
+                    <Menu>
+                      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                        {user.role}
+                      </MenuButton>
+                      <MenuList>
+                        <MenuItem>Admin</MenuItem>
+                        <MenuItem>Reviewer</MenuItem>
+                        <MenuItem>User</MenuItem>
+                      </MenuList>
+                    </Menu>
+                  </Td>
+                </Tr>
+              );
+            })}
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </AdminLayout>
   );
 }
 

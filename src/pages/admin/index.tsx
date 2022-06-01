@@ -13,6 +13,7 @@ import { Role } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useRef } from "react";
+import AdminLayout from "../../components/adminLayout";
 
 export default function Admin() {
   const router = useRouter();
@@ -42,7 +43,7 @@ export default function Admin() {
   }
 
   return (
-    <>
+    <AdminLayout>
       <Button colorScheme="red" onClick={onOpen}>
         전체 DB 삭제
       </Button>
@@ -73,7 +74,7 @@ export default function Admin() {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </>
+    </AdminLayout>
   );
 }
 

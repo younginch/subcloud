@@ -37,13 +37,14 @@ model Session {
 }
 
 model User {
-  id            String      @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?     @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
   // custom fields
-  role          Role        @default(USER)
+  role          Role           @default(USER)
+  point         Int            @default(0)
   baseLangs     String[]
   accounts      Account[]
   sessions      Session[]
@@ -51,6 +52,7 @@ model User {
   reviews       SubReview[]
   requests      Request[]
   files         File[]
+  requestPoints RequestPoint[]
 }
 
 model VerificationToken {
@@ -95,12 +97,14 @@ model YoutubeChannel {
 }
 
 model Request {
-  id        String @id @default(cuid())
-  serviceId String
-  videoId   String
-  video     Video  @relation(fields: [serviceId, videoId], references: [serviceId, videoId], onDelete: Cascade)
-  users     User[]
-  lang      String
+  id            String         @id @default(cuid())
+  serviceId     String
+  videoId       String
+  video         Video          @relation(fields: [serviceId, videoId], references: [serviceId, videoId], onDelete: Cascade)
+  users         User[]
+  lang          String
+  point         Int            @default(0)
+  requestPoints RequestPoint[]
 
   @@unique([serviceId, videoId, lang])
 }
@@ -144,6 +148,15 @@ model SubReview {
 model Order {
   id     String @id @default(cuid())
   amount Int
+}
+
+model RequestPoint {
+  id        String  @id @default(cuid())
+  requestId String
+  request   Request @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  point     Int
 }
 
 enum Role {

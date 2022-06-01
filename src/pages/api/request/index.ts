@@ -5,6 +5,10 @@ import {
   SubErrorType,
 } from "../../../utils/types";
 import { RequestCreateSchema } from "../../../utils/schema";
+import { Session } from "next-auth";
+import { NextApiResponse } from "next";
+import prisma from "../../../utils/prisma";
+import { Request } from "@prisma/client";
 
 async function RequestCreate({
   req,
@@ -40,7 +44,11 @@ async function RequestCreate({
         },
       },
     });
-    return res.status(200).json(updatedRequest);
+    updatePointAndResponse(value.point, session, res, updatedRequest);
+    const finalRequest = await prisma.request.findUnique({
+      where: { id: updatedRequest.id },
+    });
+    return res.status(200).json(finalRequest!);
   }
   const createdRequest = await prisma.request.create({
     data: {
@@ -49,7 +57,42 @@ async function RequestCreate({
       users: { connect: { id: session?.user?.id } },
     },
   });
-  return res.status(201).json(createdRequest);
+  updatePointAndResponse(value.point, session, res, createdRequest);
+  const finalRequest = await prisma.request.findUnique({
+    where: { id: createdRequest.id },
+  });
+  return res.status(201).json(finalRequest!);
+}
+
+async function updatePointAndResponse(
+  requestedPoint: number = 0,
+  session: Session | undefined,
+  res: NextApiResponse,
+  request: Request
+): Promise<void> {
+  if (requestedPoint !== 0) {
+    if (session?.user.point! < requestedPoint) {
+      return res.status(400).json({
+        error: SubErrorType.InvalidRequest,
+        message: "Insufficient Point",
+      });
+    }
+    await prisma.user.update({
+      where: { id: session?.user.id },
+      data: { point: session?.user.point! - requestedPoint },
+    });
+    await prisma.request.update({
+      where: { id: request.id },
+      data: { point: request.point + requestedPoint },
+    });
+    await prisma.requestPoint.create({
+      data: {
+        userId: session?.user.id!,
+        requestId: request.id,
+        point: requestedPoint,
+      },
+    });
+  }
 }
 
 async function RequestRead({ req, res, prisma }: RouteParams<ResRequest>) {

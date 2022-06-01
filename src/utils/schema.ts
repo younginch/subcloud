@@ -13,6 +13,7 @@ export const RequestCreateSchema = joi.object({
   serviceId: joi.string().required(),
   videoId: joi.string().required(),
   lang: joi.string().required(),
+  point: joi.number().integer(),
 });
 
 export const SubCreateSchema = joi

@@ -54,6 +54,7 @@ export default NextAuth({
     async session({ session, user }: SessionParams) {
       session.user.id = user.id;
       session.user.role = user.role;
+      session.user.point = user.point as number;
       return Promise.resolve(session);
     },
     async redirect({ url, baseUrl }) {
