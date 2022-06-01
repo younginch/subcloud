@@ -1,3 +1,4 @@
+import { Role } from "@prisma/client";
 import { handleRoute, RouteParams } from "../../../utils/types";
 
 async function AdminDelete({ res, prisma }: RouteParams<{}>) {
@@ -18,6 +19,9 @@ async function AdminDelete({ res, prisma }: RouteParams<{}>) {
   return res.status(200).json({});
 }
 
-export default handleRoute({
-  GET: AdminDelete,
-});
+export default handleRoute(
+  {
+    GET: AdminDelete,
+  },
+  { role: Role.ADMIN }
+);

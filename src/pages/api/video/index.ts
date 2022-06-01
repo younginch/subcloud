@@ -1,4 +1,4 @@
-import { Video } from "@prisma/client";
+import { Role, Video } from "@prisma/client";
 import axios from "axios";
 import prisma from "../../../utils/prisma";
 import { VideoCreateSchema } from "../../../utils/schema";
@@ -145,5 +145,5 @@ async function VideoRead({ req, res, prisma }: RouteParams<ResVideo>) {
 
 export default handleRoute(
   { POST: VideoCreate, GET: VideoRead },
-  { useSession: true }
+  { role: Role.USER }
 );

@@ -1,3 +1,4 @@
+import { Role } from "@prisma/client";
 import {
   handleRoute,
   ResSubView,
@@ -20,4 +21,4 @@ async function SubViewAdd({ req, res, prisma }: RouteParams<ResSubView>) {
   return res.status(200).json(updatedSub);
 }
 
-export default handleRoute({ POST: SubViewAdd }, { useSession: true });
+export default handleRoute({ POST: SubViewAdd }, { role: Role.USER });

@@ -1,3 +1,4 @@
+import { Role } from "@prisma/client";
 import {
   handleRoute,
   ResUser,
@@ -52,5 +53,5 @@ async function UserDelete({ req, res, prisma, session }: RouteParams<ResUser>) {
 
 export default handleRoute(
   { GET: UserRead, DELETE: UserDelete },
-  { useSession: true }
+  { role: Role.USER }
 );
