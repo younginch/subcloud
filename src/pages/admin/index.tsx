@@ -78,4 +78,4 @@ export default function Admin() {
   );
 }
 
-Admin.auth = Role.ADMIN;
+Admin.auth = Role.Admin;

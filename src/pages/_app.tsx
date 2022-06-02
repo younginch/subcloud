@@ -65,11 +65,11 @@ function Auth({ children, role }: AuthProps): JSX.Element {
       if (!user) {
         return;
       }
-      if (role === Role.ADMIN && user.role !== Role.ADMIN) {
+      if (role === Role.Admin && user.role !== Role.Admin) {
         router.push("/api/auth/signout"); // If not admin, force log in
         return;
       }
-      if (role === Role.REVIEWER && user.role !== Role.REVIEWER) {
+      if (role === Role.Reviewer && user.role !== Role.Reviewer) {
         router.push("/api/auth/signout"); // If not reviewer, force log in
         return;
       }

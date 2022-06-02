@@ -21,4 +21,4 @@ async function SubViewAdd({ req, res, prisma }: RouteParams<ResSubView>) {
   return res.status(200).json(updatedSub);
 }
 
-export default handleRoute({ POST: SubViewAdd }, { role: Role.USER });
+export default handleRoute({ POST: SubViewAdd }, { role: Role.User });

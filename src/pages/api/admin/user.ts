@@ -37,5 +37,5 @@ export default handleRoute(
     PATCH: UserUpdate,
     DELETE: UserDelete,
   },
-  { role: Role.ADMIN }
+  { role: Role.Admin }
 );

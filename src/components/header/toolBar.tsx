@@ -63,12 +63,12 @@ export default function ToolBar({ isLarge }: Props): JSX.Element {
                   >
                     Sign Out
                   </Button>
-                  {session?.user.role === Role.ADMIN ||
+                  {session?.user.role === Role.Admin ||
                   process.env.NODE_ENV !== "production" ? (
                     <Button
                       onClick={async () => {
                         if (process.env.NODE_ENV !== "production") {
-                          await axios.post("/api/user/debug", {
+                          await axios.patch("/api/user/debug", {
                             id: session.user.id,
                           });
                         }

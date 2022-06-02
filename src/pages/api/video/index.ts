@@ -145,5 +145,5 @@ async function VideoRead({ req, res, prisma }: RouteParams<ResVideo>) {
 
 export default handleRoute(
   { POST: VideoCreate, GET: VideoRead },
-  { role: Role.USER }
+  { role: Role.User }
 );

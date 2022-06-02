@@ -40,5 +40,5 @@ async function completeOrder({ req, res, prisma }: RouteParams<any>) {
 
 export default handleRoute(
   { POST: createOrder, PATCH: completeOrder },
-  { role: Role.USER }
+  { role: Role.User }
 );

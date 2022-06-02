@@ -7,7 +7,6 @@ import {
   useToast,
   Wrap,
   WrapItem,
-  Box,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -127,5 +126,5 @@ export default function RequestCreate() {
   );
 }
 
-RequestCreate.auth = Role.USER;
+RequestCreate.auth = Role.User;
 RequestCreate.hideTitle = true;

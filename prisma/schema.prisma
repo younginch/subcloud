@@ -43,16 +43,17 @@ model User {
   emailVerified DateTime?
   image         String?
   // custom fields
-  role          Role           @default(USER)
+  role          Role           @default(User)
   point         Int            @default(0)
   baseLangs     String[]
   accounts      Account[]
   sessions      Session[]
   subs          Sub[]
-  reviews       SubReview[]
+  comments      Comment[]
   requests      Request[]
   files         File[]
   requestPoints RequestPoint[]
+  reviews       Review[]
 }
 
 model VerificationToken {
@@ -119,23 +120,37 @@ model File {
 }
 
 model Sub {
-  id        String      @id @default(cuid())
+  id        String       @id @default(cuid())
   userId    String
-  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  fileId    String      @unique
-  file      File        @relation(fields: [fileId], references: [id])
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileId    String       @unique
+  file      File         @relation(fields: [fileId], references: [id])
   serviceId String
   videoId   String
-  video     Video       @relation(fields: [serviceId, videoId], references: [serviceId, videoId])
-  reviews   SubReview[]
+  video     Video        @relation(fields: [serviceId, videoId], references: [serviceId, videoId])
+  comments  Comment[]
   lang      String
-  status    Status      @default(PENDING)
-  views     Int         @default(0)
+  status    Status       @default(Pending)
+  views     Int          @default(0)
 
+  reviews Review[]
   @@unique([serviceId, videoId, lang, userId])
 }
 
-model SubReview {
+model Review {
+  id         String     @id @default(cuid())
+  reviewerId String
+  reviewer   User       @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+  subId      String
+  sub        Sub        @relation(fields: [subId], references: [id])
+  type       ReviewType
+  content    String?
+  startTime  Int
+  endTime    Int
+  resolved   Boolean    @default(false)
+}
+
+model Comment {
   id      String  @id @default(cuid())
   subId   String
   sub     Sub     @relation(fields: [subId], references: [id], onDelete: Cascade)
@@ -160,14 +175,24 @@ model RequestPoint {
 }
 
 enum Role {
-  ADMIN
-  REVIEWER
-  USER
+  Admin
+  Reviewer
+  User
 }
 
 enum Status {
-  PENDING
-  APPROVED
-  REJECTED
-  REPORTED
+  Pending
+  Approved
+  Rejected
+  Reported
+}
+
+enum ReviewType {
+  Mistranslation
+  IncorrectTiming
+  NoSubtitle
+  IncorrectTitle
+  IncorrectLanguage
+  GuidelineViolation
+  Etc
 }

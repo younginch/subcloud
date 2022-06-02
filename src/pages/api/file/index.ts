@@ -59,5 +59,5 @@ export default handleRoute(
     GET: FileRead,
     DELETE: FileDelete,
   },
-  { role: Role.USER }
+  { role: Role.User }
 );

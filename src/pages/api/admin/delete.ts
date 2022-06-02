@@ -15,7 +15,8 @@ async function AdminDelete({ res, prisma }: RouteParams<{}>) {
   await prisma.request.deleteMany({});
   await prisma.file.deleteMany({});
   await prisma.sub.deleteMany({});
-  await prisma.subReview.deleteMany({});
+  await prisma.review.deleteMany({});
+  await prisma.comment.deleteMany({});
   return res.status(200).json({});
 }
 
@@ -23,5 +24,5 @@ export default handleRoute(
   {
     GET: AdminDelete,
   },
-  { role: Role.ADMIN }
+  { role: Role.Admin, debugOnly: true }
 );

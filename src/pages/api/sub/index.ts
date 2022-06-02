@@ -102,5 +102,5 @@ async function SubDelete({ req, res, prisma, session }: RouteParams<ResSub>) {
 
 export default handleRoute(
   { POST: SubCreate, GET: SubRead, PATCH: SubUpdate, DELETE: SubDelete },
-  { role: Role.USER }
+  { role: Role.User }
 );
