@@ -37,23 +37,23 @@ model Session {
 }
 
 model User {
-  id            String          @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?         @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
   // custom fields
-  role          Role            @default(User)
-  point         Int             @default(0)
+  role          Role           @default(User)
+  point         Int            @default(0)
   baseLangs     String[]
   accounts      Account[]
   sessions      Session[]
   subs          Sub[]
-  reviews       SubReview[]
+  comments      Comment[]
   requests      Request[]
   files         File[]
   requestPoints RequestPoint[]
-  ReviewComment ReviewComment[]
+  reviews       Review[]
 }
 
 model VerificationToken {
@@ -120,24 +120,24 @@ model File {
 }
 
 model Sub {
-  id        String      @id @default(cuid())
+  id        String       @id @default(cuid())
   userId    String
-  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  fileId    String      @unique
-  file      File        @relation(fields: [fileId], references: [id])
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileId    String       @unique
+  file      File         @relation(fields: [fileId], references: [id])
   serviceId String
   videoId   String
-  video     Video       @relation(fields: [serviceId, videoId], references: [serviceId, videoId])
-  reviews   SubReview[]
+  video     Video        @relation(fields: [serviceId, videoId], references: [serviceId, videoId])
+  comments  Comment[]
   lang      String
-  status    Status      @default(Pending)
-  views     Int         @default(0)
+  status    Status       @default(Pending)
+  views     Int          @default(0)
 
-  ReviewComment ReviewComment[]
+  reviews Review[]
   @@unique([serviceId, videoId, lang, userId])
 }
 
-model ReviewComment {
+model Review {
   id         String     @id @default(cuid())
   reviewerId String
   reviewer   User       @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
@@ -150,7 +150,7 @@ model ReviewComment {
   resolved   Boolean    @default(false)
 }
 
-model SubReview {
+model Comment {
   id      String  @id @default(cuid())
   subId   String
   sub     Sub     @relation(fields: [subId], references: [id], onDelete: Cascade)
