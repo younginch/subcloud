@@ -1,4 +1,4 @@
-import { Box, Container, Heading, HStack, Text } from "@chakra-ui/react";
+import { Container, Heading } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -16,7 +16,7 @@ type Props = {
 export default function Layout({
   hideNavBar,
   hideTitle,
-  maxWidth = "6xl",
+  maxWidth,
   children,
 }: Props) {
   const { t } = useTranslation("routes");
@@ -39,7 +39,7 @@ export default function Layout({
         }}
       >
         {!hideNavBar && <NavBar />}
-        <Container maxW={maxWidth} paddingX="36px">
+        <Container maxW={maxWidth ?? "6xl"} paddingX="36px">
           {!hideTitle && <Heading marginY="18px">{t(router.pathname)}</Heading>}
           {children}
         </Container>
