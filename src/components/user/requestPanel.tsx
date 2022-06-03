@@ -21,6 +21,7 @@ import {
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import CopyToClipboard from "react-copy-to-clipboard";
 import { FaYoutube } from "react-icons/fa";
 import { MoreIcon } from "../../utils/icons";
 import { ResRequestSearch } from "../../utils/types";
@@ -55,6 +56,7 @@ export default function RequestPanel(props: { requests: ResRequestSearch }) {
             <Th>비디오</Th>
             <Th>채널</Th>
             <Th>요청 언어</Th>
+            <Th>포인트</Th>
             <Th>작업</Th>
           </Tr>
         </Thead>
@@ -96,6 +98,7 @@ export default function RequestPanel(props: { requests: ResRequestSearch }) {
                   </HStack>
                 </Td>
                 <Td>{request.lang}</Td>
+                <Td>{request.point}</Td>
                 <Td>
                   <Button
                     leftIcon={<DeleteIcon />}
@@ -130,7 +133,11 @@ export default function RequestPanel(props: { requests: ResRequestSearch }) {
                       variant="outline"
                     />
                     <MenuList>
-                      <MenuItem onClick={() => {}}>요청 ID 복사</MenuItem>
+                      <MenuItem>
+                        <CopyToClipboard text={request.id}>
+                          <Button>요청 ID 복사</Button>
+                        </CopyToClipboard>
+                      </MenuItem>
                     </MenuList>
                   </Menu>
                 </Td>

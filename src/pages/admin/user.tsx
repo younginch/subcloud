@@ -135,7 +135,7 @@ function UpdateButton({ user }: UpdateButtonProps) {
       </Button>
       <Drawer
         isOpen={isOpen}
-        placement="left"
+        placement="right"
         initialFocusRef={firstField}
         onClose={onClose}
       >

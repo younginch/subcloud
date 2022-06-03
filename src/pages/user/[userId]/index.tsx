@@ -17,7 +17,7 @@ import RequestPanel from "../../../components/user/requestPanel";
 import SubPanel from "../../../components/user/subPanel";
 import { ResRequestSearch, ResSubSearch } from "../../../utils/types";
 
-const TAB_LIST = ["request", "sub", "file"];
+const TAB_LIST = ["request", "sub"];
 
 type UserReadProps = {
   requests: ResRequestSearch;
@@ -53,6 +53,8 @@ export default function UserRead({ requests, subs }: UserReadProps) {
         <Stack>
           <Text>{data?.user.name}</Text>
           <Text>{data?.user.email}</Text>
+          <Text>{data?.user.role}</Text>
+          <Text>{data?.user.point} 포인트</Text>
         </Stack>
       </HStack>
       <Tabs isLazy index={getTabIndex()} onChange={onChangeTabIndex}>

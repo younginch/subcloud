@@ -17,12 +17,17 @@ import {
   Td,
   Avatar,
   Text,
+  IconButton,
+  MenuItem,
 } from "@chakra-ui/react";
+import { request } from "@playwright/test";
 import { Status } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import CopyToClipboard from "react-copy-to-clipboard";
 import { FaYoutube } from "react-icons/fa";
+import { MoreIcon } from "../../utils/icons";
 import { ResFileRead, ResSubSearch } from "../../utils/types";
 
 type SubPanelProps = {
@@ -164,6 +169,21 @@ export default function SubPanel(props: SubPanelProps) {
                   >
                     삭제
                   </Button>
+                  <Menu>
+                    <MenuButton
+                      as={IconButton}
+                      aria-label="Options"
+                      icon={<MoreIcon />}
+                      variant="outline"
+                    />
+                    <MenuList>
+                      <MenuItem>
+                        <CopyToClipboard text={sub.id}>
+                          <Button>자막 ID 복사</Button>
+                        </CopyToClipboard>
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
                 </Td>
               </Tr>
             );
