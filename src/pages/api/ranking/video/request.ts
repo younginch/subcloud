@@ -1,6 +1,6 @@
 import {
   handleRoute,
-  ResRankingSub,
+  ResRankingVideo,
   RouteParams,
   SubErrorType,
 } from "../../../../utils/types";
@@ -9,7 +9,7 @@ async function RankingVideoByRequest({
   req,
   res,
   prisma,
-}: RouteParams<ResRankingSub>) {
+}: RouteParams<ResRankingVideo>) {
   const { lang, start, end } = req.query;
   if (!start && !end) {
     return res
@@ -20,25 +20,27 @@ async function RankingVideoByRequest({
   if (lang) {
     where.lang = lang;
   }
-  const subs = await prisma.sub.findMany({
+  const videos = await prisma.video.findMany({
     take: Number(end),
     orderBy: [
       {
-        views: "desc",
+        requests: {
+          _count: "desc",
+        },
       },
     ],
     where,
     include: {
-      video: { include: { youtubeVideo: { include: { channel: true } } } },
-      user: true,
+      youtubeVideo: { include: { channel: true } },
+      requests: true,
     },
   });
-  if (!subs) {
+  if (!videos) {
     return res
       .status(404)
       .json({ error: SubErrorType.NotFound, message: "RankingSubView" });
   }
-  return res.status(200).json(subs.slice(Number(start)));
+  return res.status(200).json(videos.slice(Number(start)));
 }
 
 export default handleRoute({ GET: RankingVideoByRequest });
