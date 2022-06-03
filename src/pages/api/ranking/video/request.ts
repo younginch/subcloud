@@ -1,6 +1,7 @@
 import {
   handleRoute,
   ResRankingVideo,
+  VideoWithRequest,
   RouteParams,
   SubErrorType,
 } from "../../../../utils/types";
@@ -18,29 +19,50 @@ async function RankingVideoByRequest({
   }
   let where: any = {};
   if (lang) {
-    where.lang = lang;
-  }
-  const videos = await prisma.video.findMany({
-    take: Number(end),
-    orderBy: [
-      {
-        requests: {
-          _count: "desc",
+    where = {
+      requests: {
+        every: {
+          lang: lang,
         },
       },
-    ],
+    };
+  }
+  const videos = await prisma.video.findMany({
     where,
     include: {
+      requests: {
+        include: { users: true },
+      },
       youtubeVideo: { include: { channel: true } },
-      requests: true,
     },
   });
+  const compareByRequests = (a: VideoWithRequest, b: VideoWithRequest) => {
+    return b._count.requests - a._count.requests;
+  };
+  const newVideos = videos
+    .map((video) => {
+      return {
+        url: video.url,
+        serviceId: video.serviceId,
+        videoId: video.videoId,
+        youtubeVideoId: video.youtubeVideoId,
+        youtubeVideo: video.youtubeVideo,
+        _count: {
+          requests: video.requests.reduce(
+            (prev, curr) => prev + curr.users.length,
+            0
+          ),
+          points: video.requests.reduce((prev, curr) => prev + curr.point, 0),
+        },
+      };
+    })
+    .sort(compareByRequests);
   if (!videos) {
     return res
       .status(404)
       .json({ error: SubErrorType.NotFound, message: "RankingSubView" });
   }
-  return res.status(200).json(videos.slice(Number(start)));
+  return res.status(200).json(newVideos.slice(Number(start), Number(end)));
 }
 
 export default handleRoute({ GET: RankingVideoByRequest });

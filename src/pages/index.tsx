@@ -1,3 +1,4 @@
+import React, { Component, MouseEventHandler, useState } from "react";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { AiFillHeart } from "react-icons/ai";
 import { IconContext } from "react-icons";
@@ -12,6 +13,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import Slider from "react-slick";
 import Image from "next/image";
 import Link from "next/link";
 import ChromeIcon from "../../public/browsers/chrome.png";
@@ -19,6 +21,43 @@ import FirefoxIcon from "../../public/browsers/firefox.svg";
 import SafariIcon from "../../public/browsers/safari.png";
 import TitleImage from "../../public/title.png";
 import InViewProvider from "../components/inviewProvider";
+import CarouselPage from "../components/carouselPage";
+
+export function SimpleSlider() {
+  const [imageIndex, setImageIndex] = useState(0);
+
+  const images = [
+    "https://bit.ly/2Z4KKcF",
+    "https://bit.ly/2Z4KKcF",
+    "https://bit.ly/2Z4KKcF",
+    "https://bit.ly/2Z4KKcF",
+    "https://bit.ly/2Z4KKcF",
+  ];
+
+  const settings = {
+    infinite: true,
+    speed: 300,
+    slidesToShow: 3,
+    centerMode: true,
+    afterChange: (current: number) => {
+      setImageIndex(current);
+    },
+    autoplay: true,
+    autoplaySpeed: 5000,
+  };
+
+  return (
+    <div>
+      <Slider {...settings}>
+        {images.map((img, idx) => (
+          <Box key={idx}>
+            <CarouselPage active={idx == imageIndex} />
+          </Box>
+        ))}
+      </Slider>
+    </div>
+  );
+}
 
 type Props = {
   browser: string;
@@ -51,7 +90,9 @@ export function ExtensionButton({ browser, isDisabled = false }: Props) {
       isDisabled={isDisabled}
     >
       <Image src={icon} alt="icon" width="24px" height="24px" />
-      <Text marginStart="12px">{"SubCloud for " + name}</Text>
+      <Text marginStart="12px" color="gray.200">
+        {"SubCloud for " + name}
+      </Text>
     </Button>
   );
 }
@@ -59,6 +100,49 @@ export function ExtensionButton({ browser, isDisabled = false }: Props) {
 export default function Home() {
   return (
     <>
+      <Stack bg="black" h="80vh" className="mainComponent">
+        <Box className="titleOverlay">
+          <Stack>
+            <Center>
+              <Heading color="white" mt={70}>
+                전 세계 유저들이 제작한 자막을 시청하세요
+              </Heading>
+            </Center>
+            <Center>
+              <Text fontSize="2xl" color="gray.300" mt={3}>
+                다양한 디바이스에서 무제한으로 사용할 수 있습니다.
+              </Text>
+            </Center>
+            <Flex direction="column" alignItems="center">
+              <Text fontSize="2xl" mt={10} mb="30px" color="gray.200">
+                지금 바로 다운로드하세요
+              </Text>
+              <HStack marginBottom="192px">
+                <Stack>
+                  <ExtensionButton browser="chrome" />
+                  <Text align="center" color="gray.200">
+                    1000 + Users
+                  </Text>
+                </Stack>
+                <Stack>
+                  <ExtensionButton browser="safari" isDisabled />
+                  <Text align="center" color="gray">
+                    Comming soon
+                  </Text>
+                </Stack>
+                <Stack>
+                  <ExtensionButton browser="firefox" isDisabled />
+                  <Text align="center" color="gray">
+                    Comming soon
+                  </Text>
+                </Stack>
+              </HStack>
+            </Flex>
+          </Stack>
+        </Box>
+        <SimpleSlider />
+      </Stack>
+
       <HStack h="100vh" alignItems="top">
         <Stack marginTop="28vh" width="570px">
           <Heading fontSize="31px" h="76px">
@@ -184,29 +268,6 @@ export default function Home() {
             </object>
           </div>
         </HStack>
-      </InViewProvider>
-      <InViewProvider>
-        <Flex direction="column" alignItems="center" mt="200px">
-          <Heading mb="30px">지금 바로 다운로드하세요</Heading>
-          <HStack marginBottom="192px">
-            <Stack>
-              <ExtensionButton browser="chrome" />
-              <Text align="center">1000 + Users</Text>
-            </Stack>
-            <Stack>
-              <ExtensionButton browser="safari" isDisabled />
-              <Text align="center" color="gray">
-                Comming soon
-              </Text>
-            </Stack>
-            <Stack>
-              <ExtensionButton browser="firefox" isDisabled />
-              <Text align="center" color="gray">
-                Comming soon
-              </Text>
-            </Stack>
-          </HStack>
-        </Flex>
       </InViewProvider>
     </>
   );
