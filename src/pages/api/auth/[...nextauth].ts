@@ -1,5 +1,6 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import NextAuth, { Session, User } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
@@ -9,6 +10,25 @@ import { JWT } from "next-auth/jwt";
 import prisma from "../../../utils/prisma";
 
 const providers = [
+  CredentialsProvider({
+    name: "email-password",
+    credentials: {
+      email: { label: "Email", type: "email", placeholder: "test@test.com" },
+      password: { label: "Password", type: "password" },
+    },
+    async authorize(credentials, req) {
+      const email = credentials?.email;
+      const user = await prisma.user.findUnique({ where: { email } });
+      if (user) {
+        if (credentials?.password !== user?.password) {
+          throw new Error("아이디 혹은 패스워드가 틀립니다.");
+        }
+        return user;
+      } else {
+        return null;
+      }
+    },
+  }),
   EmailProvider({
     server: {
       host: "email-smtp.ap-northeast-2.amazonaws.com",
