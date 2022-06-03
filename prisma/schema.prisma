@@ -43,6 +43,7 @@ model User {
   emailVerified DateTime?
   image         String?
   // custom fields
+  password      String?
   role          Role           @default(User)
   point         Int            @default(0)
   baseLangs     String[]
