@@ -1,0 +1,40 @@
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
+.mainComponent {
+    position: relative;
+}
+
+.titleOverlay {
+    position: absolute;
+    width: 100%;
+    z-index:2;
+}
+
+.imagePage {
+  transform: scale(0.7);
+  transition: transform 300ms;
+  opacity: 0.25;
+}
+
+.activePage {
+  transform: scale(1.1);
+  transition: transform 300ms;
+  opacity: .3;
+}
+
+.arrow {
+  background-color: #fff;
+  position: absolute;
+  cursor: pointer;
+  z-index: 10;
+}
+.next {
+  right: 10%;
+  top: 50%;
+}
+
+.prev {
+  left: 10%;
+  top: 50%;
+}
