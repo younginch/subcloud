@@ -2,13 +2,14 @@ import Layout from "../components/layout";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { ResRankingSub, ResRankingVideo } from "../utils/types";
+import { ResRankingSub, ResRankingVideo, ResRankingUser } from "../utils/types";
 
 export default function RankingPage() {
   const router = useRouter();
   const [lang, setLang] = useState<string | null>(null);
   const [subs, setSubs] = useState<ResRankingSub>([]);
   const [videos, setVideos] = useState<ResRankingVideo>([]);
+  const [users, setUsers] = useState<ResRankingUser>([]);
 
   useEffect(() => {
     const subQuery = `/api/ranking/sub/view?start=0&end=50${
@@ -18,6 +19,9 @@ export default function RankingPage() {
       lang === null ? "" : "&lang=" + lang
     }`;
     const videoPointQuery = `/api/ranking/video/point?start=0&end=50${
+      lang === null ? "" : "&lang=" + lang
+    }`;
+    const userViewQuery = `/api/ranking/user/view?start=0&end=50${
       lang === null ? "" : "&lang=" + lang
     }`;
     axios
@@ -35,6 +39,14 @@ export default function RankingPage() {
       .then((res) => {
         console.log(res.data);
         setVideos(res.data);
+      });
+    axios
+      .get<ResRankingUser>(userViewQuery, {
+        params: { query: router.query.q },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setUsers(res.data);
       });
   }, [router.query.q, lang]);
 
@@ -70,6 +82,18 @@ export default function RankingPage() {
     });
   };
 
+  const userRanking = () => {
+    return users.map((user) => {
+      return (
+        <p key={user.id}>
+          name: {user.name}, email: {user.email}, image: {user.image}, subs:{" "}
+          {user._count.subs}, views: {user._count.views}, fullfills:{" "}
+          {user._count.fullfill}
+        </p>
+      );
+    });
+  };
+
   return (
     <>
       <button onClick={() => setLang("en")}>lang</button>
@@ -77,6 +101,8 @@ export default function RankingPage() {
       {subRanking()}
       <p>videoRanking</p>
       {videoRanking()}
+      <p>userRanking</p>
+      {userRanking()}
     </>
   );
 }
