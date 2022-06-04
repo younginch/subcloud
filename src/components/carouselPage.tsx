@@ -19,7 +19,6 @@ export default function CarouselPage({ active }: Props) {
 
   return (
     <Box
-      maxW="sm"
       overflow="hidden"
       className={active ? "imagePage activePage" : "imagePage"}
     >
