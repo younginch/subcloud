@@ -149,6 +149,7 @@ export function handleRoute<GetRes, PostRes, PatchRes, DeleteRes>(
         });
       }
     } catch (e: any) {
+      console.log(e);
       handleServerError(res, e);
     }
   };
