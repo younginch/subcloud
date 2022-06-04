@@ -39,10 +39,10 @@ export default function Layout({
         }}
       >
         {!hideNavBar && <NavBar />}
-        <Container maxW={maxWidth ?? "6xl"} paddingX="36px">
+        <Box maxW={maxWidth}>
           {!hideTitle && <Heading marginY="18px">{t(router.pathname)}</Heading>}
           {children}
-        </Container>
+        </Box>
       </div>
       <Footer />
       <Script

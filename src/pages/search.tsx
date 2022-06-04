@@ -74,7 +74,7 @@ export default function Search() {
                       </Text>
                     </HStack>
                   </Td>
-                  <Td isNumeric>{video._count.reqeusts}</Td>
+                  <Td isNumeric>{video._count.requests}</Td>
                   <Td isNumeric>{video._count.subs}</Td>
                 </Tr>
               );

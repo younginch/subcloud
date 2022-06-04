@@ -1,6 +1,7 @@
 import {
   handleRoute,
-  ResRankingSub,
+  ResRankingVideo,
+  VideoWithRequest,
   RouteParams,
   SubErrorType,
 } from "../../../../utils/types";
@@ -9,7 +10,7 @@ async function RankingVideoByRequest({
   req,
   res,
   prisma,
-}: RouteParams<ResRankingSub>) {
+}: RouteParams<ResRankingVideo>) {
   const { lang, start, end } = req.query;
   if (!start && !end) {
     return res
@@ -18,27 +19,50 @@ async function RankingVideoByRequest({
   }
   let where: any = {};
   if (lang) {
-    where.lang = lang;
-  }
-  const subs = await prisma.sub.findMany({
-    take: Number(end),
-    orderBy: [
-      {
-        views: "desc",
+    where = {
+      requests: {
+        every: {
+          lang: lang,
+        },
       },
-    ],
+    };
+  }
+  const videos = await prisma.video.findMany({
     where,
     include: {
-      video: { include: { youtubeVideo: { include: { channel: true } } } },
-      user: true,
+      requests: {
+        include: { users: true },
+      },
+      youtubeVideo: { include: { channel: true } },
     },
   });
-  if (!subs) {
+  const compareByRequests = (a: VideoWithRequest, b: VideoWithRequest) => {
+    return b._count.requests - a._count.requests;
+  };
+  const newVideos = videos
+    .map((video) => {
+      return {
+        url: video.url,
+        serviceId: video.serviceId,
+        videoId: video.videoId,
+        youtubeVideoId: video.youtubeVideoId,
+        youtubeVideo: video.youtubeVideo,
+        _count: {
+          requests: video.requests.reduce(
+            (prev, curr) => prev + curr.users.length,
+            0
+          ),
+          points: video.requests.reduce((prev, curr) => prev + curr.point, 0),
+        },
+      };
+    })
+    .sort(compareByRequests);
+  if (!videos) {
     return res
       .status(404)
       .json({ error: SubErrorType.NotFound, message: "RankingSubView" });
   }
-  return res.status(200).json(subs.slice(Number(start)));
+  return res.status(200).json(newVideos.slice(Number(start), Number(end)));
 }
 
 export default handleRoute({ GET: RankingVideoByRequest });

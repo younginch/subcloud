@@ -212,7 +212,11 @@ type VideoWithInfo = Video & {
 
 type VideoWithCount = Video & {
   youtubeVideo?: YoutubeVideoWithChannel | null;
-  _count: { reqeusts: number; subs: number };
+  _count: { requests: number; subs: number };
+};
+
+export type VideoWithRequest = VideoWithInfo & {
+  _count: { requests: number; points: number };
 };
 
 type RequestWithUserCount = Request & {
@@ -254,5 +258,5 @@ export type ResUser = User;
 export type ResVideo = VideoWithInfo;
 export type ResVideoSearch = VideoWithCount[];
 export type ResRankingSub = SubWithVideoWithUser[];
-export type ResRankingVideo = Video[];
+export type ResRankingVideo = VideoWithRequest[];
 export type ResRankingUser = User[];
