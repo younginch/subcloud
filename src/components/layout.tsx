@@ -1,4 +1,4 @@
-import { Container, Heading } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import { useRouter } from "next/router";
