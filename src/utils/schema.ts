@@ -24,3 +24,8 @@ export const SubCreateSchema = joi
     lang: joi.string().required(),
   })
   .required();
+
+export const UserUpdateSchema = joi.object({
+  role: joi.string(),
+  point: joi.number().integer(),
+});

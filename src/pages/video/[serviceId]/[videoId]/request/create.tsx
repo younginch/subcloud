@@ -45,6 +45,7 @@ export default function RequestCreate() {
           serviceId,
           videoId,
           lang: values.lang,
+          point: values.point,
         })
         .then((res) => {
           toast({
@@ -56,7 +57,12 @@ export default function RequestCreate() {
           resolve();
         })
         .catch((err) => {
-          reject();
+          toast({
+            title: "Error",
+            description: err.response.data.message,
+            status: "error",
+          });
+          reject(err);
         });
     });
   }
