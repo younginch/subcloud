@@ -15,7 +15,6 @@ import {
   AlertDialogOverlay,
   useDisclosure,
   useToast,
-  Box,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -32,12 +31,12 @@ import {
 } from "@chakra-ui/react";
 import { Role, User } from "@prisma/client";
 import axios from "axios";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AdminLayout from "../../components/adminLayout";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
-import { UserUpdateSchema, VideoCreateSchema } from "../../utils/schema";
+import { UserUpdateSchema } from "../../utils/schema";
 
 export default function AdminUser() {
   const [users, setUsers] = useState<User[]>([]);

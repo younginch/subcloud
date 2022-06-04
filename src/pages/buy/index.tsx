@@ -22,27 +22,27 @@ import PointIcon from "../../../public/point.png";
 import InViewProvider from "../../components/inviewProvider";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Link from "next/link";
+import { OrderType, Role } from "@prisma/client";
+import { Products } from "../../utils/products";
 
-const titleList = [
-  "Starter pack",
-  "Small pack",
-  "Normal pack",
-  "Large pack",
-  "Point bucket",
-];
-const pointList = [80, 500, 1200, 2500, 6500];
-const priceList = [1200, 5900, 12000, 25000, 65000];
 const addList = Array<number>(5)
   .fill(0)
   .map((_, i) =>
-    Math.round(pointList[i] - (pointList[0] * priceList[i]) / priceList[0])
+    Math.round(
+      Products[i].point -
+        (Products[0].point * Products[i].price) / Products[0].price
+    )
   );
 const imageList = [Point80, Point500, Point1200, Point2500, Point6500];
 const discountRate = Array<number>(5)
   .fill(0)
   .map((_, i) =>
     Math.round(
-      100 * (1 - (pointList[0] * priceList[i]) / pointList[i] / priceList[0])
+      100 *
+        (1 -
+          (Products[0].point * Products[i].price) /
+            Products[i].point /
+            Products[0].price)
     )
   );
 
@@ -119,14 +119,17 @@ export default function Buy() {
             <Button
               onClick={() => {
                 axios
-                  .post("/api/order", { amount: price })
+                  .post("/api/order", {
+                    type: OrderType.ChargePoint,
+                    amount: price,
+                  })
                   .then((res) => {
                     tossPayments
                       .requestPayment("카드", {
                         amount: res.data.amount,
                         orderId: res.data.id,
                         orderName: `${point} 포인트`,
-                        successUrl: `${window.location.origin}/buy/success`,
+                        successUrl: `${window.location.origin}/buy/process`,
                         failUrl: `${window.location.origin}/buy/fail`,
                       })
                       .catch(() => {
@@ -186,14 +189,14 @@ export default function Buy() {
         </HStack>
       </Flex>
       <Wrap>
-        {pointList.map((point, index) => (
+        {Products.map((product, index) => (
           <WrapItem key={index}>
             <PointCard
-              title={titleList[index]}
+              title={product.title}
               discountRate={discountRate[index]}
-              point={point}
+              point={product.point}
               add={addList[index]}
-              price={priceList[index]}
+              price={product.price}
               src={imageList[index]}
             />
           </WrapItem>
@@ -202,3 +205,5 @@ export default function Buy() {
     </>
   );
 }
+
+Buy.auth = Role.User;
