@@ -121,18 +121,18 @@ model File {
 }
 
 model Sub {
-  id        String       @id @default(cuid())
+  id        String    @id @default(cuid())
   userId    String
-  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  fileId    String       @unique
-  file      File         @relation(fields: [fileId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileId    String    @unique
+  file      File      @relation(fields: [fileId], references: [id])
   serviceId String
   videoId   String
-  video     Video        @relation(fields: [serviceId, videoId], references: [serviceId, videoId])
+  video     Video     @relation(fields: [serviceId, videoId], references: [serviceId, videoId])
   comments  Comment[]
   lang      String
-  status    Status       @default(Pending)
-  views     Int          @default(0)
+  status    Status    @default(Pending)
+  views     Int       @default(0)
 
   reviews Review[]
   @@unique([serviceId, videoId, lang, userId])
@@ -162,10 +162,11 @@ model Comment {
 }
 
 model Order {
-  id      String @id @default(cuid())
-  amount  Int
-  type    OrderType
-  process OrderProcess
+  id         String      @id @default(cuid())
+  amount     Int
+  paymentKey String?
+  type       OrderType
+  status     OrderStatus @default(Pending)
 }
 
 enum OrderType {
@@ -173,7 +174,7 @@ enum OrderType {
   MonthlySubscription
 }
 
-enum OrderProcess {
+enum OrderStatus {
   Pending
   Completed
   Failed
