@@ -1,18 +1,18 @@
-import { Order, Role } from "@prisma/client";
+import { Order, OrderProcess, Role } from "@prisma/client";
 import axios from "axios";
 import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 
 async function getOrder({ req, res }: RouteParams<Order>) {}
 
 async function createOrder({ req, res, prisma }: RouteParams<Order>) {
-  const { amount } = req.body;
+  const { type, amount } = req.body;
   if (!amount) {
     return res
       .status(400)
       .json({ error: SubErrorType.InvalidRequest, message: "amount" });
   }
   const order = await prisma.order.create({
-    data: { amount },
+    data: { type, amount, process: OrderProcess.Pending },
   });
   return res.status(201).json(order);
 }
