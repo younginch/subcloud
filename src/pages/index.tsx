@@ -14,6 +14,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Slider from "react-slick";
+import TypeAnimation from "react-type-animation";
 import Image from "next/image";
 import Link from "next/link";
 import ChromeIcon from "../../public/browsers/chrome.png";
@@ -22,7 +23,6 @@ import SafariIcon from "../../public/browsers/safari.png";
 import TitleImage from "../../public/title.png";
 import InViewProvider from "../components/inviewProvider";
 import CarouselPage from "../components/carouselPage";
-
 export function SimpleSlider() {
   const [imageIndex, setImageIndex] = useState(0);
 
@@ -101,23 +101,18 @@ export default function Home() {
   return (
     <>
       <Stack bg="black" h="80vh" className="mainComponent">
-        <Box className="titleOverlay">
+        <Box className="titleOverlay" h="100%">
           <Stack>
             <Center>
               <Heading color="white" mt={70}>
                 전 세계 유저들이 제작한 자막을 시청하세요
               </Heading>
             </Center>
-            <Center>
-              <Text fontSize="2xl" color="gray.300" mt={3}>
-                다양한 디바이스에서 무제한으로 사용할 수 있습니다.
-              </Text>
-            </Center>
             <Flex direction="column" alignItems="center">
               <Text fontSize="2xl" mt={10} mb="30px" color="gray.200">
                 지금 바로 다운로드하세요
               </Text>
-              <HStack marginBottom="192px">
+              <HStack>
                 <Stack>
                   <ExtensionButton browser="chrome" />
                   <Text align="center" color="gray.200">
@@ -138,9 +133,29 @@ export default function Home() {
                 </Stack>
               </HStack>
             </Flex>
+            <Center mt="100px">
+              <Box mt="70px">
+                <TypeAnimation
+                  cursor={false}
+                  sequence={[
+                    "큰 힘에는 큰 책임이 따른다",
+                    2000,
+                    "행복한지 따져보는 건 우울해지는 지름길이야",
+                    2000,
+                    "길은 모두에게 열려있지만 모두가 그 길을 가질 수 있는 건 아니다",
+                    2000,
+                  ]}
+                  wrapper="p"
+                  className="mainTyping"
+                  repeat={Infinity}
+                />
+              </Box>
+            </Center>
           </Stack>
         </Box>
-        <SimpleSlider />
+        <Box className="sliderPlacer">
+          <SimpleSlider />
+        </Box>
       </Stack>
       <HStack h="100vh" alignItems="top">
         <Stack marginTop="28vh" width="570px">
