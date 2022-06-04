@@ -15,6 +15,7 @@
   transform: scale(0.7);
   transition: transform 300ms;
   opacity: 0.25;
+  margin: 0 !important;
 }
 
 .activePage {

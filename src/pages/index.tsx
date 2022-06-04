@@ -142,7 +142,6 @@ export default function Home() {
         </Box>
         <SimpleSlider />
       </Stack>
-
       <HStack h="100vh" alignItems="top">
         <Stack marginTop="28vh" width="570px">
           <Heading fontSize="31px" h="76px">
