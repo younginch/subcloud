@@ -162,8 +162,22 @@ model Comment {
 }
 
 model Order {
-  id     String @id @default(cuid())
-  amount Int
+  id      String @id @default(cuid())
+  amount  Int
+  type    OrderType
+  process OrderProcess
+}
+
+enum OrderType {
+  ChargePoint
+  MonthlySubscription
+}
+
+enum OrderProcess {
+  Pending
+  Completed
+  Failed
+  Refunded
 }
 
 model RequestPoint {
