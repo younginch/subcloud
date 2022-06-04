@@ -55,6 +55,8 @@ model User {
   files         File[]
   requestPoints RequestPoint[]
   reviews       Review[]
+  orders        Order[]
+  subHistories  SubHistory[]
 }
 
 model VerificationToken {
@@ -79,7 +81,7 @@ model Video {
 
 model YoutubeVideo {
   id          String         @id
-  Video       Video?
+  video       Video?
   channelId   String
   channel     YoutubeChannel @relation(fields: [channelId], references: [id])
   publishedAt DateTime
@@ -134,8 +136,19 @@ model Sub {
   status    Status    @default(Pending)
   views     Int       @default(0)
 
-  reviews Review[]
+  reviews      Review[]
+  subHistories SubHistory[]
+
   @@unique([serviceId, videoId, lang, userId])
+}
+
+model SubHistory {
+  id     String   @id @default(cuid())
+  userId String
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subId  String
+  sub    Sub      @relation(fields: [subId], references: [id])
+  viewAt DateTime
 }
 
 model Review {
@@ -167,6 +180,9 @@ model Order {
   paymentKey String?
   type       OrderType
   status     OrderStatus @default(Pending)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum OrderType {
