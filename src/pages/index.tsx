@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { AiFillHeart } from "react-icons/ai";
 import { IconContext } from "react-icons";
