@@ -60,7 +60,7 @@ async function RankingVideoByRequest({
   if (!videos) {
     return res
       .status(404)
-      .json({ error: SubErrorType.NotFound, message: "RankingSubView" });
+      .json({ error: SubErrorType.NotFound, message: "RankingVideoByRequest" });
   }
   return res.status(200).json(newVideos.slice(Number(start), Number(end)));
 }

@@ -1,4 +1,13 @@
-import { CircularProgress, useToast } from "@chakra-ui/react";
+import {
+  Center,
+  CircularProgress,
+  Container,
+  Stack,
+  useToast,
+  Box,
+  Heading,
+  Text,
+} from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -35,7 +44,29 @@ export default function BuyProcess() {
 
   return (
     <>
-      <CircularProgress isIndeterminate />
+      <Container maxW={"3xl"}>
+        <Stack
+          as={Box}
+          textAlign={"center"}
+          spacing={{ base: 8, md: 14 }}
+          py={{ base: 20, md: 36 }}
+        >
+          <Center>
+            <CircularProgress size="13vh" isIndeterminate />
+          </Center>
+          <Heading
+            fontWeight={600}
+            fontSize={{ base: "2xl", sm: "4xl", md: "6xl" }}
+            lineHeight={"110%"}
+          >
+            <Text as={"span"} color={"gray.900"}>
+              결제 진행 중
+            </Text>
+          </Heading>
+        </Stack>
+      </Container>
     </>
   );
 }
+
+BuyProcess.hideTitle = true;
