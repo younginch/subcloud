@@ -6,7 +6,7 @@ import {
   SubErrorType,
 } from "../../../utils/types";
 import { SubCreateSchema } from "../../../utils/schema";
-import { configuredBucket, configuredS3 } from "../../../utils/aws";
+import { configuredBucket, configuredS3, getS3Url } from "../../../utils/aws";
 import { Role } from "@prisma/client";
 
 async function SubCreate({ req, res, prisma, session }: RouteParams<ResSub>) {
@@ -58,10 +58,7 @@ async function SubRead({ req, res, prisma }: RouteParams<ResSubRead>) {
       .status(404)
       .json({ error: SubErrorType.NotFound, message: "Sub" });
   }
-  const url = await configuredS3.getSignedUrlPromise("getObject", {
-    Bucket: configuredBucket,
-    Key: sub.file.key,
-  });
+  const url = await getS3Url(sub.file.key);
   return res.status(200).json({ ...sub, url });
 }
 
