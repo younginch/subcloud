@@ -29,7 +29,7 @@ async function RankingUserByView({
   if (!users) {
     return res
       .status(404)
-      .json({ error: SubErrorType.NotFound, message: "RankingSubView" });
+      .json({ error: SubErrorType.NotFound, message: "RankingUserByView" });
   }
   const compareByViews = (a: UserWithCount, b: UserWithCount) => {
     return b._count.views - a._count.views;
@@ -50,11 +50,15 @@ async function RankingUserByView({
         _count: {
           subs: user.subs.length,
           views: user.subs.reduce((prev, curr) => prev + curr.views, 0),
-          fullfill: user.subs.reduce(
-            (prev, curr) =>
-              prev +
-              curr.video.requests.reduce(
-                (p, c) => p + (c.lang === curr.lang ? c.users.length : 0),
+          fulfilledRequests: user.subs.reduce(
+            (prevSub, currSub) =>
+              prevSub +
+              currSub.video.requests.reduce(
+                (prevRequest, currRequest) =>
+                  prevRequest +
+                  (currRequest.lang === currSub.lang
+                    ? currRequest.users.length
+                    : 0),
                 0
               ),
             0

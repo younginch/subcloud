@@ -6,7 +6,7 @@ import {
   SubErrorType,
 } from "../../../../utils/types";
 
-async function RankingUserByView({
+async function RankingUserByFulfilledRequests({
   req,
   res,
   prisma,
@@ -29,10 +29,13 @@ async function RankingUserByView({
   if (!users) {
     return res
       .status(404)
-      .json({ error: SubErrorType.NotFound, message: "RankingSubView" });
+      .json({
+        error: SubErrorType.NotFound,
+        message: "RankingUserByFulfilledRequests",
+      });
   }
-  const compareByFullfill = (a: UserWithCount, b: UserWithCount) => {
-    return b._count.fullfill - a._count.fullfill;
+  const compareByFulfilledRequests = (a: UserWithCount, b: UserWithCount) => {
+    return b._count.fulfilledRequests - a._count.fulfilledRequests;
   };
   const newUsers = users
     .filter((user) => user.subs.length > 0)
@@ -50,11 +53,15 @@ async function RankingUserByView({
         _count: {
           subs: user.subs.length,
           views: user.subs.reduce((prev, curr) => prev + curr.views, 0),
-          fullfill: user.subs.reduce(
-            (prev, curr) =>
-              prev +
-              curr.video.requests.reduce(
-                (p, c) => p + (c.lang === curr.lang ? c.users.length : 0),
+          fulfilledRequests: user.subs.reduce(
+            (prevSub, currSub) =>
+              prevSub +
+              currSub.video.requests.reduce(
+                (prevRequest, currRequest) =>
+                  prevRequest +
+                  (currRequest.lang === currSub.lang
+                    ? currRequest.users.length
+                    : 0),
                 0
               ),
             0
@@ -62,9 +69,9 @@ async function RankingUserByView({
         },
       };
     })
-    .sort(compareByFullfill);
+    .sort(compareByFulfilledRequests);
 
   return res.status(200).json(newUsers.slice(Number(start), Number(end)));
 }
 
-export default handleRoute({ GET: RankingUserByView });
+export default handleRoute({ GET: RankingUserByFulfilledRequests });

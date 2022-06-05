@@ -248,7 +248,7 @@ export type UserWithCount = User & {
   _count: {
     subs: number;
     views: number;
-    fullfill: number;
+    fulfilledRequests: number;
   };
 };
 
