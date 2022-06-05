@@ -19,7 +19,7 @@ async function getOrder({ req, res, prisma }: RouteParams<Order>) {
   return res.status(200).json(order);
 }
 
-async function createOrder({ req, res, prisma }: RouteParams<Order>) {
+async function createOrder({ req, res, prisma, session }: RouteParams<Order>) {
   const { type, amount } = req.body;
   if (!amount) {
     return res
@@ -27,7 +27,7 @@ async function createOrder({ req, res, prisma }: RouteParams<Order>) {
       .json({ error: SubErrorType.InvalidRequest, message: "amount" });
   }
   const order = await prisma.order.create({
-    data: { type, amount },
+    data: { type, amount, userId: session?.user.id as string },
   });
   return res.status(201).json(order);
 }

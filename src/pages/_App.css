@@ -5,22 +5,37 @@
     position: relative;
 }
 
+.sliderPlacer {
+  margin-top:auto !important;
+  margin-bottom:auto !important;
+}
+
+.mainTyping {
+  font-size: 35px;
+  color: white;
+  background-color: black;
+  padding-left:10px;
+  padding-right:10px;
+}
+
 .titleOverlay {
     position: absolute;
     width: 100%;
     z-index:2;
+    background: linear-gradient(rgba(0,0,0), rgba(0,0,0,0), rgba(0,0,0,.9));
 }
 
 .imagePage {
-  transform: scale(0.7);
+  transform: scale(0.6);
   transition: transform 300ms;
-  opacity: 0.25;
+  opacity: 0.4;
+  margin: 0 !important;
 }
 
 .activePage {
-  transform: scale(1.1);
+  transform: scale(1.2) !important;
   transition: transform 300ms;
-  opacity: .3;
+  opacity: .6;
 }
 
 .arrow {
