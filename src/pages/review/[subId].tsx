@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, CircularProgress, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -13,12 +13,34 @@ type SubtitleData = {
   text: string;
 }[];
 
+type YoutubeOptions =
+  | {
+      [x: string]: any;
+    }
+  | null
+  | undefined;
+
 export default function ReviewDetail() {
   const router = useRouter();
+  const [options, setOptions] = useState<YoutubeOptions>();
   const [player, setPlayer] = useState<YouTubePlayer>();
   const [width, setWidth] = useState(1024);
   const [subData, setSubData] = useState<SubtitleData>([]);
   const [subText, setSubText] = useState<string>("");
+
+  useEffect(() => {
+    const opts = {
+      width,
+      height: width * (9 / 16),
+      playerVars: {
+        // https://developers.google.com/youtube/player_parameters
+        autoplay: 1,
+        enablejsapi: 1,
+        origin: window?.location?.origin,
+      },
+    };
+    setOptions(opts);
+  }, [width]);
 
   useEffect(() => {
     axios
@@ -56,25 +78,18 @@ export default function ReviewDetail() {
 
   useInterval(intervalSub, 20);
 
-  const opts = {
-    width,
-    height: width * (9 / 16),
-    playerVars: {
-      // https://developers.google.com/youtube/player_parameters
-      autoplay: 1,
-      enablejsapi: 1,
-      origin: "http://localhost:3000",
-    },
-  };
-
   return (
     <>
       <Box w="100%" h="80vh">
-        <YouTube
-          videoId="i7muqI90138"
-          opts={opts}
-          onReady={(event) => setPlayer(event.target)}
-        />
+        {options ? (
+          <YouTube
+            videoId="i7muqI90138"
+            opts={options}
+            onReady={(event) => setPlayer(event.target)}
+          />
+        ) : (
+          <CircularProgress />
+        )}
         <Text fontSize="4xl" noOfLines={2}>
           {subText}
         </Text>

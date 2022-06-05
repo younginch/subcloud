@@ -6,8 +6,14 @@ import {
   SubErrorType,
 } from "../../../utils/types";
 
-async function SubViewAdd({ req, res, prisma }: RouteParams<ResSubView>) {
+async function SubViewAdd({
+  req,
+  res,
+  prisma,
+  session,
+}: RouteParams<ResSubView>) {
   const { id } = req.query;
+  const { viewAt } = req.body;
   const sub = await prisma.sub.findUnique({ where: { id: id as string } });
   if (!sub) {
     return res
@@ -17,6 +23,13 @@ async function SubViewAdd({ req, res, prisma }: RouteParams<ResSubView>) {
   const updatedSub = await prisma.sub.update({
     where: { id: id as string },
     data: { views: sub.views + 1 },
+  });
+  await prisma.subHistory.create({
+    data: {
+      subId: sub.id,
+      userId: session?.user.id as string,
+      viewAt,
+    },
   });
   return res.status(200).json(updatedSub);
 }
