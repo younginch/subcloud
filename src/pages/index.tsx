@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { AiFillHeart } from "react-icons/ai";
 import { IconContext } from "react-icons";
@@ -21,41 +21,40 @@ import ChromeIcon from "../../public/browsers/chrome.png";
 import FirefoxIcon from "../../public/browsers/firefox.svg";
 import SafariIcon from "../../public/browsers/safari.png";
 import TitleImage from "../../public/title.png";
+import SlideImage1 from "../../public/mainpage/slide1.png";
+import SlideImage2 from "../../public/mainpage/slide2.png";
+import SlideImage3 from "../../public/mainpage/slide3.png";
 import InViewProvider from "../components/inviewProvider";
 import CarouselPage from "../components/carouselPage";
 export function SimpleSlider() {
   const [imageIndex, setImageIndex] = useState(0);
 
-  const images = [
-    "https://bit.ly/2Z4KKcF",
-    "https://bit.ly/2Z4KKcF",
-    "https://bit.ly/2Z4KKcF",
-    "https://bit.ly/2Z4KKcF",
-    "https://bit.ly/2Z4KKcF",
-  ];
+  const images = [SlideImage1, SlideImage2, SlideImage3];
 
   const settings = {
     infinite: true,
     speed: 300,
-    slidesToShow: 3,
     centerMode: true,
     afterChange: (current: number) => {
+      console.log(current);
       setImageIndex(current);
     },
     autoplay: true,
-    autoplaySpeed: 5000,
+    autoplaySpeed: 8000,
+    adaptiveHeight: true,
+    variableWidth: true,
   };
 
   return (
-    <div>
+    <Box h="100%">
       <Slider {...settings}>
         {images.map((img, idx) => (
-          <Box key={idx}>
-            <CarouselPage active={idx == imageIndex} />
+          <Box key={idx} verticalAlign="middle">
+            <CarouselPage active={idx === imageIndex} imgUrl={img} />
           </Box>
         ))}
       </Slider>
-    </div>
+    </Box>
   );
 }
 
@@ -88,6 +87,8 @@ export function ExtensionButton({ browser, isDisabled = false }: Props) {
       h="48px"
       borderRadius="24px"
       isDisabled={isDisabled}
+      bg="rgb(50,50,50, .5)"
+      zIndex={5}
     >
       <Image src={icon} alt="icon" width="24px" height="24px" />
       <Text marginStart="12px" color="gray.200">
@@ -100,16 +101,21 @@ export function ExtensionButton({ browser, isDisabled = false }: Props) {
 export default function Home() {
   return (
     <>
-      <Stack bg="black" h="80vh" className="mainComponent">
+      <Stack bg="black" h="85vh" className="mainComponent">
         <Box className="titleOverlay" h="100%">
           <Stack>
             <Center>
-              <Heading color="white" mt={70}>
-                전 세계 유저들이 제작한 자막을 시청하세요
+              <Heading color="white" mt="10vh" fontSize={65}>
+                전 세계 유저들이 제작한 자막을
+              </Heading>
+            </Center>
+            <Center>
+              <Heading color="white" fontSize={65}>
+                무료로 시청하세요
               </Heading>
             </Center>
             <Flex direction="column" alignItems="center">
-              <Text fontSize="2xl" mt={10} mb="30px" color="gray.200">
+              <Text fontSize={40} mt="10vh" mb="2vh" color="gray.200">
                 지금 바로 다운로드하세요
               </Text>
               <HStack>
@@ -133,17 +139,17 @@ export default function Home() {
                 </Stack>
               </HStack>
             </Flex>
-            <Center mt="100px">
-              <Box mt="70px">
+            <Center>
+              <Box mt="15vh">
                 <TypeAnimation
                   cursor={false}
                   sequence={[
-                    "큰 힘에는 큰 책임이 따른다",
-                    2000,
-                    "행복한지 따져보는 건 우울해지는 지름길이야",
-                    2000,
-                    "길은 모두에게 열려있지만 모두가 그 길을 가질 수 있는 건 아니다",
-                    2000,
+                    "얘야, 큰 힘에는 큰 책임이 따른단다",
+                    6000,
+                    "I am Ironman",
+                    6500,
+                    "거 죽기 딱 좋은 날씨네",
+                    6400,
                   ]}
                   wrapper="p"
                   className="mainTyping"
@@ -153,7 +159,7 @@ export default function Home() {
             </Center>
           </Stack>
         </Box>
-        <Box className="sliderPlacer">
+        <Box className="sliderPlacer" h="720px">
           <SimpleSlider />
         </Box>
       </Stack>
