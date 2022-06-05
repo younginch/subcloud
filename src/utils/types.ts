@@ -244,6 +244,14 @@ type SubWithVideoWithUser = SubWithVideo & {
   user: User;
 };
 
+export type UserWithCount = User & {
+  _count: {
+    subs: number;
+    views: number;
+    fulfilledRequests: number;
+  };
+};
+
 export type ResFileRead = FileWithUrl;
 export type ResFileDelete = File;
 export type ResFileSearch = File[];
@@ -260,4 +268,4 @@ export type ResVideo = VideoWithInfo;
 export type ResVideoSearch = VideoWithCount[];
 export type ResRankingSub = SubWithVideoWithUser[];
 export type ResRankingVideo = VideoWithRequest[];
-export type ResRankingUser = User[];
+export type ResRankingUser = UserWithCount[];
