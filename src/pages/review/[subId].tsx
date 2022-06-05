@@ -1,4 +1,5 @@
 import { Box, CircularProgress, Text } from "@chakra-ui/react";
+import { Role } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -97,3 +98,5 @@ export default function ReviewDetail() {
     </>
   );
 }
+
+ReviewDetail.auth = Role.Reviewer;

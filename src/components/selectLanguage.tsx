@@ -1,6 +1,6 @@
 import { Radio, RadioGroup, Stack } from "@chakra-ui/react";
 import { useState } from "react";
-import ISO6391 from "iso-639-1";
+import ISO6391, { LanguageCode } from "iso-639-1";
 import type { UseFormRegisterReturn } from "react-hook-form";
 
 type Props = {
@@ -10,7 +10,18 @@ type Props = {
 export default function SelectLanguage({ register }: Props) {
   const [language, setLanguage] = useState("");
 
-  const codeList = ["en", "fr", "de", "it", "es", "pt", "ru", "ja", "zh", "ko"];
+  const codeList: LanguageCode[] = [
+    "en",
+    "fr",
+    "de",
+    "it",
+    "es",
+    "pt",
+    "ru",
+    "ja",
+    "zh",
+    "ko",
+  ];
 
   return (
     <RadioGroup onChange={setLanguage} value={language}>

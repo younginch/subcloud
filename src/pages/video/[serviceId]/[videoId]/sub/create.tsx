@@ -46,24 +46,33 @@ export default function SubCreate() {
     return new Promise<void>(async (resolve, reject) => {
       const formData = new FormData();
       formData.append("file", file!);
-      const newFile = await axios.post("/api/file/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      const newSub = await axios.post("/api/sub", {
-        fileId: newFile.data.id,
-        serviceId,
-        videoId,
-        lang: values.lang,
-      });
-      resolve();
-      toast({
-        title: "Subtitles created",
-        description: "Subtitles created successfully",
-        status: "success",
-      });
-      router.push(`/user/${data?.user.id}?tab=sub`);
+      try {
+        const newFile = await axios.post("/api/file/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        const newSub = await axios.post("/api/sub", {
+          fileId: newFile.data.id,
+          serviceId,
+          videoId,
+          lang: values.lang,
+        });
+        resolve();
+        toast({
+          title: "Subtitles created",
+          description: "Subtitles created successfully",
+          status: "success",
+        });
+        router.push(`/user/${data?.user.id}?tab=sub`);
+      } catch (e: any) {
+        reject();
+        toast({
+          title: "Error",
+          description: e.message,
+          status: "error",
+        });
+      }
     });
   }
 

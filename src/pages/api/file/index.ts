@@ -1,5 +1,5 @@
 import { Role } from "@prisma/client";
-import { configuredBucket, configuredS3 } from "../../../utils/aws";
+import { getS3Url } from "../../../utils/aws";
 import {
   handleRoute,
   ResFileDelete,
@@ -18,10 +18,7 @@ async function FileRead({ req, res, prisma }: RouteParams<ResFileRead>) {
         .status(404)
         .json({ error: SubErrorType.NotFound, message: "File" });
     }
-    const url = await configuredS3.getSignedUrlPromise("getObject", {
-      Bucket: configuredBucket,
-      Key: file.key,
-    });
+    const url = await getS3Url(file.key);
     return res.status(200).json({ ...file, url });
   } else if (req.method === "DELETE") {
   }
