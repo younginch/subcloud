@@ -72,7 +72,7 @@ export default function RequestPanel(props: { requests: ResRequestSearch }) {
                   }}
                 >
                   <HStack>
-                    <FaYoutube size={36} />
+                    <FaYoutube size={36} fill="red" />
                     <Text maxW={480} noOfLines={1}>
                       {request.video?.youtubeVideo?.title ?? "비디오 정보없음"}
                     </Text>
