@@ -29,19 +29,28 @@ export default function MyApp({
   pageProps: { session, ...pageProps },
 }: AppPropsWithAuth) {
   const { auth, hideHeader, hideTitle } = Component;
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   return (
     <SessionProvider session={session}>
       <ChakraProvider>
-        <Layout hideNavBar={hideHeader} hideTitle={hideTitle}>
-          {Component.auth ? (
-            <Auth role={auth}>
+        {isClient ? (
+          <Layout hideNavBar={hideHeader} hideTitle={hideTitle}>
+            {Component.auth ? (
+              <Auth role={auth}>
+                <Component {...pageProps} />
+              </Auth>
+            ) : (
               <Component {...pageProps} />
-            </Auth>
-          ) : (
-            <Component {...pageProps} />
-          )}
-        </Layout>
+            )}
+          </Layout>
+        ) : (
+          <CircularProgress isIndeterminate />
+        )}
       </ChakraProvider>
     </SessionProvider>
   );
