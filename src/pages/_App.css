@@ -53,3 +53,7 @@
   left: 10%;
   top: 50%;
 }
+
+.buyWrap .chakra-wrap__list {
+  justify-content: center;
+}
