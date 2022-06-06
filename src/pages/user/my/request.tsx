@@ -1,7 +1,8 @@
+import { Role } from "@prisma/client";
 import axios from "axios";
 import type { GetServerSideProps } from "next";
 import RequestPanel from "../../../components/user/requestPanel";
-import { ResRequestSearch } from "../../../utils/types";
+import { PageOptions, ResRequestSearch } from "../../../utils/types";
 
 type UserMyRequestProps = {
   requests: ResRequestSearch;
@@ -24,3 +25,5 @@ export const getServerSideProps: GetServerSideProps<
     },
   };
 };
+
+UserMyRequest.options = { auth: Role.User } as PageOptions;

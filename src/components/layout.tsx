@@ -25,7 +25,7 @@ export default function Layout({ options, children }: Props) {
       </Head>
       <Box w="100vw" h="100%" minH="calc(100vh - 72px)" m="0" p="0">
         {!options.hideNavBar && <NavBar />}
-        <Box w={options.width ?? "6xl"} margin={0}>
+        <Box w={options.width ?? "6xl"} margin={options.width ? 0 : "auto"}>
           {!options.hideTitle && (
             <Heading marginY="18px">{t(router.pathname)}</Heading>
           )}

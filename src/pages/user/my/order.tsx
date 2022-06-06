@@ -1,7 +1,8 @@
 import { Role } from "@prisma/client";
+import { PageOptions } from "../../../utils/types";
 
 export default function UserMyOrder() {
   return;
 }
 
-UserMyOrder.auth = Role.User;
+UserMyOrder.options = { auth: Role.User } as PageOptions;

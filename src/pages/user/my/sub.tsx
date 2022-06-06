@@ -2,7 +2,7 @@ import { Role } from "@prisma/client";
 import axios from "axios";
 import type { GetServerSideProps } from "next";
 import SubPanel from "../../../components/user/subPanel";
-import { ResSubSearch } from "../../../utils/types";
+import { PageOptions, ResSubSearch } from "../../../utils/types";
 
 type UserMySub = {
   subs: ResSubSearch;
@@ -27,3 +27,5 @@ export const getServerSideProps: GetServerSideProps<UserMySub> = async (
     },
   };
 };
+
+UserMySub.options = { auth: Role.User } as PageOptions;

@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { PageOptions } from "../../utils/types";
 
 export default function BuyProcess() {
   const router = useRouter();
@@ -71,4 +72,4 @@ export default function BuyProcess() {
   );
 }
 
-BuyProcess.hideTitle = true;
+BuyProcess.options = { auth: true, hideTitle: true } as PageOptions;

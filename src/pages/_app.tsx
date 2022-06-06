@@ -29,9 +29,9 @@ export default function MyApp({
     setIsClient(true);
   }, []);
 
-  // if (!options) {
-  //   throw Error("Please implement options in all pages");
-  // }
+  if (!options) {
+    throw Error("Please implement options in all pages");
+  }
 
   return (
     <SessionProvider session={session}>
@@ -58,7 +58,7 @@ export default function MyApp({
 
 type AuthProps = {
   children: JSX.Element;
-  role?: Role;
+  role: Role | boolean;
 };
 
 function Auth({ children, role }: AuthProps): JSX.Element {

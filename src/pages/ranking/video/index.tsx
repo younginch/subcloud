@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ResRankingVideo } from "../../../utils/types";
+import { PageOptions, ResRankingVideo } from "../../../utils/types";
 import { GetServerSideProps } from "next";
 import VideoRankTable from "../../../components/ranking/videoRankTable";
 
@@ -23,3 +23,5 @@ export const getServerSideProps: GetServerSideProps<RankingPageProps> = async (
   const videos = resVideos.data;
   return { props: { videos } };
 };
+
+RankingPage.options = { auth: false } as PageOptions;

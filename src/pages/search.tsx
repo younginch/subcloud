@@ -15,7 +15,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaYoutube } from "react-icons/fa";
-import { ResVideoSearch } from "../utils/types";
+import { PageOptions, ResVideoSearch } from "../utils/types";
 
 export default function Search() {
   const router = useRouter();
@@ -95,3 +95,5 @@ export default function Search() {
     </>
   );
 }
+
+Search.options = { auth: false } as PageOptions;
