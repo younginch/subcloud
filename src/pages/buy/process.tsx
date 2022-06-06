@@ -7,6 +7,7 @@ import {
   Box,
   Heading,
   Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -15,6 +16,7 @@ import { useEffect } from "react";
 export default function BuyProcess() {
   const router = useRouter();
   const toast = useToast();
+  const textColor = useColorModeValue("gray.700", "gray.300");
   useEffect(() => {
     if (
       !router.query.orderId &&
@@ -59,7 +61,7 @@ export default function BuyProcess() {
             fontSize={{ base: "2xl", sm: "4xl", md: "6xl" }}
             lineHeight={"110%"}
           >
-            <Text as={"span"} color={"gray.900"}>
+            <Text as={"span"} color={textColor}>
               결제 진행 중
             </Text>
           </Heading>
