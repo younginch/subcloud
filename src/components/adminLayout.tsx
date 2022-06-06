@@ -33,6 +33,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <List w="120px">
         <AdminMenu href="/admin" title="메인" />
         <AdminMenu href="/admin/user" title="사용자" />
+        <AdminMenu href="/admin/profit" title="수익분배" />
       </List>
       {children}
     </HStack>
