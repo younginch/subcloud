@@ -25,6 +25,14 @@ import { getSession } from "next-auth/react";
 import NextCors from "nextjs-cors";
 import prisma from "./prisma";
 
+export type PageOptions = {
+  auth?: Role;
+  hideHeader?: boolean;
+  hideTitle?: boolean;
+  hideNavBar?: boolean;
+  width?: string | number;
+};
+
 export default interface ResError {
   error: SubErrorType;
   message: string;

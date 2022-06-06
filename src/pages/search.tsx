@@ -9,6 +9,7 @@ import {
   Thead,
   Tr,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -18,6 +19,8 @@ import { ResVideoSearch } from "../utils/types";
 
 export default function Search() {
   const router = useRouter();
+  const toast = useToast();
+
   const [videos, setVideos] = useState<ResVideoSearch>([]);
   useEffect(() => {
     axios
@@ -25,10 +28,17 @@ export default function Search() {
         params: { query: router.query.q },
       })
       .then((res) => {
-        console.log(res.data);
         setVideos(res.data);
+      })
+      .catch((err) => {
+        toast({
+          title: "Error",
+          description: err.message,
+          status: "error",
+          isClosable: true,
+        });
       });
-  }, [router.query.q]);
+  }, [router.query.q, toast]);
 
   return (
     <>

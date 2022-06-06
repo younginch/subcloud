@@ -76,5 +76,4 @@ export default function VideoCreate() {
   );
 }
 
-VideoCreate.auth = Role.User;
-VideoCreate.hideTitle = true;
+VideoCreate.options = { auth: Role.User, hideTitle: true };

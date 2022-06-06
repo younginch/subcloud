@@ -70,7 +70,6 @@ export default function ReviewDetail() {
         subData[i].startTime <= currentTime &&
         currentTime <= subData[i].endTime
       ) {
-        console.log(subData[i].text);
         setSubText(subData[i].text);
         break;
       }

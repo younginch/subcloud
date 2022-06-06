@@ -1,23 +1,17 @@
 import "./_App.css";
 import type { AppProps } from "next/app";
 import { SessionProvider, useSession } from "next-auth/react";
-import {
-  Center,
-  ChakraProvider,
-  CircularProgress,
-  extendTheme,
-} from "@chakra-ui/react";
+import { Center, ChakraProvider, CircularProgress } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import axios from "axios";
 import { Role, User } from "@prisma/client";
 import Layout from "../components/layout";
+import { PageOptions } from "../utils/types";
 
 type NextPageWithAuth = NextPage & {
-  auth?: Role;
-  hideHeader?: boolean;
-  hideTitle?: boolean;
+  options: PageOptions;
 };
 
 type AppPropsWithAuth = AppProps & {
@@ -28,20 +22,24 @@ export default function MyApp({
   Component,
   pageProps: { session, ...pageProps },
 }: AppPropsWithAuth) {
-  const { auth, hideHeader, hideTitle } = Component;
+  const { options } = Component;
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
+  // if (!options) {
+  //   throw Error("Please implement options in all pages");
+  // }
+
   return (
     <SessionProvider session={session}>
       <ChakraProvider>
         {isClient ? (
-          <Layout hideNavBar={hideHeader} hideTitle={hideTitle}>
-            {Component.auth ? (
-              <Auth role={auth}>
+          <Layout options={options}>
+            {options.auth ? (
+              <Auth role={options.auth}>
                 <Component {...pageProps} />
               </Auth>
             ) : (
@@ -49,7 +47,9 @@ export default function MyApp({
             )}
           </Layout>
         ) : (
-          <CircularProgress isIndeterminate />
+          <Center paddingTop="25vh">
+            <CircularProgress size="13vh" isIndeterminate />
+          </Center>
         )}
       </ChakraProvider>
     </SessionProvider>

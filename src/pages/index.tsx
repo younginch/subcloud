@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { AiFillHeart } from "react-icons/ai";
 import { IconContext } from "react-icons";
@@ -13,90 +12,13 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import Slider from "react-slick";
 import TypeAnimation from "react-type-animation";
 import Image from "next/image";
 import Link from "next/link";
-import ChromeIcon from "../../public/browsers/chrome.png";
-import FirefoxIcon from "../../public/browsers/firefox.svg";
-import SafariIcon from "../../public/browsers/safari.png";
 import TitleImage from "../../public/title.png";
-import SlideImage1 from "../../public/mainpage/slide1.png";
-import SlideImage2 from "../../public/mainpage/slide2.png";
-import SlideImage3 from "../../public/mainpage/slide3.png";
 import InViewProvider from "../components/inviewProvider";
-import CarouselPage from "../components/carouselPage";
-export function SimpleSlider() {
-  const [imageIndex, setImageIndex] = useState(0);
-
-  const images = [SlideImage1, SlideImage2, SlideImage3];
-
-  const settings = {
-    infinite: true,
-    speed: 300,
-    centerMode: true,
-    afterChange: (current: number) => {
-      console.log(current);
-      setImageIndex(current);
-    },
-    autoplay: true,
-    autoplaySpeed: 8000,
-    adaptiveHeight: true,
-    variableWidth: true,
-  };
-
-  return (
-    <Box h="100%">
-      <Slider {...settings}>
-        {images.map((img, idx) => (
-          <Box key={idx} verticalAlign="middle">
-            <CarouselPage active={idx === imageIndex} imgUrl={img} />
-          </Box>
-        ))}
-      </Slider>
-    </Box>
-  );
-}
-
-type Props = {
-  browser: string;
-  isDisabled?: boolean;
-};
-
-export function ExtensionButton({ browser, isDisabled = false }: Props) {
-  let icon = ChromeIcon;
-  let name = "Chrome";
-  switch (browser) {
-    case "chrome":
-      icon = ChromeIcon;
-      name = "Chrome";
-      break;
-    case "firefox":
-      icon = FirefoxIcon;
-      name = "Firefox";
-      break;
-    case "safari":
-      icon = SafariIcon;
-      name = "Safari";
-      break;
-  }
-
-  return (
-    <Button
-      variant="outline"
-      h="48px"
-      borderRadius="24px"
-      isDisabled={isDisabled}
-      bg="rgb(50,50,50, .5)"
-      zIndex={5}
-    >
-      <Image src={icon} alt="icon" width="24px" height="24px" />
-      <Text marginStart="12px" color="gray.200">
-        {"SubCloud for " + name}
-      </Text>
-    </Button>
-  );
-}
+import ExtensionButton from "../components/extensionButton";
+import { SimpleSlider } from "../components/simpleSlider";
 
 export default function Home() {
   return (
@@ -293,4 +215,4 @@ export default function Home() {
   );
 }
 
-Home.hideTitle = true;
+Home.options = { width: "100%", hideTitle: true };
