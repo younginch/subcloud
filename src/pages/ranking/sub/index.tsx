@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ResRankingSub } from "../../../utils/types";
+import { PageOptions, ResRankingSub } from "../../../utils/types";
 import { GetServerSideProps } from "next";
 
 type SubRankingPageProps = {
@@ -46,4 +46,4 @@ export const getServerSideProps: GetServerSideProps<
   return { props: { subs } };
 };
 
-SubRankingPage.hideTitle = true;
+SubRankingPage.options = { auth: false, hideTitle: true } as PageOptions;

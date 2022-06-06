@@ -18,6 +18,7 @@ import { useSession } from "next-auth/react";
 import { Role } from "@prisma/client";
 import VideoInfo from "../../../../../components/create/videoInfo";
 import CreateHeader from "../../../../../components/create/createHeader";
+import { PageOptions } from "../../../../../utils/types";
 
 type FormData = {
   serviceId: string;
@@ -132,5 +133,4 @@ export default function RequestCreate() {
   );
 }
 
-RequestCreate.auth = Role.User;
-RequestCreate.hideTitle = true;
+RequestCreate.options = { auth: Role.User, hideTitle: true } as PageOptions;

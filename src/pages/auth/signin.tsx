@@ -28,6 +28,7 @@ import { Logo } from "../../components/signin/logo";
 import OAuthButtonGroup from "../../components/signin/oAuthButtonGroup";
 import { PasswordField } from "../../components/signin/passwordField";
 import React, { useRef } from "react";
+import { PageOptions } from "../../utils/types";
 
 type Props = {
   providers: Provider[];
@@ -144,8 +145,11 @@ function PasswordReset({ csrfToken }: { csrfToken: string }) {
   );
 }
 
-SignIn.hideHeader = true;
-SignIn.hideTitle = true;
+SignIn.options = {
+  auth: false,
+  hideHeader: true,
+  hideTitle: true,
+} as PageOptions;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const providers = await getProviders();

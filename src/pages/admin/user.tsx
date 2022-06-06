@@ -37,6 +37,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
 import { UserUpdateSchema } from "../../utils/schema";
+import { PageOptions } from "../../utils/types";
 
 export default function AdminUser() {
   const [users, setUsers] = useState<User[]>([]);
@@ -283,4 +284,4 @@ function DeleteButton({ id }: DeleteButtonProps) {
   );
 }
 
-AdminUser.auth = Role.Admin;
+AdminUser.options = { auth: Role.Admin } as PageOptions;

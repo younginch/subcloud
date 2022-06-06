@@ -1,4 +1,5 @@
 import { Heading, Text } from "@chakra-ui/react";
+import { PageOptions } from "../../utils/types";
 
 export default function Dmca() {
   return (
@@ -96,3 +97,5 @@ export default function Dmca() {
     </>
   );
 }
+
+Dmca.options = { auth: false } as PageOptions;

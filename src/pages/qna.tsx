@@ -7,6 +7,7 @@ import {
   Box,
   Heading,
 } from "@chakra-ui/react";
+import { PageOptions } from "../utils/types";
 
 type QnAProps = {
   title: string;
@@ -72,3 +73,5 @@ export default function QnaPage() {
     </>
   );
 }
+
+QnaPage.options = { auth: false } as PageOptions;

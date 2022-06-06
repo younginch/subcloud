@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ResRankingVideo } from "../../../../utils/types";
+import { PageOptions, ResRankingVideo } from "../../../../utils/types";
 import { GetServerSideProps } from "next";
 import VideoRankTable from "../../../../components/ranking/videoRankTable";
 
@@ -24,4 +24,4 @@ export const getServerSideProps: GetServerSideProps<
   return { props: { videos } };
 };
 
-VideoRankingPage.hideTitle = true;
+VideoRankingPage.options = { auth: false, hideTitle: true } as PageOptions;

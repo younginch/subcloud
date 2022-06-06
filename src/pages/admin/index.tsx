@@ -14,6 +14,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import AdminLayout from "../../components/adminLayout";
+import { PageOptions } from "../../utils/types";
 
 export default function Admin() {
   const router = useRouter();
@@ -78,4 +79,4 @@ export default function Admin() {
   );
 }
 
-Admin.auth = Role.Admin;
+Admin.options = { auth: Role.Admin } as PageOptions;

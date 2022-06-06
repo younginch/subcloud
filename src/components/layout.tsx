@@ -3,22 +3,16 @@ import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Script from "next/script";
+import { PageOptions } from "../utils/types";
 import Footer from "./footer/footer";
 import NavBar from "./header/navBar";
 
 type Props = {
-  hideNavBar?: boolean;
-  hideTitle?: boolean;
-  maxWidth?: string | number;
+  options: PageOptions;
   children: React.ReactNode;
 };
 
-export default function Layout({
-  hideNavBar,
-  hideTitle,
-  maxWidth,
-  children,
-}: Props) {
+export default function Layout({ options, children }: Props) {
   const { t } = useTranslation("routes");
   const router = useRouter();
 
@@ -29,21 +23,15 @@ export default function Layout({
         <meta name="description" content="SubCloud" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          minHeight: "calc(100vh - 64px)",
-          margin: 0,
-          padding: 0,
-        }}
-      >
-        {!hideNavBar && <NavBar />}
-        <Box maxW={maxWidth}>
-          {!hideTitle && <Heading marginY="18px">{t(router.pathname)}</Heading>}
+      <Box w="100vw" h="100%" minH="calc(100vh - 72px)" m="0" p="0">
+        {!options.hideNavBar && <NavBar />}
+        <Box w={options.width ?? "6xl"} margin={options.width ? 0 : "auto"}>
+          {!options.hideTitle && (
+            <Heading marginY="18px">{t(router.pathname)}</Heading>
+          )}
           {children}
         </Box>
-      </div>
+      </Box>
       <Footer />
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-HW4MKMPX9Y"

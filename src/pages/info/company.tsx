@@ -12,6 +12,7 @@ import hanwoolmjPic from "../../../public/profiles/hanwoolmj.png";
 import red1108Pic from "../../../public/profiles/red1108.png";
 import sbohPic from "../../../public/profiles/sboh.png";
 import carterkim614Pic from "../../../public/profiles/carterkim614.png";
+import { PageOptions } from "../../utils/types";
 
 type Props = {
   name: string;
@@ -121,3 +122,5 @@ export default function Company() {
     </>
   );
 }
+
+Company.options = { auth: false } as PageOptions;
