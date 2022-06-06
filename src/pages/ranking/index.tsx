@@ -145,7 +145,8 @@ export default function RankingPage({ subs, videos, users }: SSRPageProps) {
         </Select>
       </HStack>
       <Box
-        p={{ base: "10px", md: "50px", lg: "100px" }}
+        pl={{ base: "10px", md: "50px", lg: "100px" }}
+        pr={{ base: "10px", md: "50px", lg: "100px" }}
         overflowX={{ sm: "scroll", xl: "hidden" }}
       >
         <Table variant="simple" color={textColor}>
