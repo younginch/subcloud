@@ -1,6 +1,12 @@
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
+  Button,
   HStack,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Select,
   Table,
   Th,
@@ -25,26 +31,24 @@ export default function UserRankTable({ users }: Props) {
   useEffect(() => {
     setPageCount(Math.floor((users.length + pageSize - 1) / pageSize));
   }, [pageSize, users]);
-  const handleSelectSize = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
+  const handleSelectSize = (size: number) => {
     setPageSize(size);
     setPageCount(Math.floor((users.length + size - 1) / size));
   };
   return (
     <>
-      <HStack>
-        <Select
-          w={{ sm: "150px" }}
-          value={pageSize}
-          onChange={handleSelectSize}
-        >
+      <Menu>
+        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+          Show {pageSize}
+        </MenuButton>
+        <MenuList>
           {[10, 20, 30, 40, 50].map((item) => (
-            <option key={item} value={item}>
+            <MenuItem key={item} onClick={() => handleSelectSize(item)}>
               Show {item}
-            </option>
+            </MenuItem>
           ))}
-        </Select>
-      </HStack>
+        </MenuList>
+      </Menu>
       <Box
         pl={{ base: "10px", lg: "30px", xl: "70px" }}
         pr={{ base: "10px", lg: "30px", xl: "70px" }}

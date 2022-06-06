@@ -2,11 +2,11 @@ import axios from "axios";
 import { ResRankingSub } from "../../../utils/types";
 import { GetServerSideProps } from "next";
 
-type SSRPageProps = {
+type SubRankingPageProps = {
   subs: ResRankingSub;
 };
 
-export default function SubRankingPage({ subs }: SSRPageProps) {
+export default function SubRankingPage({ subs }: SubRankingPageProps) {
   //Pagination
 
   const subRanking = () => {
@@ -35,9 +35,9 @@ export default function SubRankingPage({ subs }: SSRPageProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<SSRPageProps> = async (
-  context
-) => {
+export const getServerSideProps: GetServerSideProps<
+  SubRankingPageProps
+> = async (context) => {
   const subQuery = `${process.env.NEXTAUTH_URL}/api/ranking/sub/view`;
   const resSubs = await axios.get<ResRankingSub>(subQuery, {
     params: { start: 0, end: 50 },

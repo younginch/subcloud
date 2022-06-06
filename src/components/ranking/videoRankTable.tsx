@@ -8,12 +8,18 @@ import {
   Th,
   useColorModeValue,
   Select,
+  Menu,
+  MenuButton,
+  Button,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import router from "next/router";
 import { ResRankingVideo } from "../../utils/types";
 import VideoTableRow from "./videoRankTableRow";
 import RankPagination from "../rankPagination";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 type Props = {
   videos: ResRankingVideo;
@@ -29,42 +35,43 @@ export default function VideoRankTable({ videos }: Props) {
   useEffect(() => {
     setPageCount(Math.floor((videos.length + pageSize - 1) / pageSize));
   }, [pageSize, videos]);
-  const handleSelectSize = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
+  const handleSelectSize = (size: number) => {
     setPageSize(size);
     setPageCount(Math.floor((videos.length + size - 1) / size));
   };
-  const handleSelectLang = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const lang = e.target.value;
-    if (lang === "All Lang") router.push(`ranking/video`);
-    else router.push(`ranking/video/${lang}`);
+  const handleSelectLang = (lang: string) => {
+    if (lang === "All Lang") router.push(`/ranking/video`);
+    else router.push(`/ranking/video/${lang}`);
   };
 
   return (
     <>
       <HStack>
-        <Select
-          w={{ sm: "200px" }}
-          value="All Lang"
-          onChange={handleSelectLang}
-        >
-          {selectList.map((item_lang) => (
-            <option key={item_lang} value={item_lang}>
-              Lang : {item_lang}
-            </option>
-          ))}
-        </Select>
-        <Select
-          w={{ sm: "150px" }}
-          value={pageSize}
-          onChange={handleSelectSize}
-        >
-          {[10, 20, 30, 40, 50].map((item) => (
-            <option key={item} value={item}>
-              Show {item}
-            </option>
-          ))}
-        </Select>
+        <Menu>
+          <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+            Lang : All lang
+          </MenuButton>
+          <MenuList>
+            {selectList.map((item) => (
+              <MenuItem key={item} onClick={() => handleSelectLang(item)}>
+                Lang : {item}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
+
+        <Menu>
+          <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+            Show {pageSize}
+          </MenuButton>
+          <MenuList>
+            {[10, 20, 30, 40, 50].map((item) => (
+              <MenuItem key={item} onClick={() => handleSelectSize(item)}>
+                Show {item}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
       </HStack>
       <Box
         pl={{ base: "10px", lg: "30px", xl: "70px" }}

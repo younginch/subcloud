@@ -3,11 +3,11 @@ import { ResRankingUser } from "../../../utils/types";
 import { GetServerSideProps } from "next";
 import UserRankTable from "../../../components/ranking/userRankTable";
 
-type SSRPageProps = {
+type UserRankingPageProps = {
   users: ResRankingUser;
 };
 
-export default function UserRankingPage({ users }: SSRPageProps) {
+export default function UserRankingPage({ users }: UserRankingPageProps) {
   //Pagination
 
   const userRanking = () => {
@@ -31,9 +31,9 @@ export default function UserRankingPage({ users }: SSRPageProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<SSRPageProps> = async (
-  context
-) => {
+export const getServerSideProps: GetServerSideProps<
+  UserRankingPageProps
+> = async (context) => {
   const userViewQuery = `${process.env.NEXTAUTH_URL}/api/ranking/user/view`;
   const userSubQuery = `${process.env.NEXTAUTH_URL}/api/ranking/user/sub`;
   const userFulfilledRequestsQuery = `${process.env.NEXTAUTH_URL}/api/ranking/user/fulfilledRequests`;
