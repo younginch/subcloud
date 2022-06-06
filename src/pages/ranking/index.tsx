@@ -1,14 +1,4 @@
 import axios from "axios";
-import {
-  Box,
-  useColorModeValue,
-  HStack,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import {
   ResRankingSub,
@@ -17,9 +7,8 @@ import {
 } from "../../utils/types";
 import { GetServerSideProps } from "next";
 import { Select } from "@chakra-ui/react";
-import { DashboardTableRow } from "../../components/dashBoardTableRow";
-import { useEffect, useState } from "react";
-import RankPagination from "../../components/rankPagination";
+import VideoRankTable from "../../components/ranking/videoRankTable";
+import UserRankTable from "../../components/ranking/userRankTable";
 
 type SSRPageProps = {
   subs: ResRankingSub;
@@ -28,13 +17,7 @@ type SSRPageProps = {
 };
 
 export default function RankingPage({ subs, videos, users }: SSRPageProps) {
-  const textColor = useColorModeValue("gray.700", "white");
-  const captions = ["Title", "Language", "Requests", "Points"];
-
   //Pagination
-  const [pageIndex, gotoPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(20);
-  const [pageCount, setPageCount] = useState<number>(100);
 
   const router = useRouter();
   const selectList = ["All Lang", "en", "ko", "jp", "cn"];
@@ -43,16 +26,6 @@ export default function RankingPage({ subs, videos, users }: SSRPageProps) {
     if (lang === "All Lang") router.push(`ranking`);
     else router.push(`ranking/${lang}`);
   };
-
-  const handleSelectSize = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    setPageSize(size);
-    setPageCount(Math.floor((videos.length + size - 1) / size));
-  };
-
-  useEffect(() => {
-    setPageCount(Math.floor((videos.length + pageSize - 1) / pageSize));
-  }, [pageSize, videos]);
 
   const subRanking = () => {
     return subs.map((sub) => {
@@ -120,78 +93,8 @@ export default function RankingPage({ subs, videos, users }: SSRPageProps) {
       {videoRanking()}
       <p>userRanking</p>
       {userRanking()}
-      <HStack>
-        <Select
-          w={{ sm: "200px" }}
-          value="All Lang"
-          onChange={handleSelectLang}
-        >
-          {selectList.map((item_lang) => (
-            <option key={item_lang} value={item_lang}>
-              Lang : {item_lang}
-            </option>
-          ))}
-        </Select>
-        <Select
-          w={{ sm: "150px" }}
-          value={pageSize}
-          onChange={handleSelectSize}
-        >
-          {[10, 20, 30, 40, 50].map((item) => (
-            <option key={item} value={item}>
-              Show {item}
-            </option>
-          ))}
-        </Select>
-      </HStack>
-      <Box
-        pl={{ base: "10px", md: "50px", lg: "100px" }}
-        pr={{ base: "10px", md: "50px", lg: "100px" }}
-        overflowX={{ sm: "scroll", xl: "hidden" }}
-      >
-        <Table variant="simple" color={textColor}>
-          <Thead>
-            <Tr my=".8rem" ps="0px">
-              {captions.map((caption, idx) => {
-                return (
-                  <Th
-                    color="gray.400"
-                    key={idx}
-                    fontWeight="bold"
-                    fontSize={{ base: "15px", md: "20px" }}
-                  >
-                    {caption}
-                  </Th>
-                );
-              })}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {videos
-              .slice((pageIndex - 1) * pageSize, pageIndex * pageSize)
-              .map((video) => {
-                return (
-                  <DashboardTableRow
-                    key={video.videoId}
-                    name={
-                      video.youtubeVideo ? video.youtubeVideo.title : "no title"
-                    }
-                    platform={video.serviceId}
-                    requests={video._count.requests}
-                    points={video._count.points}
-                    url={video.url}
-                  />
-                );
-              })}
-          </Tbody>
-        </Table>
-      </Box>
-      <RankPagination
-        pageIndex={pageIndex}
-        gotoPage={gotoPage}
-        pageCount={pageCount}
-        pageSize={pageSize}
-      />
+      <UserRankTable users={users} />
+      <VideoRankTable videos={videos} />
     </>
   );
 }
