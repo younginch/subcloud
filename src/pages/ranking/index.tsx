@@ -52,7 +52,7 @@ export default function RankingPage({ subs, videos, users }: SSRPageProps) {
 
   useEffect(() => {
     setPageCount(Math.floor((videos.length + pageSize - 1) / pageSize));
-  }, []);
+  }, [pageSize, videos]);
 
   const subRanking = () => {
     return subs.map((sub) => {
