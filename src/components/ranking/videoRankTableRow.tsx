@@ -14,7 +14,7 @@ type Props = {
   url: string;
 };
 
-export function DashboardTableRow({
+export default function VideoTableRow({
   name,
   platform,
   requests,
@@ -76,5 +76,3 @@ export function DashboardTableRow({
     </Tr>
   );
 }
-
-export default DashboardTableRow;

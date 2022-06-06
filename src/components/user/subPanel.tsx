@@ -101,7 +101,7 @@ export default function SubPanel(props: SubPanelProps) {
               <Tr key={sub.id}>
                 <Td>
                   <HStack>
-                    <FaYoutube size={36} />
+                    <FaYoutube size={36} fill="red" />
                     <Text maxW={480} noOfLines={1}>
                       {sub.video?.youtubeVideo?.title ?? "비디오 정보없음"}
                     </Text>
