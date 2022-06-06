@@ -36,8 +36,8 @@ export default function VideoRankTable({ videos }: Props) {
   };
   const handleSelectLang = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const lang = e.target.value;
-    if (lang === "All Lang") router.push(`ranking`);
-    else router.push(`ranking/${lang}`);
+    if (lang === "All Lang") router.push(`ranking/video`);
+    else router.push(`ranking/video/${lang}`);
   };
 
   return (
