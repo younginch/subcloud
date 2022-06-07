@@ -20,6 +20,7 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   useDisclosure,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import type { Provider } from "next-auth/providers";
 import { getCsrfToken, getProviders, signIn } from "next-auth/react";
@@ -29,22 +30,31 @@ import OAuthButtonGroup from "../../components/signin/oAuthButtonGroup";
 import { PasswordField } from "../../components/signin/passwordField";
 import React, { useRef } from "react";
 import { PageOptions } from "../../utils/types";
+import { useForm } from "react-hook-form";
 
 type Props = {
   providers: Provider[];
   csrfToken: string;
 };
 
+type LoginFormData = {
+  email: string;
+  password: string;
+};
+
 export default function SignIn({ csrfToken }: Props) {
-  const login = async (e: any) => {
-    e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormData>();
+
+  async function onSubmit(values: LoginFormData) {
     signIn("email-password", {
-      email,
-      password,
+      email: values.email,
+      password: values.password,
     });
-  };
+  }
 
   return (
     <Container
@@ -69,20 +79,31 @@ export default function SignIn({ csrfToken }: Props) {
           borderRadius={{ base: "none", sm: "xl" }}
         >
           <Stack spacing="6">
-            <form onSubmit={login}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <Stack spacing="5">
-                <FormControl>
+                <FormControl isInvalid={errors.email !== undefined}>
                   <FormLabel htmlFor="email">Email</FormLabel>
-                  <Input id="email" type="email" />
+                  <Input id="email" type="email" {...register("email")} />
+                  <FormErrorMessage>
+                    {errors.email && errors.email.message}
+                  </FormErrorMessage>
                 </FormControl>
-                <PasswordField />
+                <PasswordField
+                  isInvalid={errors.password !== undefined}
+                  register={register("password")}
+                  errorMessage={errors.password && errors.password.message}
+                />
               </Stack>
               <HStack justify="space-between">
                 {/* <Checkbox defaultChecked>Remember me</Checkbox> */}
                 <PasswordReset csrfToken={csrfToken} />
               </HStack>
               <Stack spacing="6">
-                <Button type="submit" variant="primary">
+                <Button
+                  type="submit"
+                  variant="primary"
+                  isLoading={isSubmitting}
+                >
                   Sign in
                 </Button>
                 <HStack>
