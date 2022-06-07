@@ -21,7 +21,7 @@ export default function VideoForm({ error, registeredProps, value }: Props) {
         value={value}
         contentEditable={value === undefined}
         placeholder="이곳에 유튜브 링크 입력"
-        w="35em"
+        maxW="35em"
         h="3.2em"
         fontSize="25px"
         borderRadius="5em"
