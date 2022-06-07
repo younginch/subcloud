@@ -31,7 +31,7 @@ export default function RankPagination({
 }: Props) {
   const [isMedium] = useMediaQuery("(min-width: 720px)");
   return (
-    <Flex justifyContent="space-between" mt={4} alignItems="center">
+    <Flex justifyContent="space-between" mt={4} mb={4} alignItems="center">
       <Flex>
         <Tooltip label="First Page">
           <IconButton
@@ -86,7 +86,6 @@ export default function RankPagination({
           </>
         )}
       </Flex>
-
       <Flex>
         <Tooltip label="Next Page">
           <IconButton
