@@ -24,4 +24,8 @@ export const getServerSideProps: GetServerSideProps<RankingPageProps> = async (
   return { props: { videos } };
 };
 
-RankingPage.options = { auth: false } as PageOptions;
+RankingPage.options = {
+  auth: false,
+  width: "100%",
+  hideTitle: true,
+} as PageOptions;

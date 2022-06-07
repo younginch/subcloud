@@ -2,12 +2,10 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  HStack,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  Select,
   Table,
   Th,
   Thead,
@@ -16,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { ResRankingUser } from "../../utils/types";
-import RankPagination from "../rankPagination";
+import RankPagination from "./rankPagination";
 
 type Props = {
   users: ResRankingUser;

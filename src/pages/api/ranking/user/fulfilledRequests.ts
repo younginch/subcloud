@@ -27,12 +27,10 @@ async function RankingUserByFulfilledRequests({
     },
   });
   if (!users) {
-    return res
-      .status(404)
-      .json({
-        error: SubErrorType.NotFound,
-        message: "RankingUserByFulfilledRequests",
-      });
+    return res.status(404).json({
+      error: SubErrorType.NotFound,
+      message: "RankingUserByFulfilledRequests",
+    });
   }
   const compareByFulfilledRequests = (a: UserWithCount, b: UserWithCount) => {
     return b._count.fulfilledRequests - a._count.fulfilledRequests;
