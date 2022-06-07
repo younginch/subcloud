@@ -48,7 +48,6 @@ async function RankingUserByFulfilledRequests({
         role: user.role,
         point: user.point,
         baseLangs: user.baseLangs,
-        settlementId: user.settlementId,
         _count: {
           subs: user.subs.length,
           views: user.subs.reduce((prev, curr) => prev + curr.views, 0),

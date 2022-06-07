@@ -16,19 +16,22 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { Role, SettleRecord } from "@prisma/client";
+import { Role, Settle, SettlePoint } from "@prisma/client";
 import axios from "axios";
-import { useRouter } from "next/router";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import AdminLayout from "../../components/adminLayout";
+import { PageOptions } from "../../utils/types";
 
-export default function AdminProfit() {
-  const router = useRouter();
+export default function AdminSettle() {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
   const [point, setPoint] = useState(0);
-  const [records, setRecords] = useState<SettleRecord[]>([]);
+  const [records, setRecords] = useState<
+    (Settle & {
+      settlePoints: SettlePoint[];
+    })[]
+  >([]);
 
   async function handleSettle() {
     axios
@@ -54,9 +57,11 @@ export default function AdminProfit() {
       .finally(onClose);
   }
 
-  async function handleDelete(id: string) {
+  function handleDelete(id: string) {
     axios
-      .delete(`/api/admin/settle?id=${id}`)
+      .delete(`/api/admin/settle`, {
+        params: { id },
+      })
       .then(() => {
         toast({
           title: "Success",
@@ -94,6 +99,7 @@ export default function AdminProfit() {
               <Th>총 정산 포인트</Th>
               <Th>정산시작 날짜</Th>
               <Th>정산종료 날짜</Th>
+              <Th>정산 명수</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -103,6 +109,7 @@ export default function AdminProfit() {
                   <Td>{record.totalPoint}</Td>
                   <Td>{record.startAt.toString()}</Td>
                   <Td>{record.endAt.toString()}</Td>
+                  <Td>{record.settlePoints.length}</Td>
                   <Td>
                     <Button
                       id={record.id}
@@ -148,4 +155,4 @@ export default function AdminProfit() {
   );
 }
 
-AdminProfit.auth = Role.Admin;
+AdminSettle.options = { auth: Role.Admin } as PageOptions;

@@ -1,14 +1,16 @@
-import { Role, SettleRecord } from "@prisma/client";
+import { Role, Settle } from "@prisma/client";
 import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 
-async function RecordGet({ res, prisma }: RouteParams<SettleRecord[]>) {
-  const records = await prisma.settleRecord.findMany();
+async function RecordGet({ res, prisma }: RouteParams<Settle[]>) {
+  const records = await prisma.settle.findMany({
+    include: { settlePoints: true },
+  });
   return res.json(records);
 }
 
-async function RecordCreate({ req, res, prisma }: RouteParams<SettleRecord>) {
+async function RecordCreate({ req, res, prisma }: RouteParams<Settle>) {
   const { startAt, endAt, totalPoint } = req.body;
-  const users = await prisma.user.findMany({
+  const rawUsers = await prisma.user.findMany({
     include: {
       subs: {
         include: {
@@ -17,56 +19,72 @@ async function RecordCreate({ req, res, prisma }: RouteParams<SettleRecord>) {
       },
     },
   });
-  const newUsers = users.filter((user) => user.subs.length > 0);
-  const views = newUsers.map((user) => {
-    return user.subs.reduce(
-      (prevUser, currUser) => prevUser + currUser.views,
-      0
-    );
+  const users = rawUsers.filter((user) => user.subs.length > 0);
+  const userWithViews = users.map((user) => {
+    return {
+      user,
+      view: user.subs.reduce(
+        (prevUser, currUser) => prevUser + currUser.views,
+        0
+      ),
+    };
   });
-  const totalView = views.reduce(
-    (prevView, currView) => prevView + currView,
+  const totalView = userWithViews.reduce(
+    (prevView, currView) => prevView + currView.view,
     0
   );
-  const points = views.map((view) => {
-    return (Number(totalPoint) / totalView) * view;
+  const userWithPoints = userWithViews.map((userWithView) => {
+    return {
+      user: userWithView.user,
+      point: Math.floor((Number(totalPoint) / totalView) * userWithView.view),
+    };
   });
-  for (let i = 0; i < newUsers.length; i += 1) {
+  for (const userWithPoint of userWithPoints) {
     await prisma.user.update({
-      where: { id: newUsers[i].id },
+      where: { id: userWithPoint.user.id },
       data: {
-        point: newUsers[i].point + points[i],
+        point: userWithPoint.user.point + userWithPoint.point,
       },
     });
   }
-  const createdRecord = await prisma.settleRecord.create({
+  const createdSettle = await prisma.settle.create({
     data: {
       totalPoint,
       startAt,
       endAt,
-      points,
-      users: {
-        connect: newUsers.map((user) => {
-          return {
-            id: user.id,
-          };
-        }),
-      },
     },
   });
-  return res.status(200).json(createdRecord);
+  userWithPoints.map(async (userWithPoint) => {
+    await prisma.settlePoint.create({
+      data: {
+        userId: userWithPoint.user.id,
+        settleId: createdSettle.id,
+        point: userWithPoint.point,
+      },
+    });
+  });
+  return res.status(200).json(createdSettle);
 }
 
-async function RecordDelete({ req, res, prisma }: RouteParams<SettleRecord>) {
+async function RecordDelete({ req, res, prisma }: RouteParams<Settle>) {
   if (!req.query.id) {
     return res
       .status(400)
       .json({ error: SubErrorType.InvalidRequest, message: "id is required" });
   }
-  const record = await prisma.settleRecord.delete({
+  const settle = await prisma.settle.delete({
     where: { id: req.query.id as string },
+    include: { settlePoints: { include: { user: true } } },
   });
-  return res.status(200).json(record);
+  settle.settlePoints.map(async (settlePoint) => {
+    await prisma.user.update({
+      where: { id: settlePoint.user.id },
+      data: {
+        point: settlePoint.user.point - settlePoint.point,
+      },
+    });
+  });
+  return res.status(200).json(settle);
 }
 
 export default handleRoute(

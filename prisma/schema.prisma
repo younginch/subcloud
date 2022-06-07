@@ -47,8 +47,7 @@ model User {
   role          Role           @default(User)
   point         Int            @default(0)
   baseLangs     String[]
-  settlementId  String?
-  settlement    SettleRecord?   @relation(fields: [settlementId], references: [id], onDelete: Cascade)
+  settlePoints  SettlePoint[]
   accounts      Account[]
   sessions      Session[]
   subs          Sub[]
@@ -231,11 +230,19 @@ enum ReviewType {
   Etc
 }
 
-model SettleRecord {
-  id         String  @id @default(cuid())
-  users      User[]
-  totalPoint Int      
-  points     Int[]
-  startAt    DateTime
-  endAt      DateTime
+model Settle {
+  id            String  @id @default(cuid())
+  settlePoints  SettlePoint[]
+  totalPoint    Int      
+  startAt       DateTime
+  endAt         DateTime
+}
+
+model SettlePoint {
+  id        String  @id @default(cuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  settleId  String
+  settle    Settle  @relation(fields: [settleId], references: [id], onDelete: Cascade)
+  point     Int
 }
