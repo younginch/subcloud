@@ -27,9 +27,9 @@ export function SimpleSlider() {
   return (
     <Box h="100%">
       <Slider {...settings}>
-        {images.map((img, idx) => (
-          <Box key={idx} verticalAlign="middle">
-            <CarouselPage active={idx === imageIndex} imgUrl={img} />
+        {images.map((img, index) => (
+          <Box key={index} verticalAlign="middle">
+            <CarouselPage active={index === imageIndex} imgUrl={img} />
           </Box>
         ))}
       </Slider>
