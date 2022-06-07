@@ -14,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { ResRankingUser } from "../../utils/types";
-import RankPagination from "./rankPagination";
 
 type Props = {
   users: ResRankingUser;
@@ -71,12 +70,6 @@ export default function UserRankTable({ users }: Props) {
           </Thead>
         </Table>
       </Box>
-      <RankPagination
-        pageIndex={pageIndex}
-        gotoPage={gotoPage}
-        pageCount={pageCount}
-        pageSize={pageSize}
-      />
     </>
   );
 }
