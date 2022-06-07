@@ -1,7 +1,6 @@
 import axios from "axios";
 import { PageOptions, ResRankingVideo } from "../../../../utils/types";
 import { GetServerSideProps } from "next";
-import VideoRankTable from "../../../../components/ranking/videoRankTable";
 
 type VideoRankingPageProps = {
   videos: ResRankingVideo;
@@ -9,7 +8,7 @@ type VideoRankingPageProps = {
 
 export default function VideoRankingPage({ videos }: VideoRankingPageProps) {
   //Pagination
-  return <VideoRankTable videos={videos} />;
+  return <>곧 없어질 페이지입니다.</>;
 }
 
 export const getServerSideProps: GetServerSideProps<
