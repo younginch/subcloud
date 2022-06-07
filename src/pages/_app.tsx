@@ -5,10 +5,10 @@ import { Center, ChakraProvider, CircularProgress } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
-import axios from "axios";
-import { Role, User } from "@prisma/client";
+import { Role } from "@prisma/client";
 import Layout from "../components/layout";
 import { PageOptions } from "../utils/types";
+import { SWRConfig } from "swr";
 
 type NextPageWithAuth = NextPage & {
   options: PageOptions;
@@ -17,6 +17,8 @@ type NextPageWithAuth = NextPage & {
 type AppPropsWithAuth = AppProps & {
   Component: NextPageWithAuth;
 };
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 export default function MyApp({
   Component,
@@ -34,25 +36,31 @@ export default function MyApp({
   }
 
   return (
-    <SessionProvider session={session}>
-      <ChakraProvider>
-        {isClient ? (
-          <Layout options={options}>
-            {options.auth ? (
-              <Auth role={options.auth}>
+    <SWRConfig
+      value={{
+        fetcher,
+      }}
+    >
+      <SessionProvider session={session}>
+        <ChakraProvider>
+          {isClient ? (
+            <Layout options={options}>
+              {options.auth ? (
+                <Auth role={options.auth}>
+                  <Component {...pageProps} />
+                </Auth>
+              ) : (
                 <Component {...pageProps} />
-              </Auth>
-            ) : (
-              <Component {...pageProps} />
-            )}
-          </Layout>
-        ) : (
-          <Center paddingTop="25vh">
-            <CircularProgress size="13vh" isIndeterminate />
-          </Center>
-        )}
-      </ChakraProvider>
-    </SessionProvider>
+              )}
+            </Layout>
+          ) : (
+            <Center paddingTop="25vh">
+              <CircularProgress size="13vh" isIndeterminate />
+            </Center>
+          )}
+        </ChakraProvider>
+      </SessionProvider>
+    </SWRConfig>
   );
 }
 
@@ -64,7 +72,6 @@ type AuthProps = {
 function Auth({ children, role }: AuthProps): JSX.Element {
   const router = useRouter();
   const { data, status } = useSession();
-  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     if (status === "loading" || !router.isReady) return; // Do nothing while loading
@@ -72,28 +79,19 @@ function Auth({ children, role }: AuthProps): JSX.Element {
       router.push(`/auth/signin?callbackUrl=${router.asPath}`); // If not authenticated, force log in
       return;
     } else {
-      if (!user) {
+      if (!data?.user) {
         return;
       }
-      if (role === Role.Admin && user.role !== Role.Admin) {
+      if (role === Role.Admin && data?.user.role !== Role.Admin) {
         router.push("/api/auth/signout"); // If not admin, force log in
         return;
       }
-      if (role === Role.Reviewer && user.role !== Role.Reviewer) {
+      if (role === Role.Reviewer && data?.user.role !== Role.Reviewer) {
         router.push("/api/auth/signout"); // If not reviewer, force log in
         return;
       }
     }
-  }, [role, router, status, user]);
-
-  useEffect(() => {
-    if (status !== "authenticated") {
-      return;
-    }
-    axios.get(`/api/user`, { params: { id: data?.user.id } }).then((res) => {
-      setUser(res.data);
-    });
-  }, [data?.user.id, status]);
+  }, [data?.user, role, router, status]);
 
   if (status === "authenticated") {
     return children;
