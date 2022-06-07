@@ -23,3 +23,5 @@ export const getServerSideProps: GetServerSideProps<RankingPageProps> = async (
   const videos = resVideos.data;
   return { props: { videos } };
 };
+
+RankingPage.hideTitle = true;
