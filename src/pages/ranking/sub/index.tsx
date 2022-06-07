@@ -1,6 +1,7 @@
 import axios from "axios";
 import { PageOptions, ResRankingSub } from "../../../utils/types";
 import { GetServerSideProps } from "next";
+import SubRankTable from "../../../components/ranking/subRankTable";
 
 type SubRankingPageProps = {
   subs: ResRankingSub;
@@ -29,7 +30,7 @@ export default function SubRankingPage({ subs }: SubRankingPageProps) {
 
   return (
     <>
-      <p>subRanking</p>
+      <SubRankTable subs={subs} />;<p>subRanking</p>
       {subRanking()}
     </>
   );
@@ -46,4 +47,8 @@ export const getServerSideProps: GetServerSideProps<
   return { props: { subs } };
 };
 
-SubRankingPage.options = { auth: false, hideTitle: true } as PageOptions;
+SubRankingPage.options = {
+  auth: false,
+  width: "100%",
+  hideTitle: true,
+} as PageOptions;

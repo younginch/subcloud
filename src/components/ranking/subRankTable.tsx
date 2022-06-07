@@ -12,33 +12,55 @@ import {
   Button,
   MenuList,
   MenuItem,
+  Spacer,
+  FormControl,
+  Input,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { FormEvent, useEffect, useState } from "react";
 import router from "next/router";
-import { ResRankingVideo } from "../../utils/types";
-import VideoTableRow from "./videoRankTableRow";
+import { ResRankingSub } from "../../utils/types";
 import RankPagination from "./rankPagination";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { AiOutlineSearch } from "react-icons/ai";
+import SubRankTableRow from "./subRankTableRow";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
-  videos: ResRankingVideo;
+  subs: ResRankingSub;
 };
 
-export default function VideoRankTable({ videos }: Props) {
+type FormData = {
+  keyword: string;
+};
+
+export default function SubRankTable({ subs }: Props) {
   const textColor = useColorModeValue("gray.700", "white");
-  const captions = ["Title", "Language", "Requests", "Points"];
+  const captions = ["Title", "Language", "Views", "Madeby", "Uploaded"];
   const selectList = ["All Lang", "en", "ko", "jp", "cn"];
   const [pageIndex, gotoPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(20);
   const [pageCount, setPageCount] = useState<number>(100);
 
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>();
+
+  function onSubmit(values: FormData) {
+    console.log(values);
+    const { keyword } = values;
+    console.log(keyword);
+  }
+
   useEffect(() => {
-    setPageCount(Math.floor((videos.length + pageSize - 1) / pageSize));
-  }, [pageSize, videos]);
+    setPageCount(Math.floor((subs.length + pageSize - 1) / pageSize));
+  }, [pageSize, subs]);
 
   const handleSelectSize = (size: number) => {
     setPageSize(size);
-    setPageCount(Math.floor((videos.length + size - 1) / size));
+    setPageCount(Math.floor((subs.length + size - 1) / size));
   };
 
   const handleSelectLang = (lang: string) => {
@@ -79,6 +101,31 @@ export default function VideoRankTable({ videos }: Props) {
               ))}
             </MenuList>
           </Menu>
+          <Spacer />
+          <Box>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormControl>
+                <HStack>
+                  <Input
+                    placeholder="Search..."
+                    w="300px"
+                    id="keyword"
+                    type="keyword"
+                    {...register("keyword", {
+                      required: "This is required",
+                      minLength: {
+                        value: 2,
+                        message: "Minimum length should be 2",
+                      },
+                    })}
+                  />
+                  <Button type="submit">
+                    <AiOutlineSearch />
+                  </Button>
+                </HStack>
+              </FormControl>
+            </form>
+          </Box>
         </HStack>
         <Table variant="simple" color={textColor} mt={5}>
           <Thead>
@@ -98,19 +145,23 @@ export default function VideoRankTable({ videos }: Props) {
             </Tr>
           </Thead>
           <Tbody>
-            {videos
+            {subs
               .slice((pageIndex - 1) * pageSize, pageIndex * pageSize)
-              .map((video) => {
+              .map((sub) => {
                 return (
-                  <VideoTableRow
-                    key={video.videoId}
-                    name={
-                      video.youtubeVideo ? video.youtubeVideo.title : "no title"
+                  <SubRankTableRow
+                    key={sub.id}
+                    userId={sub.user.id}
+                    videoName={
+                      sub.video.youtubeVideo
+                        ? sub.video.youtubeVideo.title
+                        : "no title"
                     }
-                    platform={video.serviceId}
-                    requests={video._count.requests}
-                    points={video._count.points}
-                    url={video.url}
+                    videoUrl={sub.video.url}
+                    platform={sub.serviceId}
+                    viewCount={sub.views}
+                    userName={sub.user.name ? sub.user.name : "Annonymous"}
+                    userImageUrl={sub.user.image ? sub.user.image : ""}
                   />
                 );
               })}
