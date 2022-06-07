@@ -18,6 +18,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import type { GetServerSideProps } from "next";
 import {
+  PageOptions,
   ResRequestSearch,
   ResSubSearch,
   ResVideo,
@@ -154,3 +155,5 @@ export const getServerSideProps: GetServerSideProps<VideoProps> = async (
     },
   };
 };
+
+RequestList.options = { auth: false } as PageOptions;

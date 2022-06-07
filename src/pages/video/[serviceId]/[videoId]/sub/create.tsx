@@ -23,6 +23,8 @@ import { useSession } from "next-auth/react";
 import VideoInfo from "../../../../../components/create/videoInfo";
 import CreateHeader from "../../../../../components/create/createHeader";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
+import { PageOptions } from "../../../../../utils/types";
+import { Role } from "@prisma/client";
 
 type FormData = {
   lang: string;
@@ -160,5 +162,4 @@ export default function SubCreate() {
   );
 }
 
-SubCreate.auth = true;
-SubCreate.hideTitle = true;
+SubCreate.options = { auth: Role.User, hideTitle: true } as PageOptions;

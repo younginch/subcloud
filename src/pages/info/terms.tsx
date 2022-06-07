@@ -1,5 +1,6 @@
 import { List } from "@chakra-ui/react";
 import { HoList, HangList, Jang, Jo } from "../../components/list";
+import { PageOptions } from "../../utils/types";
 
 export default function Terms() {
   return (
@@ -764,3 +765,5 @@ export default function Terms() {
     </List>
   );
 }
+
+Terms.options = { auth: false } as PageOptions;

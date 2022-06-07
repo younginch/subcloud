@@ -1,4 +1,5 @@
 import { Center, Heading, Divider, Text, Stack } from "@chakra-ui/react";
+import { PageOptions } from "../utils/types";
 
 export default function Page404() {
   return (
@@ -23,4 +24,4 @@ export default function Page404() {
   );
 }
 
-Page404.hideTitle = true;
+Page404.options = { auth: false, hideTitle: true } as PageOptions;
