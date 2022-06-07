@@ -15,6 +15,7 @@ import {
   FormControl,
   Input,
   Spacer,
+  Center,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { PageOptions, ResRankingVideo } from "../../../utils/types";
@@ -137,6 +138,9 @@ export default function RankingPage({ videos }: RankingPageProps) {
           </Tbody>
         </Table>
       </Box>
+      <Center>
+        <Button>load more</Button>
+      </Center>
     </>
   );
 }

@@ -4,6 +4,7 @@ import { GetServerSideProps } from "next";
 import {
   Box,
   Button,
+  Center,
   FormControl,
   HStack,
   Input,
@@ -139,6 +140,9 @@ export default function SubRankingPage({ subs }: SubRankingPageProps) {
             })}
           </Tbody>
         </Table>
+        <Center>
+          <Button>load more</Button>
+        </Center>
       </Box>
     </>
   );
