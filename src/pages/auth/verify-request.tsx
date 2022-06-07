@@ -1,5 +1,6 @@
 import { Heading, Text } from "@chakra-ui/react";
 import Link from "next/link";
+import { PageOptions } from "../../utils/types";
 
 export default function VerifyRequest() {
   return (
@@ -10,3 +11,7 @@ export default function VerifyRequest() {
     </>
   );
 }
+
+VerifyRequest.options = {
+  auth: false,
+} as PageOptions;

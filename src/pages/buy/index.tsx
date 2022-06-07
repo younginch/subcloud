@@ -34,6 +34,7 @@ import Link from "next/link";
 import { OrderType, Role } from "@prisma/client";
 import { Products } from "../../utils/products";
 import { FaCheckCircle } from "react-icons/fa";
+import { PageOptions } from "../../utils/types";
 
 function PriceWrapper({ children }: { children: ReactNode }) {
   return (
@@ -436,5 +437,4 @@ export default function Buy() {
   );
 }
 
-Buy.auth = Role.User;
-Buy.hideTitle = true;
+Buy.options = { auth: Role.User, hideTitle: true } as PageOptions;

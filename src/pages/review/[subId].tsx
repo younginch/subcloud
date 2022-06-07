@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import YouTube, { YouTubePlayer } from "react-youtube";
 import { parseSrt, useInterval } from "../../utils/subtitle";
-import { ResSubRead } from "../../utils/types";
+import { PageOptions, ResSubRead } from "../../utils/types";
 
 type SubtitleData = {
   line: string;
@@ -70,7 +70,6 @@ export default function ReviewDetail() {
         subData[i].startTime <= currentTime &&
         currentTime <= subData[i].endTime
       ) {
-        console.log(subData[i].text);
         setSubText(subData[i].text);
         break;
       }
@@ -99,4 +98,4 @@ export default function ReviewDetail() {
   );
 }
 
-ReviewDetail.auth = Role.Reviewer;
+ReviewDetail.options = { auth: Role.Reviewer } as PageOptions;

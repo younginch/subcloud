@@ -1,5 +1,6 @@
 import { ListItem, UnorderedList, Text, List } from "@chakra-ui/react";
 import { HoList, HangList, Jo } from "../../components/list";
+import { PageOptions } from "../../utils/types";
 
 export default function Privacy() {
   return (
@@ -392,3 +393,5 @@ export default function Privacy() {
     </List>
   );
 }
+
+Privacy.options = { auth: false } as PageOptions;

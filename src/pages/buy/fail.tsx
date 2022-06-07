@@ -5,14 +5,12 @@ import {
   Heading,
   Stack,
   Text,
-  useToast,
   Box,
-  createIcon,
   Center,
   HStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import CopyToClipboard from "react-copy-to-clipboard";
+import { PageOptions } from "../../utils/types";
 export default function BuyFail() {
   return (
     <>
@@ -80,4 +78,4 @@ export default function BuyFail() {
   );
 }
 
-BuyFail.hideTitle = true;
+BuyFail.options = { auth: true, hideTitle: true } as PageOptions;

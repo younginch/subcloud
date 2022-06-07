@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ResRankingSub } from "../../../../utils/types";
+import { PageOptions, ResRankingSub } from "../../../../utils/types";
 import { GetServerSideProps } from "next";
 
 type RankingPageProps = {
@@ -45,3 +45,5 @@ export const getServerSideProps: GetServerSideProps<RankingPageProps> = async (
   const subs = resSubs.data;
   return { props: { subs } };
 };
+
+RankingPage.options = { auth: false } as PageOptions;

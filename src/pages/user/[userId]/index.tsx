@@ -15,7 +15,11 @@ import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import RequestPanel from "../../../components/user/requestPanel";
 import SubPanel from "../../../components/user/subPanel";
-import { ResRequestSearch, ResSubSearch } from "../../../utils/types";
+import {
+  PageOptions,
+  ResRequestSearch,
+  ResSubSearch,
+} from "../../../utils/types";
 
 const TAB_LIST = ["request", "sub"];
 
@@ -92,3 +96,5 @@ export const getServerSideProps: GetServerSideProps<UserReadProps> = async (
     },
   };
 };
+
+UserRead.options = { auth: false } as PageOptions;

@@ -16,7 +16,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaYoutube } from "react-icons/fa";
-import { ResSubSearch } from "../../utils/types";
+import { PageOptions, ResSubSearch } from "../../utils/types";
 
 export default function Review() {
   const [subs, setSubs] = useState<ResSubSearch>([]);
@@ -93,4 +93,4 @@ export default function Review() {
   );
 }
 
-Review.auth = Role.Reviewer;
+Review.options = { auth: Role.Reviewer } as PageOptions;

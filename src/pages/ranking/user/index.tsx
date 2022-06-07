@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ResRankingUser } from "../../../utils/types";
+import { PageOptions, ResRankingUser } from "../../../utils/types";
 import { GetServerSideProps } from "next";
 import UserRankTable from "../../../components/ranking/userRankTable";
 
@@ -44,4 +44,4 @@ export const getServerSideProps: GetServerSideProps<
   return { props: { users } };
 };
 
-UserRankingPage.hideTitle = true;
+UserRankingPage.options = { auth: false, hideTitle: true } as PageOptions;

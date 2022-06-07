@@ -7,6 +7,7 @@ import { VideoCreateSchema } from "../../utils/schema";
 import { Role } from "@prisma/client";
 import VideoForm from "../../components/create/videoForm";
 import CreateHeader from "../../components/create/createHeader";
+import { PageOptions } from "../../utils/types";
 
 type FormData = {
   url: string;
@@ -76,5 +77,4 @@ export default function VideoCreate() {
   );
 }
 
-VideoCreate.auth = Role.User;
-VideoCreate.hideTitle = true;
+VideoCreate.options = { auth: Role.User, hideTitle: true } as PageOptions;
