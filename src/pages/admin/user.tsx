@@ -28,25 +28,21 @@ import {
   Radio,
   RadioGroup,
   FormControl,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { Role, User } from "@prisma/client";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import AdminLayout from "../../components/adminLayout";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
 import { UserUpdateSchema } from "../../utils/schema";
 import { PageOptions } from "../../utils/types";
+import useSWR, { mutate } from "swr";
 
 export default function AdminUser() {
-  const [users, setUsers] = useState<User[]>([]);
-
-  useEffect(() => {
-    axios.get(`/api/admin/user`).then((res) => {
-      setUsers(res.data);
-    });
-  }, []);
+  const { data, mutate } = useSWR<User[]>("/api/admin/user");
 
   return (
     <AdminLayout>
@@ -62,7 +58,7 @@ export default function AdminUser() {
             </Tr>
           </Thead>
           <Tbody>
-            {users.map((user) => {
+            {data?.map((user) => {
               return (
                 <Tr key={user.id}>
                   <Td>{user.name}</Td>
@@ -114,7 +110,7 @@ function UpdateButton({ user }: UpdateButtonProps) {
         .patch("/api/admin/user", { role, point }, { params: { id: user.id } })
         .then((res) => {
           onClose();
-          window.location.reload();
+          mutate("/api/admin/user");
           resolve();
         })
         .catch((err) => {
@@ -155,7 +151,7 @@ function UpdateButton({ user }: UpdateButtonProps) {
                     isDisabled
                   />
                 </FormControl>
-                <FormControl>
+                <FormControl isInvalid={errors.role !== undefined}>
                   <FormLabel>Role</FormLabel>
                   <Input
                     id="role"
@@ -176,8 +172,11 @@ function UpdateButton({ user }: UpdateButtonProps) {
                       <Radio value="USER">User</Radio>
                     </Stack>
                   </RadioGroup>
+                  <FormErrorMessage>
+                    {errors.role && errors.role.message}
+                  </FormErrorMessage>
                 </FormControl>
-                <FormControl>
+                <FormControl isInvalid={errors.point !== undefined}>
                   <FormLabel htmlFor="point">Point</FormLabel>
                   <Input
                     id="point"
@@ -185,6 +184,9 @@ function UpdateButton({ user }: UpdateButtonProps) {
                     type="number"
                     {...register("point")}
                   />
+                  <FormErrorMessage>
+                    {errors.point && errors.point.message}
+                  </FormErrorMessage>
                 </FormControl>
               </Stack>
             </DrawerBody>

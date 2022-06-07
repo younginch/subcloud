@@ -18,7 +18,8 @@ import {
 } from "@chakra-ui/react";
 import { Role, Settle, SettlePoint } from "@prisma/client";
 import axios from "axios";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
+import useSWR from "swr";
 import AdminLayout from "../../components/adminLayout";
 import { PageOptions } from "../../utils/types";
 
@@ -27,11 +28,6 @@ export default function AdminSettle() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
   const [point, setPoint] = useState(0);
-  const [records, setRecords] = useState<
-    (Settle & {
-      settlePoints: SettlePoint[];
-    })[]
-  >([]);
 
   async function handleSettle() {
     axios
@@ -78,11 +74,11 @@ export default function AdminSettle() {
       });
   }
 
-  useEffect(() => {
-    axios.get(`/api/admin/settle`).then((res) => {
-      setRecords(res.data);
-    });
-  }, []);
+  const { data } = useSWR<
+    (Settle & {
+      settlePoints: SettlePoint[];
+    })[]
+  >("/api/admin/settle");
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
     setPoint(Number(event.target.value));
@@ -103,7 +99,7 @@ export default function AdminSettle() {
             </Tr>
           </Thead>
           <Tbody>
-            {records.map((record) => {
+            {data?.map((record) => {
               return (
                 <Tr key={record.id}>
                   <Td>{record.totalPoint}</Td>
