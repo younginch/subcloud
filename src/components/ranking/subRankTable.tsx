@@ -7,7 +7,6 @@ import {
   Tr,
   Th,
   useColorModeValue,
-  Select,
   Menu,
   MenuButton,
   Button,
@@ -16,17 +15,23 @@ import {
   Spacer,
   FormControl,
   Input,
+  FormErrorMessage,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import router from "next/router";
 import { ResRankingSub } from "../../utils/types";
 import RankPagination from "./rankPagination";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { AiOutlineSearch } from "react-icons/ai";
 import SubRankTableRow from "./subRankTableRow";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
   subs: ResRankingSub;
+};
+
+type FormData = {
+  keyword: string;
 };
 
 export default function SubRankTable({ subs }: Props) {
@@ -37,7 +42,17 @@ export default function SubRankTable({ subs }: Props) {
   const [pageSize, setPageSize] = useState<number>(20);
   const [pageCount, setPageCount] = useState<number>(100);
 
-  const [input, setInput] = useState<string>("");
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>();
+
+  function onSubmit(values: FormData) {
+    console.log(values);
+    const { keyword } = values;
+    console.log(keyword);
+  }
 
   useEffect(() => {
     setPageCount(Math.floor((subs.length + pageSize - 1) / pageSize));
@@ -51,12 +66,6 @@ export default function SubRankTable({ subs }: Props) {
   const handleSelectLang = (lang: string) => {
     if (lang === "All Lang") router.push(`/ranking/video`);
     else router.push(`/ranking/video/${lang}`);
-  };
-
-  const handleInputSubmit = (event: any) => {
-    event.preventDefault();
-    console.log(event.target.search.value);
-    //TODO : search query with above value
   };
 
   return (
@@ -94,14 +103,21 @@ export default function SubRankTable({ subs }: Props) {
           </Menu>
           <Spacer />
           <Box>
-            <form onSubmit={handleInputSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl>
                 <HStack>
                   <Input
                     placeholder="Search..."
                     w="300px"
-                    id="search"
-                    type="search"
+                    id="keyword"
+                    type="keyword"
+                    {...register("keyword", {
+                      required: "This is required",
+                      minLength: {
+                        value: 2,
+                        message: "Minimum length should be 2",
+                      },
+                    })}
                   />
                   <Button type="submit">
                     <AiOutlineSearch />

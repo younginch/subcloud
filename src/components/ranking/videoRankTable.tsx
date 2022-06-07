@@ -7,15 +7,11 @@ import {
   Tr,
   Th,
   useColorModeValue,
-  Select,
   Menu,
   MenuButton,
   Button,
   MenuList,
   MenuItem,
-  Spacer,
-  FormControl,
-  Input,
 } from "@chakra-ui/react";
 import { FormEvent, useEffect, useState } from "react";
 import router from "next/router";
@@ -23,7 +19,6 @@ import { ResRankingVideo } from "../../utils/types";
 import VideoTableRow from "./videoRankTableRow";
 import RankPagination from "./rankPagination";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { AiOutlineSearch } from "react-icons/ai";
 
 type Props = {
   videos: ResRankingVideo;
@@ -37,8 +32,6 @@ export default function VideoRankTable({ videos }: Props) {
   const [pageSize, setPageSize] = useState<number>(20);
   const [pageCount, setPageCount] = useState<number>(100);
 
-  const [input, setInput] = useState<string>("");
-
   useEffect(() => {
     setPageCount(Math.floor((videos.length + pageSize - 1) / pageSize));
   }, [pageSize, videos]);
@@ -51,12 +44,6 @@ export default function VideoRankTable({ videos }: Props) {
   const handleSelectLang = (lang: string) => {
     if (lang === "All Lang") router.push(`/ranking/video`);
     else router.push(`/ranking/video/${lang}`);
-  };
-
-  const handleInputSubmit = (event: any) => {
-    event.preventDefault();
-    console.log(event.target.search.value);
-    //TODO : search query with above value
   };
 
   return (
@@ -92,24 +79,6 @@ export default function VideoRankTable({ videos }: Props) {
               ))}
             </MenuList>
           </Menu>
-          <Spacer />
-          <Box>
-            <form onSubmit={handleInputSubmit}>
-              <FormControl>
-                <HStack>
-                  <Input
-                    placeholder="Search..."
-                    w="300px"
-                    id="search"
-                    type="search"
-                  />
-                  <Button type="submit">
-                    <AiOutlineSearch />
-                  </Button>
-                </HStack>
-              </FormControl>
-            </form>
-          </Box>
         </HStack>
         <Table variant="simple" color={textColor} mt={5}>
           <Thead>
