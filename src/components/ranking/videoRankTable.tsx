@@ -12,34 +12,41 @@ import {
   Button,
   MenuList,
   MenuItem,
+  FormControl,
+  Input,
+  Spacer,
 } from "@chakra-ui/react";
-import { FormEvent, useEffect, useState } from "react";
 import router from "next/router";
 import { ResRankingVideo } from "../../utils/types";
 import VideoTableRow from "./videoRankTableRow";
-import RankPagination from "./rankPagination";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { useForm } from "react-hook-form";
+import { AiOutlineSearch } from "react-icons/ai";
 
 type Props = {
   videos: ResRankingVideo;
+};
+
+type FormData = {
+  keyword: string;
 };
 
 export default function VideoRankTable({ videos }: Props) {
   const textColor = useColorModeValue("gray.700", "white");
   const captions = ["Title", "Language", "Requests", "Points"];
   const selectList = ["All Lang", "en", "ko", "jp", "cn"];
-  const [pageIndex, gotoPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(20);
-  const [pageCount, setPageCount] = useState<number>(100);
 
-  useEffect(() => {
-    setPageCount(Math.floor((videos.length + pageSize - 1) / pageSize));
-  }, [pageSize, videos]);
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>();
 
-  const handleSelectSize = (size: number) => {
-    setPageSize(size);
-    setPageCount(Math.floor((videos.length + size - 1) / size));
-  };
+  function onSubmit(values: FormData) {
+    console.log(values);
+    const { keyword } = values;
+    console.log(keyword);
+  }
 
   const handleSelectLang = (lang: string) => {
     if (lang === "All Lang") router.push(`/ranking/video`);
@@ -67,18 +74,31 @@ export default function VideoRankTable({ videos }: Props) {
               ))}
             </MenuList>
           </Menu>
-          <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              Show {pageSize}
-            </MenuButton>
-            <MenuList>
-              {[10, 20, 30, 40, 50].map((item) => (
-                <MenuItem key={item} onClick={() => handleSelectSize(item)}>
-                  Show {item}
-                </MenuItem>
-              ))}
-            </MenuList>
-          </Menu>
+          <Spacer />
+          <Box>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormControl>
+                <HStack>
+                  <Input
+                    placeholder="Search..."
+                    w="300px"
+                    id="keyword"
+                    type="keyword"
+                    {...register("keyword", {
+                      required: "This is required",
+                      minLength: {
+                        value: 2,
+                        message: "Minimum length should be 2",
+                      },
+                    })}
+                  />
+                  <Button type="submit">
+                    <AiOutlineSearch />
+                  </Button>
+                </HStack>
+              </FormControl>
+            </form>
+          </Box>
         </HStack>
         <Table variant="simple" color={textColor} mt={5}>
           <Thead>
@@ -98,30 +118,22 @@ export default function VideoRankTable({ videos }: Props) {
             </Tr>
           </Thead>
           <Tbody>
-            {videos
-              .slice((pageIndex - 1) * pageSize, pageIndex * pageSize)
-              .map((video) => {
-                return (
-                  <VideoTableRow
-                    key={video.videoId}
-                    name={
-                      video.youtubeVideo ? video.youtubeVideo.title : "no title"
-                    }
-                    platform={video.serviceId}
-                    requests={video._count.requests}
-                    points={video._count.points}
-                    url={video.url}
-                  />
-                );
-              })}
+            {videos.map((video) => {
+              return (
+                <VideoTableRow
+                  key={video.videoId}
+                  name={
+                    video.youtubeVideo ? video.youtubeVideo.title : "no title"
+                  }
+                  platform={video.serviceId}
+                  requests={video._count.requests}
+                  points={video._count.points}
+                  url={video.url}
+                />
+              );
+            })}
           </Tbody>
         </Table>
-        <RankPagination
-          pageIndex={pageIndex}
-          gotoPage={gotoPage}
-          pageCount={pageCount}
-          pageSize={pageSize}
-        />
       </Box>
     </>
   );
