@@ -46,9 +46,8 @@ export default function RankingPage({ videos }: RankingPageProps) {
   } = useForm<FormData>();
 
   function onSubmit(values: FormData) {
-    console.log(values);
     const { keyword } = values;
-    console.log(keyword);
+    //Todo: search keyword
   }
 
   const handleSelectLang = (lang: string) => {
@@ -106,11 +105,11 @@ export default function RankingPage({ videos }: RankingPageProps) {
         <Table variant="simple" color={textColor} mt={5}>
           <Thead>
             <Tr my=".8rem" ps="0px">
-              {captions.map((caption, idx) => {
+              {captions.map((caption, index) => {
                 return (
                   <Th
                     color="gray.400"
-                    key={idx}
+                    key={index}
                     fontWeight="bold"
                     fontSize={{ base: "15px", md: "20px" }}
                   >
