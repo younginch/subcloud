@@ -33,9 +33,15 @@ jobs:
           node-version: 14
           cache: npm
       - name: Install npm dependencies
-        run: npm ci
-      - name: Test
-        run: npm run coverage
+        run: npm ci      
+      - name: Code Climate Coverage Action
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: 211ff375f223976be2b176db61fa2bc5888bd613213b15dcb5793674921f2d66
+        with:
+          coverageCommand: npm run coverage
+          coverageLocations: |
+            ${{github.workspace}}/coverage/lcov.info:lcov
       - uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
