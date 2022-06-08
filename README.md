@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/submarine-kr/sub/actions/workflows/ci.yml/badge.svg)](https://github.com/submarine-kr/sub/actions/workflows/ci.yml)
 [![Playwright Tests](https://github.com/younginch/sub/actions/workflows/playwright.yml/badge.svg)](https://github.com/younginch/sub/actions/workflows/playwright.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/07199be51bc066ba061f/maintainability)](https://codeclimate.com/repos/62a0a015e9eec62ffd00714b/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/07199be51bc066ba061f/test_coverage)](https://codeclimate.com/repos/62a0a015e9eec62ffd00714b/test_coverage)
 [![codecov](https://codecov.io/gh/younginch/sub/branch/main/graph/badge.svg?token=ET2YVQ4FTC)](https://codecov.io/gh/younginch/sub)
 
 ## Getting Started
