@@ -44,7 +44,7 @@ export default function Admin() {
   }
 
   return (
-    <AdminLayout>
+    <>
       <Button colorScheme="red" onClick={onOpen}>
         전체 DB 삭제
       </Button>
@@ -75,7 +75,7 @@ export default function Admin() {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </AdminLayout>
+    </>
   );
 }
 

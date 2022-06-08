@@ -112,7 +112,7 @@ export default function Footer() {
       >
         <SiteMap />
         <Spacer />
-        <HStack margin={6} align="flex-start">
+        <HStack margin={6} align="flex-start" paddingEnd="84px">
           <SelectTranslation isLarge={true} />
           <SelectTheme isLarge={true} />
         </HStack>

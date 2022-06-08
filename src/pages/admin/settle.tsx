@@ -20,7 +20,6 @@ import { Role, Settle, SettlePoint } from "@prisma/client";
 import axios from "axios";
 import { ChangeEvent, useRef, useState } from "react";
 import useSWR from "swr";
-import AdminLayout from "../../components/adminLayout";
 import { PageOptions } from "../../utils/types";
 
 export default function AdminSettle() {
@@ -84,7 +83,7 @@ export default function AdminSettle() {
     setPoint(Number(event.target.value));
 
   return (
-    <AdminLayout>
+    <>
       <Button colorScheme="blue" onClick={onOpen}>
         수익 정산
       </Button>
@@ -147,7 +146,7 @@ export default function AdminSettle() {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </AdminLayout>
+    </>
   );
 }
 

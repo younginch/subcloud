@@ -23,14 +23,15 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import NextCors from "nextjs-cors";
+import { FunctionComponent, ReactElement } from "react";
 import prisma from "./prisma";
 
 export type PageOptions = {
   auth: Role | boolean;
+  width?: string | number;
   hideHeader?: boolean;
   hideTitle?: boolean;
   hideNavBar?: boolean;
-  width?: string | number;
 };
 
 export default interface ResError {
