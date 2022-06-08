@@ -38,7 +38,7 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
 import { UserUpdateSchema } from "../../utils/schema";
 import { PageOptions } from "../../utils/types";
-import useSWR, { mutate } from "swr";
+import useSWR, { KeyedMutator, mutate } from "swr";
 
 export default function AdminUser() {
   const { data } = useSWR<User[]>("/api/admin/user");
@@ -64,7 +64,7 @@ export default function AdminUser() {
                 <Td>{user.role}</Td>
                 <Td>{user.point}</Td>
                 <Td>
-                  <UpdateButton user={user} />
+                  <UpdateButton user={user} mutate={mutate} />
                   <DeleteButton id={user.id} />
                   <CopyToClipboard text={user.id}>
                     <Button>Copy ID</Button>
@@ -81,6 +81,7 @@ export default function AdminUser() {
 
 type UpdateButtonProps = {
   user: User;
+  mutate: KeyedMutator<User>;
 };
 
 type UserUpdateForm = {
@@ -88,7 +89,7 @@ type UserUpdateForm = {
   point: number;
 };
 
-function UpdateButton({ user }: UpdateButtonProps) {
+function UpdateButton({ user, mutate }: UpdateButtonProps) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const firstField = useRef<HTMLInputElement>(null);
@@ -107,7 +108,7 @@ function UpdateButton({ user }: UpdateButtonProps) {
         .patch("/api/admin/user", { role, point }, { params: { id: user.id } })
         .then((res) => {
           onClose();
-          mutate("/api/admin/user");
+          mutate();
           resolve();
         })
         .catch((err) => {

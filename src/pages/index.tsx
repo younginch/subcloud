@@ -220,4 +220,4 @@ export default function Home() {
   );
 }
 
-Home.options = { auth: false, width: "100%", hideTitle: true } as PageOptions;
+Home.options = { auth: false, hideTitle: true } as PageOptions;

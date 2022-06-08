@@ -27,6 +27,11 @@ export default function AdminSettle() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
   const [point, setPoint] = useState(0);
+  const { data, mutate } = useSWR<
+    (Settle & {
+      settlePoints: SettlePoint[];
+    })[]
+  >("/api/admin/settle");
 
   async function handleSettle() {
     axios
@@ -36,6 +41,7 @@ export default function AdminSettle() {
         totalPoint: point,
       })
       .then(() => {
+        mutate();
         toast({
           title: "Success",
           description: "All settlement are distributed",
@@ -58,6 +64,7 @@ export default function AdminSettle() {
         params: { id },
       })
       .then(() => {
+        mutate();
         toast({
           title: "Success",
           description: "Settlement are rollbacked",
@@ -72,12 +79,6 @@ export default function AdminSettle() {
         });
       });
   }
-
-  const { data } = useSWR<
-    (Settle & {
-      settlePoints: SettlePoint[];
-    })[]
-  >("/api/admin/settle");
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
     setPoint(Number(event.target.value));

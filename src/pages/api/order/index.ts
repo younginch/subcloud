@@ -107,7 +107,11 @@ async function cancelOrder({ req, res, prisma }: RouteParams<Order>) {
     }
   );
   if (result.status === 200) {
-    return res.status(200).json(result.data);
+    const canceledOrder = await prisma.order.update({
+      where: { id: order.id },
+      data: { status: OrderStatus.Refunded },
+    });
+    return res.status(200).json(canceledOrder);
   } else {
     return res.status(500).json(result.data);
   }
