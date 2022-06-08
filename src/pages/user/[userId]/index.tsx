@@ -6,7 +6,6 @@ import {
   Grid,
   HStack,
   Icon,
-  Spacer,
   Stack,
   Tab,
   TabList,
@@ -32,13 +31,10 @@ import { FaCube } from "react-icons/fa";
 import { IoDocumentsSharp, IoEllipsisHorizontal } from "react-icons/io5";
 import { MdSubtitles } from "react-icons/md";
 import Card from "../../../components/card/card";
-import CardBody from "../../../components/card/cardBody";
-import { BsArrowRight } from "react-icons/bs";
 import IconBox from "../../../components/icons/iconBox";
 import CardHeader from "../../../components/card/cardHeader";
-import * as GradientProgress from "@delowar/react-circle-progressbar";
+import GradientProgress from "@delowar/react-circle-progressbar";
 import { BiHappy } from "react-icons/bi";
-import { text } from "stream/consumers";
 
 const TAB_LIST = ["request", "sub"];
 
