@@ -17,7 +17,7 @@ async function RankingSubByView({
       .json({ error: SubErrorType.FormValidation, message: "FormInvalidated" });
   }
   let where: any = {};
-  if (lang) {
+  if (lang && lang !== "All Lang") {
     where.lang = lang;
   }
   const subs = await prisma.sub.findMany({
