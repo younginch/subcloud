@@ -74,4 +74,4 @@ export default function QnaPage() {
   );
 }
 
-QnaPage.options = { auth: false } as PageOptions;
+QnaPage.options = { auth: false, width: "6xl" } as PageOptions;
