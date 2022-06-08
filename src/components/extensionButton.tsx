@@ -1,4 +1,4 @@
-import { Button, Text } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import ChromeIcon from "../../public/browsers/chrome.png";
 import FirefoxIcon from "../../public/browsers/firefox.svg";
 import SafariIcon from "../../public/browsers/safari.png";
@@ -39,7 +39,9 @@ export default function ExtensionButton({
       bg="rgb(50,50,50, .5)"
       zIndex={5}
     >
-      <Image src={icon} alt="icon" width="24px" height="24px" />
+      <Box w="24px" h="24px">
+        <Image src={icon} alt="icon" />
+      </Box>
       <Text marginStart="12px" color="gray.200">
         {"SubCloud for " + name}
       </Text>

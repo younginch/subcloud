@@ -18,6 +18,7 @@
     "@aws-sdk/s3-request-presigner": "^3.100.0",
     "@chakra-ui/icons": "^2.0.1",
     "@chakra-ui/react": "^2.1.2",
+    "@delowar/react-circle-progressbar": "^1.0.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@hookform/resolvers": "^2.9.0",
