@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   HStack,
   Stack,
   Tab,
@@ -8,6 +9,7 @@ import {
   TabPanels,
   Tabs,
   Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -20,6 +22,10 @@ import {
   ResRequestSearch,
   ResSubSearch,
 } from "../../../utils/types";
+import Header from "../../../components/user/header";
+import { FaCube } from "react-icons/fa";
+import { IoDocumentsSharp } from "react-icons/io5";
+import { MdSubtitles } from "react-icons/md";
 
 const TAB_LIST = ["request", "sub"];
 
@@ -29,10 +35,14 @@ type UserReadProps = {
 };
 
 export default function UserRead({ requests, subs }: UserReadProps) {
+  const bgProfile = useColorModeValue(
+    "hsla(0,0%,100%,.8)",
+    "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
+  );
   const router = useRouter();
   const { data } = useSession();
 
-  function getTabIndex() {
+  function _getTabIndex() {
     if (router.query.tab === "request") {
       return 0;
     } else if (router.query.tab === "sub") {
@@ -48,6 +58,44 @@ export default function UserRead({ requests, subs }: UserReadProps) {
 
   return (
     <>
+      <Stack>
+        <Header
+          backgroundHeader="../../../../public/assets/ProfileBackground.png"
+          backgroundProfile={bgProfile}
+          avatarImage={data?.user.image ?? undefined}
+          name={data?.user.name ?? undefined}
+          email={data?.user.email ?? undefined}
+          tabs={[
+            {
+              name: "OVERVIEW",
+              router: "overview",
+              icon: <FaCube width="100%" height="100%" />,
+            },
+            {
+              name: "Subtitles",
+              router: "subtitles",
+              icon: <MdSubtitles width="100%" height="100%" />,
+            },
+            {
+              name: "Request",
+              router: "request",
+              icon: <IoDocumentsSharp width="100%" height="100%" />,
+            },
+          ]}
+        />
+        <Box
+          ml={{ base: "5px", md: "10px", xl: "15px" }}
+          mr={{ base: "5px", md: "10px", xl: "15px" }}
+          bg="gray.200"
+        >
+          <Stack>
+            <Text>여기에 유저 프로필 대시보드 내용</Text>
+            <Text>/overview : 대시보드 전체 요약</Text>
+            <Text>/sub : 유저가 제작한 자막들</Text>
+            <Text>/request : 자막 제작 의뢰</Text>
+          </Stack>
+        </Box>
+      </Stack>
       <HStack marginBottom="18px">
         <Avatar
           size="2xl"
@@ -61,7 +109,7 @@ export default function UserRead({ requests, subs }: UserReadProps) {
           <Text>{data?.user.point} 포인트</Text>
         </Stack>
       </HStack>
-      <Tabs isLazy index={getTabIndex()} onChange={onChangeTabIndex}>
+      <Tabs isLazy index={_getTabIndex()} onChange={onChangeTabIndex}>
         <TabList>
           <Tab>자막 요청</Tab>
           <Tab>영상 자막</Tab>
@@ -97,4 +145,4 @@ export const getServerSideProps: GetServerSideProps<UserReadProps> = async (
   };
 };
 
-UserRead.options = { auth: false } as PageOptions;
+UserRead.options = { auth: false, hideTitle: true } as PageOptions;
