@@ -33,7 +33,6 @@ import {
 import { Role, User } from "@prisma/client";
 import axios from "axios";
 import { useRef, useState } from "react";
-import AdminLayout from "../../components/adminLayout";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
@@ -42,43 +41,41 @@ import { PageOptions } from "../../utils/types";
 import useSWR, { mutate } from "swr";
 
 export default function AdminUser() {
-  const { data, mutate } = useSWR<User[]>("/api/admin/user");
+  const { data } = useSWR<User[]>("/api/admin/user");
 
   return (
-    <AdminLayout>
-      <TableContainer>
-        <Table variant="simple" size="sm">
-          <Thead>
-            <Tr>
-              <Th>이름</Th>
-              <Th>이메일</Th>
-              <Th>역할</Th>
-              <Th>포인트</Th>
-              <Th>작업</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {data?.map((user) => {
-              return (
-                <Tr key={user.id}>
-                  <Td>{user.name}</Td>
-                  <Td>{user.email}</Td>
-                  <Td>{user.role}</Td>
-                  <Td>{user.point}</Td>
-                  <Td>
-                    <UpdateButton user={user} />
-                    <DeleteButton id={user.id} />
-                    <CopyToClipboard text={user.id}>
-                      <Button>Copy ID</Button>
-                    </CopyToClipboard>
-                  </Td>
-                </Tr>
-              );
-            })}
-          </Tbody>
-        </Table>
-      </TableContainer>
-    </AdminLayout>
+    <TableContainer>
+      <Table variant="simple" size="sm">
+        <Thead>
+          <Tr>
+            <Th>이름</Th>
+            <Th>이메일</Th>
+            <Th>역할</Th>
+            <Th>포인트</Th>
+            <Th>작업</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {data?.map((user) => {
+            return (
+              <Tr key={user.id}>
+                <Td>{user.name}</Td>
+                <Td>{user.email}</Td>
+                <Td>{user.role}</Td>
+                <Td>{user.point}</Td>
+                <Td>
+                  <UpdateButton user={user} />
+                  <DeleteButton id={user.id} />
+                  <CopyToClipboard text={user.id}>
+                    <Button>Copy ID</Button>
+                  </CopyToClipboard>
+                </Td>
+              </Tr>
+            );
+          })}
+        </Tbody>
+      </Table>
+    </TableContainer>
   );
 }
 

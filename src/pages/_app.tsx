@@ -2,13 +2,15 @@ import "./_App.css";
 import type { AppProps } from "next/app";
 import { SessionProvider, useSession } from "next-auth/react";
 import { Center, ChakraProvider, CircularProgress } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import { Role } from "@prisma/client";
 import Layout from "../components/layout";
 import { PageOptions } from "../utils/types";
 import { SWRConfig } from "swr";
+import AdminLayout from "../components/adminLayout";
+import UserLayout from "../components/userLayout";
 
 type NextPageWithAuth = NextPage & {
   options: PageOptions;
@@ -20,11 +22,27 @@ type AppPropsWithAuth = AppProps & {
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
+function getCustomLayout(
+  pathname: string
+): FunctionComponent<{ children: ReactElement }> {
+  if (pathname.startsWith("/admin")) {
+    return AdminLayout;
+  } else if (pathname.startsWith("/user/my")) {
+    return UserLayout;
+  } else {
+    return (props: { children: ReactElement }): ReactElement<any, any> | null =>
+      props.children;
+  }
+}
+
 export default function MyApp({
   Component,
   pageProps: { session, ...pageProps },
 }: AppPropsWithAuth) {
+  const router = useRouter();
+
   const { options } = Component;
+  const CustomLayout = getCustomLayout(router.pathname);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -45,13 +63,15 @@ export default function MyApp({
         <ChakraProvider>
           {isClient ? (
             <Layout options={options}>
-              {options.auth ? (
-                <Auth role={options.auth}>
+              <CustomLayout>
+                {options.auth ? (
+                  <Auth role={options.auth}>
+                    <Component {...pageProps} />
+                  </Auth>
+                ) : (
                   <Component {...pageProps} />
-                </Auth>
-              ) : (
-                <Component {...pageProps} />
-              )}
+                )}
+              </CustomLayout>
             </Layout>
           ) : (
             <Center paddingTop="25vh">

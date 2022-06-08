@@ -23,17 +23,20 @@ export default function Layout({ options, children }: Props) {
         <meta name="description" content="SubCloud" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Box w="100vw" h="100%" minH="calc(100vh - 72px)" m="0" p="0">
+      <Box w="100%" h="100%" minH="calc(100vh - 84px)" m="0" p="0">
         {!options.hideNavBar && <NavBar />}
         <Box
-          maxW={options.width ?? "6xl"}
-          margin={options.width ? 0 : "12px"}
+          w={options.width ?? "100%"}
+          padding={options.width ? 0 : "12px"}
+          marginX={options.width ? "auto" : 0}
           overflowX="scroll"
         >
-          {!options.hideTitle && (
-            <Heading marginY="18px">{t(router.pathname)}</Heading>
-          )}
-          {children}
+          <Box>
+            {!options.hideTitle && (
+              <Heading marginY="18px">{t(router.pathname)}</Heading>
+            )}
+            {children}
+          </Box>
         </Box>
       </Box>
       <Footer />

@@ -45,11 +45,11 @@ export default function ToolBar({ isLarge }: Props): JSX.Element {
               <PopoverBody>
                 <Stack>
                   <Text>{session.user?.email}</Text>
-                  <Link href={`/user/${session.user.id}?tab=request`} passHref>
-                    <Button>내 자막 요청</Button>
+                  <Link href={`/user/${session.user.id}`} passHref>
+                    <Button>내 퍼블릭 프로필</Button>
                   </Link>
-                  <Link href={`/user/${session.user.id}?tab=sub`} passHref>
-                    <Button>내 영상 자막</Button>
+                  <Link href={`/user/my`} passHref>
+                    <Button>내 기록 및 설정</Button>
                   </Link>
                 </Stack>
               </PopoverBody>
