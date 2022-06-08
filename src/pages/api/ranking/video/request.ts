@@ -18,7 +18,7 @@ async function RankingVideoByRequest({
       .json({ error: SubErrorType.FormValidation, message: "FormInvalidated" });
   }
   let where: any = {};
-  if (lang) {
+  if (lang && lang !== "All Lang") {
     where = {
       requests: {
         every: {
