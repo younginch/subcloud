@@ -14,23 +14,24 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { PageOptions, ResRankingUser } from "../../../utils/types";
-import { GetServerSideProps } from "next";
 import { useForm } from "react-hook-form";
-import router from "next/router";
 import { AiOutlineSearch } from "react-icons/ai";
 import UserRankTableRow from "../../../components/ranking/userRankTableRow";
-
-type UserRankingPageProps = {
-  users: ResRankingUser;
-};
+import useSWRInfinite from "swr/infinite";
 
 type FormData = {
   keyword: string;
 };
 
-export default function UserRankingPage({ users }: UserRankingPageProps) {
+export default function UserRankingPage() {
   const textColor = useColorModeValue("gray.700", "white");
   const captions = ["Name", "Total Views", "Total Subs", "Fulfilled", "Rating"];
+  const sortBy = "view"; //sub, fulfilledRequests
+  const pageSize = 5;
+  const fetcher = async (url: string) => {
+    const res = await axios.get<ResRankingUser>(url);
+    return res.data;
+  };
 
   const {
     handleSubmit,
@@ -43,17 +44,27 @@ export default function UserRankingPage({ users }: UserRankingPageProps) {
     //Todo: search keyword
   }
 
-  const userRanking = () => {
-    return users.map((user) => {
-      return (
-        <p key={user.id}>
-          name: {user.name}, email: {user.email}, image: {user.image}, subs:{" "}
-          {user._count.subs}, views: {user._count.views}, fulfilledRequests:{" "}
-          {user._count.fulfilledRequests}
-        </p>
-      );
-    });
-  };
+  const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
+    (index) =>
+      `/api/ranking/user/${sortBy}?start=${pageSize * index}&end=${
+        pageSize * (index + 1)
+      }`,
+    fetcher
+  );
+
+  const users = data
+    ? data.reduce((accumulator, currentValue) => {
+        return accumulator.concat(currentValue);
+      }, [])
+    : [];
+  const isLoadingInitialData = !data && !error;
+  const isLoadingMore =
+    isLoadingInitialData ||
+    (size > 0 && data && typeof data[size - 1] === "undefined");
+  const isEmpty = data?.[0]?.length === 0;
+  const isReachingEnd =
+    isEmpty || (data && data[data.length - 1]?.length < pageSize);
+  const isRefreshing = isValidating && data && data.length === size;
 
   return (
     <>
@@ -123,25 +134,17 @@ export default function UserRankingPage({ users }: UserRankingPageProps) {
           </Tbody>
         </Table>
         <Center>
-          <Button>load more</Button>
+          <Button
+            disabled={isLoadingMore || isReachingEnd}
+            onClick={() => setSize(size + 1)}
+          >
+            load more
+          </Button>
         </Center>
       </Box>
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps<
-  UserRankingPageProps
-> = async (context) => {
-  const userViewQuery = `${process.env.NEXTAUTH_URL}/api/ranking/user/view`;
-  const userSubQuery = `${process.env.NEXTAUTH_URL}/api/ranking/user/sub`;
-  const userFulfilledRequestsQuery = `${process.env.NEXTAUTH_URL}/api/ranking/user/fulfilledRequests`;
-  const resUsers = await axios.get<ResRankingUser>(userViewQuery, {
-    params: { start: 0, end: 50 },
-  });
-  const users = resUsers.data;
-  return { props: { users } };
-};
 
 UserRankingPage.options = {
   auth: false,

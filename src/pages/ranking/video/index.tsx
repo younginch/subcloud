@@ -19,25 +19,28 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { PageOptions, ResRankingVideo } from "../../../utils/types";
-import { GetServerSideProps } from "next";
-import router from "next/router";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { AiOutlineSearch } from "react-icons/ai";
 import VideoTableRow from "../../../components/ranking/videoRankTableRow";
 import { useForm } from "react-hook-form";
-
-type RankingPageProps = {
-  videos: ResRankingVideo;
-};
+import useSWRInfinite from "swr/infinite";
+import { useState } from "react";
 
 type FormData = {
   keyword: string;
 };
 
-export default function RankingPage({ videos }: RankingPageProps) {
+export default function RankingPage() {
   const textColor = useColorModeValue("gray.700", "white");
   const captions = ["Title", "Language", "Requests", "Points"];
   const selectList = ["All Lang", "en", "ko", "jp", "cn"];
+  const [lang, setLang] = useState("All Lang");
+  const sortBy = "request"; //point
+  const pageSize = 5;
+  const fetcher = async (url: string) => {
+    const res = await axios.get<ResRankingVideo>(url);
+    return res.data;
+  };
 
   const {
     handleSubmit,
@@ -50,10 +53,27 @@ export default function RankingPage({ videos }: RankingPageProps) {
     //Todo: search keyword
   }
 
-  const handleSelectLang = (lang: string) => {
-    if (lang === "All Lang") router.push(`/ranking/video`);
-    else router.push(`/ranking/video/${lang}`);
-  };
+  const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
+    (index) =>
+      `/api/ranking/video/${sortBy}?start=${pageSize * index}&end=${
+        pageSize * (index + 1)
+      }&lang=${lang}`,
+    fetcher
+  );
+
+  const videos = data
+    ? data.reduce((accumulator, currentValue) => {
+        return accumulator.concat(currentValue);
+      }, [])
+    : [];
+  const isLoadingInitialData = !data && !error;
+  const isLoadingMore =
+    isLoadingInitialData ||
+    (size > 0 && data && typeof data[size - 1] === "undefined");
+  const isEmpty = data?.[0]?.length === 0;
+  const isReachingEnd =
+    isEmpty || (data && data[data.length - 1]?.length < pageSize);
+  const isRefreshing = isValidating && data && data.length === size;
 
   return (
     <>
@@ -66,11 +86,11 @@ export default function RankingPage({ videos }: RankingPageProps) {
         <HStack>
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              Lang : All lang
+              Lang : {lang}
             </MenuButton>
             <MenuList>
               {selectList.map((item) => (
-                <MenuItem key={item} onClick={() => handleSelectLang(item)}>
+                <MenuItem key={item} onClick={() => setLang(item)}>
                   Lang : {item}
                 </MenuItem>
               ))}
@@ -138,23 +158,16 @@ export default function RankingPage({ videos }: RankingPageProps) {
         </Table>
       </Box>
       <Center>
-        <Button>load more</Button>
+        <Button
+          disabled={isLoadingMore || isReachingEnd}
+          onClick={() => setSize(size + 1)}
+        >
+          load more
+        </Button>
       </Center>
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps<RankingPageProps> = async (
-  context
-) => {
-  const videoRequestQuery = `${process.env.NEXTAUTH_URL}/api/ranking/video/request`;
-  const videoPointQuery = `${process.env.NEXTAUTH_URL}/api/ranking/video/point`;
-  const resVideos = await axios.get<ResRankingVideo>(videoRequestQuery, {
-    params: { start: 0, end: 50 },
-  });
-  const videos = resVideos.data;
-  return { props: { videos } };
-};
 
 RankingPage.options = {
   auth: false,

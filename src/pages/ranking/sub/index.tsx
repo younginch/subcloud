@@ -8,6 +8,11 @@ import {
   FormControl,
   HStack,
   Input,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Spacer,
   Table,
   Tbody,
   Th,
@@ -17,21 +22,26 @@ import {
 } from "@chakra-ui/react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useForm } from "react-hook-form";
-import router from "next/router";
 import SubRankTableRow from "../../../components/ranking/subRankTableRow";
-
-type SubRankingPageProps = {
-  subs: ResRankingSub;
-};
+import useSWRInfinite from "swr/infinite";
+import { useState } from "react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 type FormData = {
   keyword: string;
 };
 
-export default function SubRankingPage({ subs }: SubRankingPageProps) {
+export default function SubRankingPage() {
   const textColor = useColorModeValue("gray.700", "white");
   const captions = ["Title", "Language", "Views", "Madeby", "Uploaded"];
   const selectList = ["All Lang", "en", "ko", "jp", "cn"];
+  const [lang, setLang] = useState("All Lang");
+  const sortBy = "view";
+  const pageSize = 5;
+  const fetcher = async (url: string) => {
+    const res = await axios.get<ResRankingSub>(url);
+    return res.data;
+  };
 
   const {
     handleSubmit,
@@ -41,31 +51,30 @@ export default function SubRankingPage({ subs }: SubRankingPageProps) {
 
   function onSubmit(values: FormData) {
     const { keyword } = values;
-    //Todo: searching keyword
+    //Todo: search keyword
   }
 
-  const handleSelectLang = (lang: string) => {
-    if (lang === "All Lang") router.push(`/ranking/video`);
-    else router.push(`/ranking/video/${lang}`);
-  };
+  const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
+    (index) =>
+      `/api/ranking/sub/${sortBy}?start=${pageSize * index}&end=${
+        pageSize * (index + 1)
+      }&lang=${lang}`,
+    fetcher
+  );
 
-  const subRanking = () => {
-    return subs.map((sub) => {
-      return (
-        <p key={sub.id}>
-          views: {sub.views}, platform: {sub.serviceId}, video url:{" "}
-          {sub.video.url}, video name:{" "}
-          {sub.video.youtubeVideo ? sub.video.youtubeVideo.title : "no title"},
-          video channel:{" "}
-          {sub.video.youtubeVideo
-            ? sub.video.youtubeVideo.channel.title
-            : "no title"}
-          , user name: {sub.user.name}, user email: {sub.user.email}, user
-          image: {sub.user.image}
-        </p>
-      );
-    });
-  };
+  const subs = data
+    ? data.reduce((accumulator, currentValue) => {
+        return accumulator.concat(currentValue);
+      }, [])
+    : [];
+  const isLoadingInitialData = !data && !error;
+  const isLoadingMore =
+    isLoadingInitialData ||
+    (size > 0 && data && typeof data[size - 1] === "undefined");
+  const isEmpty = data?.[0]?.length === 0;
+  const isReachingEnd =
+    isEmpty || (data && data[data.length - 1]?.length < pageSize);
+  const isRefreshing = isValidating && data && data.length === size;
 
   return (
     <>
@@ -76,6 +85,19 @@ export default function SubRankingPage({ subs }: SubRankingPageProps) {
         overflowX={{ sm: "scroll", xl: "hidden" }}
       >
         <HStack>
+          <Menu>
+            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+              Lang : {lang}
+            </MenuButton>
+            <MenuList>
+              {selectList.map((item) => (
+                <MenuItem key={item} onClick={() => setLang(item)}>
+                  Lang : {item}
+                </MenuItem>
+              ))}
+            </MenuList>
+          </Menu>
+          <Spacer />
           <Box>
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl>
@@ -140,23 +162,17 @@ export default function SubRankingPage({ subs }: SubRankingPageProps) {
           </Tbody>
         </Table>
         <Center>
-          <Button>load more</Button>
+          <Button
+            disabled={isLoadingMore || isReachingEnd}
+            onClick={() => setSize(size + 1)}
+          >
+            load more
+          </Button>
         </Center>
       </Box>
     </>
   );
 }
-
-export const getServerSideProps: GetServerSideProps<
-  SubRankingPageProps
-> = async (context) => {
-  const subQuery = `${process.env.NEXTAUTH_URL}/api/ranking/sub/view`;
-  const resSubs = await axios.get<ResRankingSub>(subQuery, {
-    params: { start: 0, end: 50 },
-  });
-  const subs = resSubs.data;
-  return { props: { subs } };
-};
 
 SubRankingPage.options = {
   auth: false,
