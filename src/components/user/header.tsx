@@ -54,7 +54,7 @@ const Header = ({
       alignItems="center"
     >
       <Box
-        bgImage="url('https://demos.creative-tim.com/purity-ui-dashboard/static/media/ProfileBackground.4dc796b0.png')"
+        bgImage={backgroundHeader}
         w="100%"
         h="300px"
         borderRadius="25px"
