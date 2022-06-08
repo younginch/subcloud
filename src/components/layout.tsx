@@ -23,7 +23,7 @@ export default function Layout({ options, children }: Props) {
         <meta name="description" content="SubCloud" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Box w="100vw" h="100%" minH="calc(100vh - 84px)" m="0" p="0">
+      <Box w="100%" h="100%" minH="calc(100vh - 84px)" m="0" p="0">
         {!options.hideNavBar && <NavBar />}
         <Box
           w={options.width ?? "100%"}
