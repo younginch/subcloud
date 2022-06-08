@@ -27,11 +27,11 @@ export default function Layout({ options, children }: Props) {
         {!options.hideNavBar && <NavBar />}
         <Box
           w={options.width ?? "100%"}
-          padding={options.width ? 0 : "12px"}
+          padding={options.width ? "12px" : 0}
           marginX={options.width ? "auto" : 0}
           overflowX="scroll"
         >
-          <Box>
+          <Box bgColor={options.bgColor} m={0} p={0}>
             {!options.hideTitle && (
               <Heading marginY="18px">{t(router.pathname)}</Heading>
             )}

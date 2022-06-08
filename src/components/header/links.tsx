@@ -17,19 +17,22 @@ export default function Links({ width }: LinksProps) {
         <MenuButton
           as={Button}
           variant="ghost"
-          flexDirection="column"
-          alignItems="start"
           width={width}
+          textAlign="left"
           rightIcon={<ChevronDownIcon />}
         >
           랭킹
         </MenuButton>
         <MenuList>
-          <MenuItem>Download</MenuItem>
-          <MenuItem>Create a Copy</MenuItem>
-          <MenuItem>Mark as Draft</MenuItem>
-          <MenuItem>Delete</MenuItem>
-          <MenuItem>Attend a Workshop</MenuItem>
+          <Link href="/ranking/sub">
+            <MenuItem>Sub</MenuItem>
+          </Link>
+          <Link href="/ranking/user">
+            <MenuItem>User</MenuItem>
+          </Link>
+          <Link href="/ranking/video">
+            <MenuItem>Video</MenuItem>
+          </Link>
         </MenuList>
       </Menu>
       <LinkButton route="/buy" width={width} />
