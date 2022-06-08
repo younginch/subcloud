@@ -7,9 +7,10 @@ import {
   Tbody,
   Td,
 } from "@chakra-ui/react";
-import { SubHistory } from "@prisma/client";
+import { Role, SubHistory } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
+import { PageOptions } from "../../../utils/types";
 
 export default function UserMyHistory() {
   const session = useSession();
@@ -40,3 +41,5 @@ export default function UserMyHistory() {
     </TableContainer>
   );
 }
+
+UserMyHistory.options = { auth: Role.User } as PageOptions;
