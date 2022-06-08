@@ -38,7 +38,7 @@ const Header = ({
   const textColor = useColorModeValue("gray.700", "white");
   const borderProfileColor = useColorModeValue(
     "white",
-    "rgba(255, 255, 255, 0.31)"
+    "rgba(255, 255, 255, 0.1)"
   );
   const emailColor = useColorModeValue("gray.400", "gray.300");
   const tabTextSize = { base: "xs", md: "12px", lg: "15px" };
