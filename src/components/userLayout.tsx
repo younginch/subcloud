@@ -1,9 +1,42 @@
-import { ReactElement } from "react";
+import { Button, HStack, List, ListItem } from "@chakra-ui/react";
+import Link from "next/link";
+
+type UserMenuProps = {
+  href: string;
+  title: string;
+};
+
+function UserMenu({ href, title }: UserMenuProps) {
+  return (
+    <ListItem>
+      <Link href={href} passHref>
+        <Button
+          variant="ghost"
+          w="100%"
+          flexDirection="column"
+          alignItems="start"
+        >
+          {title}
+        </Button>
+      </Link>
+    </ListItem>
+  );
+}
 
 type UserLayoutProps = {
-  children: ReactElement;
+  children: React.ReactNode;
 };
 
 export default function UserLayout({ children }: UserLayoutProps) {
-  return <>{children}</>;
+  return (
+    <HStack>
+      <List w="120px">
+        <UserMenu href="/user/my" title="메인" />
+        <UserMenu href="/user/my/request" title="자막 요청" />
+        <UserMenu href="/user/my/order" title="결제 기록" />
+        <UserMenu href="/user/my/sub" title="제작한 자막" />
+      </List>
+      {children}
+    </HStack>
+  );
 }

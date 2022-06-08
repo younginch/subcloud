@@ -10,6 +10,7 @@ import Layout from "../components/layout";
 import { PageOptions } from "../utils/types";
 import { SWRConfig } from "swr";
 import AdminLayout from "../components/adminLayout";
+import UserLayout from "../components/userLayout";
 
 type NextPageWithAuth = NextPage & {
   options: PageOptions;
@@ -27,7 +28,7 @@ function getCustomLayout(
   if (pathname.startsWith("/admin")) {
     return AdminLayout;
   } else if (pathname.startsWith("/user/my")) {
-    return AdminLayout;
+    return UserLayout;
   } else {
     return (props: { children: ReactElement }): ReactElement<any, any> | null =>
       props.children;
