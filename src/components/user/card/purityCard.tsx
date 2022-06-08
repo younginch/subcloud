@@ -1,0 +1,41 @@
+/*!
+
+=========================================================
+* Vision UI Free Chakra - v1.0.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/vision-ui-free-chakra
+* Copyright 2021 Creative Tim (https://www.creative-tim.com/)
+* Licensed under MIT (https://github.com/creativetimofficial/vision-ui-free-chakra/blob/master LICENSE.md)
+
+* Design and Coded by Simmmple & Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
+
+import { Box } from "@chakra-ui/react";
+
+export default function PurityCard(props: any) {
+  const { variant, children, ...rest } = props;
+  const styles = {
+    p: "22px",
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    position: "relative",
+    minWidth: "0px",
+    wordWrap: "break-word",
+    backgroundClip: "border-box",
+    boxShadow: "0px 3.5px 5.5px rgba(0, 0, 0, 0.02)",
+    borderRadius: "15px",
+  };
+  // Pass the computed styles into the `__css` prop
+  return (
+    <Box __css={styles} {...rest}>
+      {children}
+    </Box>
+  );
+}

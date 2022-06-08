@@ -20,19 +20,16 @@ import { Box, useColorModeValue } from "@chakra-ui/react";
 
 export default function Card(props: any) {
   const { variant, children, ...rest } = props;
-  const bgColor = useColorModeValue(
-    "linear-gradient(127.09deg, rgba(226, 240, 217, 0.4) 19.41%, rgba(169, 269, 142, 0.25) 76.65%)",
-    "linear-gradient(127.09deg, rgba(6, 11, 40, 0.94) 19.41%, rgba(42, 52, 139, 0.49) 76.65%)"
-  );
   const styles = {
     p: "22px",
     display: "flex",
     flexDirection: "column",
     backdropFilter: "blur(120px)",
     width: "100%",
+    bg: "white",
     borderRadius: "20px",
-    bg: bgColor,
     backgroundClip: "border-box",
+    boxShadow: "0px 3.5px 5.5px rgba(0, 0, 0, 0.02)",
   };
   // Pass the computed styles into the `__css` prop
   return (
