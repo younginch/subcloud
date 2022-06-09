@@ -59,6 +59,7 @@ model User {
   orders        Order[]
   subHistories  SubHistory[]
   subscriptions Subscription[]
+  coupons       Coupon[]
 }
 
 model VerificationToken {
@@ -191,8 +192,8 @@ model Order {
 
 enum OrderType {
   ChargePoint
-  MonthlySubscription
-  MonthlySubscriptionTrial
+  MonthlyBasic
+  YearlyBasic
 }
 
 enum OrderStatus {
@@ -215,6 +216,23 @@ model Subscription {
 
 enum SubscriptionType {
   Basic
+}
+
+model Coupon {
+  id     String     @id @default(cuid())
+  code   String?
+  type   CouponType
+  isUsed Boolean    @default(false)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum CouponType {
+  ChargePoint
+  OneMonthBasic
+  OneYearBasic
+  TwoWeeksBasicTrial
 }
 
 model RequestPoint {

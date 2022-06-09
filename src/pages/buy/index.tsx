@@ -35,6 +35,7 @@ import { OrderType, Role } from "@prisma/client";
 import { Products } from "../../utils/products";
 import { FaCheckCircle } from "react-icons/fa";
 import { PageOptions } from "../../utils/types";
+import { useSession } from "next-auth/react";
 
 function PriceWrapper({ children }: { children: ReactNode }) {
   return (
@@ -84,6 +85,7 @@ type PointCardProps = {
 export default function Buy() {
   const toast = useToast();
   const [tossPayments, setTossPayments] = useState<any>();
+  const { data } = useSession();
   const textColor = useColorModeValue("gray.700", "white");
   const [isMedium] = useMediaQuery("(min-width: 1200px)");
 
@@ -203,6 +205,16 @@ export default function Buy() {
     );
   }
 
+  function requestSubscription() {
+    tossPayments
+      .requestBillingAuth("카드", {
+        customerKey: data?.user.id,
+        successUrl: `${window.location.origin}/success`,
+        failUrl: `${window.location.origin}/fail`,
+      })
+      .then(() => {});
+  }
+
   return (
     <>
       <Box py={12} mt={15}>
@@ -225,7 +237,7 @@ export default function Buy() {
           <PriceWrapper>
             <Box py={4} px={12}>
               <Text fontWeight="500" fontSize="2xl">
-                Pro
+                Basic
               </Text>
               <HStack justifyContent="center">
                 <Text fontSize="3xl" fontWeight="600">
@@ -289,7 +301,7 @@ export default function Buy() {
               </Box>
               <Box py={4} px={12}>
                 <Text fontWeight="500" fontSize="2xl">
-                  Education
+                  Pro
                 </Text>
                 <HStack justifyContent="center">
                   <Text fontSize="3xl" fontWeight="600">
@@ -331,7 +343,7 @@ export default function Buy() {
                   </ListItem>
                 </List>
                 <Box w="80%" pt={7}>
-                  <Button w="full" colorScheme="red">
+                  <Button w="full" colorScheme="red" isDisabled>
                     Start trial
                   </Button>
                 </Box>
@@ -341,7 +353,7 @@ export default function Buy() {
           <PriceWrapper>
             <Box py={4} px={12}>
               <Text fontWeight="500" fontSize="2xl">
-                Maker
+                Ultimate
               </Text>
               <HStack justifyContent="center">
                 <Text fontSize="3xl" fontWeight="600">
@@ -375,7 +387,7 @@ export default function Buy() {
                 </ListItem>
               </List>
               <Box w="80%" pt={7}>
-                <Button w="full" colorScheme="red" variant="outline">
+                <Button w="full" colorScheme="red" variant="outline" isDisabled>
                   Start trial
                 </Button>
               </Box>
