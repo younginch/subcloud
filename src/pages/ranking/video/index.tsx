@@ -9,6 +9,7 @@ import VideoTableRow from "../../../components/ranking/videoRankTableRow";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import GeneralTable from "../../../components/ranking/generalTable";
+import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 
 export default function RankingPage() {
   const captions = ["Title", "Language", "Requests", "Points"];
@@ -48,14 +49,10 @@ export default function RankingPage() {
   const isRefreshing = isValidating && data && data.length === size;
 
   const loadMoreBtn = (
-    <Center>
-      <Button
-        disabled={isLoadingMore || isReachingEnd}
-        onClick={() => setSize(size + 1)}
-      >
-        load more
-      </Button>
-    </Center>
+    <LoadMoreBtn
+      disabled={isLoadingMore || isReachingEnd}
+      onClick={() => setSize(size + 1)}
+    />
   );
 
   return (

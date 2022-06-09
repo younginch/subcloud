@@ -8,6 +8,7 @@ import {
 import UserRankTableRow from "../../../components/ranking/userRankTableRow";
 import useSWRInfinite from "swr/infinite";
 import GeneralTable from "../../../components/ranking/generalTable";
+import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 
 export default function UserRankingPage() {
   const captions = ["Name", "Total Views", "Total Subs", "Fulfilled", "Rating"];
@@ -44,17 +45,13 @@ export default function UserRankingPage() {
   const isReachingEnd =
     isEmpty || (data && data[data.length - 1]?.length < pageSize);
   const isRefreshing = isValidating && data && data.length === size;
-
   const loadMoreBtn = (
-    <Center>
-      <Button
-        disabled={isLoadingMore || isReachingEnd}
-        onClick={() => setSize(size + 1)}
-      >
-        load more
-      </Button>
-    </Center>
+    <LoadMoreBtn
+      disabled={isLoadingMore || isReachingEnd}
+      onClick={() => setSize(size + 1)}
+    />
   );
+
   return (
     <>
       <Box
