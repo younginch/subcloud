@@ -28,7 +28,8 @@ import prisma from "./prisma";
 export type PageOptions = {
   auth: Role | boolean;
   width?: string | number;
-  bgColor?: string;
+  bgColorLight?: string;
+  bgColorDark?: string;
   hideHeader?: boolean;
   hideTitle?: boolean;
   hideNavBar?: boolean;

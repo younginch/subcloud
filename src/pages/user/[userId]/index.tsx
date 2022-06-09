@@ -210,5 +210,5 @@ export const getServerSideProps: GetServerSideProps<UserReadProps> = async (
 UserRead.options = {
   auth: false,
   hideTitle: true,
-  bgColor: "#F7FAFC",
+  bgColorLight: "#F7FAFC",
 } as PageOptions;
