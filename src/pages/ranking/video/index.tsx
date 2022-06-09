@@ -50,7 +50,7 @@ export default function RankingPage() {
 
   const loadMoreBtn = (
     <LoadMoreBtn
-      disabled={isLoadingMore || isReachingEnd}
+      hidden={isLoadingMore || isReachingEnd}
       onClick={() => setSize(size + 1)}
     />
   );

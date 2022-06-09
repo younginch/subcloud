@@ -24,8 +24,10 @@ export default function VideoTableRow({
   const textColor = useColorModeValue("gray.700", "gray.300");
   const paddingLeftBp = { base: "7px", md: "15px", lg: "24px" };
   const fontBreakPoints = { base: "15px", md: "20px" };
+  const mainTextSize = { base: "12px", md: "15px" };
+  const subTextSize = { base: "14px", md: "17px" };
   return (
-    <Tr fontSize={fontBreakPoints} color={textColor}>
+    <Tr fontSize={mainTextSize} color={textColor}>
       <Td
         pl="0px"
         maxW={{
@@ -56,7 +58,7 @@ export default function VideoTableRow({
       <Td
         justifyContent="center"
         w={{ base: "24px", md: "100px", lg: "150px" }}
-        fontSize={{ base: "18px", md: "22px" }}
+        fontSize={subTextSize}
       >
         <Text>En, Ko, Fr</Text>
       </Td>
@@ -64,7 +66,7 @@ export default function VideoTableRow({
         w={{ base: "90px", md: "110px", lg: "140px" }}
         pl={paddingLeftBp}
         fontWeight="bold"
-        fontSize={{ base: "18px", md: "22px" }}
+        fontSize={subTextSize}
       >
         <HStack>
           <AiOutlineUser color={textColor} />
@@ -73,7 +75,7 @@ export default function VideoTableRow({
       </Td>
       <Td
         w={{ base: "70px", md: "90px", lg: "120px" }}
-        fontSize={{ base: "18px", md: "22px" }}
+        fontSize={subTextSize}
         pl={paddingLeftBp}
         fontWeight="bold"
       >
