@@ -1,40 +1,17 @@
-import {
-  Box,
-  HStack,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  useColorModeValue,
-  Menu,
-  MenuButton,
-  Button,
-  MenuList,
-  MenuItem,
-  FormControl,
-  Input,
-  Spacer,
-  Center,
-} from "@chakra-ui/react";
+import { Box, Button, Center } from "@chakra-ui/react";
 import axios from "axios";
 import {
   PageOptions,
   RankQueryData,
   ResRankingVideo,
 } from "../../../utils/types";
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import { AiOutlineSearch } from "react-icons/ai";
 import VideoTableRow from "../../../components/ranking/videoRankTableRow";
-import { useForm } from "react-hook-form";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import GeneralTable from "../../../components/ranking/generalTable";
 
 export default function RankingPage() {
-  const textColor = useColorModeValue("gray.700", "white");
   const captions = ["Title", "Language", "Requests", "Points"];
-  const selectList = ["All Lang", "en", "ko", "jp", "cn"];
   const [lang, setLang] = useState("All Lang");
   const sortBy = "request"; //point
   const pageSize = 5;

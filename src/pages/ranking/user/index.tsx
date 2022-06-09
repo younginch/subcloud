@@ -1,31 +1,15 @@
 import axios from "axios";
-import {
-  Box,
-  Button,
-  Center,
-  FormControl,
-  HStack,
-  Input,
-  Table,
-  Tbody,
-  Th,
-  Thead,
-  Tr,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, Button, Center } from "@chakra-ui/react";
 import {
   PageOptions,
   RankQueryData,
   ResRankingUser,
 } from "../../../utils/types";
-import { useForm } from "react-hook-form";
-import { AiOutlineSearch } from "react-icons/ai";
 import UserRankTableRow from "../../../components/ranking/userRankTableRow";
 import useSWRInfinite from "swr/infinite";
 import GeneralTable from "../../../components/ranking/generalTable";
 
 export default function UserRankingPage() {
-  const textColor = useColorModeValue("gray.700", "white");
   const captions = ["Name", "Total Views", "Total Subs", "Fulfilled", "Rating"];
   const sortBy = "view"; //sub, fulfilledRequests
   const pageSize = 5;

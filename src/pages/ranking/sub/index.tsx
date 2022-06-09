@@ -4,38 +4,14 @@ import {
   RankQueryData,
   ResRankingSub,
 } from "../../../utils/types";
-import { GetServerSideProps } from "next";
-import {
-  Box,
-  Button,
-  Center,
-  FormControl,
-  HStack,
-  Input,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Spacer,
-  Table,
-  Tbody,
-  Th,
-  Thead,
-  Tr,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import { AiOutlineSearch } from "react-icons/ai";
-import { useForm } from "react-hook-form";
+import { Box, Button, Center } from "@chakra-ui/react";
 import SubRankTableRow from "../../../components/ranking/subRankTableRow";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import GeneralTable from "../../../components/ranking/generalTable";
 
 export default function SubRankingPage() {
-  const textColor = useColorModeValue("gray.700", "white");
   const captions = ["Title", "Language", "Views", "Madeby", "Uploaded"];
-  const selectList = ["All Lang", "en", "ko", "jp", "cn"];
   const [lang, setLang] = useState("All Lang");
   const sortBy = "view";
   const pageSize = 5;
