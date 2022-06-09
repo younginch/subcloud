@@ -35,7 +35,6 @@ import ActiveUsers from "../../../components/user/graphs/activeUsers";
 import SalesOverview from "../../../components/user/graphs/salesOverview";
 import BarChart from "../../../components/user/graphs/barChart";
 import LineChart from "../../../components/user/graphs/lineChart";
-import { useEffect, useState } from "react";
 import SatisfactionRate from "../../../components/user/graphs/satisfactionRate";
 import FulfilledGraph from "../../../components/user/graphs/fulfilledGraph";
 
