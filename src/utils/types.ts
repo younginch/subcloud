@@ -262,6 +262,10 @@ export type UserWithCount = User & {
   };
 };
 
+export type RankQueryData = {
+  keyword: string;
+};
+
 export type ResFileRead = FileWithUrl;
 export type ResFileDelete = File;
 export type ResFileSearch = File[];
