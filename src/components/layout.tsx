@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, useColorModeValue } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -15,6 +15,7 @@ type Props = {
 export default function Layout({ options, children }: Props) {
   const { t } = useTranslation("routes");
   const router = useRouter();
+  const color = useColorModeValue(options.bgColorLight, options.bgColorDark);
 
   return (
     <>
@@ -29,9 +30,9 @@ export default function Layout({ options, children }: Props) {
           w={options.width ?? "100%"}
           padding={options.width ? "12px" : 0}
           marginX={options.width ? "auto" : 0}
-          overflowX="scroll"
+          overflowX="auto"
         >
-          <Box bgColor={options.bgColor} m={0} p={0}>
+          <Box bgColor={color} m={0} p={0}>
             {!options.hideTitle && (
               <Heading marginY="18px">{t(router.pathname)}</Heading>
             )}
