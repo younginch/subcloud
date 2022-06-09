@@ -33,6 +33,7 @@ export default function UserLayout({ children }: UserLayoutProps) {
       <List w="120px">
         <UserMenu href="/user/my" title="메인" />
         <UserMenu href="/user/my/request" title="자막 요청" />
+        <UserMenu href="/user/my/history" title="시청 기록" />
         <UserMenu href="/user/my/order" title="결제 기록" />
         <UserMenu href="/user/my/sub" title="제작한 자막" />
       </List>

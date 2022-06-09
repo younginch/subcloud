@@ -28,7 +28,8 @@ import prisma from "./prisma";
 export type PageOptions = {
   auth: Role | boolean;
   width?: string | number;
-  bgColor?: string;
+  bgColorLight?: string;
+  bgColorDark?: string;
   hideHeader?: boolean;
   hideTitle?: boolean;
   hideNavBar?: boolean;
@@ -259,6 +260,10 @@ export type UserWithCount = User & {
     views: number;
     fulfilledRequests: number;
   };
+};
+
+export type RankQueryData = {
+  keyword: string;
 };
 
 export type ResFileRead = FileWithUrl;

@@ -33,9 +33,10 @@ export default function SubRankTableRow({
 }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const paddingLeftBp = { base: "7px", md: "15px", lg: "24px" };
-  const fontBreakPoints = { base: "15px", md: "20px" };
+  const mainTextSize = { base: "12px", md: "15px" };
+  const subTextSize = { base: "10px", md: "13px" };
   return (
-    <Tr fontSize={fontBreakPoints} color={textColor}>
+    <Tr color={textColor}>
       <Td
         pl="0px"
         maxW={{
@@ -53,6 +54,7 @@ export default function SubRankTableRow({
           </Link>
           <Link href={videoUrl}>
             <Text
+              fontSize={mainTextSize}
               fontWeight="bold"
               textOverflow="ellipsis"
               whiteSpace="nowrap"
@@ -66,43 +68,32 @@ export default function SubRankTableRow({
       <Td
         justifyContent="center"
         w={{ base: "24px", md: "100px", lg: "150px" }}
-        fontSize={{ base: "18px", md: "22px" }}
       >
-        <Text>En, Ko, Fr</Text>
+        <Text fontSize={mainTextSize}>En, Ko, Fr</Text>
       </Td>
       <Td
         w={{ base: "90px", md: "110px", lg: "140px" }}
         pl={paddingLeftBp}
         fontWeight="bold"
-        fontSize={{ base: "18px", md: "22px" }}
+        fontSize={mainTextSize}
       >
         <HStack>
           <BsEye color={textColor} />
           <Text>{viewCount}</Text>
         </HStack>
       </Td>
-      <Td
-        minW={{ md: "140px", lg: "160px" }}
-        fontSize={{ base: "18px", md: "22px" }}
-        pl={paddingLeftBp}
-      >
+      <Td minW={{ md: "140px", lg: "160px" }} pl={paddingLeftBp}>
         <HStack>
           <Link href={`/user/${userId}`}>
             <Avatar size="sm" name={userName} src={userImageUrl} />
           </Link>
           <Link href={`/user/${userId}`}>
-            <Text fontSize={{ base: "12px", md: "18px" }}>{userName}</Text>
+            <Text fontSize={subTextSize}>{userName}</Text>
           </Link>
         </HStack>
       </Td>
-      <Td
-        w={{ base: "70px", md: "90px", lg: "110px" }}
-        pl={paddingLeftBp}
-        fontSize={{ base: "16px", md: "20px" }}
-      >
-        <HStack>
-          <Text>2022/4/13</Text>
-        </HStack>
+      <Td w={{ base: "70px", md: "90px", lg: "110px" }} pl={paddingLeftBp}>
+        <Text fontSize={mainTextSize}>2022/4/13</Text>
       </Td>
     </Tr>
   );

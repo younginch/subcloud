@@ -1,30 +1,16 @@
 import axios from "axios";
+import { Box, Button, Center } from "@chakra-ui/react";
 import {
-  Box,
-  Button,
-  Center,
-  FormControl,
-  HStack,
-  Input,
-  Table,
-  Tbody,
-  Th,
-  Thead,
-  Tr,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import { PageOptions, ResRankingUser } from "../../../utils/types";
-import { useForm } from "react-hook-form";
-import { AiOutlineSearch } from "react-icons/ai";
+  PageOptions,
+  RankQueryData,
+  ResRankingUser,
+} from "../../../utils/types";
 import UserRankTableRow from "../../../components/ranking/userRankTableRow";
 import useSWRInfinite from "swr/infinite";
-
-type FormData = {
-  keyword: string;
-};
+import GeneralTable from "../../../components/ranking/generalTable";
+import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 
 export default function UserRankingPage() {
-  const textColor = useColorModeValue("gray.700", "white");
   const captions = ["Name", "Total Views", "Total Subs", "Fulfilled", "Rating"];
   const sortBy = "view"; //sub, fulfilledRequests
   const pageSize = 5;
@@ -33,13 +19,7 @@ export default function UserRankingPage() {
     return res.data;
   };
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors, isSubmitting },
-  } = useForm<FormData>();
-
-  function onSubmit(values: FormData) {
+  function onSubmit(values: RankQueryData) {
     const { keyword } = values;
     //Todo: search keyword
   }
@@ -65,6 +45,12 @@ export default function UserRankingPage() {
   const isReachingEnd =
     isEmpty || (data && data[data.length - 1]?.length < pageSize);
   const isRefreshing = isValidating && data && data.length === size;
+  const loadMoreBtn = (
+    <LoadMoreBtn
+      hidden={isLoadingMore || isReachingEnd}
+      onClick={() => setSize(size + 1)}
+    />
+  );
 
   return (
     <>
@@ -74,73 +60,25 @@ export default function UserRankingPage() {
         pr={{ base: "10px", lg: "30px", xl: "70px" }}
         overflowX={{ sm: "scroll", xl: "hidden" }}
       >
-        <HStack>
-          <Box>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl>
-                <HStack>
-                  <Input
-                    placeholder="Search..."
-                    w="300px"
-                    id="keyword"
-                    type="keyword"
-                    {...register("keyword", {
-                      required: "This is required",
-                      minLength: {
-                        value: 2,
-                        message: "Minimum length should be 2",
-                      },
-                    })}
-                  />
-                  <Button type="submit">
-                    <AiOutlineSearch />
-                  </Button>
-                </HStack>
-              </FormControl>
-            </form>
-          </Box>
-        </HStack>
-        <Table variant="simple" color={textColor} mt={5}>
-          <Thead>
-            <Tr my=".8rem" ps="0px">
-              {captions.map((caption, index) => {
-                return (
-                  <Th
-                    color="gray.400"
-                    key={index}
-                    fontWeight="bold"
-                    fontSize={{ base: "15px", md: "20px" }}
-                  >
-                    {caption}
-                  </Th>
-                );
-              })}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {users.map((user) => {
-              return (
-                <UserRankTableRow
-                  key={user.id}
-                  userId={user.id}
-                  userName={user.name ? user.name : "Annonymous"}
-                  userImageUrl={user.image ? user.image : ""}
-                  totalViewCount={user._count.views}
-                  totalSubCount={user._count.subs}
-                  totalFulfilledRequest={user._count.fulfilledRequests}
-                />
-              );
-            })}
-          </Tbody>
-        </Table>
-        <Center>
-          <Button
-            disabled={isLoadingMore || isReachingEnd}
-            onClick={() => setSize(size + 1)}
-          >
-            load more
-          </Button>
-        </Center>
+        <GeneralTable
+          captions={captions}
+          onSubmit={onSubmit}
+          btnComponent={loadMoreBtn}
+        >
+          {users.map((user) => {
+            return (
+              <UserRankTableRow
+                key={user.id}
+                userId={user.id}
+                userName={user.name ? user.name : "Annonymous"}
+                userImageUrl={user.image ? user.image : ""}
+                totalViewCount={user._count.views}
+                totalSubCount={user._count.subs}
+                totalFulfilledRequest={user._count.fulfilledRequests}
+              />
+            );
+          })}
+        </GeneralTable>
       </Box>
     </>
   );
