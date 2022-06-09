@@ -58,6 +58,7 @@ model User {
   reviews       Review[]
   orders        Order[]
   subHistories  SubHistory[]
+  subscriptions Subscription[]
 }
 
 model VerificationToken {
@@ -182,13 +183,16 @@ model Order {
   type       OrderType
   status     OrderStatus @default(Pending)
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscriptionId String?
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
 }
 
 enum OrderType {
   ChargePoint
   MonthlySubscription
+  MonthlySubscriptionTrial
 }
 
 enum OrderStatus {
@@ -196,6 +200,21 @@ enum OrderStatus {
   Completed
   Failed
   Refunded
+}
+
+model Subscription {
+  id          String           @id @default(cuid())
+  type        SubscriptionType
+  lastOrderAt DateTime
+  endAt       DateTime
+
+  userId String
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders Order[]
+}
+
+enum SubscriptionType {
+  Basic
 }
 
 model RequestPoint {
@@ -231,18 +250,18 @@ enum ReviewType {
 }
 
 model Settle {
-  id            String  @id @default(cuid())
-  settlePoints  SettlePoint[]
-  totalPoint    Int      
-  startAt       DateTime
-  endAt         DateTime
+  id           String        @id @default(cuid())
+  settlePoints SettlePoint[]
+  totalPoint   Int
+  startAt      DateTime
+  endAt        DateTime
 }
 
 model SettlePoint {
-  id        String  @id @default(cuid())
-  userId    String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  settleId  String
-  settle    Settle  @relation(fields: [settleId], references: [id], onDelete: Cascade)
-  point     Int
+  id       String @id @default(cuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  settleId String
+  settle   Settle @relation(fields: [settleId], references: [id], onDelete: Cascade)
+  point    Int
 }
