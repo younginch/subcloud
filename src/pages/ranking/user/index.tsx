@@ -47,7 +47,7 @@ export default function UserRankingPage() {
   const isRefreshing = isValidating && data && data.length === size;
   const loadMoreBtn = (
     <LoadMoreBtn
-      disabled={isLoadingMore || isReachingEnd}
+      hidden={isLoadingMore || isReachingEnd}
       onClick={() => setSize(size + 1)}
     />
   );

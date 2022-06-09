@@ -102,7 +102,7 @@ export default function GeneralTable({
                   color="gray.400"
                   key={index}
                   fontWeight="bold"
-                  fontSize={{ base: "15px", md: "20px" }}
+                  fontSize={{ base: "12px", md: "15px" }}
                 >
                   {caption}
                 </Th>

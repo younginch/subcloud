@@ -32,50 +32,42 @@ export default function UserRankTableRow({
 }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const paddingLeftBp = { base: "7px", md: "15px", lg: "24px" };
-  const fontBreakPoints = { base: "15px", md: "20px" };
+  const mainTextSize = { base: "15px", md: "18px" };
+  const subTextSize = { base: "12px", md: "15px" };
   return (
-    <Tr fontSize={fontBreakPoints} color={textColor}>
-      <Td w="30%" minW="200px" fontSize={{ base: "18px", md: "22px" }} pl="0px">
+    <Tr color={textColor}>
+      <Td w="30%" minW="200px" pl="0px">
         <HStack>
           <Link href={`/user/${userId}`}>
             <Avatar size="sm" name={userName} src={userImageUrl} />
           </Link>
           <Link href={`/user/${userId}`}>
-            <Text fontSize={{ base: "18px", md: "22px" }} fontWeight="bold">
+            <Text fontWeight="bold" fontSize={subTextSize}>
               {userName}
             </Text>
           </Link>
         </HStack>
       </Td>
-      <Td
-        justifyContent="center"
-        w="15%"
-        fontSize={{ base: "18px", md: "22px" }}
-      >
+      <Td justifyContent="center" w="15%" fontSize={mainTextSize}>
         <HStack>
           <BsEye color={textColor} />
           <Text>{totalViewCount}</Text>
         </HStack>
       </Td>
-      <Td
-        w="15%"
-        pl={paddingLeftBp}
-        fontWeight="bold"
-        fontSize={{ base: "18px", md: "22px" }}
-      >
+      <Td w="15%" pl={paddingLeftBp} fontWeight="bold" fontSize={mainTextSize}>
         <HStack>
           <MdSubtitles color={textColor} />
           <Text>{totalSubCount}</Text>
         </HStack>
       </Td>
-      <Td w="15%" pl={paddingLeftBp} fontSize={{ base: "16px", md: "20px" }}>
+      <Td w="15%" pl={paddingLeftBp} fontSize={mainTextSize}>
         <HStack>
           <AiOutlineUser color={textColor} />
           <Text>{totalFulfilledRequest}</Text>
         </HStack>
       </Td>
 
-      <Td w="15%" pl={paddingLeftBp} fontSize={{ base: "16px", md: "20px" }}>
+      <Td w="15%" pl={paddingLeftBp} fontSize={mainTextSize}>
         <HStack>
           <Box color="yellow.400">
             <AiFillStar color="inherit" />

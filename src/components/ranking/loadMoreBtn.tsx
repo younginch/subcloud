@@ -1,14 +1,14 @@
 import { Button, Center } from "@chakra-ui/react";
 
 type Props = {
-  disabled?: boolean;
+  hidden?: boolean;
   onClick: () => void;
 };
 
-export default function LoadMoreBtn({ disabled, onClick }: Props) {
+export default function LoadMoreBtn({ hidden, onClick }: Props) {
   return (
     <Center>
-      <Button disabled={disabled} onClick={onClick}>
+      <Button hidden={hidden} onClick={onClick}>
         load more
       </Button>
     </Center>

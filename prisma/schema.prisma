@@ -78,8 +78,14 @@ model Video {
   requests       Request[]
   youtubeVideoId String?       @unique
   youtubeVideo   YoutubeVideo? @relation(fields: [youtubeVideoId], references: [id])
+  examplevideo   ExampleVideo? 
 
   @@unique([serviceId, videoId])
+}
+
+model ExampleVideo {
+  id          String         @id @unique
+  video       Video          @relation(fields: [id], references: [videoId], onDelete: Cascade)
 }
 
 model YoutubeVideo {
