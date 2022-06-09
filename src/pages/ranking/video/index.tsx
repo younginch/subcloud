@@ -18,17 +18,18 @@ import {
   Center,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { PageOptions, ResRankingVideo } from "../../../utils/types";
+import {
+  PageOptions,
+  RankQueryData,
+  ResRankingVideo,
+} from "../../../utils/types";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { AiOutlineSearch } from "react-icons/ai";
 import VideoTableRow from "../../../components/ranking/videoRankTableRow";
 import { useForm } from "react-hook-form";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
-
-type FormData = {
-  keyword: string;
-};
+import GeneralTable from "../../../components/ranking/generalTable";
 
 export default function RankingPage() {
   const textColor = useColorModeValue("gray.700", "white");
@@ -42,13 +43,7 @@ export default function RankingPage() {
     return res.data;
   };
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors, isSubmitting },
-  } = useForm<FormData>();
-
-  function onSubmit(values: FormData) {
+  function onSubmit(values: RankQueryData) {
     const { keyword } = values;
     //Todo: search keyword
   }
@@ -75,6 +70,17 @@ export default function RankingPage() {
     isEmpty || (data && data[data.length - 1]?.length < pageSize);
   const isRefreshing = isValidating && data && data.length === size;
 
+  const loadMoreBtn = (
+    <Center>
+      <Button
+        disabled={isLoadingMore || isReachingEnd}
+        onClick={() => setSize(size + 1)}
+      >
+        load more
+      </Button>
+    </Center>
+  );
+
   return (
     <>
       <Box
@@ -83,88 +89,29 @@ export default function RankingPage() {
         pr={{ base: "10px", lg: "30px", xl: "70px" }}
         overflowX={{ sm: "scroll", xl: "hidden" }}
       >
-        <HStack>
-          <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              Lang : {lang}
-            </MenuButton>
-            <MenuList>
-              {selectList.map((item) => (
-                <MenuItem key={item} onClick={() => setLang(item)}>
-                  Lang : {item}
-                </MenuItem>
-              ))}
-            </MenuList>
-          </Menu>
-          <Spacer />
-          <Box>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl>
-                <HStack>
-                  <Input
-                    placeholder="Search..."
-                    w="300px"
-                    id="keyword"
-                    type="keyword"
-                    {...register("keyword", {
-                      required: "This is required",
-                      minLength: {
-                        value: 2,
-                        message: "Minimum length should be 2",
-                      },
-                    })}
-                  />
-                  <Button type="submit">
-                    <AiOutlineSearch />
-                  </Button>
-                </HStack>
-              </FormControl>
-            </form>
-          </Box>
-        </HStack>
-        <Table variant="simple" color={textColor} mt={5}>
-          <Thead>
-            <Tr my=".8rem" ps="0px">
-              {captions.map((caption, index) => {
-                return (
-                  <Th
-                    color="gray.400"
-                    key={index}
-                    fontWeight="bold"
-                    fontSize={{ base: "15px", md: "20px" }}
-                  >
-                    {caption}
-                  </Th>
-                );
-              })}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {videos.map((video) => {
-              return (
-                <VideoTableRow
-                  key={video.videoId}
-                  name={
-                    video.youtubeVideo ? video.youtubeVideo.title : "no title"
-                  }
-                  platform={video.serviceId}
-                  requests={video._count.requests}
-                  points={video._count.points}
-                  url={video.url}
-                />
-              );
-            })}
-          </Tbody>
-        </Table>
-      </Box>
-      <Center>
-        <Button
-          disabled={isLoadingMore || isReachingEnd}
-          onClick={() => setSize(size + 1)}
+        <GeneralTable
+          captions={captions}
+          lang={lang}
+          setLang={setLang}
+          onSubmit={onSubmit}
+          btnComponent={loadMoreBtn}
         >
-          load more
-        </Button>
-      </Center>
+          {videos.map((video) => {
+            return (
+              <VideoTableRow
+                key={video.videoId}
+                name={
+                  video.youtubeVideo ? video.youtubeVideo.title : "no title"
+                }
+                platform={video.serviceId}
+                requests={video._count.requests}
+                points={video._count.points}
+                url={video.url}
+              />
+            );
+          })}
+        </GeneralTable>
+      </Box>
     </>
   );
 }
