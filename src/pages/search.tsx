@@ -1,22 +1,7 @@
-import {
-  Avatar,
-  HStack,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  Text,
-  useToast,
-  Box,
-  Center,
-} from "@chakra-ui/react";
+import { Text, useToast, Box, Center } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { FaYoutube } from "react-icons/fa";
 import GeneralTable from "../components/ranking/generalTable";
 import SearchTableRow from "../components/ranking/searchTableRow";
 import { PageOptions, ResVideoSearch } from "../utils/types";
