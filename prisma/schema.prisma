@@ -58,6 +58,8 @@ model User {
   reviews       Review[]
   orders        Order[]
   subHistories  SubHistory[]
+  subscriptions Subscription[]
+  coupons       Coupon[]
 }
 
 model VerificationToken {
@@ -76,8 +78,14 @@ model Video {
   requests       Request[]
   youtubeVideoId String?       @unique
   youtubeVideo   YoutubeVideo? @relation(fields: [youtubeVideoId], references: [id])
+  examplevideo   ExampleVideo? 
 
   @@unique([serviceId, videoId])
+}
+
+model ExampleVideo {
+  id          String         @id @unique
+  video       Video          @relation(fields: [id], references: [videoId], onDelete: Cascade)
 }
 
 model YoutubeVideo {
@@ -182,13 +190,16 @@ model Order {
   type       OrderType
   status     OrderStatus @default(Pending)
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscriptionId String?
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
 }
 
 enum OrderType {
   ChargePoint
-  MonthlySubscription
+  MonthlyBasic
+  YearlyBasic
 }
 
 enum OrderStatus {
@@ -196,6 +207,38 @@ enum OrderStatus {
   Completed
   Failed
   Refunded
+}
+
+model Subscription {
+  id          String           @id @default(cuid())
+  type        SubscriptionType
+  lastOrderAt DateTime
+  endAt       DateTime
+
+  userId String
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders Order[]
+}
+
+enum SubscriptionType {
+  Basic
+}
+
+model Coupon {
+  id     String     @id @default(cuid())
+  code   String?
+  type   CouponType
+  isUsed Boolean    @default(false)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum CouponType {
+  ChargePoint
+  OneMonthBasic
+  OneYearBasic
+  TwoWeeksBasicTrial
 }
 
 model RequestPoint {
@@ -231,18 +274,18 @@ enum ReviewType {
 }
 
 model Settle {
-  id            String  @id @default(cuid())
-  settlePoints  SettlePoint[]
-  totalPoint    Int      
-  startAt       DateTime
-  endAt         DateTime
+  id           String        @id @default(cuid())
+  settlePoints SettlePoint[]
+  totalPoint   Int
+  startAt      DateTime
+  endAt        DateTime
 }
 
 model SettlePoint {
-  id        String  @id @default(cuid())
-  userId    String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  settleId  String
-  settle    Settle  @relation(fields: [settleId], references: [id], onDelete: Cascade)
-  point     Int
+  id       String @id @default(cuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  settleId String
+  settle   Settle @relation(fields: [settleId], references: [id], onDelete: Cascade)
+  point    Int
 }
