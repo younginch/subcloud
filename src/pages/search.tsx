@@ -29,13 +29,7 @@ export default function Search() {
       });
   }, [router.query.q, toast]);
 
-  const captions = [
-    "영상 제목",
-    "채널",
-    "요청 언어 수",
-    "자막 수",
-    "총 포인트",
-  ];
+  const captions = ["영상 제목", "채널", "요청 횟수", "자막 수", "총 포인트"];
   const titleComponent = (
     <Center>
       <Text fontSize="22px" fontWeight="bold" mb={5}>
@@ -64,11 +58,15 @@ export default function Search() {
                 channelName={
                   video?.youtubeVideo?.channel.title ?? "채널 정보없음"
                 }
-                channelImageUrl={video?.youtubeVideo?.channel.thumbnailUrl}
-                channelUrl={"여기에 채널 링크"}
+                channelImageUrl={
+                  video?.youtubeVideo?.channel.thumbnailUrl ?? "채널 정보없음"
+                }
+                channelUrl={
+                  video?.youtubeVideo?.channel.channelUrl ?? "채널 정보없음"
+                }
                 totalRequests={video._count.requests}
                 totalSubtitles={video._count.subs}
-                totalPoints={0}
+                totalPoints={video._count.points}
               />
             );
           })}
