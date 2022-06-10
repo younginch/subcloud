@@ -189,6 +189,7 @@ model Order {
   paymentKey String?
   type       OrderType
   status     OrderStatus @default(Pending)
+  approvedAt DateTime?
 
   userId         String
   user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -214,6 +215,8 @@ model Subscription {
   type        SubscriptionType
   lastOrderAt DateTime
   endAt       DateTime
+  billingKey  String?
+  card        Json?
 
   userId String
   user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
