@@ -21,6 +21,8 @@ type Props = {
   viewCount: number;
   userName: string;
   userImageUrl: string;
+  lang: string;
+  uploadDate: Date;
 };
 
 export default function SubRankTableRow({
@@ -32,6 +34,8 @@ export default function SubRankTableRow({
   userId,
   userName,
   userImageUrl,
+  lang,
+  uploadDate,
 }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const paddingLeftBp = { base: "7px", md: "15px", lg: "24px" };
@@ -74,7 +78,7 @@ export default function SubRankTableRow({
         justifyContent="center"
         w={{ base: "24px", md: "100px", lg: "150px" }}
       >
-        <Text fontSize={mainTextSize}>En, Ko, Fr</Text>
+        <Text fontSize={mainTextSize}>{lang}</Text>
       </Td>
       <Td
         w={{ base: "90px", md: "110px", lg: "140px" }}
@@ -98,7 +102,7 @@ export default function SubRankTableRow({
         </HStack>
       </Td>
       <Td w={{ base: "70px", md: "90px", lg: "110px" }} pl={paddingLeftBp}>
-        <Text fontSize={mainTextSize}>2022/4/13</Text>
+        <Text fontSize={mainTextSize}>{uploadDate.toString()}</Text>
       </Td>
     </Tr>
   );
