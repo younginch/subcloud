@@ -16,6 +16,7 @@ import {
   Thead,
   Tr,
   useColorModeValue,
+  Text,
 } from "@chakra-ui/react";
 import { ReactElement } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -27,8 +28,8 @@ type Props = {
   lang?: string;
   setLang?: (language: string) => void;
   onSubmit?: SubmitHandler<RankQueryData>;
-  btnComponent: ReactElement;
-  children: React.ReactNode;
+  btnComponent?: ReactElement;
+  children?: React.ReactNode;
 };
 
 export default function GeneralTable({

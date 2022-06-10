@@ -6,6 +6,7 @@ import { FaYoutube } from "react-icons/fa";
 import { BiCoin } from "react-icons/bi";
 
 type Props = {
+  rank: number;
   key: string;
   name: string;
   requests: number;
@@ -15,6 +16,7 @@ type Props = {
 };
 
 export default function VideoTableRow({
+  rank,
   name,
   platform,
   requests,
@@ -28,6 +30,9 @@ export default function VideoTableRow({
   const subTextSize = { base: "14px", md: "17px" };
   return (
     <Tr fontSize={mainTextSize} color={textColor}>
+      <Td w="fit-content" fontSize={subTextSize}>
+        <Text>{rank}</Text>
+      </Td>
       <Td
         pl="0px"
         maxW={{

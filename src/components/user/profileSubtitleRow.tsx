@@ -15,23 +15,29 @@ import { FaYoutube } from "react-icons/fa";
 type Props = {
   rank: number;
   userId: string;
+  platform: string;
   videoName: string;
   videoUrl: string;
-  platform: string;
+  channelName: string;
+  channelUrl: string;
+  channelImageUrl: string;
+  lang: string;
   viewCount: number;
-  userName: string;
-  userImageUrl: string;
+  uploadDate: string;
 };
 
-export default function SubRankTableRow({
+export default function ProfileSubtitleRow({
   rank,
-  videoUrl,
-  videoName,
-  platform,
-  viewCount,
   userId,
-  userName,
-  userImageUrl,
+  platform,
+  videoName,
+  videoUrl,
+  channelName,
+  channelUrl,
+  channelImageUrl,
+  lang,
+  viewCount,
+  uploadDate,
 }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const paddingLeftBp = { base: "7px", md: "15px", lg: "24px" };
@@ -46,9 +52,9 @@ export default function SubRankTableRow({
         pl="0px"
         maxW={{
           base: "200px",
-          sm: "calc(90vw-200px)",
-          md: "calc(80vw - 450px)",
-          lg: "calc(90vw - 580px)",
+          sm: "calc(90%-150px)",
+          md: "calc(80% - 200px)",
+          lg: "calc(90% - 300px)",
         }}
       >
         <HStack w="inherit">
@@ -70,11 +76,21 @@ export default function SubRankTableRow({
           </Link>
         </HStack>
       </Td>
+      <Td w={{ md: "160px", lg: "200px" }} pl={paddingLeftBp}>
+        <HStack>
+          <Link href={channelUrl}>
+            <Avatar size="sm" name={channelName} src={channelImageUrl} />
+          </Link>
+          <Link href={channelUrl}>
+            <Text fontSize={subTextSize}>{channelName}</Text>
+          </Link>
+        </HStack>
+      </Td>
       <Td
         justifyContent="center"
         w={{ base: "24px", md: "100px", lg: "150px" }}
       >
-        <Text fontSize={mainTextSize}>En, Ko, Fr</Text>
+        <Text fontSize={mainTextSize}>{lang}</Text>
       </Td>
       <Td
         w={{ base: "90px", md: "110px", lg: "140px" }}
@@ -85,16 +101,6 @@ export default function SubRankTableRow({
         <HStack>
           <BsEye color={textColor} />
           <Text>{viewCount}</Text>
-        </HStack>
-      </Td>
-      <Td minW={{ md: "140px", lg: "160px" }} pl={paddingLeftBp}>
-        <HStack>
-          <Link href={`/user/${userId}`}>
-            <Avatar size="sm" name={userName} src={userImageUrl} />
-          </Link>
-          <Link href={`/user/${userId}`}>
-            <Text fontSize={subTextSize}>{userName}</Text>
-          </Link>
         </HStack>
       </Td>
       <Td w={{ base: "70px", md: "90px", lg: "110px" }} pl={paddingLeftBp}>

@@ -14,6 +14,7 @@ import { BsEye } from "react-icons/bs";
 import { MdSubtitles } from "react-icons/md";
 
 type Props = {
+  rank: number;
   userId: string;
   userName: string;
   userImageUrl: string;
@@ -23,6 +24,7 @@ type Props = {
 };
 
 export default function UserRankTableRow({
+  rank,
   userId,
   userName,
   userImageUrl,
@@ -36,6 +38,9 @@ export default function UserRankTableRow({
   const subTextSize = { base: "12px", md: "15px" };
   return (
     <Tr color={textColor}>
+      <Td w="min" fontSize={mainTextSize}>
+        <Text>{rank}</Text>
+      </Td>
       <Td w="30%" minW="200px" pl="0px">
         <HStack>
           <Link href={`/user/${userId}`}>

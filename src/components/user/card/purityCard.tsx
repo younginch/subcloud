@@ -16,10 +16,12 @@
 
 */
 
-import { Box } from "@chakra-ui/react";
+import { Box, useColorModeValue } from "@chakra-ui/react";
 
 export default function PurityCard(props: any) {
   const { variant, children, ...rest } = props;
+  const bgColor = useColorModeValue("white", "#1F2733");
+
   const styles = {
     p: "22px",
     display: "flex",
@@ -30,7 +32,8 @@ export default function PurityCard(props: any) {
     wordWrap: "break-word",
     backgroundClip: "border-box",
     boxShadow: "0px 3.5px 5.5px rgba(0, 0, 0, 0.02)",
-    borderRadius: "15px",
+    borderRadius: "20px",
+    bg: bgColor,
   };
   // Pass the computed styles into the `__css` prop
   return (

@@ -11,7 +11,14 @@ import GeneralTable from "../../../components/ranking/generalTable";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 
 export default function UserRankingPage() {
-  const captions = ["Name", "Total Views", "Total Subs", "Fulfilled", "Rating"];
+  const captions = [
+    "#",
+    "Name",
+    "Total Views",
+    "Total Subs",
+    "Fulfilled",
+    "Rating",
+  ];
   const sortBy = "view"; //sub, fulfilledRequests
   const pageSize = 5;
   const fetcher = async (url: string) => {
@@ -65,9 +72,10 @@ export default function UserRankingPage() {
           onSubmit={onSubmit}
           btnComponent={loadMoreBtn}
         >
-          {users.map((user) => {
+          {users.map((user, index) => {
             return (
               <UserRankTableRow
+                rank={index + 1}
                 key={user.id}
                 userId={user.id}
                 userName={user.name ? user.name : "Annonymous"}
