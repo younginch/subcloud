@@ -97,6 +97,7 @@ async function addYoutubeInfo(videoId: string): Promise<ResVideo> {
           subscriberCount: Number.parseInt(
             channelData.statistics.subscriberCount
           ),
+          channelUrl: `https://www.youtube.com/channel/${channelId}`,
         },
       });
     }

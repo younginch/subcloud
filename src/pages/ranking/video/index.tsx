@@ -82,6 +82,7 @@ export default function RankingPage() {
                 requests={video._count.requests}
                 points={video._count.points}
                 url={video.url}
+                langs={video.langs}
               />
             );
           })}

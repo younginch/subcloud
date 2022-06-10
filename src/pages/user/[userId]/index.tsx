@@ -186,12 +186,24 @@ export default function UserRead({ requests, subs }: UserReadProps) {
                         : "(Unknown)"
                     }
                     videoUrl={sub.video.url}
-                    channelName="랄로"
-                    channelUrl="https://www.youtube.com/channel/UCD2YO_A_PVMgMDN9jpRrpVA"
-                    channelImageUrl="https://yt3.ggpht.com/ytc/AKedOLQf9XARnp2yzFCo9D8hFKckDRRtCXDJTcYLY2wwRw=s240-c-k-c0x00ffffff-no-rj"
-                    lang="en"
+                    channelName={
+                      sub.video.youtubeVideo
+                        ? sub.video.youtubeVideo.channel.title
+                        : "(Unknown)"
+                    }
+                    channelUrl={
+                      sub.video.youtubeVideo
+                        ? sub.video.youtubeVideo.channel.channelUrl
+                        : "(Unknown)"
+                    }
+                    channelImageUrl={
+                      sub.video.youtubeVideo
+                        ? sub.video.youtubeVideo.channel.thumbnailUrl
+                        : "(Unknown)"
+                    }
+                    lang={sub.lang}
                     viewCount={sub.views}
-                    uploadDate="2022/4/13"
+                    uploadDate={sub.updatedAt.toString()}
                   />
                 );
               })}

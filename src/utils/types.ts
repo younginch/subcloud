@@ -228,6 +228,7 @@ type VideoWithCount = Video & {
 
 export type VideoWithRequest = VideoWithInfo & {
   _count: { requests: number; points: number };
+  langs: string;
 };
 
 type RequestWithUserCount = Request & {
