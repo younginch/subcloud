@@ -85,6 +85,8 @@ export default function SubRankingPage() {
                 viewCount={sub.views}
                 userName={sub.user.name ? sub.user.name : "Annonymous"}
                 userImageUrl={sub.user.image ? sub.user.image : ""}
+                lang={sub.lang}
+                uploadDate={sub.updatedAt}
               />
             );
           })}
