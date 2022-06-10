@@ -17,6 +17,7 @@ import {
   Tr,
   useColorModeValue,
   Text,
+  Center,
 } from "@chakra-ui/react";
 import { ReactElement } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -28,6 +29,7 @@ type Props = {
   lang?: string;
   setLang?: (language: string) => void;
   onSubmit?: SubmitHandler<RankQueryData>;
+  title?: ReactElement;
   btnComponent?: ReactElement;
   children?: React.ReactNode;
 };
@@ -37,6 +39,7 @@ export default function GeneralTable({
   lang,
   setLang,
   onSubmit,
+  title,
   children,
   btnComponent,
 }: Props) {
@@ -51,6 +54,7 @@ export default function GeneralTable({
 
   return (
     <>
+      {title}
       <HStack>
         {lang && setLang && (
           <Menu>
