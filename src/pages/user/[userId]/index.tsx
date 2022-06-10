@@ -37,6 +37,8 @@ import BarChart from "../../../components/user/graphs/barChart";
 import LineChart from "../../../components/user/graphs/lineChart";
 import SatisfactionRate from "../../../components/user/graphs/satisfactionRate";
 import FulfilledGraph from "../../../components/user/graphs/fulfilledGraph";
+import GeneralTable from "../../../components/ranking/generalTable";
+import ProfileSubtitleRow from "../../../components/user/profileSubtitleRow";
 
 const TAB_LIST = ["request", "sub"];
 
@@ -47,6 +49,8 @@ type UserReadProps = {
 
 export default function UserRead({ requests, subs }: UserReadProps) {
   const textColor = useColorModeValue("gray.700", "gray.300");
+  const bgColor = useColorModeValue("white", "#1F2733");
+  const captions = ["#", "Title", "Channel", "Language", "Views", "Uploaded"];
 
   const bgProfile = useColorModeValue(
     "hsla(0,0%,100%,.8)",
@@ -155,6 +159,44 @@ export default function UserRead({ requests, subs }: UserReadProps) {
               chart={<LineChart />}
             />
           </Grid>
+          <Box
+            mt={10}
+            overflowX={{ sm: "scroll", xl: "hidden" }}
+            bg={bgColor}
+            borderRadius="20px"
+          >
+            <Text p="22px" fontSize="lg" color={textColor} fontWeight="bold">
+              인기 자막
+            </Text>
+            <GeneralTable captions={captions}>
+              {subs.map((sub, index) => {
+                return (
+                  <ProfileSubtitleRow
+                    rank={index + 1}
+                    key={sub.id}
+                    userId={
+                      router.query.userId
+                        ? router.query.userId[0]
+                        : "Annonymous"
+                    }
+                    platform={sub.serviceId}
+                    videoName={
+                      sub.video.youtubeVideo
+                        ? sub.video.youtubeVideo.title
+                        : "(Unknown)"
+                    }
+                    videoUrl={sub.video.url}
+                    channelName="랄로"
+                    channelUrl="https://www.youtube.com/channel/UCD2YO_A_PVMgMDN9jpRrpVA"
+                    channelImageUrl="https://yt3.ggpht.com/ytc/AKedOLQf9XARnp2yzFCo9D8hFKckDRRtCXDJTcYLY2wwRw=s240-c-k-c0x00ffffff-no-rj"
+                    lang="en"
+                    viewCount={sub.views}
+                    uploadDate="2022/4/13"
+                  />
+                );
+              })}
+            </GeneralTable>
+          </Box>
         </Box>
       </Stack>
       <HStack marginBottom="18px">

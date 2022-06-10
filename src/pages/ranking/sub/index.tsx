@@ -12,7 +12,7 @@ import GeneralTable from "../../../components/ranking/generalTable";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 
 export default function SubRankingPage() {
-  const captions = ["Title", "Language", "Views", "Madeby", "Uploaded"];
+  const captions = ["#", "Title", "Language", "Views", "Madeby", "Uploaded"];
   const [lang, setLang] = useState("All Lang");
   const sortBy = "view";
   const pageSize = 5;
@@ -69,9 +69,10 @@ export default function SubRankingPage() {
           setLang={setLang}
           onSubmit={onSubmit}
         >
-          {subs.map((sub) => {
+          {subs.map((sub, index) => {
             return (
               <SubRankTableRow
+                rank={index + 1}
                 key={sub.id}
                 userId={sub.user.id}
                 videoName={

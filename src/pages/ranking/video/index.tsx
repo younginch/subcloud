@@ -12,7 +12,7 @@ import GeneralTable from "../../../components/ranking/generalTable";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 
 export default function RankingPage() {
-  const captions = ["Title", "Language", "Requests", "Points"];
+  const captions = ["#", "Title", "Language", "Requests", "Points"];
   const [lang, setLang] = useState("All Lang");
   const sortBy = "request"; //point
   const pageSize = 5;
@@ -70,10 +70,11 @@ export default function RankingPage() {
           onSubmit={onSubmit}
           btnComponent={loadMoreBtn}
         >
-          {videos.map((video) => {
+          {videos.map((video, index) => {
             return (
               <VideoTableRow
                 key={video.videoId}
+                rank={index + 1}
                 name={
                   video.youtubeVideo ? video.youtubeVideo.title : "no title"
                 }
