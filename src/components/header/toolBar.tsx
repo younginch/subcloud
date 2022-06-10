@@ -16,12 +16,14 @@ import {
   ButtonProps,
   Flex,
   useColorMode,
+  Spacer,
 } from "@chakra-ui/react";
 import { Role } from "@prisma/client";
 import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import ProfileModal from "./profileModal";
 type Props = {
   isLarge: boolean;
 };
@@ -40,48 +42,46 @@ export default function ToolBar({ isLarge }: Props): JSX.Element {
           <Portal>
             <PopoverContent>
               <PopoverArrow />
-              <PopoverHeader>Signed in as {session.user?.name}</PopoverHeader>
               <PopoverCloseButton />
-              <PopoverBody>
-                <Stack>
-                  <Text>{session.user?.email}</Text>
-                  <Link href={`/user/${session.user.id}`} passHref>
-                    <Button>내 퍼블릭 프로필</Button>
-                  </Link>
-                  <Link href={`/user/my`} passHref>
-                    <Button>내 기록 및 설정</Button>
-                  </Link>
+              <PopoverBody p={0}>
+                <Stack p={0}>
+                  <ProfileModal
+                    profileImageUrl={session.user.image ?? undefined}
+                    userName={session.user?.name}
+                    userEmail={session.user?.email}
+                    userId={session.user.id}
+                  >
+                    <HStack mt={4}>
+                      <Button
+                        colorScheme="blue"
+                        onClick={() => {
+                          signOut();
+                        }}
+                      >
+                        Sign Out
+                      </Button>
+                      <Spacer />
+                      {session?.user.role === Role.Admin ||
+                      process.env.NODE_ENV !== "production" ? (
+                        <Button
+                          onClick={async () => {
+                            if (process.env.NODE_ENV !== "production") {
+                              await axios.patch("/api/user/debug", {
+                                id: session.user.id,
+                              });
+                            }
+                            router.push("/admin");
+                          }}
+                        >
+                          Admin
+                        </Button>
+                      ) : (
+                        <></>
+                      )}
+                    </HStack>
+                  </ProfileModal>
                 </Stack>
               </PopoverBody>
-              <PopoverFooter>
-                <HStack>
-                  <Button
-                    colorScheme="blue"
-                    onClick={() => {
-                      signOut();
-                    }}
-                  >
-                    Sign Out
-                  </Button>
-                  {session?.user.role === Role.Admin ||
-                  process.env.NODE_ENV !== "production" ? (
-                    <Button
-                      onClick={async () => {
-                        if (process.env.NODE_ENV !== "production") {
-                          await axios.patch("/api/user/debug", {
-                            id: session.user.id,
-                          });
-                        }
-                        router.push("/admin");
-                      }}
-                    >
-                      Admin
-                    </Button>
-                  ) : (
-                    <></>
-                  )}
-                </HStack>
-              </PopoverFooter>
             </PopoverContent>
           </Portal>
         </Popover>
