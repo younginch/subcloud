@@ -51,7 +51,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   subs          Sub[]
-  comments      Comment[]
+  ratings       Rating[]
   requests      Request[]
   files         File[]
   requestPoints RequestPoint[]
@@ -141,7 +141,7 @@ model Sub {
   serviceId String
   videoId   String
   video     Video     @relation(fields: [serviceId, videoId], references: [serviceId, videoId])
-  comments  Comment[]
+  ratings   Rating[]
   lang      String
   status    Status    @default(Pending)
   views     Int       @default(0)
@@ -176,14 +176,16 @@ model Review {
   resolved   Boolean    @default(false)
 }
 
-model Comment {
+model Rating {
   id      String  @id @default(cuid())
   subId   String
   sub     Sub     @relation(fields: [subId], references: [id], onDelete: Cascade)
   userId  String
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  score   Decimal
+  score   Int
   comment String?
+
+  @@unique([subId, userId])
 }
 
 model Order {
