@@ -22,6 +22,7 @@ async function RankingUserBySub({
       subs: {
         include: {
           video: { include: { requests: { include: { users: true } } } },
+          ratings: true,
         },
       },
     },
@@ -63,6 +64,20 @@ async function RankingUserBySub({
               ),
             0
           ),
+          ratings:
+            user.subs.length === 0
+              ? user.subs.reduce(
+                  (prevSub, currSub) =>
+                    prevSub + currSub.ratings.length === 0
+                      ? currSub.ratings.reduce(
+                          (prevRating, currRating) =>
+                            prevRating + currRating.score,
+                          0
+                        ) / currSub.ratings.length
+                      : 0,
+                  0
+                ) / user.subs.length
+              : 0,
         },
       };
     })

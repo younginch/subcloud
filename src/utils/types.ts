@@ -260,6 +260,7 @@ export type UserWithCount = User & {
     subs: number;
     views: number;
     fulfilledRequests: number;
+    ratings: number;
   };
 };
 

@@ -21,6 +21,7 @@ type Props = {
   totalViewCount: number;
   totalSubCount: number;
   totalFulfilledRequest: number;
+  totalRating: number;
 };
 
 export default function UserRankTableRow({
@@ -31,6 +32,7 @@ export default function UserRankTableRow({
   totalViewCount,
   totalSubCount,
   totalFulfilledRequest,
+  totalRating,
 }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const paddingLeftBp = { base: "7px", md: "15px", lg: "24px" };
@@ -77,7 +79,7 @@ export default function UserRankTableRow({
           <Box color="yellow.400">
             <AiFillStar color="inherit" />
           </Box>
-          <Text>4.3</Text>
+          <Text>{totalRating}</Text>
         </HStack>
       </Td>
     </Tr>

@@ -43,6 +43,7 @@ async function RankingVideoByRequest({
     return b._count.requests - a._count.requests;
   };
   const newVideos = videos
+    .filter((video) => video.requests.length > 0)
     .map((video) => {
       const requests = video.requests.filter(
         (request) => !isLang || request.lang === lang

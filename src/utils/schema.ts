@@ -29,3 +29,15 @@ export const UserUpdateSchema = joi.object({
   role: joi.string(),
   point: joi.number().integer(),
 });
+
+export const RatingCreateSchema = joi.object({
+  subId: joi.string().required(),
+  score: joi.number().integer().required(),
+  comment: joi.string(),
+});
+
+export const RatingUpdateSchema = joi.object({
+  id: joi.string().required(),
+  score: joi.number().integer().required(),
+  comment: joi.string(),
+});
