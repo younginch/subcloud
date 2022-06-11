@@ -1,5 +1,5 @@
 import { Order, OrderStatus, Role } from "@prisma/client";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { getPointFromAmount } from "../../../utils/products";
 import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 
@@ -56,18 +56,22 @@ async function completeOrder({
       .status(404)
       .json({ error: SubErrorType.NotFound, message: "Order" });
   }
-  const result = await axios.post(
-    `https://api.tosspayments.com/v1/payments/${paymentKey}`,
-    { amount: order.amount, orderId: order.id },
-    {
-      headers: {
-        Authorization:
-          "Basic dGVzdF9za19ZWjFhT3dYN0s4bUVlTE0yamRBOHlReHp2TlBHOg==",
-      },
-    }
-  );
-  if (result.status !== 200) {
-    return res.status(500).json(result.data);
+  try {
+    await axios.post(
+      `https://api.tosspayments.com/v1/payments/${paymentKey}`,
+      { amount: order.amount, orderId: order.id },
+      {
+        headers: {
+          Authorization:
+            "Basic dGVzdF9za19ZWjFhT3dYN0s4bUVlTE0yamRBOHlReHp2TlBHOg==",
+        },
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ error: SubErrorType.ServerError, message: "Toss order failed" });
   }
   const user = await prisma.user.findUnique({
     where: { id: session?.user.id },

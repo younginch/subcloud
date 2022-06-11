@@ -170,8 +170,10 @@ export default function Buy() {
                         amount: res.data.amount,
                         orderId: res.data.id,
                         orderName: `${point} 포인트`,
-                        successUrl: `${window.location.origin}/buy/process`,
-                        failUrl: `${window.location.origin}/buy/fail`,
+                        successUrl: `${window.location.origin}/buy/order/process`,
+                        failUrl: `${window.location.origin}/buy/order/fail`,
+                        customerName: data?.user?.name,
+                        customerEmail: data?.user?.email,
                       })
                       .catch(() => {
                         toast({
@@ -206,13 +208,13 @@ export default function Buy() {
   }
 
   function requestSubscription() {
-    tossPayments
-      .requestBillingAuth("카드", {
-        customerKey: data?.user.id,
-        successUrl: `${window.location.origin}/success`,
-        failUrl: `${window.location.origin}/fail`,
-      })
-      .then(() => {});
+    tossPayments.requestBillingAuth("카드", {
+      customerKey: data?.user.id,
+      successUrl: `${window.location.origin}/buy/subscription/process`,
+      failUrl: `${window.location.origin}/buy/subscription/fail`,
+      customerName: data?.user.name,
+      customerEmail: data?.user.email,
+    });
   }
 
   return (
@@ -271,7 +273,12 @@ export default function Buy() {
                 </ListItem>
               </List>
               <Box w="80%" pt={7}>
-                <Button w="full" colorScheme="red" variant="outline">
+                <Button
+                  w="full"
+                  colorScheme="red"
+                  variant="outline"
+                  onClick={requestSubscription}
+                >
                   Start trial
                 </Button>
               </Box>

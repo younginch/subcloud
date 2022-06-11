@@ -65,6 +65,7 @@ export enum SubErrorType {
   InvalidRequest,
   DB,
   Unknown,
+  ServerError,
 }
 
 export type RouteParams<ResponseType> = {

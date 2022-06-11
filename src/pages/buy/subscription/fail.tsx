@@ -10,8 +10,8 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { PageOptions } from "../../utils/types";
-export default function BuyFail() {
+import { PageOptions } from "../../../utils/types";
+export default function SubscriptionFail() {
   return (
     <>
       <Container maxW={"3xl"}>
@@ -30,11 +30,11 @@ export default function BuyFail() {
             lineHeight={"110%"}
           >
             <Text as={"span"} color={"gray.900"}>
-              결제 실패
+              구독 등록 실패
             </Text>
           </Heading>
           <Text color={"gray.500"}>
-            모종의 이유로 결제 과정에서 오류가 발생했습니다.
+            구독 결제 수단 등록 과정에서 오류가 발생했습니다.
           </Text>
           <Stack
             direction={"column"}
@@ -78,4 +78,4 @@ export default function BuyFail() {
   );
 }
 
-BuyFail.options = { auth: true, hideTitle: true } as PageOptions;
+SubscriptionFail.options = { auth: true, hideTitle: true } as PageOptions;
