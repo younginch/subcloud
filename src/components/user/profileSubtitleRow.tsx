@@ -11,6 +11,7 @@ import Link from "next/link";
 import React from "react";
 import { BsEye } from "react-icons/bs";
 import { FaYoutube } from "react-icons/fa";
+import dayjs from "dayjs";
 
 type Props = {
   rank: number;
@@ -104,7 +105,9 @@ export default function ProfileSubtitleRow({
         </HStack>
       </Td>
       <Td w={{ base: "70px", md: "90px", lg: "110px" }} pl={paddingLeftBp}>
-        <Text fontSize={mainTextSize}>{uploadDate}</Text>
+        <Text fontSize={mainTextSize}>
+          {dayjs(uploadDate).format("YYYY-MM-DD")}
+        </Text>
       </Td>
     </Tr>
   );

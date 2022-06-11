@@ -27,6 +27,7 @@
     "@tosspayments/payment-sdk": "^1.1.0",
     "apexcharts": "^3.35.3",
     "axios": "^0.27.2",
+    "dayjs": "^1.11.3",
     "framer-motion": "^6.3.10",
     "iso-639-1": "^2.1.14",
     "joi": "^17.6.0",
