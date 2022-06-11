@@ -107,6 +107,7 @@ model YoutubeChannel {
   description     String
   thumbnailUrl    String
   subscriberCount Int
+  channelUrl      String
 }
 
 model Request {
@@ -147,6 +148,8 @@ model Sub {
 
   reviews      Review[]
   subHistories SubHistory[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 
   @@unique([serviceId, videoId, lang, userId])
 }

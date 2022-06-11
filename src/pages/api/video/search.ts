@@ -12,9 +12,24 @@ async function VideoSearchGet({ req, res, prisma }: RouteParams<any>) {
     include: {
       youtubeVideo: { include: { channel: true } },
       _count: { select: { requests: true, subs: true } },
+      requests: true,
     },
   });
-  return res.status(200).json(videos);
+  const newVideos = videos.map((video) => {
+    return {
+      url: video.url,
+      serviceId: video.serviceId,
+      videoId: video.videoId,
+      youtubeVideoId: video.youtubeVideoId,
+      youtubeVideo: video.youtubeVideo,
+      _count: {
+        requests: video._count.requests,
+        subs: video._count.subs,
+        points: video.requests.reduce((prev, curr) => prev + curr.point, 0),
+      },
+    };
+  });
+  return res.status(200).json(newVideos);
 }
 
 export default handleRoute({ GET: VideoSearchGet });

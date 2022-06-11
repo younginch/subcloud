@@ -16,8 +16,6 @@ import {
   Thead,
   Tr,
   useColorModeValue,
-  Text,
-  Center,
 } from "@chakra-ui/react";
 import { ReactElement } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";

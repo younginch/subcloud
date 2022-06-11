@@ -104,7 +104,7 @@ export default function ProfileSubtitleRow({
         </HStack>
       </Td>
       <Td w={{ base: "70px", md: "90px", lg: "110px" }} pl={paddingLeftBp}>
-        <Text fontSize={mainTextSize}>2022/4/13</Text>
+        <Text fontSize={mainTextSize}>{uploadDate}</Text>
       </Td>
     </Tr>
   );

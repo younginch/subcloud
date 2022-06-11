@@ -18,10 +18,11 @@ async function RankingVideoByRequest({
       .json({ error: SubErrorType.FormValidation, message: "FormInvalidated" });
   }
   let where: any = {};
-  if (lang && lang !== "All Lang") {
+  const isLang = lang && lang !== "All Lang";
+  if (isLang) {
     where = {
       requests: {
-        every: {
+        some: {
           lang: lang,
         },
       },
@@ -37,10 +38,15 @@ async function RankingVideoByRequest({
     },
   });
   const compareByPoints = (a: VideoWithRequest, b: VideoWithRequest) => {
+    if (a._count.points === b._count.points)
+      return b._count.requests - a._count.requests;
     return b._count.points - a._count.points;
   };
   const newVideos = videos
     .map((video) => {
+      const requests = video.requests.filter(
+        (request) => !isLang || request.lang === lang
+      );
       return {
         url: video.url,
         serviceId: video.serviceId,
@@ -48,12 +54,15 @@ async function RankingVideoByRequest({
         youtubeVideoId: video.youtubeVideoId,
         youtubeVideo: video.youtubeVideo,
         _count: {
-          requests: video.requests.reduce(
+          requests: requests.reduce(
             (prev, curr) => prev + curr.users.length,
             0
           ),
-          points: video.requests.reduce((prev, curr) => prev + curr.point, 0),
+          points: requests.reduce((prev, curr) => prev + curr.point, 0),
         },
+        langs: requests
+          .slice(1)
+          .reduce((prev, curr) => prev + ", " + curr.lang, requests[0].lang),
       };
     })
     .sort(compareByPoints);

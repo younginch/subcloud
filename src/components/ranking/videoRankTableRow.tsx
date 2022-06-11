@@ -13,6 +13,7 @@ type Props = {
   points: number;
   platform: string;
   url: string;
+  langs: string;
 };
 
 export default function VideoTableRow({
@@ -22,6 +23,7 @@ export default function VideoTableRow({
   requests,
   points,
   url,
+  langs,
 }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const paddingLeftBp = { base: "7px", md: "15px", lg: "24px" };
@@ -65,7 +67,7 @@ export default function VideoTableRow({
         w={{ base: "24px", md: "100px", lg: "150px" }}
         fontSize={subTextSize}
       >
-        <Text>En, Ko, Fr</Text>
+        <Text>{langs}</Text>
       </Td>
       <Td
         w={{ base: "90px", md: "110px", lg: "140px" }}
