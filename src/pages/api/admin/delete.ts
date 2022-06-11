@@ -16,7 +16,7 @@ async function AdminDelete({ res, prisma }: RouteParams<{}>) {
   await prisma.file.deleteMany({});
   await prisma.sub.deleteMany({});
   await prisma.review.deleteMany({});
-  await prisma.comment.deleteMany({});
+  await prisma.rating.deleteMany({});
   return res.status(200).json({});
 }
 
