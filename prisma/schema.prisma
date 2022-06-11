@@ -78,14 +78,14 @@ model Video {
   requests       Request[]
   youtubeVideoId String?       @unique
   youtubeVideo   YoutubeVideo? @relation(fields: [youtubeVideoId], references: [id])
-  examplevideo   ExampleVideo? 
+  examplevideo   ExampleVideo?
 
   @@unique([serviceId, videoId])
 }
 
 model ExampleVideo {
-  id          String         @id @unique
-  video       Video          @relation(fields: [id], references: [videoId], onDelete: Cascade)
+  id    String @id @unique
+  video Video  @relation(fields: [id], references: [videoId], onDelete: Cascade)
 }
 
 model YoutubeVideo {
@@ -216,10 +216,12 @@ enum OrderStatus {
 }
 
 model Subscription {
-  id          String           @id @default(cuid())
+  id          String             @id @default(cuid())
   type        SubscriptionType
-  lastOrderAt DateTime
-  endAt       DateTime
+  status      SubscriptionStatus @default(Pending)
+  lastOrderAt DateTime?
+  endAt       DateTime?
+  customerKey String             @unique
   billingKey  String?
   card        Json?
 
@@ -229,7 +231,16 @@ model Subscription {
 }
 
 enum SubscriptionType {
-  Basic
+  MonthlyBasic
+  YearlyBasic
+}
+
+enum SubscriptionStatus {
+  Pending
+  Active
+  PlannedDeactivation
+  Deactivated
+  Expired
 }
 
 model Coupon {

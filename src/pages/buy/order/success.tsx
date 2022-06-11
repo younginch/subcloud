@@ -16,7 +16,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Link from "next/link";
-import { PageOptions } from "../../utils/types";
+import { PageOptions } from "../../../utils/types";
 
 export default function BuySuccess() {
   const router = useRouter();

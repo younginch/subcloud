@@ -10,13 +10,19 @@ async function AdminDelete({ res, prisma }: RouteParams<{}>) {
   await prisma.user.deleteMany({});
   await prisma.verificationToken.deleteMany({});
   await prisma.video.deleteMany({});
+  await prisma.exampleVideo.deleteMany({});
   await prisma.youtubeVideo.deleteMany({});
   await prisma.youtubeChannel.deleteMany({});
   await prisma.request.deleteMany({});
   await prisma.file.deleteMany({});
   await prisma.sub.deleteMany({});
+  await prisma.subHistory.deleteMany({});
   await prisma.review.deleteMany({});
   await prisma.rating.deleteMany({});
+  await prisma.order.deleteMany({});
+  await prisma.subscription.deleteMany({});
+  await prisma.coupon.deleteMany({});
+  await prisma.requestPoint.deleteMany({});
   return res.status(200).json({});
 }
 
