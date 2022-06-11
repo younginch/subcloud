@@ -18,7 +18,7 @@ async function AdminDelete({ res, prisma }: RouteParams<{}>) {
   await prisma.sub.deleteMany({});
   await prisma.subHistory.deleteMany({});
   await prisma.review.deleteMany({});
-  await prisma.comment.deleteMany({});
+  await prisma.rating.deleteMany({});
   await prisma.order.deleteMany({});
   await prisma.subscription.deleteMany({});
   await prisma.coupon.deleteMany({});
