@@ -10,40 +10,39 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { PageOptions } from "../../utils/types";
+import { PageOptions } from "../../../utils/types";
 
-export default function BuyProcess() {
+type SubscriptionProcessProps = {
+  customerKey: string;
+  authKey: string;
+};
+
+export default function SubscriptionProcess({
+  customerKey,
+  authKey,
+}: SubscriptionProcessProps) {
   const router = useRouter();
   const toast = useToast();
   const textColor = useColorModeValue("gray.700", "gray.300");
   useEffect(() => {
-    if (
-      !router.query.orderId &&
-      !router.query.paymentKey &&
-      !router.query.amount
-    ) {
-      return;
-    }
     axios
-      .patch(
-        "/api/order",
-        { paymentKey: router.query.paymentKey, amount: router.query.amount },
-        { params: { id: router.query.orderId } }
-      )
+      .patch("/api/subscription", { authKey }, { params: { customerKey } })
       .then((res) => {
-        router.push(`/buy/success?id=${res.data.id}`);
+        router.push(`/buy/subscription/success?id=${res.data.id}`);
       })
       .catch((err) => {
         toast({
-          title: "주문 정보를 불러오는데 실패했습니다.",
+          title: "구독 정보를 불러오는데 실패했습니다.",
           status: "error",
           isClosable: true,
           description: err.message,
         });
       });
-  }, [router, toast]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -63,7 +62,7 @@ export default function BuyProcess() {
             lineHeight={"110%"}
           >
             <Text as={"span"} color={textColor}>
-              결제 진행 중
+              구독 등록 진행 중
             </Text>
           </Heading>
         </Stack>
@@ -72,4 +71,12 @@ export default function BuyProcess() {
   );
 }
 
-BuyProcess.options = { auth: true, hideTitle: true } as PageOptions;
+SubscriptionProcess.options = { auth: true, hideTitle: true } as PageOptions;
+
+export const getServerSideProps: GetServerSideProps<
+  SubscriptionProcessProps
+> = async (context) => {
+  const customerKey = context.query.customerKey as string;
+  const authKey = context.query.authKey as string;
+  return { props: { customerKey, authKey } };
+};

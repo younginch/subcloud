@@ -13,7 +13,6 @@ import { Role } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useRef } from "react";
-import AdminLayout from "../../components/adminLayout";
 import { PageOptions } from "../../utils/types";
 
 export default function Admin() {
@@ -26,6 +25,7 @@ export default function Admin() {
     axios
       .get("/api/admin/delete")
       .then(() => {
+        window.location.reload();
         router.push("/");
         toast({
           title: "Success",
