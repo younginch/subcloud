@@ -7,6 +7,30 @@ import {
 import axios from "axios";
 import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 
+async function getSubscription({
+  req,
+  res,
+  prisma,
+}: RouteParams<Subscription>) {
+  const id = req.query.id as string;
+  if (!id) {
+    return res.status(400).json({
+      error: SubErrorType.InvalidRequest,
+      message: "Missing id",
+    });
+  }
+  const subscription = await prisma.subscription.findUnique({
+    where: { id },
+  });
+  if (!subscription) {
+    return res.status(404).json({
+      error: SubErrorType.NotFound,
+      message: "Subscription not found",
+    });
+  }
+  return res.status(200).json(subscription);
+}
+
 async function createSubscription({
   req,
   res,
@@ -72,6 +96,10 @@ async function completeSubscription({
 }
 
 export default handleRoute(
-  { POST: createSubscription, PATCH: completeSubscription },
+  {
+    GET: getSubscription,
+    POST: createSubscription,
+    PATCH: completeSubscription,
+  },
   { role: Role.User }
 );
