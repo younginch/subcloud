@@ -16,7 +16,6 @@ interface NextApiRequestWithFile extends NextApiRequest {
 }
 
 const awsStorage = multerS3({
-  // @ts-ignore
   s3: configuredS3,
   bucket: configuredBucket,
   contentType: multerS3.AUTO_CONTENT_TYPE,
@@ -37,11 +36,11 @@ const app = nextConnect<
   NextApiRequestWithFile,
   NextApiResponse<ResFileUpload | ResError>
 >({
-  // onError(error, req, res) {
-  //   res
-  //     .status(501)
-  //     .json({ error: SubErrorType.Unknown, message: error.message });
-  // },
+  onError(error, req, res) {
+    res
+      .status(501)
+      .json({ error: SubErrorType.Unknown, message: error.message });
+  },
   onNoMatch(req, res) {
     res.status(405).json({
       error: SubErrorType.MethodNotAllowed,
