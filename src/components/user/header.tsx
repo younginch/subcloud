@@ -12,6 +12,7 @@ import {
 import { StaticImageData } from "next/image";
 import Link from "next/link";
 import React, { ReactNode } from "react";
+import GradeBadge from "./gradeBadge";
 
 type Tabs = {
   name: string;
@@ -111,15 +112,8 @@ const Header = ({
                 >
                   {name}
                 </Text>
-                <Badge
-                  variant="subtle"
-                  colorScheme="green"
-                  fontSize={{ base: "lg", lg: "xl" }}
-                >
-                  A+
-                </Badge>
+                <GradeBadge grade="Specialist" />
               </HStack>
-
               <Text
                 fontSize={{ base: "sm", md: "md" }}
                 color={emailColor}
