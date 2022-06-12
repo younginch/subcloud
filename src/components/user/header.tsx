@@ -9,10 +9,10 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { StaticImageData } from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { ReactNode } from "react";
 import GradeBadge from "./gradeBadge";
+import { PublicProfileTab } from "../../utils/tabs";
 
 type Tabs = {
   name: string;
@@ -26,6 +26,7 @@ type Props = {
   avatarImage?: string;
   name?: string;
   email?: string;
+  currentTab: PublicProfileTab;
   tabs: Array<Tabs>;
 };
 
@@ -35,9 +36,10 @@ const Header = ({
   avatarImage,
   name,
   email,
+  currentTab,
   tabs,
 }: Props) => {
-  // Chakra color mode
+  const router = useRouter();
   const textColor = useColorModeValue("gray.700", "white");
   const borderProfileColor = useColorModeValue(
     "white",
@@ -127,7 +129,14 @@ const Header = ({
             direction={{ base: "column", lg: "row" }}
             w={{ base: "100%", md: "50%", lg: "auto" }}
           >
-            <Button p="0px" bg="transparent" _hover={{ bg: "none" }}>
+            <Button
+              p="0px"
+              bg="transparent"
+              _hover={{ bg: "none" }}
+              onClick={() => {
+                router.push(`/user/${router.query.userId}`);
+              }}
+            >
               <Flex
                 align="center"
                 w={{ base: "100%", lg: "135px" }}
@@ -150,7 +159,14 @@ const Header = ({
                 </Text>
               </Flex>
             </Button>
-            <Button p="0px" bg="transparent" _hover={{ bg: "none" }}>
+            <Button
+              p="0px"
+              bg="transparent"
+              _hover={{ bg: "none" }}
+              onClick={() => {
+                router.push(`/user/${router.query.userId}/${tabs[1].router}`);
+              }}
+            >
               <Flex
                 align="center"
                 w={{ lg: "135px" }}
@@ -171,28 +187,33 @@ const Header = ({
                 </Text>
               </Flex>
             </Button>
-            <Link href={tabs[2].router}>
-              <Button p="0px" bg="transparent" _hover={{ bg: "none" }}>
-                <Flex
-                  align="center"
-                  w={{ lg: "135px" }}
-                  borderRadius="15px"
-                  justifyContent="center"
-                  py="10px"
-                  cursor="pointer"
+            <Button
+              p="0px"
+              bg="transparent"
+              _hover={{ bg: "none" }}
+              onClick={() => {
+                router.push(`/user/${router.query.userId}/${tabs[2].router}`);
+              }}
+            >
+              <Flex
+                align="center"
+                w={{ lg: "135px" }}
+                borderRadius="15px"
+                justifyContent="center"
+                py="10px"
+                cursor="pointer"
+              >
+                {tabs[2].icon}
+                <Text
+                  fontSize={tabTextSize}
+                  color={textColor}
+                  fontWeight="bold"
+                  ms="6px"
                 >
-                  {tabs[2].icon}
-                  <Text
-                    fontSize={tabTextSize}
-                    color={textColor}
-                    fontWeight="bold"
-                    ms="6px"
-                  >
-                    {tabs[2].name}
-                  </Text>
-                </Flex>
-              </Button>
-            </Link>
+                  {tabs[2].name}
+                </Text>
+              </Flex>
+            </Button>
           </Flex>
         </Flex>
       </Box>
