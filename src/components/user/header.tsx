@@ -1,7 +1,6 @@
 // Chakra imports
 import {
   Avatar,
-  Badge,
   Box,
   Button,
   Flex,
@@ -11,7 +10,9 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { ReactNode } from "react";
+import GradeBadge from "./gradeBadge";
 import { PublicProfileTab } from "../../utils/tabs";
+import { UserTier } from "../../utils/tier";
 
 type Tabs = {
   name: string;
@@ -48,7 +49,7 @@ const Header = ({
   const tabTextSize = { base: "xs", md: "12px", lg: "15px" };
   return (
     <Box
-      mb={{ base: "205px", md: "75px", xl: "70px" }}
+      mb={{ base: "155px", md: "75px", xl: "70px" }}
       ml={{ base: "5px", md: "10px", xl: "15px" }}
       mr={{ base: "5px", md: "10px", xl: "15px" }}
       borderRadius="15px"
@@ -75,7 +76,7 @@ const Header = ({
           w={{ base: "90%", xl: "95%" }}
           justifyContent={{ base: "center", md: "space-between" }}
           align="center"
-          backdropFilter="saturate(200%) blur(50px)"
+          backdropFilter="saturate(200%) blur(70px)"
           position="absolute"
           boxShadow="0px 2px 5.5px rgba(0, 0, 0, 0.02)"
           border="2px solid"
@@ -84,7 +85,7 @@ const Header = ({
           p="24px"
           borderRadius="20px"
           transform={{
-            base: "translateY(45%)",
+            base: "translateY(20%)",
             md: "translateY(110%)",
             lg: "translateY(160%)",
           }}
@@ -113,15 +114,8 @@ const Header = ({
                 >
                   {name}
                 </Text>
-                <Badge
-                  variant="subtle"
-                  colorScheme="green"
-                  fontSize={{ base: "lg", lg: "xl" }}
-                >
-                  A+
-                </Badge>
+                <GradeBadge grade={UserTier.Master} />
               </HStack>
-
               <Text
                 fontSize={{ base: "sm", md: "md" }}
                 color={emailColor}
@@ -135,91 +129,66 @@ const Header = ({
             direction={{ base: "column", lg: "row" }}
             w={{ base: "100%", md: "50%", lg: "auto" }}
           >
-            <Button
-              p="0px"
-              bg="transparent"
-              _hover={{ bg: "none" }}
-              onClick={() => {
-                router.push(`/user/${router.query.userId}`);
-              }}
-            >
-              <Flex
-                align="center"
-                w={{ base: "100%", lg: "135px" }}
-                bg="hsla(0,0%,100%,.3)"
-                borderRadius="15px"
-                justifyContent="center"
-                py="10px"
-                boxShadow="inset 0 0 1px 1px hsl(0deg 0% 100% / 90%), 0 20px 27px 0 rgb(0 0 0 / 5%)"
-                border="1px solid gray.200"
-                cursor="pointer"
-              >
-                {tabs[0].icon}
-                <Text
-                  fontSize={tabTextSize}
-                  color={textColor}
-                  fontWeight="bold"
-                  ms="6px"
+            {tabs.map((tab, index) => {
+              return (
+                <Button
+                  key={index}
+                  p="0px"
+                  bg="transparent"
+                  _hover={{ bg: "none" }}
+                  onClick={() => {
+                    router.push(
+                      `/user/${router.query.userId}${
+                        index > 0 ? "/" + tab.router : ""
+                      }`
+                    );
+                  }}
                 >
-                  {tabs[0].name}
-                </Text>
-              </Flex>
-            </Button>
-            <Button
-              p="0px"
-              bg="transparent"
-              _hover={{ bg: "none" }}
-              onClick={() => {
-                router.push(`/user/${router.query.userId}/${tabs[1].router}`);
-              }}
-            >
-              <Flex
-                align="center"
-                w={{ lg: "135px" }}
-                borderRadius="15px"
-                justifyContent="center"
-                py="10px"
-                mx={{ lg: "1rem" }}
-                cursor="pointer"
-              >
-                {tabs[1].icon}
-                <Text
-                  fontSize={tabTextSize}
-                  color={textColor}
-                  fontWeight="bold"
-                  ms="6px"
-                >
-                  {tabs[1].name}
-                </Text>
-              </Flex>
-            </Button>
-            <Button
-              p="0px"
-              bg="transparent"
-              _hover={{ bg: "none" }}
-              onClick={() => {
-                router.push(`/user/${router.query.userId}/${tabs[2].router}`);
-              }}
-            >
-              <Flex
-                align="center"
-                w={{ lg: "135px" }}
-                borderRadius="15px"
-                justifyContent="center"
-                py="10px"
-                cursor="pointer"
-              >
-                {tabs[2].icon}
-                <Text
-                  fontSize={tabTextSize}
-                  color={textColor}
-                  fontWeight="bold"
-                  ms="6px"
-                >
-                  {tabs[2].name}
-                </Text>
-              </Flex>
-            </Button>
+                  {tab.router === currentTab ? (
+                    <Flex
+                      align="center"
+                      w={{ base: "100%", lg: "135px" }}
+                      bg="hsla(0,0%,100%,.3)"
+                      borderRadius="15px"
+                      justifyContent="center"
+                      py="10px"
+                      boxShadow="inset 0 0 1px 1px hsl(0deg 0% 100% / 90%), 0 20px 27px 0 rgb(0 0 0 / 5%)"
+                      border="1px solid gray.200"
+                      cursor="pointer"
+                    >
+                      {tab.icon}
+                      <Text
+                        fontSize={tabTextSize}
+                        color={textColor}
+                        fontWeight="bold"
+                        ms="6px"
+                      >
+                        {tab.name}
+                      </Text>
+                    </Flex>
+                  ) : (
+                    <Flex
+                      align="center"
+                      w={{ lg: "135px" }}
+                      borderRadius="15px"
+                      justifyContent="center"
+                      py="10px"
+                      cursor="pointer"
+                    >
+                      {tab.icon}
+                      <Text
+                        fontSize={tabTextSize}
+                        color={textColor}
+                        fontWeight="bold"
+                        ms="6px"
+                      >
+                        {tab.name}
+                      </Text>
+                    </Flex>
+                  )}
+                </Button>
+              );
+            })}
           </Flex>
         </Flex>
       </Box>
