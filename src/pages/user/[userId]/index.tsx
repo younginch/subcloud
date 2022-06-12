@@ -1,9 +1,5 @@
 import {
   Avatar,
-  Box,
-  Center,
-  Flex,
-  Grid,
   HStack,
   Stack,
   Tab,
@@ -29,16 +25,9 @@ import Header from "../../../components/user/header";
 import { FaCube } from "react-icons/fa";
 import { IoDocumentsSharp } from "react-icons/io5";
 import { MdSubtitles } from "react-icons/md";
-import Card from "../../../components/user/card/card";
-import CardHeader from "../../../components/user/card/cardHeader";
-import ActiveUsers from "../../../components/user/graphs/activeUsers";
-import SalesOverview from "../../../components/user/graphs/salesOverview";
-import BarChart from "../../../components/user/graphs/barChart";
-import LineChart from "../../../components/user/graphs/lineChart";
-import SatisfactionRate from "../../../components/user/graphs/satisfactionRate";
-import FulfilledGraph from "../../../components/user/graphs/fulfilledGraph";
-import GeneralTable from "../../../components/ranking/generalTable";
-import ProfileSubtitleRow from "../../../components/user/profileSubtitleRow";
+import { ImFileEmpty } from "react-icons/im";
+import SubtitleDashboard from "../../../components/user/subtitleDashboard";
+import PublicProfileLayout from "../../../components/user/publicProfileLayout";
 
 const TAB_LIST = ["request", "sub"];
 
@@ -48,16 +37,16 @@ type UserReadProps = {
 };
 
 export default function UserRead({ requests, subs }: UserReadProps) {
-  const textColor = useColorModeValue("gray.700", "gray.300");
-  const bgColor = useColorModeValue("white", "#1F2733");
-  const captions = ["#", "Title", "Channel", "Language", "Views", "Uploaded"];
-
   const bgProfile = useColorModeValue(
     "hsla(0,0%,100%,.8)",
     "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
   );
   const router = useRouter();
   const { data } = useSession();
+
+  function onChangeTabIndex(index: number) {
+    router.push(`/user/${router.query.userId}?tab=${TAB_LIST[index]}`);
+  }
 
   function _getTabIndex() {
     if (router.query.tab === "request") {
@@ -69,176 +58,17 @@ export default function UserRead({ requests, subs }: UserReadProps) {
     }
   }
 
-  function onChangeTabIndex(index: number) {
-    router.push(`/user/${router.query.userId}?tab=${TAB_LIST[index]}`);
-  }
-
   return (
-    <>
-      <Stack>
-        <Header
-          backgroundHeader="https://demos.creative-tim.com/purity-ui-dashboard/static/media/ProfileBackground.4dc796b0.png"
-          backgroundProfile={bgProfile}
-          avatarImage={data?.user.image ?? undefined}
-          name={data?.user.name ?? undefined}
-          email={data?.user.email ?? undefined}
-          tabs={[
-            {
-              name: "OVERVIEW",
-              router: "overview",
-              icon: <FaCube width="100%" height="100%" />,
-            },
-            {
-              name: "Subtitles",
-              router: "subtitles",
-              icon: <MdSubtitles width="100%" height="100%" />,
-            },
-            {
-              name: "Request",
-              router: "request",
-              icon: <IoDocumentsSharp width="100%" height="100%" />,
-            },
-          ]}
-        />
-        <Box
-          pl={{ base: "25px", md: "40px", xl: "60px" }}
-          pr={{ base: "25px", md: "40px", xl: "60px" }}
-        >
-          <Grid
-            templateColumns={{
-              base: "1fr",
-              xl: "0.8fr 1fr 0.7fr",
-            }}
-            my="26px"
-            gap="18px"
-          >
-            <SatisfactionRate gridArea="2 / 1 / 3 / 2" />
-            <FulfilledGraph />
-            <Card gridArea={{ md: "2 / 3 / 3 / 4", "2xl": "auto" }}>
-              <CardHeader mb="24px">
-                <Flex direction="column">
-                  <Text
-                    color={textColor}
-                    fontSize="lg"
-                    fontWeight="bold"
-                    mb="4px"
-                  >
-                    Favorite language
-                  </Text>
-                </Flex>
-              </CardHeader>
-              <Flex
-                direction="column"
-                justify="center"
-                align="center"
-                position="relative"
-                h="100%"
-              >
-                <Center>
-                  <Text fontSize="60px" fontWeight="bold" color={textColor}>
-                    Korean
-                  </Text>
-                </Center>
-              </Flex>
-            </Card>
-          </Grid>
-          <Grid
-            templateColumns={{ sm: "1fr", lg: "1.3fr 1.7fr" }}
-            templateRows={{ sm: "repeat(2, 1fr)", lg: "1fr" }}
-            gap="24px"
-            mb={{ lg: "26px" }}
-          >
-            <ActiveUsers
-              title="Active Users"
-              percentage={23}
-              chart={<BarChart />}
-            />
-            <SalesOverview
-              title="Activity Overview"
-              percentage={5}
-              chart={<LineChart />}
-            />
-          </Grid>
-          <Box
-            mt={10}
-            overflowX={{ sm: "scroll", xl: "hidden" }}
-            bg={bgColor}
-            borderRadius="20px"
-          >
-            <Text p="22px" fontSize="lg" color={textColor} fontWeight="bold">
-              인기 자막
-            </Text>
-            <GeneralTable captions={captions}>
-              {subs.map((sub, index) => {
-                return (
-                  <ProfileSubtitleRow
-                    rank={index + 1}
-                    key={sub.id}
-                    userId={
-                      router.query.userId
-                        ? router.query.userId[0]
-                        : "Annonymous"
-                    }
-                    platform={sub.serviceId}
-                    videoName={
-                      sub.video.youtubeVideo
-                        ? sub.video.youtubeVideo.title
-                        : "(Unknown)"
-                    }
-                    videoUrl={sub.video.url}
-                    channelName={
-                      sub.video.youtubeVideo
-                        ? sub.video.youtubeVideo.channel.title
-                        : "(Unknown)"
-                    }
-                    channelUrl={
-                      sub.video.youtubeVideo
-                        ? sub.video.youtubeVideo.channel.channelUrl
-                        : "(Unknown)"
-                    }
-                    channelImageUrl={
-                      sub.video.youtubeVideo
-                        ? sub.video.youtubeVideo.channel.thumbnailUrl
-                        : "(Unknown)"
-                    }
-                    lang={sub.lang}
-                    viewCount={sub.views}
-                    uploadDate={sub.updatedAt.toString()}
-                  />
-                );
-              })}
-            </GeneralTable>
-          </Box>
-        </Box>
-      </Stack>
-      <HStack marginBottom="18px">
-        <Avatar
-          size="2xl"
-          name={data?.user.name ?? undefined}
-          src={data?.user.image ?? undefined}
-        />
-        <Stack>
-          <Text>{data?.user.name}</Text>
-          <Text>{data?.user.email}</Text>
-          <Text>{data?.user.role}</Text>
-          <Text>{data?.user.point} 포인트</Text>
+    <PublicProfileLayout data={data}>
+      {subs.length > 0 ? (
+        <SubtitleDashboard subs={subs} />
+      ) : (
+        <Stack alignItems="center" spacing={5} h="55vh">
+          <ImFileEmpty size={80} />
+          <Text fontSize="20px">유저가 업로드한 자막이 없습니다</Text>
         </Stack>
-      </HStack>
-      <Tabs isLazy index={_getTabIndex()} onChange={onChangeTabIndex}>
-        <TabList>
-          <Tab>자막 요청</Tab>
-          <Tab>영상 자막</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <RequestPanel requests={requests} />
-          </TabPanel>
-          <TabPanel>
-            <SubPanel subs={subs} />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </>
+      )}
+    </PublicProfileLayout>
   );
 }
 
