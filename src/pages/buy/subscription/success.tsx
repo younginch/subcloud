@@ -10,7 +10,7 @@ import {
   Center,
   HStack,
 } from "@chakra-ui/react";
-import { Order } from "@prisma/client";
+import { Subscription } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -18,20 +18,27 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import Link from "next/link";
 import { PageOptions } from "../../../utils/types";
 
+type CardType = {
+  company: string;
+  number: string;
+  cardType: string;
+  ownerType: string;
+};
+
 export default function SubscriptionSuccess() {
   const router = useRouter();
   const toast = useToast();
 
-  const [order, setOrder] = useState<Order>();
+  const [subscription, setSubscription] = useState<Subscription>();
   const [isCopied, setIsCopied] = useState<boolean>(false);
   useEffect(() => {
     if (!router.query.id) {
       return;
     }
     axios
-      .get("/api/order", { params: { id: router.query.id } })
+      .get("/api/subscription", { params: { id: router.query.id } })
       .then((res) => {
-        setOrder(res.data);
+        setSubscription(res.data);
       })
       .catch(() => {
         toast({
@@ -107,11 +114,15 @@ export default function SubscriptionSuccess() {
                 </Button>
               </Link>
             </HStack>
-            <Text>결제 금액 : {order?.amount}원</Text>
+            <Text>카드 정보 : {(subscription?.card as CardType)?.company}</Text>
+            <Text>{(subscription?.card as CardType)?.number}</Text>
+            <Text>{(subscription?.card as CardType)?.cardType}</Text>
+            <Text>{(subscription?.card as CardType)?.ownerType}</Text>
+            <Text>{subscription?.type}</Text>
             <HStack>
-              <Text>결제 id :{order?.id}</Text>
+              <Text>구독 id :{subscription?.id}</Text>
               <CopyToClipboard
-                text={order?.id ? order.id : "error"}
+                text={subscription?.id ? subscription.id : "error"}
                 onCopy={() => setIsCopied(true)}
               >
                 <Text as="u" color="blue">

@@ -208,13 +208,25 @@ export default function Buy() {
   }
 
   function requestSubscription() {
-    tossPayments.requestBillingAuth("카드", {
-      customerKey: data?.user.id,
-      successUrl: `${window.location.origin}/buy/subscription/process`,
-      failUrl: `${window.location.origin}/buy/subscription/fail`,
-      customerName: data?.user.name,
-      customerEmail: data?.user.email,
-    });
+    axios
+      .post("/api/subscription")
+      .then((res) => {
+        tossPayments.requestBillingAuth("카드", {
+          customerKey: res.data.customerKey,
+          successUrl: `${window.location.origin}/buy/subscription/process`,
+          failUrl: `${window.location.origin}/buy/subscription/fail`,
+          customerName: data?.user.name,
+          customerEmail: data?.user.email,
+        });
+      })
+      .catch((err) => {
+        toast({
+          title: "구독 등록 에러",
+          description: err.message,
+          status: "error",
+          isClosable: true,
+        });
+      });
   }
 
   return (
