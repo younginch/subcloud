@@ -24,7 +24,7 @@ async function UserRead({ req, res, prisma }: RouteParams<ResUser>) {
   return res.status(200).json(user);
 }
 
-async function UserDelete({ req, res, prisma, session }: RouteParams<ResUser>) {
+async function UserDelete({ req, res, prisma }: RouteParams<ResUser>) {
   const { id } = req.query;
   if (!id) {
     return res

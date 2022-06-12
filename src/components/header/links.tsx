@@ -20,6 +20,7 @@ export default function Links({ width }: LinksProps) {
           width={width}
           textAlign="left"
           rightIcon={<ChevronDownIcon />}
+          pr="12px"
         >
           랭킹
         </MenuButton>
