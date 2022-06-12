@@ -1,16 +1,18 @@
 import { Stack, useColorModeValue } from "@chakra-ui/react";
-import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 import { FaCube } from "react-icons/fa";
 import { IoDocumentsSharp } from "react-icons/io5";
 import { MdSubtitles } from "react-icons/md";
+import { PublicProfileTab } from "../../utils/tabs";
 import Header from "./header";
 
 type Props = {
-  data: Session | null;
+  currentTab: PublicProfileTab;
   children: React.ReactNode;
 };
 
-export default function PublicProfileLayout({ data, children }: Props) {
+export default function PublicProfileLayout({ currentTab, children }: Props) {
+  const { data } = useSession();
   const bgProfile = useColorModeValue(
     "hsla(0,0%,100%,.8)",
     "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
@@ -24,6 +26,7 @@ export default function PublicProfileLayout({ data, children }: Props) {
         avatarImage={data?.user.image ?? undefined}
         name={data?.user.name ?? undefined}
         email={data?.user.email ?? undefined}
+        currentTab={currentTab}
         tabs={[
           {
             name: "OVERVIEW",
@@ -31,8 +34,8 @@ export default function PublicProfileLayout({ data, children }: Props) {
             icon: <FaCube width="100%" height="100%" />,
           },
           {
-            name: "Subtitles",
-            router: "subtitles",
+            name: "Subtitle",
+            router: "subtitle",
             icon: <MdSubtitles width="100%" height="100%" />,
           },
           {
