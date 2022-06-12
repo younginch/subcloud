@@ -26,4 +26,4 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-UserMyRequest.options = { auth: Role.User } as PageOptions;
+UserMyRequest.options = { role: Role.User } as PageOptions;
