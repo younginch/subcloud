@@ -17,10 +17,6 @@ type Props = {
 };
 
 export default function SubtitleDashboard({ subs }: Props) {
-  const bgProfile = useColorModeValue(
-    "hsla(0,0%,100%,.8)",
-    "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
-  );
   const textColor = useColorModeValue("gray.700", "gray.300");
   const bgColor = useColorModeValue("white", "#1F2733");
   const captions = ["#", "Title", "Channel", "Language", "Views", "Uploaded"];

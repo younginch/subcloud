@@ -1,13 +1,12 @@
-import { Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import { Stack, Text } from "@chakra-ui/react";
 import axios from "axios";
-import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import {
   PageOptions,
   ResRequestSearch,
   ResSubSearch,
 } from "../../../utils/types";
-import { ImFileEmpty } from "react-icons/im";
+import { FiBox } from "react-icons/fi";
 import SubtitleDashboard from "../../../components/user/subtitleDashboard";
 import PublicProfileLayout from "../../../components/user/publicProfileLayout";
 import { PublicProfileTab } from "../../../utils/tabs";
@@ -18,19 +17,13 @@ type UserReadProps = {
 };
 
 export default function UserIndex({ requests, subs }: UserReadProps) {
-  const bgProfile = useColorModeValue(
-    "hsla(0,0%,100%,.8)",
-    "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
-  );
-  const router = useRouter();
-
   return (
     <PublicProfileLayout currentTab={PublicProfileTab.Overview}>
       {subs.length > 0 ? (
         <SubtitleDashboard subs={subs} />
       ) : (
         <Stack alignItems="center" spacing={5} h="55vh">
-          <ImFileEmpty size={80} />
+          <FiBox size={100} />
           <Text fontSize="20px">유저가 업로드한 자막이 없습니다</Text>
         </Stack>
       )}
