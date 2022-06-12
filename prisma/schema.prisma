@@ -276,6 +276,7 @@ enum Role {
   Admin
   Reviewer
   User
+  Restricted
 }
 
 enum Status {
