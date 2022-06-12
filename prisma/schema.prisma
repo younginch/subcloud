@@ -96,6 +96,7 @@ model YoutubeVideo {
   publishedAt DateTime
   title       String
   description String
+  duration    Int
   viewCount   Int
   likeCount   Int
 }
