@@ -98,4 +98,4 @@ export default function ReviewDetail() {
   );
 }
 
-ReviewDetail.options = { auth: Role.Reviewer } as PageOptions;
+ReviewDetail.options = { role: Role.Reviewer } as PageOptions;

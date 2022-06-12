@@ -133,4 +133,4 @@ export default function RequestCreate() {
   );
 }
 
-RequestCreate.options = { auth: Role.User, hideTitle: true } as PageOptions;
+RequestCreate.options = { role: Role.User, hideTitle: true } as PageOptions;
