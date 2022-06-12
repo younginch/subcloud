@@ -1,26 +1,27 @@
 import { Badge } from "@chakra-ui/react";
+import { UserTier } from "../../utils/tier";
 
 type Props = {
-  grade?: string;
+  grade?: UserTier;
 };
 
 export default function GradeBadge({ grade }: Props) {
   let color = "gray";
   let isBadge = false;
   switch (grade) {
-    case "Grandmaster":
+    case UserTier.Grandmaster:
       color = "red";
       isBadge = true;
       break;
-    case "Master":
+    case UserTier.Master:
       color = "yellow";
       isBadge = true;
       break;
-    case "Expert":
+    case UserTier.Expert:
       color = "purple";
       isBadge = true;
       break;
-    case "Specialist":
+    case UserTier.Specialist:
       color = "blue";
       isBadge = true;
       break;
