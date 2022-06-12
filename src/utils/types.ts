@@ -24,6 +24,7 @@ import type { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import NextCors from "nextjs-cors";
 import prisma from "./prisma";
+import isRightRole from "./role";
 
 export type PageOptions = {
   auth?: boolean;
@@ -53,23 +54,6 @@ export async function setCORS(req: NextApiRequest, res: NextApiResponse) {
     ],
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
-}
-
-function changeRoleToNumber(role: Role): number {
-  switch (role) {
-    case Role.Admin:
-      return 3;
-    case Role.Reviewer:
-      return 2;
-    case Role.User:
-      return 1;
-    case Role.Restricted:
-      return 0;
-  }
-}
-
-export function isRightRole(requested: Role, required: Role): boolean {
-  return changeRoleToNumber(requested) >= changeRoleToNumber(required);
 }
 
 export enum SubErrorType {
