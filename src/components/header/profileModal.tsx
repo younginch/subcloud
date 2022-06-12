@@ -11,7 +11,10 @@ import {
   Heading,
   HStack,
 } from "@chakra-ui/react";
+import axios from "axios";
 import Link from "next/link";
+import useSWR from "swr";
+import { ResRequestSearch, ResSubSearch } from "../../utils/types";
 
 type Props = {
   profileImageUrl?: string;
@@ -28,6 +31,27 @@ export default function ProfileModal({
   children,
   userId,
 }: Props) {
+  const subFetcher = async (url: string) => {
+    const res = await axios.get<ResSubSearch>(url, {
+      params: { userId },
+    });
+    return res.data;
+  };
+  const requestFetcher = async (url: string) => {
+    const res = await axios.get<ResRequestSearch>(url, {
+      params: { userId },
+    });
+    return res.data;
+  };
+  const { data: subData, error: subError } = useSWR(
+    "/api/sub/search",
+    subFetcher
+  );
+  const { data: requestData, error: requestError } = useSWR(
+    "/api/request/search",
+    requestFetcher
+  );
+
   return (
     <Center>
       <Box
@@ -65,13 +89,13 @@ export default function ProfileModal({
 
           <Stack direction={"row"} justify={"center"} spacing={6}>
             <Stack spacing={0} align={"center"}>
-              <Text fontWeight={600}>2k</Text>
+              <Text fontWeight={600}>{requestData?.length}</Text>
               <Text fontSize={"sm"} color={"gray.500"}>
                 요청 수
               </Text>
             </Stack>
             <Stack spacing={0} align={"center"}>
-              <Text fontWeight={600}>521</Text>
+              <Text fontWeight={600}>{subData?.length}</Text>
               <Text fontSize={"sm"} color={"gray.500"}>
                 자막 수
               </Text>
