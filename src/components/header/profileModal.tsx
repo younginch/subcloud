@@ -20,10 +20,17 @@ import Link from "next/link";
 import router from "next/router";
 import useSWR from "swr";
 import isRightRole from "../../utils/role";
+import { ResRequestSearch, ResSubSearch } from "../../utils/types";
 
 export default function ProfileModal() {
   const { data: session } = useSession();
   const { data } = useSWR<Session>("/api/auth/session");
+  const { data: subData, error: subError } = useSWR(
+    `/api/sub/search?userId=${session?.user.id}`
+  );
+  const { data: requestData, error: requestError } = useSWR(
+    `/api/request/search?userId=${session?.user.id}`
+  );
 
   return (
     <Center>
@@ -62,13 +69,13 @@ export default function ProfileModal() {
 
           <Stack direction={"row"} justify={"center"} spacing={6}>
             <Stack spacing={0} align={"center"}>
-              <Text fontWeight={600}>2k</Text>
+              <Text fontWeight={600}>{requestData?.length}</Text>
               <Text fontSize={"sm"} color={"gray.500"}>
                 요청 수
               </Text>
             </Stack>
             <Stack spacing={0} align={"center"}>
-              <Text fontWeight={600}>521</Text>
+              <Text fontWeight={600}>{subData?.length}</Text>
               <Text fontSize={"sm"} color={"gray.500"}>
                 자막 수
               </Text>
