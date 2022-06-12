@@ -25,7 +25,16 @@ import { ResRequestSearch, ResSubSearch } from "../../utils/types";
 export default function ProfileModal() {
   const { data: session } = useSession();
   const { data } = useSWR<Session>("/api/auth/session");
-  const { data: subData, error: subError } = useSWR("/api/sub/search", fetcher);
+  const { data: subData, error: subError } = useSWR(
+    "/api/sub/search",
+    async (url: string) => {
+      const userId = session?.user.id;
+      const res = await axios.get<ResSubSearch | ResRequestSearch>(url, {
+        params: { userId },
+      });
+      return res.data;
+    }
+  );
   const { data: requestData, error: requestError } = useSWR(
     "/api/request/search",
     async (url: string) => {
