@@ -28,4 +28,4 @@ export const getServerSideProps: GetServerSideProps<UserMySub> = async (
   };
 };
 
-UserMySub.options = { auth: Role.User } as PageOptions;
+UserMySub.options = { role: Role.User } as PageOptions;

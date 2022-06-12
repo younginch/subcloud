@@ -146,7 +146,7 @@ export default function VideoCreate() {
 }
 
 VideoCreate.options = {
-  auth: Role.User,
+  role: Role.User,
   hideTitle: true,
   bgColorLight: "#F7FAFC",
 } as PageOptions;

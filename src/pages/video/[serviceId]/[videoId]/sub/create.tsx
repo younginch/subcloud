@@ -162,4 +162,4 @@ export default function SubCreate() {
   );
 }
 
-SubCreate.options = { auth: Role.User, hideTitle: true } as PageOptions;
+SubCreate.options = { role: Role.User, hideTitle: true } as PageOptions;
