@@ -162,8 +162,6 @@ model SubHistory {
   subId  String
   sub    Sub      @relation(fields: [subId], references: [id])
   viewAt DateTime
-  startTime Int
-  endTime   Int
 }
 
 model Review {
