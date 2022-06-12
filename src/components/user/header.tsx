@@ -1,9 +1,11 @@
 // Chakra imports
 import {
   Avatar,
+  Badge,
   Box,
   Button,
   Flex,
+  HStack,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -100,14 +102,24 @@ const Header = ({
               borderRadius="15px"
             />
             <Flex direction="column" maxWidth="100%" my={{ base: "14px" }}>
-              <Text
-                fontSize={{ base: "lg", lg: "xl" }}
-                color={textColor}
-                fontWeight="bold"
-                ms={{ base: "8px", md: "0px" }}
-              >
-                {name}
-              </Text>
+              <HStack>
+                <Text
+                  fontSize={{ base: "lg", lg: "xl" }}
+                  color={textColor}
+                  fontWeight="bold"
+                  ms={{ base: "8px", md: "0px" }}
+                >
+                  {name}
+                </Text>
+                <Badge
+                  variant="subtle"
+                  colorScheme="green"
+                  fontSize={{ base: "lg", lg: "xl" }}
+                >
+                  A+
+                </Badge>
+              </HStack>
+
               <Text
                 fontSize={{ base: "sm", md: "md" }}
                 color={emailColor}

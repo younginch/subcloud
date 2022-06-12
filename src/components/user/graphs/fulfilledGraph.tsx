@@ -18,7 +18,7 @@ export default function FulfilledGraph() {
       <Flex direction="column">
         <Flex justify="space-between" align="center" mb="40px">
           <Text color="inherit" fontSize="lg" fontWeight="bold">
-            Request fulfilled
+            기여 통계
           </Text>
           <Button borderRadius="12px" w="38px" h="38px" bg="transparent">
             <Icon as={IoEllipsisHorizontal} color="#7551FF" />
@@ -40,10 +40,10 @@ export default function FulfilledGraph() {
               mb="20px"
             >
               <Text color="gray.400" fontSize="sm" mb="4px">
-                Fulfilled
+                요청 충족 수
               </Text>
               <Text color="#fff" fontSize="lg" fontWeight="bold">
-                145 people
+                145 명
               </Text>
             </Flex>
             <Flex
@@ -55,10 +55,10 @@ export default function FulfilledGraph() {
               borderRadius="20px"
             >
               <Text color="gray.400" fontSize="sm" mb="4px">
-                Bonus
+                오류 제보
               </Text>
               <Text color="#fff" fontSize="lg" fontWeight="bold">
-                1,465
+                25
               </Text>
             </Flex>
           </Flex>
@@ -83,7 +83,7 @@ export default function FulfilledGraph() {
             >
               <Flex direction="column" justify="center" align="center">
                 <Text color="gray.400" fontSize="sm" mb="4px">
-                  Satisfy
+                  상위
                 </Text>
                 <Text
                   color="inherit"
@@ -94,7 +94,7 @@ export default function FulfilledGraph() {
                   15%
                 </Text>
                 <Text color="gray.400" fontSize="sm">
-                  Total fulfilled
+                  기여도
                 </Text>
               </Flex>
             </GradientProgress>

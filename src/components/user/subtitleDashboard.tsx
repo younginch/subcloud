@@ -1,24 +1,16 @@
-import {
-  Avatar,
-  Box,
-  Flex,
-  Grid,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, Flex, Grid, Text, useColorModeValue } from "@chakra-ui/react";
 import router from "next/router";
-import { Session } from "next-auth";
-import SatisfactionRate from "./graphs/satisfactionRate";
+import UserRatingComponent from "./graphs/userRatingComponent";
 import FulfilledGraph from "./graphs/fulfilledGraph";
 import CardHeader from "./card/cardHeader";
 import Card from "./card/card";
-import ActiveUsers from "./graphs/activeUsers";
 import SalesOverview from "./graphs/salesOverview";
 import LineChart from "./graphs/lineChart";
 import BarChart from "./graphs/barChart";
 import GeneralTable from "../ranking/generalTable";
-import { ResRequestSearch, ResSubSearch } from "../../utils/types";
+import { ResSubSearch } from "../../utils/types";
 import ProfileSubtitleRow from "./profileSubtitleRow";
+import UserActivity from "./graphs/userActivity";
 
 type Props = {
   subs: ResSubSearch;
@@ -32,16 +24,6 @@ export default function SubtitleDashboard({ subs }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const bgColor = useColorModeValue("white", "#1F2733");
   const captions = ["#", "Title", "Channel", "Language", "Views", "Uploaded"];
-
-  function _getTabIndex() {
-    if (router.query.tab === "request") {
-      return 0;
-    } else if (router.query.tab === "sub") {
-      return 1;
-    } else {
-      return 0;
-    }
-  }
 
   return (
     <>
@@ -57,7 +39,7 @@ export default function SubtitleDashboard({ subs }: Props) {
           my="26px"
           gap="18px"
         >
-          <SatisfactionRate gridArea="2 / 1 / 3 / 2" />
+          <UserRatingComponent gridArea="2 / 1 / 3 / 2" />
           <FulfilledGraph />
           <Card gridArea={{ md: "2 / 3 / 3 / 4", "2xl": "auto" }}>
             <CardHeader mb="24px">
@@ -68,7 +50,7 @@ export default function SubtitleDashboard({ subs }: Props) {
                   fontWeight="bold"
                   mb="4px"
                 >
-                  Favorite language
+                  자막 언어
                 </Text>
               </Flex>
             </CardHeader>
@@ -94,8 +76,8 @@ export default function SubtitleDashboard({ subs }: Props) {
           gap="24px"
           mb={{ lg: "26px" }}
         >
-          <ActiveUsers
-            title="Active Users"
+          <UserActivity
+            title="하이라이트"
             percentage={23}
             chart={<BarChart />}
           />
