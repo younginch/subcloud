@@ -2,6 +2,7 @@ import { Role, Video } from "@prisma/client";
 import axios from "axios";
 import prisma from "../../../utils/prisma";
 import { VideoCreateSchema } from "../../../utils/schema";
+import { youtubeDurationToSeconds } from "../../../utils/subtitle";
 import {
   handleRoute,
   ResVideo,
@@ -71,7 +72,7 @@ async function addYoutubeInfo(videoId: string): Promise<ResVideo> {
   try {
     const videoRes =
       await axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${process.env.YOUTUBE_API_KEY}
-      &part=snippet,statistics`);
+      &part=snippet,contentDetails,statistics`);
     if (!videoRes.data.items) {
       throw new Error("No video found");
     }
@@ -108,6 +109,7 @@ async function addYoutubeInfo(videoId: string): Promise<ResVideo> {
         channelId,
         title: video.snippet.title,
         description: video.snippet.description,
+        duration: youtubeDurationToSeconds(video.contentDetails.duration),
         viewCount: Number.parseInt(video.statistics.viewCount),
         likeCount: Number.parseInt(video.statistics.likeCount),
       },
