@@ -9,35 +9,31 @@ import {
   useColorModeValue,
   Text,
   Heading,
+  Spacer,
   HStack,
 } from "@chakra-ui/react";
+import { Role } from "@prisma/client";
 import axios from "axios";
+import { Session } from "next-auth";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import router from "next/router";
 import useSWR from "swr";
+import isRightRole from "../../utils/role";
 import { ResRequestSearch, ResSubSearch } from "../../utils/types";
 
-type Props = {
-  profileImageUrl?: string;
-  userName?: string | null;
-  userEmail?: string | null;
-  children?: React.ReactNode;
-  userId?: string | null;
-};
-
-export default function ProfileModal({
-  profileImageUrl,
-  userName,
-  userEmail,
-  children,
-  userId,
-}: Props) {
+export default function ProfileModal() {
+  const { data: session } = useSession();
+  const { data } = useSWR<Session>("/api/auth/session");
   const subFetcher = async (url: string) => {
+    const userId = session?.user.id;
     const res = await axios.get<ResSubSearch>(url, {
       params: { userId },
     });
     return res.data;
   };
   const requestFetcher = async (url: string) => {
+    const userId = session?.user.id;
     const res = await axios.get<ResRequestSearch>(url, {
       params: { userId },
     });
@@ -73,7 +69,7 @@ export default function ProfileModal({
         <Flex justify={"center"} mt={-12}>
           <Avatar
             size={"xl"}
-            src={profileImageUrl}
+            src={data?.user.image ?? undefined}
             css={{
               border: "2px solid white",
             }}
@@ -82,9 +78,9 @@ export default function ProfileModal({
         <Box p={6}>
           <Stack spacing={0} align={"center"} mb={5}>
             <Heading fontSize={"2xl"} fontWeight={500} fontFamily={"body"}>
-              {userName}
+              {data?.user.name}
             </Heading>
-            <Text color={"gray.500"}>{userEmail}</Text>
+            <Text color={"gray.500"}>{data?.user.email}</Text>
           </Stack>
 
           <Stack direction={"row"} justify={"center"} spacing={6}>
@@ -101,7 +97,7 @@ export default function ProfileModal({
               </Text>
             </Stack>
           </Stack>
-          <Link href={`/user/${userId}`} passHref>
+          <Link href={`/user/${data?.user.id}`} passHref>
             <Button
               w={"full"}
               mt={4}
@@ -131,7 +127,47 @@ export default function ProfileModal({
               내 기록 및 설정
             </Button>
           </Link>
-          {children}
+          <HStack mt={4}>
+            <Button
+              colorScheme="blue"
+              onClick={() => {
+                signOut();
+              }}
+            >
+              Sign Out
+            </Button>
+            <Spacer />
+            {(isRightRole(session?.user.role, Role.Admin) ||
+              process.env.NODE_ENV !== "production") && (
+              <Button
+                onClick={async () => {
+                  if (process.env.NODE_ENV !== "production") {
+                    await axios.patch("/api/user/debug", {
+                      id: session?.user.id,
+                    });
+                  }
+                  router.push("/admin");
+                }}
+              >
+                Admin
+              </Button>
+            )}
+            {(isRightRole(session?.user.role, Role.Reviewer) ||
+              process.env.NODE_ENV !== "production") && (
+              <Button
+                onClick={async () => {
+                  if (process.env.NODE_ENV !== "production") {
+                    await axios.patch("/api/user/debug", {
+                      id: session?.user.id,
+                    });
+                  }
+                  router.push("/review");
+                }}
+              >
+                리뷰
+              </Button>
+            )}
+          </HStack>
         </Box>
       </Box>
     </Center>

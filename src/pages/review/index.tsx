@@ -93,4 +93,4 @@ export default function Review() {
   );
 }
 
-Review.options = { auth: Role.Reviewer } as PageOptions;
+Review.options = { role: Role.Reviewer } as PageOptions;

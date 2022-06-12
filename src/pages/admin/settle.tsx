@@ -151,4 +151,4 @@ export default function AdminSettle() {
   );
 }
 
-AdminSettle.options = { auth: Role.Admin } as PageOptions;
+AdminSettle.options = { role: Role.Admin } as PageOptions;

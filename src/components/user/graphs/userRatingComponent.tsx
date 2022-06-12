@@ -16,7 +16,7 @@ type Props = {
   gridArea: string;
 };
 
-export default function SatisfactionRate({ gridArea }: Props) {
+export default function UserRatingComponent({ gridArea }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const subTextColor = useColorModeValue("gray.600", "gray.400");
   return (
@@ -24,7 +24,7 @@ export default function SatisfactionRate({ gridArea }: Props) {
       <CardHeader mb="24px">
         <Flex direction="column">
           <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
-            Satisfaction Rate
+            유저 평점
           </Text>
           <Text color={subTextColor} fontSize="sm">
             From all users

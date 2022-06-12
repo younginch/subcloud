@@ -24,9 +24,11 @@ import type { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import NextCors from "nextjs-cors";
 import prisma from "./prisma";
+import isRightRole from "./role";
 
 export type PageOptions = {
-  auth: Role | boolean;
+  auth?: boolean;
+  role?: Role;
   width?: string | number;
   bgColorLight?: string;
   bgColorDark?: string;
@@ -124,23 +126,11 @@ export function handleRoute<GetRes, PostRes, PatchRes, DeleteRes>(
           message: "Please sign in",
         });
       }
-      if (role === Role.Admin) {
-        if (session.user.role !== Role.Admin) {
-          return res.status(403).json({
-            error: SubErrorType.NotUserSpecificAuthenticated,
-            message: "You are not an admin",
-          });
-        }
-      } else if (role === Role.Reviewer) {
-        if (
-          session.user.role !== Role.Reviewer &&
-          session.user.role !== Role.Admin
-        ) {
-          return res.status(403).json({
-            error: SubErrorType.NotUserSpecificAuthenticated,
-            message: "You are not a reviewer",
-          });
-        }
+      if (!isRightRole(session.user.role, role)) {
+        return res.status(403).json({
+          error: SubErrorType.NotUserSpecificAuthenticated,
+          message: `Your role is ${session.user.role}, but we need ${role}`,
+        });
       }
       params = { ...params, session };
     }

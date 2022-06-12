@@ -117,4 +117,4 @@ export default function AdminExample() {
   );
 }
 
-AdminExample.options = { auth: Role.Admin } as PageOptions;
+AdminExample.options = { role: Role.Admin } as PageOptions;

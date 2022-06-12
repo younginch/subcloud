@@ -1,10 +1,17 @@
-import { Flex, SimpleGrid, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+  Flex,
+  SimpleGrid,
+  Stack,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import CardBody from "../card/cardBody";
-// Custom icons
-import { CartIcon, RocketIcon, StatsIcon, WalletIcon } from "../icons";
 import React, { ReactElement } from "react";
 import ChartStatistics from "./chartStatistics";
 import PurityCard from "../card/purityCard";
+import CardHeader from "../card/cardHeader";
+// Custom icons
+import { CartIcon, RocketIcon, StatsIcon, WalletIcon } from "../icons";
 
 type Props = {
   title: string;
@@ -12,50 +19,57 @@ type Props = {
   chart: ReactElement<any, any>;
 };
 
-export default function ActiveUsers({ title, percentage, chart }: Props) {
+export default function UserActivity({ title, percentage, chart }: Props) {
   const iconBoxInside = useColorModeValue("white", "white");
   const textColor = useColorModeValue("gray.700", "white");
   return (
-    <PurityCard p="16px">
+    <PurityCard p="20px">
+      <CardHeader mb="10px">
+        <Stack>
+          <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
+            자막 제작 통계
+          </Text>
+          <Text fontSize="md" fontWeight="medium" color="gray.400">
+            <Text
+              as="span"
+              color={percentage > 0 ? "green.400" : "red.400"}
+              fontWeight="bold"
+            >
+              {percentage > 0 ? `+${percentage}%` : `-${percentage}%`}
+            </Text>{" "}
+            than last week
+          </Text>
+        </Stack>
+      </CardHeader>
       <CardBody>
         <Flex direction="column" w="100%">
           {chart}
-          <Flex direction="column" mt="24px" mb="36px" alignSelf="flex-start">
+          <Flex direction="column" mt="24px" mb="10px" alignSelf="flex-start">
             <Text fontSize="lg" color={textColor} fontWeight="bold" mb="6px">
               {title}
-            </Text>
-            <Text fontSize="md" fontWeight="medium" color="gray.400">
-              <Text
-                as="span"
-                color={percentage > 0 ? "green.400" : "red.400"}
-                fontWeight="bold"
-              >
-                {percentage > 0 ? `+${percentage}%` : `-${percentage}%`}
-              </Text>{" "}
-              than last week
             </Text>
           </Flex>
           <SimpleGrid gap={{ sm: "12px" }} columns={4}>
             <ChartStatistics
-              title={"Users"}
+              title={"자막 수"}
               amount={"32,984"}
               percentage={20}
               icon={<WalletIcon h={"15px"} w={"15px"} color={iconBoxInside} />}
             />
             <ChartStatistics
-              title={"Clicks"}
+              title={"총 조회수"}
               amount={"2.42m"}
               percentage={80}
               icon={<RocketIcon h={"15px"} w={"15px"} color={iconBoxInside} />}
             />
             <ChartStatistics
-              title={"Sales"}
+              title={"시청시간"}
               amount={"2,400$"}
               percentage={30}
               icon={<CartIcon h={"15px"} w={"15px"} color={iconBoxInside} />}
             />
             <ChartStatistics
-              title={"Items"}
+              title={"구독자 수"}
               amount={"320"}
               percentage={40}
               icon={<StatsIcon h={"15px"} w={"15px"} color={iconBoxInside} />}
