@@ -79,4 +79,4 @@ export default function Admin() {
   );
 }
 
-Admin.options = { auth: Role.Admin } as PageOptions;
+Admin.options = { role: Role.Admin } as PageOptions;

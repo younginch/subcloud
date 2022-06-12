@@ -1,7 +1,12 @@
 import "./_App.css";
 import type { AppProps } from "next/app";
 import { SessionProvider, useSession } from "next-auth/react";
-import { Center, ChakraProvider, CircularProgress } from "@chakra-ui/react";
+import {
+  Center,
+  ChakraProvider,
+  CircularProgress,
+  useToast,
+} from "@chakra-ui/react";
 import { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
@@ -21,6 +26,23 @@ type AppPropsWithAuth = AppProps & {
 };
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
+
+function changeRoleToNumber(role: Role): number {
+  switch (role) {
+    case Role.Admin:
+      return 3;
+    case Role.Reviewer:
+      return 2;
+    case Role.User:
+      return 1;
+    case Role.Restricted:
+      return 0;
+  }
+}
+
+function isRightRole(requested: Role, required: Role): boolean {
+  return changeRoleToNumber(requested) >= changeRoleToNumber(required);
+}
 
 function getCustomLayout(
   pathname: string
@@ -50,7 +72,11 @@ export default function MyApp({
   }, []);
 
   if (!options) {
-    throw Error("Please implement options in all pages");
+    throw Error(`Please implement options in page ${Component.name}`);
+  } else if (options.auth === undefined && options.role === undefined) {
+    throw Error(
+      `Please implement either auth or role in page ${Component.name}`
+    );
   }
 
   return (
@@ -64,8 +90,8 @@ export default function MyApp({
           {isClient ? (
             <Layout options={options}>
               <CustomLayout>
-                {options.auth ? (
-                  <Auth role={options.auth}>
+                {options.auth || options.role !== undefined ? (
+                  <Auth auth={options.auth} role={options.role}>
                     <Component {...pageProps} />
                   </Auth>
                 ) : (
@@ -86,32 +112,39 @@ export default function MyApp({
 
 type AuthProps = {
   children: JSX.Element;
-  role: Role | boolean;
+  auth?: boolean;
+  role?: Role;
 };
 
-function Auth({ children, role }: AuthProps): JSX.Element {
+function Auth({ children, auth, role }: AuthProps): JSX.Element {
   const router = useRouter();
+  const toast = useToast();
   const { data, status } = useSession();
 
   useEffect(() => {
-    if (status === "loading" || !router.isReady) return; // Do nothing while loading
-    if (status === "unauthenticated") {
+    if (!auth && !role) {
+      return;
+    }
+    if (status === "loading" || !router.isReady) {
+      return; // Do nothing while loading
+    } else if (status === "unauthenticated") {
       router.push(`/auth/signin?callbackUrl=${router.asPath}`); // If not authenticated, force log in
       return;
     } else {
       if (!data?.user) {
         return;
-      }
-      if (role === Role.Admin && data?.user.role !== Role.Admin) {
-        router.push("/api/auth/signout"); // If not admin, force log in
+      } else if (auth || !role) {
         return;
-      }
-      if (role === Role.Reviewer && data?.user.role !== Role.Reviewer) {
-        router.push("/api/auth/signout"); // If not reviewer, force log in
-        return;
+      } else if (!isRightRole(data.user.role, role)) {
+        router.push("/api/auth/signout");
+        toast({
+          title: "You are not authorized to access this page",
+          description: `Required role: ${role}, your role: ${data.user.role}`,
+          status: "error",
+        });
       }
     }
-  }, [data?.user, role, router, status]);
+  }, [auth, data?.user, role, router, status, toast]);
 
   if (status === "authenticated") {
     return children;

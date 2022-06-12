@@ -77,4 +77,4 @@ export default function VideoCreate() {
   );
 }
 
-VideoCreate.options = { auth: Role.User, hideTitle: true } as PageOptions;
+VideoCreate.options = { role: Role.User, hideTitle: true } as PageOptions;

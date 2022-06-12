@@ -468,4 +468,4 @@ export default function Buy() {
   );
 }
 
-Buy.options = { auth: Role.User, hideTitle: true } as PageOptions;
+Buy.options = { role: Role.User, hideTitle: true } as PageOptions;

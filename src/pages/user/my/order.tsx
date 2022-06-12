@@ -135,4 +135,4 @@ function DeleteOrderButton({ id, mutate }: DeleteOrderButtonProps) {
   );
 }
 
-UserMyOrder.options = { auth: Role.User } as PageOptions;
+UserMyOrder.options = { role: Role.User } as PageOptions;

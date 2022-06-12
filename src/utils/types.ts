@@ -26,7 +26,8 @@ import NextCors from "nextjs-cors";
 import prisma from "./prisma";
 
 export type PageOptions = {
-  auth: Role | boolean;
+  auth?: boolean;
+  role?: Role;
   width?: string | number;
   bgColorLight?: string;
   bgColorDark?: string;
@@ -52,6 +53,23 @@ export async function setCORS(req: NextApiRequest, res: NextApiResponse) {
     ],
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
+}
+
+function changeRoleToNumber(role: Role): number {
+  switch (role) {
+    case Role.Admin:
+      return 3;
+    case Role.Reviewer:
+      return 2;
+    case Role.User:
+      return 1;
+    case Role.Restricted:
+      return 0;
+  }
+}
+
+export function isRightRole(requested: Role, required: Role): boolean {
+  return changeRoleToNumber(requested) >= changeRoleToNumber(required);
 }
 
 export enum SubErrorType {
@@ -124,23 +142,11 @@ export function handleRoute<GetRes, PostRes, PatchRes, DeleteRes>(
           message: "Please sign in",
         });
       }
-      if (role === Role.Admin) {
-        if (session.user.role !== Role.Admin) {
-          return res.status(403).json({
-            error: SubErrorType.NotUserSpecificAuthenticated,
-            message: "You are not an admin",
-          });
-        }
-      } else if (role === Role.Reviewer) {
-        if (
-          session.user.role !== Role.Reviewer &&
-          session.user.role !== Role.Admin
-        ) {
-          return res.status(403).json({
-            error: SubErrorType.NotUserSpecificAuthenticated,
-            message: "You are not a reviewer",
-          });
-        }
+      if (!isRightRole(session.user.role, role)) {
+        return res.status(403).json({
+          error: SubErrorType.NotUserSpecificAuthenticated,
+          message: `Your role is ${session.user.role}, but we need ${role}`,
+        });
       }
       params = { ...params, session };
     }
