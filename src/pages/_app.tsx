@@ -16,6 +16,7 @@ import { PageOptions } from "../utils/types";
 import { SWRConfig } from "swr";
 import AdminLayout from "../components/adminLayout";
 import UserLayout from "../components/userLayout";
+import isRightRole from "../utils/role";
 
 type NextPageWithAuth = NextPage & {
   options: PageOptions;
@@ -26,23 +27,6 @@ type AppPropsWithAuth = AppProps & {
 };
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
-
-function changeRoleToNumber(role: Role): number {
-  switch (role) {
-    case Role.Admin:
-      return 3;
-    case Role.Reviewer:
-      return 2;
-    case Role.User:
-      return 1;
-    case Role.Restricted:
-      return 0;
-  }
-}
-
-function isRightRole(requested: Role, required: Role): boolean {
-  return changeRoleToNumber(requested) >= changeRoleToNumber(required);
-}
 
 function getCustomLayout(
   pathname: string

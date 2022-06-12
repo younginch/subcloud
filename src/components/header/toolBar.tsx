@@ -45,41 +45,7 @@ export default function ToolBar({ isLarge }: Props): JSX.Element {
               <PopoverCloseButton />
               <PopoverBody p={0}>
                 <Stack p={0}>
-                  <ProfileModal
-                    profileImageUrl={session.user.image ?? undefined}
-                    userName={session.user?.name}
-                    userEmail={session.user?.email}
-                    userId={session.user.id}
-                  >
-                    <HStack mt={4}>
-                      <Button
-                        colorScheme="blue"
-                        onClick={() => {
-                          signOut();
-                        }}
-                      >
-                        Sign Out
-                      </Button>
-                      <Spacer />
-                      {session?.user.role === Role.Admin ||
-                      process.env.NODE_ENV !== "production" ? (
-                        <Button
-                          onClick={async () => {
-                            if (process.env.NODE_ENV !== "production") {
-                              await axios.patch("/api/user/debug", {
-                                id: session.user.id,
-                              });
-                            }
-                            router.push("/admin");
-                          }}
-                        >
-                          Admin
-                        </Button>
-                      ) : (
-                        <></>
-                      )}
-                    </HStack>
-                  </ProfileModal>
+                  <ProfileModal />
                 </Stack>
               </PopoverBody>
             </PopoverContent>
