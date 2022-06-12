@@ -25,17 +25,16 @@ import { ResRequestSearch, ResSubSearch } from "../../utils/types";
 export default function ProfileModal() {
   const { data: session } = useSession();
   const { data } = useSWR<Session>("/api/auth/session");
-  const fetcher = async (url: string) => {
-    const userId = session?.user.id;
-    const res = await axios.get<ResSubSearch | ResRequestSearch>(url, {
-      params: { userId },
-    });
-    return res.data;
-  };
   const { data: subData, error: subError } = useSWR("/api/sub/search", fetcher);
   const { data: requestData, error: requestError } = useSWR(
     "/api/request/search",
-    fetcher
+    async (url: string) => {
+      const userId = session?.user.id;
+      const res = await axios.get<ResSubSearch | ResRequestSearch>(url, {
+        params: { userId },
+      });
+      return res.data;
+    }
   );
 
   return (
