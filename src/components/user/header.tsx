@@ -1,7 +1,6 @@
 // Chakra imports
 import {
   Avatar,
-  Badge,
   Box,
   Button,
   Flex,
