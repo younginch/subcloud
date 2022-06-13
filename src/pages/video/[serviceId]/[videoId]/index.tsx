@@ -156,4 +156,4 @@ export const getServerSideProps: GetServerSideProps<VideoProps> = async (
   };
 };
 
-RequestList.options = { auth: false } as PageOptions;
+RequestList.options = { auth: false, bgColorLight: "#F7FAFC" } as PageOptions;

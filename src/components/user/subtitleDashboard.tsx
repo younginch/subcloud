@@ -17,7 +17,6 @@ type Props = {
   user: ResUserSearch;
   subs: ResSubSearch;
 };
-
 export default function SubtitleDashboard({ user, subs }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const subTextColor = useColorModeValue("gray.600", "gray.400");
