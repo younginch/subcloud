@@ -1,11 +1,132 @@
-import { Box, CircularProgress, Text } from "@chakra-ui/react";
-import { Role } from "@prisma/client";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  HStack,
+  Input,
+  List,
+  Select,
+  Stack,
+  Text,
+  Textarea,
+} from "@chakra-ui/react";
+import { Review, ReviewType, Role } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import YouTube, { YouTubePlayer } from "react-youtube";
+import useSWR from "swr";
 import { parseSrt, useInterval } from "../../utils/subtitle";
 import { PageOptions, ResSubRead } from "../../utils/types";
+
+type ReviewAddFormData = {
+  type: ReviewType;
+  content: string;
+  startTime: number;
+  endTime: number;
+};
+
+function ReviewAddForm() {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<ReviewAddFormData>();
+
+  const onSubmit: SubmitHandler<ReviewAddFormData> = ({
+    type,
+    content,
+    startTime,
+    endTime,
+  }) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post("/api/review", { type, content, startTime, endTime })
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  };
+
+  return (
+    <Box borderWidth="1px">
+      <form>
+        <FormControl isInvalid={errors.type !== undefined}>
+          <FormLabel htmlFor="type">Type</FormLabel>
+          <Select
+            id="type"
+            placeholder="Select review type"
+            {...register("type")}
+          >
+            <option id="Mistranslation">Mistranslation</option>
+            <option id="IncorrectTiming">IncorrectTiming</option>
+            <option id="NoSubtitle">NoSubtitle</option>
+            <option id="IncorrectTitle">IncorrectTitle</option>
+            <option id="IncorrectLanguage">IncorrectLanguage</option>
+            <option id="GuidelineViolation">GuidelineViolation</option>
+            <option id="Etc">Etc</option>
+          </Select>
+          <FormErrorMessage>
+            {errors.type && errors.type.message}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={errors.content !== undefined}>
+          <FormLabel htmlFor="content">Content</FormLabel>
+          <Textarea {...register("content")} />
+          <FormErrorMessage>
+            {errors.content && errors.content.message}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={errors.startTime !== undefined}>
+          <FormLabel htmlFor="startTime">Start Time</FormLabel>
+          <Input type="number" id="startTime" {...register("startTime")} />
+          <FormErrorMessage>
+            {errors.startTime && errors.startTime.message}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={errors.endTime !== undefined}>
+          <FormLabel htmlFor="endTime">End Time</FormLabel>
+          <Input type="number" id="endTime" {...register("endTime")} />
+          <FormErrorMessage>
+            {errors.endTime && errors.endTime.message}
+          </FormErrorMessage>
+        </FormControl>
+        <Button onClick={handleSubmit(onSubmit)} isLoading={isSubmitting}>
+          추가
+        </Button>
+      </form>
+    </Box>
+  );
+}
+
+type ReviewListProps = {
+  subId: string;
+};
+
+function ReviewList({ subId }: ReviewListProps) {
+  const { data, mutate } = useSWR<Review[]>(`/api/review?subId=${subId}`);
+
+  return (
+    <List>
+      {data?.map((review) => (
+        <Box key={review.id}>
+          <Text>{review.startTime}</Text>
+          <Text>{review.endTime}</Text>
+          <Text>{review.type}</Text>
+          <Text>{review.content}</Text>
+          <Button>삭제</Button>
+        </Box>
+      ))}
+    </List>
+  );
+}
 
 type SubtitleData = {
   line: string;
@@ -26,6 +147,7 @@ export default function ReviewDetail() {
   const [options, setOptions] = useState<YoutubeOptions>();
   const [player, setPlayer] = useState<YouTubePlayer>();
   const [width, setWidth] = useState(1024);
+  const [sub, setSub] = useState<ResSubRead>();
   const [subData, setSubData] = useState<SubtitleData>([]);
   const [subText, setSubText] = useState<string>("");
 
@@ -47,6 +169,7 @@ export default function ReviewDetail() {
     axios
       .get<ResSubRead>(`/api/sub`, { params: { id: router.query.subId } })
       .then((res) => {
+        setSub(res.data);
         axios.get(res.data.url, { responseType: "blob" }).then((res) => {
           const blob = new Blob([res.data], {
             type: res.headers["content-type"],
@@ -78,23 +201,36 @@ export default function ReviewDetail() {
 
   useInterval(intervalSub, 20);
 
+  function onApprove() {}
+
+  function onReject() {}
+
   return (
-    <>
-      <Box w="100%" h="80vh">
-        {options ? (
-          <YouTube
-            videoId="i7muqI90138"
-            opts={options}
-            onReady={(event) => setPlayer(event.target)}
-          />
-        ) : (
-          <CircularProgress />
-        )}
-        <Text fontSize="4xl" noOfLines={2}>
-          {subText}
-        </Text>
-      </Box>
-    </>
+    <HStack>
+      <Stack>
+        <Box w="100%" h="80vh">
+          {options && sub ? (
+            <YouTube
+              videoId={sub?.videoId}
+              opts={options}
+              onReady={(event) => setPlayer(event.target)}
+            />
+          ) : (
+            <CircularProgress />
+          )}
+          <Text fontSize="4xl" noOfLines={2}>
+            {subText}
+          </Text>
+        </Box>
+      </Stack>
+      <Stack>
+        <ReviewAddForm />
+        <HStack>
+          <Button onClick={onApprove}>승인</Button>
+          <Button onClick={onReject}>반려</Button>
+        </HStack>
+      </Stack>
+    </HStack>
   );
 }
 

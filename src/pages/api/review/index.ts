@@ -2,10 +2,10 @@ import { Review, Role } from "@prisma/client";
 import { handleRoute, RouteParams } from "../../../utils/types";
 
 async function GetReview({ req, res, prisma }: RouteParams<Review[]>) {
-  const id = req.query.id as string;
+  const subId = req.query.subId as string;
   const review = await prisma.review.findMany({
     where: {
-      subId: id,
+      subId,
     },
   });
   return res.json(review);

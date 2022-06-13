@@ -20,8 +20,7 @@ import {
   IconButton,
   MenuItem,
 } from "@chakra-ui/react";
-import { request } from "@playwright/test";
-import { Status } from "@prisma/client";
+import { SubStatus } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
@@ -38,7 +37,7 @@ export default function SubPanel(props: SubPanelProps) {
   const router = useRouter();
   const toast = useToast();
   const [subs, setSubs] = useState<ResSubSearch>(props.subs);
-  const [subStatus, setSubStatus] = useState<Status | "all">("all");
+  const [subStatus, setSubStatus] = useState<SubStatus | "all">("all");
 
   useEffect(getSubs, [router.query.userId, subStatus, toast]);
 
@@ -73,14 +72,14 @@ export default function SubPanel(props: SubPanelProps) {
               title="진행도"
               type="radio"
               onChange={(value) => {
-                setSubStatus(value as Status | "all");
+                setSubStatus(value as SubStatus | "all");
               }}
             >
               <MenuItemOption value="all">전체</MenuItemOption>
-              <MenuItemOption value={Status.Pending}>대기중</MenuItemOption>
-              <MenuItemOption value={Status.Approved}>승인</MenuItemOption>
-              <MenuItemOption value={Status.Rejected}>거부</MenuItemOption>
-              <MenuItemOption value={Status.Reported}>신고</MenuItemOption>
+              <MenuItemOption value={SubStatus.Pending}>대기중</MenuItemOption>
+              <MenuItemOption value={SubStatus.Approved}>승인</MenuItemOption>
+              <MenuItemOption value={SubStatus.Rejected}>거부</MenuItemOption>
+              <MenuItemOption value={SubStatus.Reported}>신고</MenuItemOption>
             </MenuOptionGroup>
           </MenuList>
         </Menu>
