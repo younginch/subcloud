@@ -11,6 +11,7 @@ import GeneralTable from "../ranking/generalTable";
 import { ResSubSearch } from "../../utils/types";
 import ProfileSubtitleRow from "./profileSubtitleRow";
 import UserActivity from "./graphs/userActivity";
+import CalendarChart from "./graphs/calanderChart";
 
 type Props = {
   subs: ResSubSearch;
@@ -18,6 +19,7 @@ type Props = {
 
 export default function SubtitleDashboard({ subs }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
+  const subTextColor = useColorModeValue("gray.600", "gray.400");
   const bgColor = useColorModeValue("white", "#1F2733");
   const captions = ["#", "Title", "Channel", "Language", "Views", "Uploaded"];
 
@@ -48,21 +50,23 @@ export default function SubtitleDashboard({ subs }: Props) {
                 >
                   자막 언어
                 </Text>
+                <Text color={subTextColor} fontSize="sm">
+                  Top 3 language
+                </Text>
               </Flex>
             </CardHeader>
             <Flex
               direction="column"
-              justify="center"
               align="center"
               position="relative"
               h="100%"
+              color={textColor}
+              fontWeight="bold"
             >
-              <Text fontSize="60px" fontWeight="bold" color={textColor}>
+              <Text fontSize="60px" mt={5}>
                 Korean
               </Text>
-              <Text fontSize="30px" fontWeight="bold" color={textColor}>
-                English
-              </Text>
+              <Text fontSize="30px">English</Text>
             </Flex>
           </Card>
         </Grid>
@@ -74,8 +78,7 @@ export default function SubtitleDashboard({ subs }: Props) {
         >
           <UserActivity
             title="하이라이트"
-            percentage={23}
-            chart={<BarChart />}
+            chart={<CalendarChart count={200} />}
           />
           <SalesOverview
             title="Activity Overview"
@@ -83,12 +86,7 @@ export default function SubtitleDashboard({ subs }: Props) {
             chart={<LineChart />}
           />
         </Grid>
-        <Box
-          mt={10}
-          overflowX={{ sm: "scroll", xl: "hidden" }}
-          bg={bgColor}
-          borderRadius="20px"
-        >
+        <Box mt={10} bg={bgColor} borderRadius="20px">
           <Text p="22px" fontSize="lg" color={textColor} fontWeight="bold">
             인기 자막
           </Text>
@@ -135,6 +133,7 @@ export default function SubtitleDashboard({ subs }: Props) {
     </>
   );
 }
+
 function _getTabIndex(): number | undefined {
   throw new Error("Function not implemented.");
 }

@@ -22,6 +22,7 @@ export default function UserSubtitle({ subs }: UserReadProps) {
         <Box
           pl={{ base: "25px", md: "40px", xl: "60px" }}
           pr={{ base: "25px", md: "40px", xl: "60px" }}
+          overflowX={{ base: "scroll", xl: "hidden" }}
         >
           <GeneralTable captions={captions}>
             {subs.map((sub, index) => {

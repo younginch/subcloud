@@ -15,11 +15,10 @@ import { CartIcon, RocketIcon, StatsIcon, WalletIcon } from "../icons";
 
 type Props = {
   title: string;
-  percentage: number;
   chart: ReactElement<any, any>;
 };
 
-export default function UserActivity({ title, percentage, chart }: Props) {
+export default function UserActivity({ title, chart }: Props) {
   const iconBoxInside = useColorModeValue("white", "white");
   const textColor = useColorModeValue("gray.700", "white");
   return (
@@ -28,16 +27,6 @@ export default function UserActivity({ title, percentage, chart }: Props) {
         <Stack>
           <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
             자막 제작 통계
-          </Text>
-          <Text fontSize="md" fontWeight="medium" color="gray.400">
-            <Text
-              as="span"
-              color={percentage > 0 ? "green.400" : "red.400"}
-              fontWeight="bold"
-            >
-              {percentage > 0 ? `+${percentage}%` : `-${percentage}%`}
-            </Text>{" "}
-            than last week
           </Text>
         </Stack>
       </CardHeader>
