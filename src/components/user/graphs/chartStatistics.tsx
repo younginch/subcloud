@@ -20,11 +20,17 @@ export default function ChartStatistics({
   return (
     <Flex direction="column">
       <Flex alignItems="center">
-        <IconBox as="box" h={"30px"} w={"30px"} bg={iconTeal} me="6px">
+        <IconBox
+          as="box"
+          h={{ base: "25px", md: "30px" }}
+          w={{ base: "25px", md: "30px" }}
+          bg={iconTeal}
+          me="6px"
+        >
           {icon}
         </IconBox>
         <Text
-          fontSize="sm"
+          fontSize={{ base: "5px", xl: "13px" }}
           color="gray.400"
           fontWeight="semibold"
           sx={{ whiteSpace: "nowrap" }}
@@ -33,7 +39,13 @@ export default function ChartStatistics({
           {title}
         </Text>
       </Flex>
-      <Text fontSize="lg" color={textColor} fontWeight="bold" mb="6px" my="6px">
+      <Text
+        fontSize={{ base: "sm", xl: "lg" }}
+        color={textColor}
+        fontWeight="bold"
+        mb="6px"
+        my="6px"
+      >
         {amount}
       </Text>
       <Progress

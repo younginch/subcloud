@@ -71,7 +71,6 @@ function SiteMap() {
       <WrapItem>
         <Stack>
           <Heading size="sm">{t("legal")}</Heading>
-          <FooterLink route="/info/company" />
           <FooterLink route="/info/terms" />
           <FooterLink route="/info/privacy" />
           <FooterLink route="/info/dmca" />

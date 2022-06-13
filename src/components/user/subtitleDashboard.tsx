@@ -6,30 +6,29 @@ import CardHeader from "./card/cardHeader";
 import Card from "./card/card";
 import SalesOverview from "./graphs/salesOverview";
 import LineChart from "./graphs/lineChart";
-import BarChart from "./graphs/barChart";
 import GeneralTable from "../ranking/generalTable";
-import { ResSubSearch } from "../../utils/types";
+import { ResSubSearch, ResUserSearch } from "../../utils/types";
 import ProfileSubtitleRow from "./profileSubtitleRow";
 import UserActivity from "./graphs/userActivity";
+import CalendarChart from "./graphs/calanderChart";
+import { noScrollbarsClassName } from "react-remove-scroll-bar";
 
 type Props = {
+  user: ResUserSearch;
   subs: ResSubSearch;
 };
 
-export default function SubtitleDashboard({ subs }: Props) {
-  const bgProfile = useColorModeValue(
-    "hsla(0,0%,100%,.8)",
-    "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
-  );
+export default function SubtitleDashboard({ user, subs }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
+  const subTextColor = useColorModeValue("gray.600", "gray.400");
   const bgColor = useColorModeValue("white", "#1F2733");
   const captions = ["#", "Title", "Channel", "Language", "Views", "Uploaded"];
 
   return (
     <>
       <Box
-        pl={{ base: "25px", md: "40px", xl: "60px" }}
-        pr={{ base: "25px", md: "40px", xl: "60px" }}
+        pl={{ base: "15px", md: "40px", xl: "60px" }}
+        pr={{ base: "15px", md: "40px", xl: "60px" }}
       >
         <Grid
           templateColumns={{
@@ -39,8 +38,15 @@ export default function SubtitleDashboard({ subs }: Props) {
           my="26px"
           gap="18px"
         >
-          <UserRatingComponent gridArea="2 / 1 / 3 / 2" />
-          <FulfilledGraph />
+          <UserRatingComponent
+            gridArea="2 / 1 / 3 / 2"
+            rating={user._count.ratings}
+            percentage={user._percentage.rating}
+          />
+          <FulfilledGraph
+            fulfilledRequest={user._count.fulfilledRequests}
+            percentage={user._percentage.fulfilledRequest}
+          />
           <Card gridArea={{ md: "2 / 3 / 3 / 4", "2xl": "auto" }}>
             <CardHeader mb="24px">
               <Flex direction="column">
@@ -52,21 +58,23 @@ export default function SubtitleDashboard({ subs }: Props) {
                 >
                   자막 언어
                 </Text>
+                <Text color={subTextColor} fontSize="sm">
+                  Top 3 language
+                </Text>
               </Flex>
             </CardHeader>
             <Flex
               direction="column"
-              justify="center"
               align="center"
               position="relative"
               h="100%"
+              color={textColor}
+              fontWeight="bold"
             >
-              <Text fontSize="60px" fontWeight="bold" color={textColor}>
+              <Text fontSize="60px" mt={5}>
                 Korean
               </Text>
-              <Text fontSize="30px" fontWeight="bold" color={textColor}>
-                English
-              </Text>
+              <Text fontSize="30px">English</Text>
             </Flex>
           </Card>
         </Grid>
@@ -78,8 +86,9 @@ export default function SubtitleDashboard({ subs }: Props) {
         >
           <UserActivity
             title="하이라이트"
-            percentage={23}
-            chart={<BarChart />}
+            chart={<CalendarChart count={200} />}
+            subs={user._count.subs}
+            views={user._count.views}
           />
           <SalesOverview
             title="Activity Overview"
@@ -87,58 +96,58 @@ export default function SubtitleDashboard({ subs }: Props) {
             chart={<LineChart />}
           />
         </Grid>
-        <Box
-          mt={10}
-          overflowX={{ sm: "scroll", xl: "hidden" }}
-          bg={bgColor}
-          borderRadius="20px"
-        >
+        <Box mt={10} bg={bgColor} borderRadius="20px">
           <Text p="22px" fontSize="lg" color={textColor} fontWeight="bold">
             인기 자막
           </Text>
-          <GeneralTable captions={captions}>
-            {subs.map((sub, index) => {
-              return (
-                <ProfileSubtitleRow
-                  rank={index + 1}
-                  key={sub.id}
-                  userId={
-                    router.query.userId ? router.query.userId[0] : "Annonymous"
-                  }
-                  platform={sub.serviceId}
-                  videoName={
-                    sub.video.youtubeVideo
-                      ? sub.video.youtubeVideo.title
-                      : "(Unknown)"
-                  }
-                  videoUrl={sub.video.url}
-                  channelName={
-                    sub.video.youtubeVideo
-                      ? sub.video.youtubeVideo.channel.title
-                      : "(Unknown)"
-                  }
-                  channelUrl={
-                    sub.video.youtubeVideo
-                      ? sub.video.youtubeVideo.channel.channelUrl
-                      : "(Unknown)"
-                  }
-                  channelImageUrl={
-                    sub.video.youtubeVideo
-                      ? sub.video.youtubeVideo.channel.thumbnailUrl
-                      : "(Unknown)"
-                  }
-                  lang={sub.lang}
-                  viewCount={sub.views}
-                  uploadDate={sub.updatedAt.toString()}
-                />
-              );
-            })}
-          </GeneralTable>
+          <Box overflow={{ base: "scroll", lg: "hidden" }}>
+            <GeneralTable captions={captions}>
+              {subs.map((sub, index) => {
+                return (
+                  <ProfileSubtitleRow
+                    rank={index + 1}
+                    key={sub.id}
+                    userId={
+                      router.query.userId
+                        ? router.query.userId[0]
+                        : "Annonymous"
+                    }
+                    platform={sub.serviceId}
+                    videoName={
+                      sub.video.youtubeVideo
+                        ? sub.video.youtubeVideo.title
+                        : "(Unknown)"
+                    }
+                    videoUrl={sub.video.url}
+                    channelName={
+                      sub.video.youtubeVideo
+                        ? sub.video.youtubeVideo.channel.title
+                        : "(Unknown)"
+                    }
+                    channelUrl={
+                      sub.video.youtubeVideo
+                        ? sub.video.youtubeVideo.channel.channelUrl
+                        : "(Unknown)"
+                    }
+                    channelImageUrl={
+                      sub.video.youtubeVideo
+                        ? sub.video.youtubeVideo.channel.thumbnailUrl
+                        : "(Unknown)"
+                    }
+                    lang={sub.lang}
+                    viewCount={sub.views}
+                    uploadDate={sub.updatedAt.toString()}
+                  />
+                );
+              })}
+            </GeneralTable>
+          </Box>
         </Box>
       </Box>
     </>
   );
 }
+
 function _getTabIndex(): number | undefined {
   throw new Error("Function not implemented.");
 }

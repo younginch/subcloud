@@ -57,3 +57,12 @@
 .buyWrap .chakra-wrap__list {
   justify-content: center;
 }
+
+.tableHideScroll {
+  -ms-overflow-style: none;
+  scrollbar-color: transparent transparent;
+}
+
+.hideScrollbar::-webkit-scrollbar {
+  display: none;
+}

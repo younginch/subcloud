@@ -47,11 +47,11 @@ const Header = ({
   );
   const emailColor = useColorModeValue("gray.400", "gray.300");
   const tabTextSize = { base: "xs", md: "12px", lg: "15px" };
+  const headerMargin = { base: "5px", md: "10px", xl: "15px" };
   return (
     <Box
+      m={headerMargin}
       mb={{ base: "155px", md: "75px", xl: "70px" }}
-      ml={{ base: "5px", md: "10px", xl: "15px" }}
-      mr={{ base: "5px", md: "10px", xl: "15px" }}
       borderRadius="15px"
       display="flex"
       flexDirection="column"
@@ -79,8 +79,6 @@ const Header = ({
           backdropFilter="saturate(200%) blur(70px)"
           position="absolute"
           boxShadow="0px 2px 5.5px rgba(0, 0, 0, 0.02)"
-          border="2px solid"
-          borderColor={borderProfileColor}
           bg={backgroundProfile}
           p="24px"
           borderRadius="20px"
