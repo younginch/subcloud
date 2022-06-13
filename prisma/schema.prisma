@@ -144,7 +144,7 @@ model Sub {
   video     Video     @relation(fields: [serviceId, videoId], references: [serviceId, videoId])
   ratings   Rating[]
   lang      String
-  status    Status    @default(Pending)
+  status    SubStatus @default(Pending)
   views     Int       @default(0)
 
   reviews      Review[]
@@ -277,11 +277,13 @@ enum Role {
   Restricted
 }
 
-enum Status {
+enum SubStatus {
   Pending
+  InReview
   Approved
   Rejected
   Reported
+  Private
 }
 
 enum ReviewType {

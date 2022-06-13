@@ -31,12 +31,12 @@ export default function Review() {
   return (
     <>
       <TableContainer>
-        <Table>
+        <Table size="sm">
           <Thead>
             <Tr>
-              <Th>To convert</Th>
-              <Th>into</Th>
-              <Th isNumeric>multiply by</Th>
+              <Th>Title</Th>
+              <Th>Channel</Th>
+              <Th>Actions</Th>
             </Tr>
           </Thead>
           <Tbody>

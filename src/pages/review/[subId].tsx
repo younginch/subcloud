@@ -1,11 +1,24 @@
-import { Box, CircularProgress, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  HStack,
+  Input,
+  Select,
+  Stack,
+  Text,
+  Textarea,
+} from "@chakra-ui/react";
 import { Role } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import YouTube, { YouTubePlayer } from "react-youtube";
 import { parseSrt, useInterval } from "../../utils/subtitle";
-import { PageOptions, ResSubRead } from "../../utils/types";
+import { PageOptions, ResSub, ResSubRead } from "../../utils/types";
 
 type SubtitleData = {
   line: string;
@@ -26,6 +39,7 @@ export default function ReviewDetail() {
   const [options, setOptions] = useState<YoutubeOptions>();
   const [player, setPlayer] = useState<YouTubePlayer>();
   const [width, setWidth] = useState(1024);
+  const [sub, setSub] = useState<ResSubRead>();
   const [subData, setSubData] = useState<SubtitleData>([]);
   const [subText, setSubText] = useState<string>("");
 
@@ -47,6 +61,7 @@ export default function ReviewDetail() {
     axios
       .get<ResSubRead>(`/api/sub`, { params: { id: router.query.subId } })
       .then((res) => {
+        setSub(res.data);
         axios.get(res.data.url, { responseType: "blob" }).then((res) => {
           const blob = new Blob([res.data], {
             type: res.headers["content-type"],
@@ -79,22 +94,50 @@ export default function ReviewDetail() {
   useInterval(intervalSub, 20);
 
   return (
-    <>
-      <Box w="100%" h="80vh">
-        {options ? (
-          <YouTube
-            videoId="i7muqI90138"
-            opts={options}
-            onReady={(event) => setPlayer(event.target)}
-          />
-        ) : (
-          <CircularProgress />
-        )}
-        <Text fontSize="4xl" noOfLines={2}>
-          {subText}
-        </Text>
-      </Box>
-    </>
+    <HStack>
+      <Stack>
+        <Box w="100%" h="80vh">
+          {options ? (
+            <YouTube
+              videoId={sub?.videoId}
+              opts={options}
+              onReady={(event) => setPlayer(event.target)}
+            />
+          ) : (
+            <CircularProgress />
+          )}
+          <Text fontSize="4xl" noOfLines={2}>
+            {subText}
+          </Text>
+        </Box>
+      </Stack>
+      <Stack>
+        <Box borderWidth="1px">
+          <form>
+            <FormControl>
+              <FormLabel htmlFor="type">Type</FormLabel>
+              <Select id="type" placeholder="Select review type">
+                <option id="Mistranslation">Mistranslation</option>
+                <option id="IncorrectTiming">IncorrectTiming</option>
+                <option id="NoSubtitle">NoSubtitle</option>
+                <option id="IncorrectTitle">IncorrectTitle</option>
+                <option id="IncorrectLanguage">IncorrectLanguage</option>
+                <option id="GuidelineViolation">GuidelineViolation</option>
+                <option id="Etc">Etc</option>
+              </Select>
+              <FormErrorMessage>{}</FormErrorMessage>
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="content">Content</FormLabel>
+              <Textarea />
+              <FormErrorMessage>{}</FormErrorMessage>
+            </FormControl>
+            <Button type="submit">추가</Button>
+          </form>
+        </Box>
+        <Button>반려</Button>
+      </Stack>
+    </HStack>
   );
 }
 
