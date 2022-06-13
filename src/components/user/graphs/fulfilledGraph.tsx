@@ -10,7 +10,15 @@ import GradientProgress from "@delowar/react-circle-progressbar";
 import { IoEllipsisHorizontal } from "react-icons/io5";
 import Card from "../card/card";
 
-export default function FulfilledGraph() {
+type Props = {
+  fulfilledRequest: number;
+  percentage: number;
+};
+
+export default function FulfilledGraph({
+  fulfilledRequest,
+  percentage,
+}: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const subTextColor = useColorModeValue("gray.600", "gray.400");
   return (
@@ -43,7 +51,7 @@ export default function FulfilledGraph() {
                 요청 충족 수
               </Text>
               <Text color="#fff" fontSize="lg" fontWeight="bold">
-                145 명
+                {fulfilledRequest} 명
               </Text>
             </Flex>
             <Flex
@@ -58,13 +66,13 @@ export default function FulfilledGraph() {
                 오류 제보
               </Text>
               <Text color="#fff" fontSize="lg" fontWeight="bold">
-                25 회
+                0 회
               </Text>
             </Flex>
           </Flex>
           <Box mx={{ sm: "auto", md: "0px" }}>
             <GradientProgress
-              percent={70}
+              percent={percentage}
               viewport
               size={
                 window.innerWidth >= 1024
@@ -91,7 +99,7 @@ export default function FulfilledGraph() {
                   fontWeight="bold"
                   mb="4px"
                 >
-                  15%
+                  {percentage}%
                 </Text>
                 <Text color="gray.400" fontSize="sm">
                   기여도

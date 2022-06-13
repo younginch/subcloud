@@ -255,6 +255,14 @@ export type UserWithCount = User & {
   };
 };
 
+type UserWithPercentage = UserWithCount & {
+  _percentage: {
+    fulfilledRequest: number;
+    rating: number;
+    totalUser: number;
+  };
+};
+
 export type RankQueryData = {
   keyword: string;
 };
@@ -271,6 +279,7 @@ export type ResSubRead = SubWithFileUrl;
 export type ResSubSearch = SubWithVideo[];
 export type ResSubView = Sub;
 export type ResUser = User;
+export type ResUserSearch = UserWithPercentage;
 export type ResVideo = VideoWithInfo;
 export type ResVideoSearch = VideoWithCount[];
 export type ResRankingSub = SubWithVideoWithUser[];

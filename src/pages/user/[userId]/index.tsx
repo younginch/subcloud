@@ -1,26 +1,22 @@
 import { Stack, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { GetServerSideProps } from "next";
-import {
-  PageOptions,
-  ResRequestSearch,
-  ResSubSearch,
-} from "../../../utils/types";
+import { PageOptions, ResSubSearch, ResUserSearch } from "../../../utils/types";
 import { FiBox } from "react-icons/fi";
 import SubtitleDashboard from "../../../components/user/subtitleDashboard";
 import PublicProfileLayout from "../../../components/user/publicProfileLayout";
 import { PublicProfileTab } from "../../../utils/tabs";
 
 type UserReadProps = {
-  requests: ResRequestSearch;
+  user: ResUserSearch;
   subs: ResSubSearch;
 };
 
-export default function UserIndex({ requests, subs }: UserReadProps) {
+export default function UserIndex({ user, subs }: UserReadProps) {
   return (
     <PublicProfileLayout currentTab={PublicProfileTab.Overview}>
       {subs.length > 0 ? (
-        <SubtitleDashboard subs={subs} />
+        <SubtitleDashboard user={user} subs={subs} />
       ) : (
         <Stack alignItems="center" spacing={5} h="55vh">
           <FiBox size={100} />
@@ -35,16 +31,16 @@ export const getServerSideProps: GetServerSideProps<UserReadProps> = async (
   context
 ) => {
   const { userId } = context.query;
-  const requestsRes = await axios.get(
-    `${process.env.NEXTAUTH_URL}/api/request/search?userId=${userId}`
+  const userRes = await axios.get(
+    `${process.env.NEXTAUTH_URL}/api/user/search?userId=${userId}`
   );
-  const subsRes = await axios.get(
+  const subRes = await axios.get(
     `${process.env.NEXTAUTH_URL}/api/sub/search?userId=${userId}`
   );
   return {
     props: {
-      requests: requestsRes.data,
-      subs: subsRes.data,
+      user: userRes.data,
+      subs: subRes.data,
     },
   };
 };

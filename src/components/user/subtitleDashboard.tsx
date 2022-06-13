@@ -7,17 +7,18 @@ import Card from "./card/card";
 import SalesOverview from "./graphs/salesOverview";
 import LineChart from "./graphs/lineChart";
 import GeneralTable from "../ranking/generalTable";
-import { ResSubSearch } from "../../utils/types";
+import { ResSubSearch, ResUserSearch } from "../../utils/types";
 import ProfileSubtitleRow from "./profileSubtitleRow";
 import UserActivity from "./graphs/userActivity";
 import CalendarChart from "./graphs/calanderChart";
 import { noScrollbarsClassName } from "react-remove-scroll-bar";
 
 type Props = {
+  user: ResUserSearch;
   subs: ResSubSearch;
 };
 
-export default function SubtitleDashboard({ subs }: Props) {
+export default function SubtitleDashboard({ user, subs }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const subTextColor = useColorModeValue("gray.600", "gray.400");
   const bgColor = useColorModeValue("white", "#1F2733");
@@ -37,8 +38,15 @@ export default function SubtitleDashboard({ subs }: Props) {
           my="26px"
           gap="18px"
         >
-          <UserRatingComponent gridArea="2 / 1 / 3 / 2" />
-          <FulfilledGraph />
+          <UserRatingComponent
+            gridArea="2 / 1 / 3 / 2"
+            rating={user._count.ratings}
+            percentage={user._percentage.rating}
+          />
+          <FulfilledGraph
+            fulfilledRequest={user._count.fulfilledRequests}
+            percentage={user._percentage.fulfilledRequest}
+          />
           <Card gridArea={{ md: "2 / 3 / 3 / 4", "2xl": "auto" }}>
             <CardHeader mb="24px">
               <Flex direction="column">
@@ -79,6 +87,8 @@ export default function SubtitleDashboard({ subs }: Props) {
           <UserActivity
             title="하이라이트"
             chart={<CalendarChart count={200} />}
+            subs={user._count.subs}
+            views={user._count.views}
           />
           <SalesOverview
             title="Activity Overview"
