@@ -6,12 +6,12 @@ import CardHeader from "./card/cardHeader";
 import Card from "./card/card";
 import SalesOverview from "./graphs/salesOverview";
 import LineChart from "./graphs/lineChart";
-import BarChart from "./graphs/barChart";
 import GeneralTable from "../ranking/generalTable";
 import { ResSubSearch } from "../../utils/types";
 import ProfileSubtitleRow from "./profileSubtitleRow";
 import UserActivity from "./graphs/userActivity";
 import CalendarChart from "./graphs/calanderChart";
+import { noScrollbarsClassName } from "react-remove-scroll-bar";
 
 type Props = {
   subs: ResSubSearch;
@@ -26,8 +26,8 @@ export default function SubtitleDashboard({ subs }: Props) {
   return (
     <>
       <Box
-        pl={{ base: "25px", md: "40px", xl: "60px" }}
-        pr={{ base: "25px", md: "40px", xl: "60px" }}
+        pl={{ base: "15px", md: "40px", xl: "60px" }}
+        pr={{ base: "15px", md: "40px", xl: "60px" }}
       >
         <Grid
           templateColumns={{
@@ -90,44 +90,48 @@ export default function SubtitleDashboard({ subs }: Props) {
           <Text p="22px" fontSize="lg" color={textColor} fontWeight="bold">
             인기 자막
           </Text>
-          <GeneralTable captions={captions}>
-            {subs.map((sub, index) => {
-              return (
-                <ProfileSubtitleRow
-                  rank={index + 1}
-                  key={sub.id}
-                  userId={
-                    router.query.userId ? router.query.userId[0] : "Annonymous"
-                  }
-                  platform={sub.serviceId}
-                  videoName={
-                    sub.video.youtubeVideo
-                      ? sub.video.youtubeVideo.title
-                      : "(Unknown)"
-                  }
-                  videoUrl={sub.video.url}
-                  channelName={
-                    sub.video.youtubeVideo
-                      ? sub.video.youtubeVideo.channel.title
-                      : "(Unknown)"
-                  }
-                  channelUrl={
-                    sub.video.youtubeVideo
-                      ? sub.video.youtubeVideo.channel.channelUrl
-                      : "(Unknown)"
-                  }
-                  channelImageUrl={
-                    sub.video.youtubeVideo
-                      ? sub.video.youtubeVideo.channel.thumbnailUrl
-                      : "(Unknown)"
-                  }
-                  lang={sub.lang}
-                  viewCount={sub.views}
-                  uploadDate={sub.updatedAt.toString()}
-                />
-              );
-            })}
-          </GeneralTable>
+          <Box overflow={{ base: "scroll", lg: "hidden" }}>
+            <GeneralTable captions={captions}>
+              {subs.map((sub, index) => {
+                return (
+                  <ProfileSubtitleRow
+                    rank={index + 1}
+                    key={sub.id}
+                    userId={
+                      router.query.userId
+                        ? router.query.userId[0]
+                        : "Annonymous"
+                    }
+                    platform={sub.serviceId}
+                    videoName={
+                      sub.video.youtubeVideo
+                        ? sub.video.youtubeVideo.title
+                        : "(Unknown)"
+                    }
+                    videoUrl={sub.video.url}
+                    channelName={
+                      sub.video.youtubeVideo
+                        ? sub.video.youtubeVideo.channel.title
+                        : "(Unknown)"
+                    }
+                    channelUrl={
+                      sub.video.youtubeVideo
+                        ? sub.video.youtubeVideo.channel.channelUrl
+                        : "(Unknown)"
+                    }
+                    channelImageUrl={
+                      sub.video.youtubeVideo
+                        ? sub.video.youtubeVideo.channel.thumbnailUrl
+                        : "(Unknown)"
+                    }
+                    lang={sub.lang}
+                    viewCount={sub.views}
+                    uploadDate={sub.updatedAt.toString()}
+                  />
+                );
+              })}
+            </GeneralTable>
+          </Box>
         </Box>
       </Box>
     </>
