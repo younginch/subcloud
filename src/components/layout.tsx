@@ -30,7 +30,7 @@ export default function Layout({ options, children }: Props) {
           w={options.width ?? "100%"}
           padding={options.width ? "12px" : 0}
           marginX={options.width ? "auto" : 0}
-          overflowX="auto"
+          overflow="hidden"
         >
           <Box bgColor={color} m={0} p={0}>
             {!options.hideTitle && (

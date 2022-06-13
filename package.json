@@ -48,6 +48,7 @@
     "react-hook-form": "^7.32.0",
     "react-hook-inview": "^4.5.0",
     "react-icons": "^4.4.0",
+    "react-remove-scroll-bar": "^2.3.3",
     "react-slick": "^0.29.0",
     "react-tooltip": "^4.2.21",
     "react-type-animation": "^1.1.3",

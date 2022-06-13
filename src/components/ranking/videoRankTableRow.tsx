@@ -9,6 +9,7 @@ type Props = {
   rank: number;
   key: string;
   name: string;
+  duration: number;
   requests: number;
   points: number;
   platform: string;
@@ -19,6 +20,7 @@ type Props = {
 export default function VideoTableRow({
   rank,
   name,
+  duration,
   platform,
   requests,
   points,
@@ -30,6 +32,19 @@ export default function VideoTableRow({
   const fontBreakPoints = { base: "15px", md: "20px" };
   const mainTextSize = { base: "12px", md: "15px" };
   const subTextSize = { base: "14px", md: "17px" };
+
+  const timeFormat = (time: number) => {
+    let second = time % 60;
+    if (time < 60) return `${second}s`;
+    time = Math.floor((time - second) / 60);
+    const minute = time % 60;
+    if (time < 60) return `${minute}:${second < 10 ? "0" + second : second}`;
+    const hour = Math.floor((time - minute) / 60);
+    return `${hour}:${minute < 10 ? "0" + minute : minute}:${
+      second < 10 ? "0" + second : second
+    }`;
+  };
+
   return (
     <Tr fontSize={mainTextSize} color={textColor}>
       <Td w="fit-content" fontSize={subTextSize}>
@@ -61,6 +76,13 @@ export default function VideoTableRow({
             </Text>
           </Link>
         </HStack>
+      </Td>
+      <Td
+        justifyContent="center"
+        w={{ base: "24px", md: "100px", lg: "150px" }}
+        fontSize={subTextSize}
+      >
+        <Text>{timeFormat(duration)}</Text>
       </Td>
       <Td
         justifyContent="center"

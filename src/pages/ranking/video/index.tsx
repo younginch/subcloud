@@ -12,7 +12,7 @@ import GeneralTable from "../../../components/ranking/generalTable";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 
 export default function RankingPage() {
-  const captions = ["#", "Title", "Language", "Requests", "Points"];
+  const captions = ["#", "Title", "Duration", "Language", "Requests", "Points"];
   const [lang, setLang] = useState("All Lang");
   const sortBy = "request"; //point
   const pageSize = 5;
@@ -78,6 +78,7 @@ export default function RankingPage() {
                 name={
                   video.youtubeVideo ? video.youtubeVideo.title : "no title"
                 }
+                duration={video.youtubeVideo ? video.youtubeVideo.duration : 0}
                 platform={video.serviceId}
                 requests={video._count.requests}
                 points={video._count.points}
