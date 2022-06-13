@@ -17,9 +17,17 @@ type Props = {
   title: string;
   percentage: number;
   chart: ReactElement<any, any>;
+  subs: number;
+  views: number;
 };
 
-export default function UserActivity({ title, percentage, chart }: Props) {
+export default function UserActivity({
+  title,
+  percentage,
+  chart,
+  subs,
+  views,
+}: Props) {
   const iconBoxInside = useColorModeValue("white", "white");
   const textColor = useColorModeValue("gray.700", "white");
   return (
@@ -52,13 +60,13 @@ export default function UserActivity({ title, percentage, chart }: Props) {
           <SimpleGrid gap={{ sm: "12px" }} columns={4}>
             <ChartStatistics
               title={"자막 수"}
-              amount={"32,984"}
+              amount={subs.toString()}
               percentage={20}
               icon={<WalletIcon h={"15px"} w={"15px"} color={iconBoxInside} />}
             />
             <ChartStatistics
               title={"총 조회수"}
-              amount={"2.42m"}
+              amount={views.toString()}
               percentage={80}
               icon={<RocketIcon h={"15px"} w={"15px"} color={iconBoxInside} />}
             />

@@ -14,9 +14,15 @@ import CardHeader from "../card/cardHeader";
 
 type Props = {
   gridArea: string;
+  rating: number;
+  percentage: number;
 };
 
-export default function UserRatingComponent({ gridArea }: Props) {
+export default function UserRatingComponent({
+  gridArea,
+  rating,
+  percentage,
+}: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const subTextColor = useColorModeValue("gray.600", "gray.400");
   return (
@@ -39,7 +45,7 @@ export default function UserRatingComponent({ gridArea }: Props) {
       >
         <Box zIndex="-1" bg="">
           <GradientProgress
-            percent={80}
+            percent={percentage}
             viewport
             size={200}
             isGradient
@@ -81,10 +87,10 @@ export default function UserRatingComponent({ gridArea }: Props) {
           </Text>
           <Flex direction="column" align="center" minW="80px">
             <Text color="#fff" fontSize="28px" fontWeight="bold">
-              4.3
+              {rating}
             </Text>
             <Text fontSize="xs" color="gray.400">
-              top 7%
+              top {percentage}%
             </Text>
           </Flex>
           <Text fontSize="xs" color="gray.400">

@@ -8,15 +8,16 @@ import SalesOverview from "./graphs/salesOverview";
 import LineChart from "./graphs/lineChart";
 import BarChart from "./graphs/barChart";
 import GeneralTable from "../ranking/generalTable";
-import { ResSubSearch } from "../../utils/types";
+import { ResSubSearch, ResUserSearch } from "../../utils/types";
 import ProfileSubtitleRow from "./profileSubtitleRow";
 import UserActivity from "./graphs/userActivity";
 
 type Props = {
+  user: ResUserSearch;
   subs: ResSubSearch;
 };
 
-export default function SubtitleDashboard({ subs }: Props) {
+export default function SubtitleDashboard({ user, subs }: Props) {
   const bgProfile = useColorModeValue(
     "hsla(0,0%,100%,.8)",
     "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
@@ -39,8 +40,15 @@ export default function SubtitleDashboard({ subs }: Props) {
           my="26px"
           gap="18px"
         >
-          <UserRatingComponent gridArea="2 / 1 / 3 / 2" />
-          <FulfilledGraph />
+          <UserRatingComponent
+            gridArea="2 / 1 / 3 / 2"
+            rating={user._count.ratings}
+            percentage={user._percentage.rating}
+          />
+          <FulfilledGraph
+            fulfilledRequest={user._count.fulfilledRequests}
+            percentage={user._percentage.fulfilledRequest}
+          />
           <Card gridArea={{ md: "2 / 3 / 3 / 4", "2xl": "auto" }}>
             <CardHeader mb="24px">
               <Flex direction="column">
@@ -80,6 +88,8 @@ export default function SubtitleDashboard({ subs }: Props) {
             title="하이라이트"
             percentage={23}
             chart={<BarChart />}
+            subs={user._count.subs}
+            views={user._count.views}
           />
           <SalesOverview
             title="Activity Overview"
