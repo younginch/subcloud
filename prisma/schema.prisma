@@ -171,9 +171,9 @@ model Review {
   subId      String
   sub        Sub        @relation(fields: [subId], references: [id])
   type       ReviewType
-  content    String?
-  startTime  Int
-  endTime    Int
+  content    String
+  startTime  Int?
+  endTime    Int?
   resolved   Boolean    @default(false)
 }
 

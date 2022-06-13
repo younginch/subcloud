@@ -12,30 +12,37 @@ import {
   Stack,
   Text,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
-import { Review, ReviewType, Role } from "@prisma/client";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { Review, ReviewType, Role, SubStatus } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import YouTube, { YouTubePlayer } from "react-youtube";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
+import { ReviewCreateSchema } from "../../utils/schema";
 import { parseSrt, useInterval } from "../../utils/subtitle";
 import { PageOptions, ResSubRead } from "../../utils/types";
 
 type ReviewAddFormData = {
   type: ReviewType;
   content: string;
-  startTime: number;
-  endTime: number;
+  startTime?: number;
+  endTime?: number;
 };
 
-function ReviewAddForm() {
+type ReviewAddFormProps = {
+  subId: string;
+};
+
+function ReviewAddForm({ subId }: ReviewAddFormProps) {
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm<ReviewAddFormData>();
+  } = useForm<ReviewAddFormData>({ resolver: joiResolver(ReviewCreateSchema) });
 
   const onSubmit: SubmitHandler<ReviewAddFormData> = ({
     type,
@@ -45,8 +52,14 @@ function ReviewAddForm() {
   }) => {
     return new Promise((resolve, reject) => {
       axios
-        .post("/api/review", { type, content, startTime, endTime })
+        .post(`/api/review?subId=${subId}`, {
+          type,
+          content,
+          startTime: Number(startTime),
+          endTime: Number(endTime),
+        })
         .then((res) => {
+          mutate(`/api/review?subId=${subId}`);
           resolve(res.data);
         })
         .catch((err) => {
@@ -111,7 +124,23 @@ type ReviewListProps = {
 };
 
 function ReviewList({ subId }: ReviewListProps) {
+  const toast = useToast();
   const { data, mutate } = useSWR<Review[]>(`/api/review?subId=${subId}`);
+
+  function onDelete(id: string) {
+    axios
+      .delete(`/api/review?id=${id}`)
+      .then(() => {
+        mutate();
+      })
+      .catch((err) => {
+        toast({
+          title: "삭제에 실패했습니다.",
+          description: err.message,
+          status: "error",
+        });
+      });
+  }
 
   return (
     <List>
@@ -121,7 +150,13 @@ function ReviewList({ subId }: ReviewListProps) {
           <Text>{review.endTime}</Text>
           <Text>{review.type}</Text>
           <Text>{review.content}</Text>
-          <Button>삭제</Button>
+          <Button
+            onClick={() => {
+              onDelete(review.id);
+            }}
+          >
+            삭제
+          </Button>
         </Box>
       ))}
     </List>
@@ -144,6 +179,7 @@ type YoutubeOptions =
 
 export default function ReviewDetail() {
   const router = useRouter();
+  const toast = useToast();
   const [options, setOptions] = useState<YoutubeOptions>();
   const [player, setPlayer] = useState<YouTubePlayer>();
   const [width, setWidth] = useState(1024);
@@ -201,9 +237,27 @@ export default function ReviewDetail() {
 
   useInterval(intervalSub, 20);
 
-  function onApprove() {}
-
-  function onReject() {}
+  function onSubmit(subStatus: SubStatus) {
+    axios
+      .post(`/api/sub/review?subId=${sub?.id}`, {
+        subStatus,
+      })
+      .then(() => {
+        toast({
+          title: "승인/거절/신고되었습니다",
+          description: "승인/거절/신고가 완료되었습니다",
+          status: "success",
+        });
+        router.back();
+      })
+      .catch((err) => {
+        toast({
+          title: "처리 실패",
+          description: err.message,
+          status: "error",
+        });
+      });
+  }
 
   return (
     <HStack>
@@ -224,10 +278,30 @@ export default function ReviewDetail() {
         </Box>
       </Stack>
       <Stack>
-        <ReviewAddForm />
+        <ReviewList subId={router.query.subId as string} />
+        <ReviewAddForm subId={router.query.subId as string} />
         <HStack>
-          <Button onClick={onApprove}>승인</Button>
-          <Button onClick={onReject}>반려</Button>
+          <Button
+            onClick={() => {
+              onSubmit(SubStatus.Approved);
+            }}
+          >
+            승인
+          </Button>
+          <Button
+            onClick={() => {
+              onSubmit(SubStatus.Rejected);
+            }}
+          >
+            반려
+          </Button>
+          <Button
+            onClick={() => {
+              onSubmit(SubStatus.Reported);
+            }}
+          >
+            신고
+          </Button>
         </HStack>
       </Stack>
     </HStack>
