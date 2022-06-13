@@ -20,7 +20,6 @@ import Link from "next/link";
 import router from "next/router";
 import useSWR from "swr";
 import isRightRole from "../../utils/role";
-import { ResRequestSearch, ResSubSearch } from "../../utils/types";
 
 export default function ProfileModal() {
   const { data: session } = useSession();
@@ -69,13 +68,13 @@ export default function ProfileModal() {
 
           <Stack direction={"row"} justify={"center"} spacing={6}>
             <Stack spacing={0} align={"center"}>
-              <Text fontWeight={600}>{requestData?.length}</Text>
+              <Text fontWeight={600}>{requestData?.length ?? 0}</Text>
               <Text fontSize={"sm"} color={"gray.500"}>
                 요청 수
               </Text>
             </Stack>
             <Stack spacing={0} align={"center"}>
-              <Text fontWeight={600}>{subData?.length}</Text>
+              <Text fontWeight={600}>{subData?.length ?? 0}</Text>
               <Text fontSize={"sm"} color={"gray.500"}>
                 자막 수
               </Text>
