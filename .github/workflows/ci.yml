@@ -13,12 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: 14
-          cache: npm
+          node-version: 16
+          # cache: npm
       - name: Install npm dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: Build
         run: npm run build
   
@@ -28,12 +28,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: 14
-          cache: npm
+          node-version: 16
+          # cache: npm
       - name: Install npm dependencies
-        run: npm ci      
+        run: npm ci --legacy-peer-deps    
       - name: Code Climate Coverage Action
         uses: paambaati/codeclimate-action@v3.0.0
         env:

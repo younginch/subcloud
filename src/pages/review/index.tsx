@@ -31,12 +31,13 @@ export default function Review() {
   return (
     <>
       <TableContainer>
-        <Table>
+        <Table size="sm">
           <Thead>
             <Tr>
-              <Th>To convert</Th>
-              <Th>into</Th>
-              <Th isNumeric>multiply by</Th>
+              <Th>Title</Th>
+              <Th>Channel</Th>
+              <Th>Status</Th>
+              <Th>Actions</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -73,6 +74,9 @@ export default function Review() {
                           "채널 정보없음"}
                       </Text>
                     </HStack>
+                  </Td>
+                  <Td>
+                    <Text>{sub.status}</Text>
                   </Td>
                   <Td>
                     <Button

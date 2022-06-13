@@ -1,21 +1,37 @@
 import { Review, Role } from "@prisma/client";
-import { handleRoute, RouteParams } from "../../../utils/types";
+import { ReviewCreateSchema } from "../../../utils/schema";
+import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 
 async function GetReview({ req, res, prisma }: RouteParams<Review[]>) {
-  const id = req.query.id as string;
+  const subId = req.query.subId as string;
   const review = await prisma.review.findMany({
     where: {
-      subId: id,
+      subId,
     },
   });
   return res.json(review);
 }
 
-async function CreateReview({ req, res, prisma }: RouteParams<Review>) {
-  const review = req.body as Review;
+async function CreateReview({
+  req,
+  res,
+  prisma,
+  session,
+}: RouteParams<Review>) {
+  const { value, error } = ReviewCreateSchema.validate(req.body);
+  if (error) {
+    return res
+      .status(400)
+      .json({ error: SubErrorType.FormValidation, message: error.message });
+  }
   const createdReview = await prisma.review.create({
     data: {
-      ...review,
+      subId: req.query.subId as string,
+      reviewerId: session?.user.id!,
+      type: value.type,
+      content: value.content,
+      startTime: value.startTime,
+      endTime: value.endTime,
     },
   });
   return res.json(createdReview);
