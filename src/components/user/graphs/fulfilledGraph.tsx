@@ -66,7 +66,7 @@ export default function FulfilledGraph({
                 오류 제보
               </Text>
               <Text color="#fff" fontSize="lg" fontWeight="bold">
-                0
+                0 회
               </Text>
             </Flex>
           </Flex>
