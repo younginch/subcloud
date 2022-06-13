@@ -36,6 +36,7 @@ export default function Review() {
             <Tr>
               <Th>Title</Th>
               <Th>Channel</Th>
+              <Th>Status</Th>
               <Th>Actions</Th>
             </Tr>
           </Thead>
@@ -73,6 +74,9 @@ export default function Review() {
                           "채널 정보없음"}
                       </Text>
                     </HStack>
+                  </Td>
+                  <Td>
+                    <Text>{sub.status}</Text>
                   </Td>
                   <Td>
                     <Button

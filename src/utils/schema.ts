@@ -41,3 +41,10 @@ export const RatingUpdateSchema = joi.object({
   score: joi.number().integer().required(),
   comment: joi.string(),
 });
+
+export const ReviewCreateSchema = joi.object({
+  type: joi.string().required(),
+  content: joi.string().required(),
+  startTime: joi.number().integer(),
+  endTime: joi.number().integer(),
+});
