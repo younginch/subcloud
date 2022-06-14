@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -12,6 +13,7 @@ import {
   Stack,
   Text,
   Textarea,
+  useMediaQuery,
   useToast,
 } from "@chakra-ui/react";
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -22,6 +24,7 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import YouTube, { YouTubePlayer } from "react-youtube";
 import useSWR, { mutate } from "swr";
+import CommentComponent from "../../components/review/commentComponent";
 import { ReviewCreateSchema } from "../../utils/schema";
 import { parseSrt, useInterval } from "../../utils/subtitle";
 import { PageOptions, ResSubRead } from "../../utils/types";
@@ -97,20 +100,28 @@ function ReviewAddForm({ subId }: ReviewAddFormProps) {
             {errors.content && errors.content.message}
           </FormErrorMessage>
         </FormControl>
-        <FormControl isInvalid={errors.startTime !== undefined}>
-          <FormLabel htmlFor="startTime">Start Time</FormLabel>
-          <Input type="number" id="startTime" {...register("startTime")} />
-          <FormErrorMessage>
-            {errors.startTime && errors.startTime.message}
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl isInvalid={errors.endTime !== undefined}>
-          <FormLabel htmlFor="endTime">End Time</FormLabel>
-          <Input type="number" id="endTime" {...register("endTime")} />
-          <FormErrorMessage>
-            {errors.endTime && errors.endTime.message}
-          </FormErrorMessage>
-        </FormControl>
+        <HStack p={2} h="80px">
+          <FormControl isInvalid={errors.startTime !== undefined}>
+            <FormLabel htmlFor="startTime">Start Time</FormLabel>
+            <Input type="number" id="startTime" {...register("startTime")} />
+            <FormErrorMessage>
+              {errors.startTime && errors.startTime.message}
+            </FormErrorMessage>
+          </FormControl>
+          <Button h="100%">현재 시간</Button>
+        </HStack>
+        <HStack p={2} h="80px">
+          <Box>
+            <FormControl isInvalid={errors.endTime !== undefined}>
+              <FormLabel htmlFor="endTime">End Time</FormLabel>
+              <Input type="number" id="endTime" {...register("endTime")} />
+              <FormErrorMessage>
+                {errors.endTime && errors.endTime.message}
+              </FormErrorMessage>
+            </FormControl>
+          </Box>
+          <Button h="100%">현재 시간</Button>
+        </HStack>
         <Button onClick={handleSubmit(onSubmit)} isLoading={isSubmitting}>
           추가
         </Button>
@@ -143,23 +154,24 @@ function ReviewList({ subId }: ReviewListProps) {
   }
 
   return (
-    <List>
-      {data?.map((review) => (
-        <Box key={review.id}>
-          <Text>{review.startTime}</Text>
-          <Text>{review.endTime}</Text>
-          <Text>{review.type}</Text>
-          <Text>{review.content}</Text>
-          <Button
-            onClick={() => {
-              onDelete(review.id);
-            }}
-          >
-            삭제
-          </Button>
-        </Box>
-      ))}
-    </List>
+    <Box borderRadius="10px" borderColor="gray.300" borderWidth="1px" ml={5}>
+      <Text bg="gray.200" textAlign="center" h="40px" mb="10px">
+        리뷰 목록
+      </Text>
+      <List maxH="300px" overflow="auto">
+        {data?.map((review) => (
+          <Box key={review.id}>
+            <CommentComponent
+              key={review.id}
+              review={review}
+              onClick={() => {
+                onDelete(review.id);
+              }}
+            />
+          </Box>
+        ))}
+      </List>
+    </Box>
   );
 }
 
@@ -186,6 +198,7 @@ export default function ReviewDetail() {
   const [sub, setSub] = useState<ResSubRead>();
   const [subData, setSubData] = useState<SubtitleData>([]);
   const [subText, setSubText] = useState<string>("");
+  const [isLargerThan1280] = useMediaQuery("(min-width: 1280px)");
 
   useEffect(() => {
     const opts = {
@@ -260,7 +273,7 @@ export default function ReviewDetail() {
   }
 
   return (
-    <HStack>
+    <Flex direction={isLargerThan1280 ? "row" : "column"}>
       <Stack>
         <Box w="100%" h="80vh">
           {options && sub ? (
@@ -268,16 +281,21 @@ export default function ReviewDetail() {
               videoId={sub?.videoId}
               opts={options}
               onReady={(event) => setPlayer(event.target)}
+              className="youtubeContainer"
             />
           ) : (
             <CircularProgress />
           )}
-          <Text fontSize="4xl" noOfLines={2}>
+          <Text
+            fontSize="4xl"
+            noOfLines={2}
+            w={isLargerThan1280 ? "900px" : "100%"}
+          >
             {subText}
           </Text>
         </Box>
       </Stack>
-      <Stack>
+      <Stack w="calc(100vw - 1000px)" maxW="700px">
         <ReviewList subId={router.query.subId as string} />
         <ReviewAddForm subId={router.query.subId as string} />
         <HStack>
@@ -304,7 +322,7 @@ export default function ReviewDetail() {
           </Button>
         </HStack>
       </Stack>
-    </HStack>
+    </Flex>
   );
 }
 

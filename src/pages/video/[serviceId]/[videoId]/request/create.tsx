@@ -7,7 +7,6 @@ import {
   useToast,
   WrapItem,
   Stack,
-  Flex,
   Text,
   useColorModeValue,
   MenuButton,
@@ -155,6 +154,7 @@ export default function RequestCreate() {
                     h="80px"
                     borderRadius="20%"
                     bg={pointArrayColor[index]}
+                    fontSize="18px"
                   >
                     {value}P
                   </Center>

@@ -20,7 +20,7 @@ type Props = {
 };
 
 export default function VideoInfo({ serviceId, videoId }: Props) {
-  const [isLargerThan1280] = useMediaQuery("(min-width: 900px)");
+  const [isLargerThan900] = useMediaQuery("(min-width: 900px)");
   const [video, setVideo] = useState<ResVideo>();
   useEffect(() => {
     axios
@@ -32,7 +32,7 @@ export default function VideoInfo({ serviceId, videoId }: Props) {
 
   return (
     <Flex
-      direction={isLargerThan1280 ? "row" : "column"}
+      direction={isLargerThan900 ? "row" : "column"}
       overflow="hidden"
       alignItems="center"
     >
