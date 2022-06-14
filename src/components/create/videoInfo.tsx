@@ -9,26 +9,14 @@ import {
   Flex,
   useMediaQuery,
 } from "@chakra-ui/react";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { ResVideo } from "../../utils/types";
-import VideoForm from "./videoForm";
 
 type Props = {
-  serviceId: string;
-  videoId: string;
+  video: ResVideo | undefined;
 };
 
-export default function VideoInfo({ serviceId, videoId }: Props) {
+export default function VideoInfo({ video }: Props) {
   const [isLargerThan1280] = useMediaQuery("(min-width: 900px)");
-  const [video, setVideo] = useState<ResVideo>();
-  useEffect(() => {
-    axios
-      .get<ResVideo>(`/api/video`, { params: { serviceId, videoId } })
-      .then(({ data }) => {
-        setVideo(data);
-      });
-  }, [serviceId, videoId]);
 
   return (
     <Flex
@@ -38,7 +26,7 @@ export default function VideoInfo({ serviceId, videoId }: Props) {
     >
       <Image
         maxW="28em"
-        src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+        src={`https://img.youtube.com/vi/${video?.videoId}/maxresdefault.jpg`}
         alt="Video thumbnail"
       />
       {video?.youtubeVideo ? (

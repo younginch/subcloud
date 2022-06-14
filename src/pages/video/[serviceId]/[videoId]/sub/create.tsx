@@ -14,8 +14,7 @@ import {
   List,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { SetStateAction, useCallback, useState } from "react";
-import SelectLanguage from "../../../../../components/selectLanguage";
+import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -23,8 +22,9 @@ import { useSession } from "next-auth/react";
 import VideoInfo from "../../../../../components/create/videoInfo";
 import CreateHeader from "../../../../../components/create/createHeader";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
-import { PageOptions } from "../../../../../utils/types";
+import { PageOptions, ResVideo } from "../../../../../utils/types";
 import { Role } from "@prisma/client";
+import SelectLanguage from "../../../../../components/selectLanguage";
 
 type FormData = {
   lang: string;
@@ -114,13 +114,21 @@ export default function SubCreate() {
       </UnorderedList>
     </ListItem>
   ));
+  const [video, setVideo] = useState<ResVideo>();
+  useEffect(() => {
+    axios
+      .get<ResVideo>(`/api/video`, { params: { serviceId, videoId } })
+      .then(({ data }) => {
+        setVideo(data);
+      });
+  }, [serviceId, videoId]);
 
   return (
     <>
       <CreateHeader type="sub" step={2} />
       <Wrap>
         <WrapItem>
-          <VideoInfo serviceId={serviceId} videoId={videoId} />
+          <VideoInfo video={video} />
         </WrapItem>
         <WrapItem paddingX="36px">
           <form onSubmit={handleSubmit(onSubmit)}>

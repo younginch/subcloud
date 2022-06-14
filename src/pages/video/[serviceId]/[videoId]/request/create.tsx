@@ -7,7 +7,6 @@ import {
   useToast,
   WrapItem,
   Stack,
-  Flex,
   Text,
   useColorModeValue,
   MenuButton,
@@ -16,11 +15,6 @@ import {
   MenuItem,
   Wrap,
   Center,
-  Slider,
-  SliderFilledTrack,
-  SliderTrack,
-  SliderThumb,
-  Box,
   HStack,
   useMediaQuery,
   Checkbox,
@@ -29,17 +23,18 @@ import {
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import SelectLanguage from "../../../../../components/selectLanguage";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { RequestCreateSchema } from "../../../../../utils/schema";
 import { useSession } from "next-auth/react";
 import { Role } from "@prisma/client";
 import VideoInfo from "../../../../../components/create/videoInfo";
-import { PageOptions } from "../../../../../utils/types";
+import { PageOptions, ResVideo } from "../../../../../utils/types";
 import Card from "../../../../../components/user/card/card";
 import CardHeader from "../../../../../components/user/card/cardHeader";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import InViewProvider from "../../../../../components/inviewProvider";
+import { useEffect, useState } from "react";
+import ISO6391, { LanguageCode } from "iso-639-1";
 
 type FormData = {
   serviceId: string;
@@ -61,6 +56,8 @@ export default function RequestCreate() {
   const {
     handleSubmit,
     register,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({ resolver: joiResolver(RequestCreateSchema) });
   const pointArray = [10, 50, 100, 500, 1000, 5000];
@@ -72,7 +69,20 @@ export default function RequestCreate() {
     "gray.200",
     "yellow",
   ];
+  const codeList: LanguageCode[] = [
+    "en",
+    "fr",
+    "de",
+    "it",
+    "es",
+    "pt",
+    "ru",
+    "ja",
+    "zh",
+    "ko",
+  ];
   function onSubmit(values: FormData) {
+    console.log("fuck");
     return new Promise<void>((resolve, reject) => {
       axios
         .post("/api/request", {
@@ -100,171 +110,183 @@ export default function RequestCreate() {
         });
     });
   }
+  const [video, setVideo] = useState<ResVideo>();
+  useEffect(() => {
+    axios
+      .get<ResVideo>(`/api/video`, { params: { serviceId, videoId } })
+      .then(({ data }) => {
+        setVideo(data);
+      });
+  }, [serviceId, videoId]);
+  useEffect(() => {
+    setValue("point", 0);
+  }, [setValue]);
 
   return (
-    <Stack ms={{ base: "20px", xl: "calc(15vw - 150px)" }} spacing={5}>
-      <Card
-        w={videoInfoToggle ? "fit-content" : "calc(100vw - 40px)"}
-        mt={5}
-        maxW="calc(100vw - 40px)"
-      >
-        <CardHeader mb="10px">
-          <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
-            요청 영상
-          </Text>
-        </CardHeader>
-        <VideoInfo serviceId={serviceId} videoId={videoId} />
-      </Card>
-      <Card w="850px" mt={5} zIndex={2} maxW="calc(100vw - 40px)">
-        <CardHeader mb="24px">
-          <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
-            언어 선택
-          </Text>
-        </CardHeader>
-        <Menu>
-          <MenuOptionGroup>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Stack ms={{ base: "20px", xl: "calc(15vw - 150px)" }} spacing={5}>
+        <Card
+          w={videoInfoToggle ? "fit-content" : "calc(100vw - 40px)"}
+          mt={5}
+          maxW="calc(100vw - 40px)"
+        >
+          <CardHeader mb="10px">
+            <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
+              요청 영상
+            </Text>
+          </CardHeader>
+          <VideoInfo video={video} />
+        </Card>
+        <Card w="850px" mt={5} zIndex={2} maxW="calc(100vw - 40px)">
+          <CardHeader mb="24px">
+            <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
               언어 선택
-            </MenuButton>
-            <MenuList>
-              <MenuItem>한국어</MenuItem>
-              <MenuItem>구자라트어</MenuItem>
-              <MenuItem>영어</MenuItem>
-              <MenuItem>프랑스어</MenuItem>
-              <MenuItem>스페인어</MenuItem>
-            </MenuList>
-          </MenuOptionGroup>
-        </Menu>
-        <Checkbox mt={5} size="lg" defaultChecked>
-          기본 요청 언어로 저장
-        </Checkbox>
-      </Card>
-      <Card w="850px" mt={5} maxW="calc(100vw - 40px)">
-        <CardHeader mb="24px">
-          <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
-            포인트
+            </Text>
+          </CardHeader>
+          <Menu>
+            <FormControl as="fieldset">
+              <MenuOptionGroup>
+                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                  {watch().lang ? ISO6391.getName(watch().lang) : "언어 선택"}
+                </MenuButton>
+                <MenuList>
+                  {codeList.map((code) => {
+                    return (
+                      <MenuItem
+                        key={code}
+                        onClick={() => setValue("lang", code)}
+                      >
+                        {`${ISO6391.getName(code)} (${ISO6391.getNativeName(
+                          code
+                        )})`}
+                      </MenuItem>
+                    );
+                  })}
+                </MenuList>
+              </MenuOptionGroup>
+              <FormErrorMessage>
+                {errors.lang && errors.lang.message}
+              </FormErrorMessage>
+            </FormControl>
+          </Menu>
+          <Checkbox mt={5} size="lg" defaultChecked>
+            기본 요청 언어로 저장
+          </Checkbox>
+        </Card>
+        <Card w="850px" mt={5} maxW="calc(100vw - 40px)">
+          <CardHeader mb="24px">
+            <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
+              포인트
+            </Text>
+          </CardHeader>
+          <Wrap>
+            {pointArray.map((value, index) => {
+              return (
+                <WrapItem key={index}>
+                  <InViewProvider whileHover={1.05} initialScale={0.95}>
+                    <Center
+                      w="80px"
+                      h="80px"
+                      borderRadius="20%"
+                      bg={pointArrayColor[index]}
+                      onClick={() =>
+                        setValue("point", Number(value) + Number(watch().point))
+                      }
+                    >
+                      {value}P
+                    </Center>
+                  </InViewProvider>
+                </WrapItem>
+              );
+            })}
+          </Wrap>
+          <HStack pt={5}>
+            <FormControl isInvalid={errors.point !== undefined}>
+              <Input
+                id="point"
+                value={router.query.point}
+                type="number"
+                {...register("point")}
+              />
+              <FormErrorMessage>
+                {errors.point && errors.point.message}
+              </FormErrorMessage>
+            </FormControl>
+            <Button colorScheme="blue" onClick={() => setValue("point", 0)}>
+              리셋
+            </Button>
+          </HStack>
+        </Card>
+        <Card
+          w="500px"
+          className={summaryToggle ? "requestFixed" : "requestBottom"}
+          zIndex={3}
+          maxW="calc(100vw - 40px)"
+        >
+          <CardHeader mb="24px">
+            <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
+              요청 요약
+            </Text>
+          </CardHeader>
+          <Text fontSize="15px">영상 제목</Text>
+          <Text fontWeight="bold" fontSize="20px">
+            {video?.youtubeVideo?.title ?? "unknown"}
           </Text>
-        </CardHeader>
-        <Wrap>
-          {pointArray.map((value, index) => {
-            return (
-              <WrapItem key={index}>
-                <InViewProvider whileHover={1.05} initialScale={0.95}>
-                  <Center
-                    w="80px"
-                    h="80px"
-                    borderRadius="20%"
-                    bg={pointArrayColor[index]}
-                  >
-                    {value}P
-                  </Center>
-                </InViewProvider>
-              </WrapItem>
-            );
-          })}
-        </Wrap>
-        <HStack pt={5}>
-          <Slider defaultValue={60} min={0} max={300} step={30}>
-            <SliderTrack bg="red.100">
-              <Box position="relative" right={10} />
-              <SliderFilledTrack bg="tomato" />
-            </SliderTrack>
-            <SliderThumb boxSize={6} />
-          </Slider>
-          <Input placeholder="Basic usage" />
-        </HStack>
-      </Card>
-      <Card
-        w="500px"
-        className={summaryToggle ? "requestFixed" : "requestBottom"}
-        zIndex={3}
-        maxW="calc(100vw - 40px)"
-      >
-        <CardHeader mb="24px">
-          <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
-            요청 요약
+          <Text fontSize="15px" mt="20px">
+            영상 길이
           </Text>
-        </CardHeader>
-        <Text fontSize="15px">영상 제목</Text>
-        <Text fontWeight="bold" fontSize="20px">
-          펜 윅과 명 윅
-        </Text>
-        <Text fontSize="15px" mt="20px">
-          영상 길이
-        </Text>
-        <Text fontWeight="bold" fontSize="20px">
-          22분 20초
-        </Text>
-        <Text fontSize="15px" mt="20px">
-          요청 언어
-        </Text>
-        <Text fontWeight="bold" fontSize="20px">
-          한국어
-        </Text>
-        <Text fontSize="15px" mt="20px">
-          제공 포인트
-        </Text>
-        <Text fontWeight="bold" fontSize="20px">
-          123
-        </Text>
-        <Button colorScheme="blue" mt="20px">
-          요청 올리기
-        </Button>
-      </Card>
-      <WrapItem paddingX="36px">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl isInvalid={errors.serviceId !== undefined} hidden>
-            <FormLabel htmlFor="serviceId">서비스</FormLabel>
-            <Input
-              id="serviceId"
-              value={router.query.serviceId}
-              {...register("serviceId")}
-            />
-            <FormErrorMessage>
-              {errors.serviceId && errors.serviceId.message}
-            </FormErrorMessage>
-          </FormControl>
-          <FormControl isInvalid={errors.videoId !== undefined} hidden>
-            <FormLabel htmlFor="videoId">영상 ID</FormLabel>
-            <Input
-              id="videoId"
-              value={router.query.videoId}
-              {...register("videoId")}
-            />
-            <FormErrorMessage>
-              {errors.videoId && errors.videoId.message}
-            </FormErrorMessage>
-          </FormControl>
-          <FormControl as="fieldset">
-            <FormLabel as="legend">요청할 자막 언어</FormLabel>
-            <SelectLanguage register={register("lang")} />
-            <FormErrorMessage>
-              {errors.lang && errors.lang.message}
-            </FormErrorMessage>
-          </FormControl>
-          <FormControl isInvalid={errors.point !== undefined}>
-            <FormLabel htmlFor="point">포인트</FormLabel>
-            <Input
-              id="point"
-              value={router.query.point}
-              type="number"
-              {...register("point")}
-            />
-            <FormErrorMessage>
-              {errors.point && errors.point.message}
-            </FormErrorMessage>
-          </FormControl>
+          <Text fontWeight="bold" fontSize="20px">
+            {video?.youtubeVideo
+              ? `${Math.floor(video?.youtubeVideo.duration / 60)}분 ${
+                  video?.youtubeVideo.duration % 60
+                }초`
+              : "unknown"}
+          </Text>
+          <Text fontSize="15px" mt="20px">
+            요청 언어
+          </Text>
+          <Text fontWeight="bold" fontSize="20px">
+            {ISO6391.getName(watch().lang)}
+          </Text>
+          <Text fontSize="15px" mt="20px">
+            제공 포인트
+          </Text>
+          <Text fontWeight="bold" fontSize="20px">
+            {watch().point}
+          </Text>
           <Button
-            mt={4}
-            colorScheme="teal"
+            colorScheme="blue"
+            mt="20px"
             isLoading={isSubmitting}
             type="submit"
           >
-            요청
+            요청 올리기
           </Button>
-        </form>
-      </WrapItem>
-    </Stack>
+        </Card>
+      </Stack>
+      <FormControl isInvalid={errors.serviceId !== undefined} hidden>
+        <FormLabel htmlFor="serviceId">서비스</FormLabel>
+        <Input
+          id="serviceId"
+          value={router.query.serviceId}
+          {...register("serviceId")}
+        />
+        <FormErrorMessage>
+          {errors.serviceId && errors.serviceId.message}
+        </FormErrorMessage>
+      </FormControl>
+      <FormControl isInvalid={errors.videoId !== undefined} hidden>
+        <FormLabel htmlFor="videoId">영상 ID</FormLabel>
+        <Input
+          id="videoId"
+          value={router.query.videoId}
+          {...register("videoId")}
+        />
+        <FormErrorMessage>
+          {errors.videoId && errors.videoId.message}
+        </FormErrorMessage>
+      </FormControl>
+    </form>
   );
 }
 
