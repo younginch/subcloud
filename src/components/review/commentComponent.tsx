@@ -1,5 +1,12 @@
 import { CloseIcon } from "@chakra-ui/icons";
-import { Badge, Box, Button, HStack, Spacer, Text } from "@chakra-ui/react";
+import {
+  Badge,
+  Box,
+  useColorModeValue,
+  HStack,
+  Spacer,
+  Text,
+} from "@chakra-ui/react";
 import { Review } from "@prisma/client";
 
 type Props = {
@@ -28,7 +35,11 @@ export default function CommentComponent({ review, onClick }: Props) {
   };
 
   return (
-    <Box p={2} borderBottomWidth="2px">
+    <Box
+      p={2}
+      borderBottomWidth="2px"
+      bg={useColorModeValue("white", "#1F2733")}
+    >
       <HStack>
         <Badge borderRadius="5px" px="2" colorScheme={badgeColor(review.type)}>
           {review.type}

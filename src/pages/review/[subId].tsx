@@ -15,6 +15,9 @@ import {
   Textarea,
   useMediaQuery,
   useToast,
+  useColorModeValue,
+  Center,
+  Spacer,
 } from "@chakra-ui/react";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { Review, ReviewType, Role, SubStatus } from "@prisma/client";
@@ -28,6 +31,9 @@ import CommentComponent from "../../components/review/commentComponent";
 import { ReviewCreateSchema } from "../../utils/schema";
 import { parseSrt, useInterval } from "../../utils/subtitle";
 import { PageOptions, ResSubRead } from "../../utils/types";
+import { BsCheckCircleFill } from "react-icons/bs";
+import { AiFillTool } from "react-icons/ai";
+import { MdReport } from "react-icons/md";
 
 type ReviewAddFormData = {
   type: ReviewType;
@@ -72,7 +78,12 @@ function ReviewAddForm({ subId }: ReviewAddFormProps) {
   };
 
   return (
-    <Box borderWidth="1px">
+    <Box
+      bg={useColorModeValue("white", "#1F2733")}
+      boxShadow="lg"
+      rounded={"xl"}
+      p={4}
+    >
       <form>
         <FormControl isInvalid={errors.type !== undefined}>
           <FormLabel htmlFor="type">Type</FormLabel>
@@ -100,7 +111,7 @@ function ReviewAddForm({ subId }: ReviewAddFormProps) {
             {errors.content && errors.content.message}
           </FormErrorMessage>
         </FormControl>
-        <HStack p={2} h="80px">
+        <HStack h="80px">
           <FormControl isInvalid={errors.startTime !== undefined}>
             <FormLabel htmlFor="startTime">Start Time</FormLabel>
             <Input type="number" id="startTime" {...register("startTime")} />
@@ -108,23 +119,29 @@ function ReviewAddForm({ subId }: ReviewAddFormProps) {
               {errors.startTime && errors.startTime.message}
             </FormErrorMessage>
           </FormControl>
-          <Button h="100%">현재 시간</Button>
+          <Button h="80%">현재 시간</Button>
         </HStack>
-        <HStack p={2} h="80px">
-          <Box>
-            <FormControl isInvalid={errors.endTime !== undefined}>
-              <FormLabel htmlFor="endTime">End Time</FormLabel>
-              <Input type="number" id="endTime" {...register("endTime")} />
-              <FormErrorMessage>
-                {errors.endTime && errors.endTime.message}
-              </FormErrorMessage>
-            </FormControl>
-          </Box>
-          <Button h="100%">현재 시간</Button>
+        <HStack h="80px">
+          <FormControl isInvalid={errors.endTime !== undefined}>
+            <FormLabel htmlFor="endTime">End Time</FormLabel>
+            <Input type="number" id="endTime" {...register("endTime")} />
+            <FormErrorMessage>
+              {errors.endTime && errors.endTime.message}
+            </FormErrorMessage>
+          </FormControl>
+          <Button h="80%">현재 시간</Button>
         </HStack>
-        <Button onClick={handleSubmit(onSubmit)} isLoading={isSubmitting}>
-          추가
-        </Button>
+        <Center>
+          <Button
+            mt={3}
+            onClick={handleSubmit(onSubmit)}
+            isLoading={isSubmitting}
+            w="80%"
+            colorScheme="blue"
+          >
+            추가
+          </Button>
+        </Center>
       </form>
     </Box>
   );
@@ -154,10 +171,16 @@ function ReviewList({ subId }: ReviewListProps) {
   }
 
   return (
-    <Box borderRadius="10px" borderColor="gray.300" borderWidth="1px" ml={5}>
-      <Text bg="gray.200" textAlign="center" h="40px" mb="10px">
-        리뷰 목록
-      </Text>
+    <Box boxShadow="lg" rounded="xl" overflow="hidden">
+      <Stack
+        bg={useColorModeValue("gray.200", "gray.700")}
+        h="40px"
+        justifyContent="center"
+      >
+        <Text textAlign="center" h="fit-content" fontWeight="bold">
+          리뷰 목록
+        </Text>
+      </Stack>
       <List maxH="300px" overflow="auto">
         {data?.map((review) => (
           <Box key={review.id}>
@@ -194,7 +217,6 @@ export default function ReviewDetail() {
   const toast = useToast();
   const [options, setOptions] = useState<YoutubeOptions>();
   const [player, setPlayer] = useState<YouTubePlayer>();
-  const [width, setWidth] = useState(1024);
   const [sub, setSub] = useState<ResSubRead>();
   const [subData, setSubData] = useState<SubtitleData>([]);
   const [subText, setSubText] = useState<string>("");
@@ -202,8 +224,6 @@ export default function ReviewDetail() {
 
   useEffect(() => {
     const opts = {
-      width,
-      height: width * (9 / 16),
       playerVars: {
         // https://developers.google.com/youtube/player_parameters
         autoplay: 1,
@@ -212,7 +232,7 @@ export default function ReviewDetail() {
       },
     };
     setOptions(opts);
-  }, [width]);
+  }, []);
 
   useEffect(() => {
     axios
@@ -273,9 +293,9 @@ export default function ReviewDetail() {
   }
 
   return (
-    <Flex direction={isLargerThan1280 ? "row" : "column"}>
+    <Flex direction={isLargerThan1280 ? "row" : "column"} ps={5} pt={5}>
       <Stack>
-        <Box w="100%" h="80vh">
+        <Box w="100%" h="fit-content">
           {options && sub ? (
             <YouTube
               videoId={sub?.videoId}
@@ -295,21 +315,21 @@ export default function ReviewDetail() {
           </Text>
         </Box>
       </Stack>
-      <Stack w="calc(100vw - 1000px)" maxW="700px">
-        <ReviewList subId={router.query.subId as string} />
-        <ReviewAddForm subId={router.query.subId as string} />
+      <Stack
+        w={isLargerThan1280 ? "calc(100vw - 1000px)" : "100%"}
+        minW="380px"
+        maxW={isLargerThan1280 ? "100vw" : "700px"}
+        ml={isLargerThan1280 ? "20px" : "0px"}
+      >
         <HStack>
-          <Button
-            onClick={() => {
-              onSubmit(SubStatus.Approved);
-            }}
-          >
-            승인
-          </Button>
           <Button
             onClick={() => {
               onSubmit(SubStatus.Rejected);
             }}
+            colorScheme="orange"
+            leftIcon={<AiFillTool />}
+            w="25%"
+            maxW="150px"
           >
             반려
           </Button>
@@ -317,13 +337,31 @@ export default function ReviewDetail() {
             onClick={() => {
               onSubmit(SubStatus.Reported);
             }}
+            colorScheme="red"
+            leftIcon={<MdReport />}
+            w="20%"
+            maxW="150px"
           >
             신고
           </Button>
+          <Spacer />
+          <Button
+            onClick={() => {
+              onSubmit(SubStatus.Approved);
+            }}
+            colorScheme="green"
+            leftIcon={<BsCheckCircleFill />}
+            w="25%"
+            maxW="150px"
+          >
+            승인
+          </Button>
         </HStack>
+        <ReviewList subId={router.query.subId as string} />
+        <ReviewAddForm subId={router.query.subId as string} />
       </Stack>
     </Flex>
   );
 }
 
-ReviewDetail.options = { role: Role.Reviewer } as PageOptions;
+ReviewDetail.options = { role: Role.Reviewer, hideTitle: true } as PageOptions;
