@@ -25,9 +25,9 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { FaYoutube } from "react-icons/fa";
 import { MoreIcon } from "../../utils/icons";
 import { ResFileRead, ResSubSearch } from "../../utils/types";
+import { YoutubeIcon } from "../icons/customIcons";
 
 type SubPanelProps = {
   subs: ResSubSearch;
@@ -100,7 +100,7 @@ export default function SubPanel(props: SubPanelProps) {
               <Tr key={sub.id}>
                 <Td>
                   <HStack>
-                    <FaYoutube size={36} fill="red" />
+                    <YoutubeIcon size="36px" />
                     <Text maxW={480} noOfLines={1}>
                       {sub.video?.youtubeVideo?.title ?? "비디오 정보없음"}
                     </Text>

@@ -190,7 +190,7 @@ export default function Home() {
           </Flex>
         </InViewProvider>
         <InViewProvider initialScale={0.95}>
-          <HStack>
+          <HStack mb="60px">
             <Stack>
               <Heading color="blue.400" size="md">
                 간편한 자막 시청

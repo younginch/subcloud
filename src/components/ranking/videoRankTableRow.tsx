@@ -2,8 +2,8 @@ import { HStack, Text, useColorModeValue, Tr, Td, Box } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
 import { AiOutlineUser } from "react-icons/ai";
-import { FaYoutube } from "react-icons/fa";
 import { BiCoin } from "react-icons/bi";
+import { YoutubeIcon } from "../icons/customIcons";
 
 type Props = {
   rank: number;
@@ -61,9 +61,7 @@ export default function VideoTableRow({
       >
         <HStack w="inherit">
           <Link href={url}>
-            <Box minW={30} minH={30}>
-              <FaYoutube size={30} fill="red" />
-            </Box>
+            <YoutubeIcon size={30} />
           </Link>
           <Link href={url}>
             <Text

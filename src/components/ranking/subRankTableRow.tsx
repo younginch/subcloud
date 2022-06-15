@@ -4,14 +4,13 @@ import {
   useColorModeValue,
   Tr,
   Td,
-  Box,
   Avatar,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
 import { BsEye } from "react-icons/bs";
-import { FaYoutube } from "react-icons/fa";
 import dayjs from "dayjs";
+import { YoutubeIcon } from "../icons/customIcons";
 
 type Props = {
   rank: number;
@@ -58,9 +57,7 @@ export default function SubRankTableRow({
       >
         <HStack w="inherit">
           <Link href={videoUrl}>
-            <Box minW={30} minH={30}>
-              <FaYoutube size={30} fill="red" />
-            </Box>
+            <YoutubeIcon size={30} />
           </Link>
           <Link href={videoUrl}>
             <Text
