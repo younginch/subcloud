@@ -82,7 +82,6 @@ export default function RequestCreate() {
     "ko",
   ];
   function onSubmit(values: FormData) {
-    console.log("fuck");
     return new Promise<void>((resolve, reject) => {
       axios
         .post("/api/request", {

@@ -12,15 +12,15 @@ import {
 import { ResVideo } from "../../utils/types";
 
 type Props = {
-  video: ResVideo | undefined;
+  video?: ResVideo;
 };
 
 export default function VideoInfo({ video }: Props) {
-  const [isLargerThan1280] = useMediaQuery("(min-width: 900px)");
+  const [isLargerThan900] = useMediaQuery("(min-width: 900px)");
 
   return (
     <Flex
-      direction={isLargerThan1280 ? "row" : "column"}
+      direction={isLargerThan900 ? "row" : "column"}
       overflow="hidden"
       alignItems="center"
     >
