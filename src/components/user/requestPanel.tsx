@@ -22,9 +22,9 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { FaYoutube } from "react-icons/fa";
 import { MoreIcon } from "../../utils/icons";
 import { ResRequestSearch } from "../../utils/types";
+import { YoutubeIcon } from "../icons/customIcons";
 
 export default function RequestPanel(props: { requests: ResRequestSearch }) {
   const router = useRouter();
@@ -72,7 +72,7 @@ export default function RequestPanel(props: { requests: ResRequestSearch }) {
                   }}
                 >
                   <HStack>
-                    <FaYoutube size={36} fill="red" />
+                    <YoutubeIcon size="36px" />
                     <Text maxW={480} noOfLines={1}>
                       {request.video?.youtubeVideo?.title ?? "비디오 정보없음"}
                     </Text>

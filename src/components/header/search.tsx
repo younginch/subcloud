@@ -9,7 +9,7 @@ export default function Search() {
 
   return (
     <form
-      style={{ maxWidth: "540px" }}
+      style={{ maxWidth: "540px", width: "100%" }}
       onSubmit={(e) => {
         e.preventDefault();
         router.push(`/search?q=${value}`);

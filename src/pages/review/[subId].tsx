@@ -178,7 +178,7 @@ function ReviewList({ subId }: ReviewListProps) {
         justifyContent="center"
       >
         <Text textAlign="center" h="fit-content" fontWeight="bold">
-          리뷰 목록
+          {data?.length == 0 ? "아직 리뷰가 없습니다" : "리뷰 목록"}
         </Text>
       </Stack>
       <List maxH="300px" overflow="auto">

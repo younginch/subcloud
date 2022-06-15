@@ -15,7 +15,7 @@ import { Role } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { FaYoutube } from "react-icons/fa";
+import { YoutubeIcon } from "../../components/icons/customIcons";
 import { PageOptions, ResSubSearch } from "../../utils/types";
 
 export default function Review() {
@@ -50,7 +50,7 @@ export default function Review() {
                     }}
                   >
                     <HStack>
-                      <FaYoutube size={36} />
+                      <YoutubeIcon size="32px" />
                       <Text maxW={480} noOfLines={1}>
                         {sub.video?.youtubeVideo?.title ?? "비디오 정보없음"}
                       </Text>

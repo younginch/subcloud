@@ -9,10 +9,10 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
-import { FaYoutube } from "react-icons/fa";
 import { BiCoin } from "react-icons/bi";
 import { MdSubtitles } from "react-icons/md";
 import router from "next/router";
+import { YoutubeIcon } from "../icons/customIcons";
 
 type Props = {
   platform: string;
@@ -60,9 +60,7 @@ export default function SearchTableRow({
             router.push(`/video/${platform}/${videoId}`);
           }}
         >
-          <Box minW={30} minH={30}>
-            <FaYoutube size={30} fill="red" />
-          </Box>
+          <YoutubeIcon size={30} />
           <Text
             fontWeight="bold"
             textOverflow="ellipsis"
