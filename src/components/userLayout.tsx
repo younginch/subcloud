@@ -1,5 +1,32 @@
-import { Button, HStack, List, ListItem } from "@chakra-ui/react";
+import {
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  HStack,
+  List,
+  ListItem,
+  useDisclosure,
+  useMediaQuery,
+  Text,
+  Divider,
+} from "@chakra-ui/react";
+import { Role } from "@prisma/client";
 import Link from "next/link";
+import { PageOptions } from "../utils/types";
+import {
+  ProSidebar,
+  Menu,
+  MenuItem,
+  SubMenu,
+  SidebarHeader,
+  SidebarFooter,
+} from "react-pro-sidebar";
+import "react-pro-sidebar/dist/css/styles.css";
+import { FaGem, FaHeart } from "react-icons/fa";
 
 type UserMenuProps = {
   href: string;
@@ -28,16 +55,30 @@ type UserLayoutProps = {
 };
 
 export default function UserLayout({ children }: UserLayoutProps) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isPc] = useMediaQuery("(min-width: 700px)");
+  const navHeight = "60px";
+
   return (
     <HStack>
-      <List w="120px">
-        <UserMenu href="/user/my" title="메인" />
-        <UserMenu href="/user/my/request" title="자막 요청" />
-        <UserMenu href="/user/my/history" title="시청 기록" />
-        <UserMenu href="/user/my/order" title="결제 기록" />
-        <UserMenu href="/user/my/sub" title="제작한 자막" />
-      </List>
-      {children}
+      <ProSidebar collapsed={false}>
+        <SidebarHeader>
+          <Text>Header</Text>
+        </SidebarHeader>
+        <Menu iconShape="square">
+          <MenuItem icon={<FaGem />}>Dashboard</MenuItem>
+          <SubMenu title="Components" icon={<FaHeart />}>
+            <MenuItem>Component 1</MenuItem>
+            <MenuItem>Component 2</MenuItem>
+          </SubMenu>
+        </Menu>
+        <SidebarFooter>
+          <Text>Footer</Text>
+        </SidebarFooter>
+      </ProSidebar>
+      ;{children}
     </HStack>
   );
 }
+
+UserLayout.options = { role: Role.User, hideTitle: true } as PageOptions;
