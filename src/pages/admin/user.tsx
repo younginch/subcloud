@@ -38,10 +38,10 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
 import { UserUpdateSchema } from "../../utils/schema";
 import { PageOptions } from "../../utils/types";
-import useSWR, { KeyedMutator, mutate } from "swr";
+import useSWR, { KeyedMutator } from "swr";
 
 export default function AdminUser() {
-  const { data } = useSWR<User[]>("/api/admin/user");
+  const { data, mutate } = useSWR<User[]>("/api/admin/user");
 
   return (
     <TableContainer>
@@ -81,7 +81,7 @@ export default function AdminUser() {
 
 type UpdateButtonProps = {
   user: User;
-  mutate: KeyedMutator<User>;
+  mutate: KeyedMutator<User[]>;
 };
 
 type UserUpdateForm = {
