@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps<UserReadProps> = async (
     `${process.env.NEXTAUTH_URL}/api/user/search?userId=${userId}`
   );
   const subRes = await axios.get(
-    `${process.env.NEXTAUTH_URL}/api/sub/search?userId=${userId}`
+    `${process.env.NEXTAUTH_URL}/api/sub/search?userId=${userId}&status=Approved`
   );
   return {
     props: {

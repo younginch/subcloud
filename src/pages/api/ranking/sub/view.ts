@@ -17,6 +17,7 @@ async function RankingSubByView({
       .json({ error: SubErrorType.FormValidation, message: "FormInvalidated" });
   }
   let where: any = {};
+  where.status = "Approved";
   if (lang && lang !== "All Lang") {
     where.lang = lang;
   }

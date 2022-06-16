@@ -25,7 +25,7 @@ export default function ProfileModal() {
   const { data: session } = useSession();
   const { data } = useSWR<Session>("/api/auth/session");
   const { data: subData, error: subError } = useSWR(
-    `/api/sub/search?userId=${session?.user.id}`
+    `/api/sub/search?userId=${session?.user.id}&status=Approved`
   );
   const { data: requestData, error: requestError } = useSWR(
     `/api/request/search?userId=${session?.user.id}`
