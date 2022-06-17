@@ -1,21 +1,31 @@
+import dayjs from "dayjs";
 import dynamic from "next/dynamic";
-import React from "react";
+import React, { useEffect, useState } from "react";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-export default function LineChart() {
+type Props = {
+  lineCount: number;
+  viewArray: Array<number>;
+};
+
+export default function LineChart({ viewArray, lineCount }: Props) {
+  const date = dayjs(new Date());
+  const dateArray = Array.from({ length: lineCount }, (_, i) =>
+    date.subtract(i, "day").format("MM/DD")
+  ).reverse();
+  const ratingArray = [3, 4, 5, 3, 4, 2, 1, 1, 2, 5];
   const lineChartData = [
     {
       name: "Rating",
-      data: [330, 340, 320, 360, 370, 390, 410, 400, 420, 300],
+      data: ratingArray,
     },
     {
       name: "Views",
-      data: [50, 40, 300, 220, 500, 250, 400, 230, 500, 200],
+      data: viewArray,
     },
   ];
-
   const lineChartOptions = {
     chart: {
       toolbar: {
@@ -33,20 +43,7 @@ export default function LineChart() {
     },
     xaxis: {
       type: "string",
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
+      categories: dateArray,
       labels: {
         style: {
           colors: "#c8cfca",

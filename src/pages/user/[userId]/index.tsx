@@ -7,6 +7,7 @@ import SubtitleDashboard from "../../../components/user/subtitleDashboard";
 import PublicProfileLayout from "../../../components/user/publicProfileLayout";
 import { PublicProfileTab } from "../../../utils/tabs";
 import { useEffect, useState } from "react";
+import dayjs from "dayjs";
 
 type UserReadProps = {
   user: ResUserSearch;
@@ -14,21 +15,41 @@ type UserReadProps = {
 };
 
 export default function UserIndex({ user, subs }: UserReadProps) {
-  const [array, setArray] = useState([]);
+  const [subArray, setSubArray] = useState([]);
+  const [viewArray, setViewArray] = useState([]);
+  const subCount = 200;
+  const lineCount = 10;
+
   useEffect(() => {
+    const currentDate = dayjs().format("YYYY-MM-DD");
+    console.log(dayjs());
     axios
       .get(
-        `/api/stats/sub?userId=${user.id}&cnt=200&date=${new Date().toString()}`
+        `/api/stats/sub?userId=${user.id}&cnt=${subCount}&date=${currentDate}`
       )
       .then((res) => {
-        setArray(res.data);
+        setSubArray(res.data);
+      });
+    axios
+      .get(
+        `/api/stats/view?userId=${user.id}&cnt=${lineCount}&date=${currentDate}`
+      )
+      .then((res) => {
+        setViewArray(res.data);
       });
   }, [user.id]);
 
   return (
     <PublicProfileLayout currentTab={PublicProfileTab.Overview}>
       {subs.length > 0 ? (
-        <SubtitleDashboard user={user} subs={subs} array={array} />
+        <SubtitleDashboard
+          user={user}
+          subs={subs}
+          subArray={subArray}
+          subCount={subCount}
+          viewArray={viewArray}
+          lineCount={lineCount}
+        />
       ) : (
         <Stack alignItems="center" spacing={5} h="55vh">
           <FiBox size={100} />

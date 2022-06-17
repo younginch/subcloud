@@ -10,17 +10,17 @@ type CalendarElement = {
 };
 
 type Props = {
-  count: number;
-  array: Array<number>;
+  subCount: number;
+  subArray: Array<number>;
 };
 
-export default function CalendarChart({ count, array }: Props) {
+export default function CalendarChart({ subCount, subArray }: Props) {
   const [onHover, setOnHover] = useState<boolean>(false);
   const today = new Date();
-  const randomValues = getRange(count).map((index) => {
+  const randomValues = getRange(subCount).map((index) => {
     return {
       date: shiftDate(today, -index),
-      count: array.length > index ? array[index] : 0,
+      count: subArray.length > index ? subArray[index] : 0,
     };
   });
 
@@ -31,7 +31,7 @@ export default function CalendarChart({ count, array }: Props) {
   return (
     <Box onMouseLeave={mouseLeave} onMouseEnter={() => setOnHover(true)}>
       <CalendarHeatmap
-        startDate={shiftDate(today, -count)}
+        startDate={shiftDate(today, -subCount)}
         endDate={today}
         values={randomValues}
         classForValue={(value: CalendarElement) => {
