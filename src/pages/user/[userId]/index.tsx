@@ -6,8 +6,8 @@ import { FiBox } from "react-icons/fi";
 import SubtitleDashboard from "../../../components/user/subtitleDashboard";
 import PublicProfileLayout from "../../../components/user/publicProfileLayout";
 import { PublicProfileTab } from "../../../utils/tabs";
-import { useEffect, useState } from "react";
 import dayjs from "dayjs";
+import useSWR from "swr";
 
 type UserReadProps = {
   user: ResUserSearch;
@@ -15,40 +15,26 @@ type UserReadProps = {
 };
 
 export default function UserIndex({ user, subs }: UserReadProps) {
-  const [subArray, setSubArray] = useState([]);
-  const [viewArray, setViewArray] = useState([]);
-  const subCount = 200;
-  const lineCount = 10;
-
-  useEffect(() => {
-    const currentDate = dayjs().format("YYYY-MM-DD");
-    console.log(dayjs());
-    axios
-      .get(
-        `/api/stats/sub?userId=${user.id}&cnt=${subCount}&date=${currentDate}`
-      )
-      .then((res) => {
-        setSubArray(res.data);
-      });
-    axios
-      .get(
-        `/api/stats/view?userId=${user.id}&cnt=${lineCount}&date=${currentDate}`
-      )
-      .then((res) => {
-        setViewArray(res.data);
-      });
-  }, [user.id]);
+  const subRange = 200;
+  const lineRange = 10;
+  const currentDate = dayjs().format("YYYY-MM-DD");
+  const { data: subArray, error: subError } = useSWR(
+    `/api/stats/sub?userId=${user.id}&cnt=${subRange}&date=${currentDate}`
+  );
+  const { data: viewArray, error: viewError } = useSWR(
+    `/api/stats/view?userId=${user.id}&cnt=${lineRange}&date=${currentDate}`
+  );
 
   return (
     <PublicProfileLayout currentTab={PublicProfileTab.Overview}>
-      {subs.length > 0 ? (
+      {subs.length > 0 && subArray && viewArray ? (
         <SubtitleDashboard
           user={user}
           subs={subs}
           subArray={subArray}
-          subCount={subCount}
+          subRange={subRange}
           viewArray={viewArray}
-          lineCount={lineCount}
+          lineRange={lineRange}
         />
       ) : (
         <Stack alignItems="center" spacing={5} h="55vh">

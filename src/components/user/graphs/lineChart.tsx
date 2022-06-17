@@ -6,13 +6,13 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 type Props = {
-  lineCount: number;
+  lineRange: number;
   viewArray: Array<number>;
 };
 
-export default function LineChart({ viewArray, lineCount }: Props) {
+export default function LineChart({ viewArray, lineRange }: Props) {
   const date = dayjs(new Date());
-  const dateArray = Array.from({ length: lineCount }, (_, i) =>
+  const dateArray = Array.from({ length: lineRange }, (_, i) =>
     date.subtract(i, "day").format("MM/DD")
   ).reverse();
   const ratingArray = [3, 4, 5, 3, 4, 2, 1, 1, 2, 5];
