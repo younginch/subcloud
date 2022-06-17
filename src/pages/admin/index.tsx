@@ -48,7 +48,6 @@ export default function Admin() {
       <Button colorScheme="red" onClick={onOpen}>
         전체 DB 삭제
       </Button>
-
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
@@ -79,4 +78,4 @@ export default function Admin() {
   );
 }
 
-Admin.options = { role: Role.Admin } as PageOptions;
+Admin.options = { role: Role.Admin, hideTitle: true } as PageOptions;
