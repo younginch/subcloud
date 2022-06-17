@@ -105,6 +105,12 @@ export default function UserLayout({ children }: UserLayoutProps) {
           >
             Orders
           </MenuItem>
+          <MenuItem
+            icon={<BiPurchaseTagAlt />}
+            onClick={() => router.push("/user/my/withdraw")}
+          >
+            Withdraw
+          </MenuItem>
           <Box h="calc(90vh - 435px)" />
           <MenuItem
             icon={<AiTwotoneSetting />}
