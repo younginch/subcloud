@@ -151,4 +151,4 @@ export default function AdminSettle() {
   );
 }
 
-AdminSettle.options = { role: Role.Admin } as PageOptions;
+AdminSettle.options = { role: Role.Admin, hideTitle: true } as PageOptions;

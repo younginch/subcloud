@@ -80,34 +80,19 @@ export default function ProfileModal() {
               </Text>
             </Stack>
           </Stack>
-          <Link href={`/user/${data?.user.id}`} passHref>
-            <Button
-              w={"full"}
-              mt={4}
-              bg={useColorModeValue("#151f21", "gray.900")}
-              color={"white"}
-              rounded={"md"}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "lg",
-              }}
-            >
-              내 퍼블릭 프로필
-            </Button>
-          </Link>
           <Link href={`/user/my`} passHref>
             <Button
               w={"full"}
               bg={useColorModeValue("#151f21", "gray.900")}
               color={"white"}
               rounded={"md"}
-              mt={4}
+              mt={5}
               _hover={{
                 transform: "translateY(-2px)",
                 boxShadow: "lg",
               }}
             >
-              내 기록 및 설정
+              내 프로필
             </Button>
           </Link>
           <HStack mt={4}>

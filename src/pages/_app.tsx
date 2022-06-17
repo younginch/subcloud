@@ -15,7 +15,7 @@ import Layout from "../components/layout";
 import { PageOptions } from "../utils/types";
 import { SWRConfig } from "swr";
 import AdminLayout from "../components/adminLayout";
-import UserLayout from "../components/userLayout";
+import UserLayout from "../components/user/my/userLayout";
 import isRightRole from "../utils/role";
 
 type NextPageWithAuth = NextPage & {

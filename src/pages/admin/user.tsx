@@ -284,4 +284,4 @@ function DeleteButton({ id }: DeleteButtonProps) {
   );
 }
 
-AdminUser.options = { role: Role.Admin } as PageOptions;
+AdminUser.options = { role: Role.Admin, hideTitle: true } as PageOptions;

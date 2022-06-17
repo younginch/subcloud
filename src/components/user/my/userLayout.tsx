@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { Role } from "@prisma/client";
 import router from "next/router";
-import { PageOptions } from "../utils/types";
+import { PageOptions } from "../../../utils/types";
 import {
   ProSidebar,
   Menu,
@@ -17,30 +17,38 @@ import {
   SidebarFooter,
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
-import { SubcloudIcon } from "./icons/customIcons";
-import { MdAttachMoney } from "react-icons/md";
+import { SubcloudIcon } from "../../icons/customIcons";
+import { MdSpaceDashboard, MdSubtitles } from "react-icons/md";
 import { useState } from "react";
-import { RiAdminFill, RiSlideshow3Fill } from "react-icons/ri";
-import { FaDatabase, FaUserCog } from "react-icons/fa";
-import MyMenuItem from "./user/my/myMenuItem";
+import { BiPurchaseTagAlt } from "react-icons/bi";
+import { AiOutlineHistory, AiTwotoneSetting } from "react-icons/ai";
+import { IoIosSend } from "react-icons/io";
+import MyMenuItem from "./myMenuItem";
 
-type AdminLayoutProps = {
+type UserLayoutProps = {
   children: React.ReactNode;
 };
 
-export default function AdminLayout({ children }: AdminLayoutProps) {
+export default function UserLayout({ children }: UserLayoutProps) {
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [isPc] = useMediaQuery("(min-width: 850px)");
   const dashBoardItems = [
     {
-      icon: <FaDatabase color="inherit" />,
-      href: "/admin",
-      text: "메인",
+      icon: <MdSpaceDashboard color="inherit" />,
+      href: "/user/my",
+      text: "Dashboard",
     },
-    { icon: <FaUserCog />, href: "/admin/user", text: "사용자" },
-    { icon: <MdAttachMoney />, href: "/admin/settle", text: "수익정산" },
-    { icon: <RiSlideshow3Fill />, href: "/admin/example", text: "예시영상" },
+    { icon: <IoIosSend />, href: "/user/my/request", text: "My requests" },
+    { icon: <AiOutlineHistory />, href: "/user/my/history", text: "History" },
+    { icon: <MdSubtitles />, href: "/user/my/sub", text: "My Subtitles" },
+    { icon: <BiPurchaseTagAlt />, href: "/user/my/order", text: "Orders" },
+    {
+      icon: <BiPurchaseTagAlt />,
+      href: "/user/my/withdraw",
+      text: "Withdraws",
+    },
   ];
+
   return (
     <HStack h="100%" overflowX="auto">
       <ProSidebar
@@ -51,19 +59,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         onMouseLeave={() => setCollapsed(true)}
       >
         <SidebarHeader>
-          <Stack pt="25px" alignItems="center">
-            <RiAdminFill size={30} />
-          </Stack>
-          <Center p="10px" pb="20px">
-            <Text
-              fontSize="18px"
-              fontWeight="bold"
-              overflow="hidden"
-              textOverflow="ellipsis"
-              whiteSpace="nowrap"
-            >
-              관리자 대시보드
-            </Text>
+          <Center>
+            <Box p="10px">
+              <MdSpaceDashboard size={30} />
+            </Box>
           </Center>
         </SidebarHeader>
         <Menu iconShape="circle">
@@ -78,7 +77,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               />
             );
           })}
-          <Box h={`calc(90vh - ${145 + dashBoardItems.length * 50}px)`} />
+          <Box h={`calc(90vh - ${135 + dashBoardItems.length * 50}px)`} />
+          <MenuItem
+            icon={<AiTwotoneSetting />}
+            onClick={() => router.push("/user/my/settings")}
+          >
+            Settings
+          </MenuItem>
         </Menu>
         <SidebarFooter>
           <Stack alignItems="center" p="5px">
@@ -91,4 +96,4 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   );
 }
 
-AdminLayout.options = { role: Role.Admin, hideTitle: true } as PageOptions;
+UserLayout.options = { role: Role.User, hideTitle: true } as PageOptions;
