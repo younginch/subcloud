@@ -60,6 +60,7 @@ model User {
   subHistories  SubHistory[]
   subscriptions Subscription[]
   coupons       Coupon[]
+  Withdraw      Withdraw[]
 }
 
 model VerificationToken {
@@ -149,8 +150,8 @@ model Sub {
 
   reviews      Review[]
   subHistories SubHistory[]
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 
   @@unique([serviceId, videoId, lang, userId])
 }
@@ -311,4 +312,14 @@ model SettlePoint {
   settleId String
   settle   Settle @relation(fields: [settleId], references: [id], onDelete: Cascade)
   point    Int
+}
+
+model Withdraw {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  point       Int
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
