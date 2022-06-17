@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { Role } from "@prisma/client";
 import router from "next/router";
-import { PageOptions } from "../utils/types";
+import { PageOptions } from "../../../utils/types";
 import {
   ProSidebar,
   Menu,
@@ -17,29 +17,13 @@ import {
   SidebarFooter,
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
-import { SubcloudIcon } from "./icons/customIcons";
+import { SubcloudIcon } from "../../icons/customIcons";
 import { MdSpaceDashboard, MdSubtitles } from "react-icons/md";
 import { useState } from "react";
 import { BiPurchaseTagAlt } from "react-icons/bi";
 import { AiOutlineHistory, AiTwotoneSetting } from "react-icons/ai";
 import { IoIosSend } from "react-icons/io";
-
-type MyMenuItemProps = {
-  active: boolean;
-  icon: React.ReactNode;
-  href: string;
-  text: string;
-};
-
-export function MyMenuItem({ active, icon, href, text }: MyMenuItemProps) {
-  return (
-    <Box color={active ? "white" : ""}>
-      <MenuItem icon={icon} onClick={() => router.push(href)}>
-        <Text fontWeight={active ? "bold" : "normal"}>{text}</Text>
-      </MenuItem>
-    </Box>
-  );
-}
+import MyMenuItem from "./myMenuItem";
 
 type UserLayoutProps = {
   children: React.ReactNode;
