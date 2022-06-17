@@ -1,14 +1,12 @@
 import {
-  Button,
   HStack,
-  ListItem,
   useMediaQuery,
   Box,
   Center,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 import { Role } from "@prisma/client";
-import Link from "next/link";
 import router from "next/router";
 import { PageOptions } from "../utils/types";
 import {
@@ -24,28 +22,22 @@ import { MdSpaceDashboard, MdSubtitles } from "react-icons/md";
 import { useState } from "react";
 import { BiPurchaseTagAlt } from "react-icons/bi";
 import { AiOutlineHistory, AiTwotoneSetting } from "react-icons/ai";
-import { RiFeedbackFill } from "react-icons/ri";
 import { IoIosSend } from "react-icons/io";
 
-type UserMenuProps = {
+type MyMenuItemProps = {
+  active: boolean;
+  icon: React.ReactNode;
   href: string;
-  title: string;
+  text: string;
 };
 
-function UserMenu({ href, title }: UserMenuProps) {
+export function MyMenuItem({ active, icon, href, text }: MyMenuItemProps) {
   return (
-    <ListItem>
-      <Link href={href} passHref>
-        <Button
-          variant="ghost"
-          w="100%"
-          flexDirection="column"
-          alignItems="start"
-        >
-          {title}
-        </Button>
-      </Link>
-    </ListItem>
+    <Box color={active ? "white" : ""}>
+      <MenuItem icon={icon} onClick={() => router.push(href)}>
+        <Text fontWeight={active ? "bold" : "normal"}>{text}</Text>
+      </MenuItem>
+    </Box>
   );
 }
 
@@ -55,13 +47,24 @@ type UserLayoutProps = {
 
 export default function UserLayout({ children }: UserLayoutProps) {
   const [collapsed, setCollapsed] = useState<boolean>(false);
-  const [isPc] = useMediaQuery("(min-width: 700px)");
-  const navHeight = "60px";
+  const [isPc] = useMediaQuery("(min-width: 850px)");
+  const dashBoardItems = [
+    {
+      icon: <MdSpaceDashboard color="inherit" />,
+      href: "/user/my",
+      text: "Dashboard",
+    },
+    { icon: <IoIosSend />, href: "/user/my/request", text: "My requests" },
+    { icon: <AiOutlineHistory />, href: "/user/my/history", text: "History" },
+    { icon: <MdSubtitles />, href: "/user/my/sub", text: "My Subtitles" },
+    { icon: <BiPurchaseTagAlt />, href: "/user/my/order", text: "Orders" },
+    { icon: <BiPurchaseTagAlt />, href: "/user/my/withdraw", text: "Withdraws" },
+  ];
 
   return (
-    <HStack h="100%">
+    <HStack h="100%" overflowX="auto">
       <ProSidebar
-        collapsed={collapsed}
+        collapsed={collapsed && !isPc}
         onMouseEnter={() => {
           setCollapsed(false);
         }}
@@ -75,54 +78,23 @@ export default function UserLayout({ children }: UserLayoutProps) {
           </Center>
         </SidebarHeader>
         <Menu iconShape="circle">
-          <MenuItem
-            icon={<MdSpaceDashboard />}
-            onClick={() => router.push("/user/my")}
-          >
-            Dashboard
-          </MenuItem>
-          <MenuItem
-            icon={<IoIosSend />}
-            onClick={() => router.push("/user/my/request")}
-          >
-            My requests
-          </MenuItem>
-          <MenuItem
-            icon={<AiOutlineHistory />}
-            onClick={() => router.push("/user/my/history")}
-          >
-            History
-          </MenuItem>
-          <MenuItem
-            icon={<MdSubtitles />}
-            onClick={() => router.push("/user/my/sub")}
-          >
-            My Subtitles
-          </MenuItem>
-          <MenuItem
-            icon={<BiPurchaseTagAlt />}
-            onClick={() => router.push("/user/my/order")}
-          >
-            Orders
-          </MenuItem>
-          <MenuItem
-            icon={<BiPurchaseTagAlt />}
-            onClick={() => router.push("/user/my/withdraw")}
-          >
-            Withdraw
-          </MenuItem>
-          <Box h="calc(90vh - 435px)" />
+          {dashBoardItems.map((element) => {
+            return (
+              <MyMenuItem
+                key={element.text}
+                active={element.href === router.pathname}
+                icon={element.icon}
+                href={element.href}
+                text={element.text}
+              />
+            );
+          })}
+          <Box h="calc(90vh - 385px)" />
           <MenuItem
             icon={<AiTwotoneSetting />}
             onClick={() => router.push("/user/my/settings")}
           >
             Settings
-          </MenuItem>
-          <MenuItem
-            icon={<RiFeedbackFill />}
-            onClick={() => router.push("/user/my/feedback")}
-          >
-            Send Feedback
           </MenuItem>
         </Menu>
         <SidebarFooter>
