@@ -35,6 +35,7 @@ export async function RankingUser(
   const newUsers = users
     .filter((user) => user.subs.length > 0)
     .map((user) => {
+      const subs = user.subs.filter((sub) => sub.status === "Approved");
       return {
         id: user.id,
         name: user.name,
@@ -46,9 +47,9 @@ export async function RankingUser(
         point: user.point,
         baseLangs: user.baseLangs,
         _count: {
-          subs: user.subs.length,
-          views: user.subs.reduce((prev, curr) => prev + curr.views, 0),
-          fulfilledRequests: user.subs.reduce(
+          subs: subs.length,
+          views: subs.reduce((prev, curr) => prev + curr.views, 0),
+          fulfilledRequests: subs.reduce(
             (prevSub, currSub) =>
               prevSub +
               currSub.video.requests.reduce(
@@ -62,8 +63,8 @@ export async function RankingUser(
             0
           ),
           ratings:
-            user.subs.length > 0
-              ? user.subs.reduce(
+            subs.length > 0
+              ? subs.reduce(
                   (prevSub, currSub) =>
                     prevSub +
                     (currSub.ratings.length > 0
@@ -74,7 +75,7 @@ export async function RankingUser(
                         ) / currSub.ratings.length
                       : 0),
                   0
-                ) / user.subs.length
+                ) / subs.length
               : 0,
         },
       };
