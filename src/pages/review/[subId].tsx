@@ -293,7 +293,7 @@ export default function ReviewDetail() {
   }
 
   return (
-    <Flex direction={isLargerThan1280 ? "row" : "column"} ps={5} pt={5}>
+    <Flex direction={isLargerThan1280 ? "row" : "column"} ps={5} pt={5} pb={5}>
       <Stack>
         <Box w="100%" h="fit-content">
           {options && sub ? (
@@ -357,8 +357,8 @@ export default function ReviewDetail() {
             승인
           </Button>
         </HStack>
-        <ReviewList subId={router.query.subId as string} />
         <ReviewAddForm subId={router.query.subId as string} />
+        <ReviewList subId={router.query.subId as string} />
       </Stack>
     </Flex>
   );
