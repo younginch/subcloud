@@ -42,6 +42,7 @@ export default function UserLayout({ children }: UserLayoutProps) {
     { icon: <AiOutlineHistory />, href: "/user/my/history", text: "History" },
     { icon: <MdSubtitles />, href: "/user/my/sub", text: "My Subtitles" },
     { icon: <BiPurchaseTagAlt />, href: "/user/my/order", text: "Orders" },
+    { icon: <BiPurchaseTagAlt />, href: "/user/my/withdraw", text: "Withdraws" },
   ];
 
   return (
