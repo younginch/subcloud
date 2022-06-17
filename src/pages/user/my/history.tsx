@@ -42,4 +42,4 @@ export default function UserMyHistory() {
   );
 }
 
-UserMyHistory.options = { role: Role.User } as PageOptions;
+UserMyHistory.options = { role: Role.User, hideTitle: true } as PageOptions;

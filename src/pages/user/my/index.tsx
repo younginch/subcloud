@@ -28,4 +28,4 @@ export default function UserMyIndex() {
   );
 }
 
-UserMyIndex.options = { role: Role.User } as PageOptions;
+UserMyIndex.options = { role: Role.User, hideTitle: true } as PageOptions;
