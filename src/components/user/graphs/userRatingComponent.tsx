@@ -87,10 +87,10 @@ export default function UserRatingComponent({
           </Text>
           <Flex direction="column" align="center" minW="80px">
             <Text color="#fff" fontSize="28px" fontWeight="bold">
-              {rating}
+              {Math.round(rating * 10) / 10}
             </Text>
             <Text fontSize="xs" color="gray.400">
-              top {percentage}%
+              top {Math.round(percentage * 10) / 10}%
             </Text>
           </Flex>
           <Text fontSize="xs" color="gray.400">

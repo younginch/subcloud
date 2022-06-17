@@ -99,7 +99,7 @@ export default function FulfilledGraph({
                   fontWeight="bold"
                   mb="4px"
                 >
-                  {percentage}%
+                  {Math.round(percentage * 10) / 10}%
                 </Text>
                 <Text color="gray.400" fontSize="sm">
                   기여도

@@ -6,6 +6,7 @@ import { FiBox } from "react-icons/fi";
 import SubtitleDashboard from "../../../components/user/subtitleDashboard";
 import PublicProfileLayout from "../../../components/user/publicProfileLayout";
 import { PublicProfileTab } from "../../../utils/tabs";
+import { useEffect, useState } from "react";
 
 type UserReadProps = {
   user: ResUserSearch;
@@ -13,10 +14,21 @@ type UserReadProps = {
 };
 
 export default function UserIndex({ user, subs }: UserReadProps) {
+  const [array, setArray] = useState([]);
+  useEffect(() => {
+    axios
+      .get(
+        `/api/stats/sub?userId=${user.id}&cnt=200&date=${new Date().toString()}`
+      )
+      .then((res) => {
+        setArray(res.data);
+      });
+  }, [user.id]);
+
   return (
     <PublicProfileLayout currentTab={PublicProfileTab.Overview}>
       {subs.length > 0 ? (
-        <SubtitleDashboard user={user} subs={subs} />
+        <SubtitleDashboard user={user} subs={subs} array={array} />
       ) : (
         <Stack alignItems="center" spacing={5} h="55vh">
           <FiBox size={100} />

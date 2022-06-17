@@ -11,15 +11,16 @@ type CalendarElement = {
 
 type Props = {
   count: number;
+  array: Array<number>;
 };
 
-export default function CalendarChart({ count }: Props) {
+export default function CalendarChart({ count, array }: Props) {
   const [onHover, setOnHover] = useState<boolean>(false);
   const today = new Date();
   const randomValues = getRange(count).map((index) => {
     return {
       date: shiftDate(today, -index),
-      count: Math.floor(Math.random() * 4) + 1,
+      count: array.length > index ? array[index] : 0,
     };
   });
 
