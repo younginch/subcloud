@@ -18,7 +18,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import Link from "next/link";
 import { PageOptions } from "../../../utils/types";
 
-export default function BuySuccess() {
+export default function OrderSuccess() {
   const router = useRouter();
   const toast = useToast();
 
@@ -126,4 +126,4 @@ export default function BuySuccess() {
   );
 }
 
-BuySuccess.options = { auth: true, hideTitle: true } as PageOptions;
+OrderSuccess.options = { auth: true, hideTitle: true } as PageOptions;

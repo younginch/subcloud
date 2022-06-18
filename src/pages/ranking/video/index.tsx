@@ -11,7 +11,7 @@ import { useState } from "react";
 import GeneralTable from "../../../components/ranking/generalTable";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 
-export default function RankingPage() {
+export default function VideoRankingPage() {
   const captions = ["#", "Title", "Duration", "Language", "Requests", "Points"];
   const [lang, setLang] = useState("All Lang");
   const sortBy = "request"; //point
@@ -93,7 +93,7 @@ export default function RankingPage() {
   );
 }
 
-RankingPage.options = {
+VideoRankingPage.options = {
   auth: false,
   width: "100%",
   hideTitle: true,

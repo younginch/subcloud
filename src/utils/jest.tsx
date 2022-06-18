@@ -18,3 +18,15 @@ export const renderWithSession = (ui: ReactElement) => {
 
   return render(ui, { wrapper: Wrapper });
 };
+
+export const renderWithThemeAndSession = (ui: ReactElement) => {
+  const Wrapper = ({
+    children,
+  }: SessionProviderProps & ChakraProviderProps) => (
+    <ChakraProvider>
+      <SessionProvider>{children}</SessionProvider>
+    </ChakraProvider>
+  );
+
+  return render(ui, { wrapper: Wrapper });
+};
