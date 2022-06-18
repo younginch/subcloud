@@ -37,6 +37,8 @@ type CreateWithdrawButtonProps = {
 
 type CreateWithdrawFormData = {
   point: number;
+  bankName: string;
+  accountNumber: string;
 };
 
 function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
@@ -49,9 +51,13 @@ function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
     formState: { errors, isSubmitting },
   } = useForm<CreateWithdrawFormData>();
 
-  const onSubmit = async ({ point }: CreateWithdrawFormData) => {
+  const onSubmit = async ({
+    point,
+    bankName,
+    accountNumber,
+  }: CreateWithdrawFormData) => {
     axios
-      .post(`/api/withdraw`, { point })
+      .post(`/api/withdraw`, { point, bankName, accountNumber })
       .then(() => {
         mutate();
         toast({
@@ -98,6 +104,28 @@ function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
                   </FormErrorMessage>
                 </FormControl>
                 <Text>예상 입금 금액: {watch().point * 10} 원</Text>
+                <FormControl isInvalid={errors.bankName !== undefined}>
+                  <FormLabel htmlFor="bankName">은행</FormLabel>
+                  <Input
+                    id="bankName"
+                    placeholder=""
+                    {...register("bankName", { required: true })}
+                  />
+                  <FormErrorMessage>
+                    {errors.bankName && errors.bankName.message}
+                  </FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={errors.accountNumber !== undefined}>
+                  <FormLabel htmlFor="accountNumber">계좌번호</FormLabel>
+                  <Input
+                    id="accountNumber"
+                    placeholder=""
+                    {...register("accountNumber", { required: true })}
+                  />
+                  <FormErrorMessage>
+                    {errors.accountNumber && errors.accountNumber.message}
+                  </FormErrorMessage>
+                </FormControl>
               </Stack>
             </DrawerBody>
             <DrawerFooter borderTopWidth="1px">
@@ -129,6 +157,7 @@ export default function UserMyWithdraw() {
           <Thead>
             <Tr>
               <Th>신청금액 (원)</Th>
+              <Th>입금계좌</Th>
               <Th>신청 일시</Th>
               <Th>처리 완료 여부</Th>
               <Th>처리 일시</Th>
@@ -139,6 +168,9 @@ export default function UserMyWithdraw() {
               return (
                 <Tr key={withdraw.id}>
                   <Td>{withdraw.point}</Td>
+                  <Td>
+                    {withdraw.bankName} {withdraw.accountNumber}
+                  </Td>
                   <Td>{withdraw.createdAt.toString()}</Td>
                   <Td>{withdraw.isCompleted}</Td>
                   <Td>{withdraw.updatedAt.toString()}</Td>

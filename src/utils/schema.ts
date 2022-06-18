@@ -48,3 +48,9 @@ export const ReviewCreateSchema = joi.object({
   startTime: joi.number().integer(),
   endTime: joi.number().integer(),
 });
+
+export const WithdrawCreateSchema = joi.object({
+  point: joi.number().integer().required(),
+  bankName: joi.string().required(),
+  accountNumber: joi.string().required(),
+});
