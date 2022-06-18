@@ -64,18 +64,19 @@ export async function UserSearch({
           ),
           ratings:
             subs.length > 0
-              ? subs.reduce(
-                  (prevSub, currSub) =>
-                    prevSub +
-                    (currSub.ratings.length > 0
-                      ? currSub.ratings.reduce(
-                          (prevRating, currRating) =>
-                            prevRating + currRating.score,
-                          0
-                        ) / currSub.ratings.length
-                      : 0),
-                  0
-                ) / subs.length
+              ? subs
+                  .filter((sub) => sub.ratings.length > 0)
+                  .reduce(
+                    (prevSub, currSub) =>
+                      prevSub +
+                      currSub.ratings.reduce(
+                        (prevRating, currRating) =>
+                          prevRating + currRating.score,
+                        0
+                      ) /
+                        currSub.ratings.length,
+                    0
+                  ) / subs.length
               : 0,
         },
       };

@@ -186,6 +186,8 @@ model Rating {
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   score   Int
   comment String?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 
   @@unique([subId, userId])
 }

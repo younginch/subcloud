@@ -11,13 +11,23 @@ import { ResSubSearch, ResUserSearch } from "../../utils/types";
 import ProfileSubtitleRow from "./profileSubtitleRow";
 import UserActivity from "./graphs/userActivity";
 import CalendarChart from "./graphs/calanderChart";
-import { noScrollbarsClassName } from "react-remove-scroll-bar";
 
 type Props = {
   user: ResUserSearch;
   subs: ResSubSearch;
+  subArray: Array<number>;
+  subRange: number;
+  viewArray: Array<number>;
+  lineRange: number;
 };
-export default function SubtitleDashboard({ user, subs }: Props) {
+export default function SubtitleDashboard({
+  user,
+  subs,
+  subArray,
+  subRange,
+  viewArray,
+  lineRange,
+}: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const subTextColor = useColorModeValue("gray.600", "gray.400");
   const bgColor = useColorModeValue("white", "#1F2733");
@@ -85,14 +95,14 @@ export default function SubtitleDashboard({ user, subs }: Props) {
         >
           <UserActivity
             title="하이라이트"
-            chart={<CalendarChart count={200} />}
+            chart={<CalendarChart subRange={subRange} subArray={subArray} />}
             subs={user._count.subs}
             views={user._count.views}
           />
           <SalesOverview
             title="Activity Overview"
             percentage={5}
-            chart={<LineChart />}
+            chart={<LineChart lineRange={lineRange} viewArray={viewArray} />}
           />
         </Grid>
         <Box mt={10} bg={bgColor} borderRadius="20px">
@@ -135,7 +145,7 @@ export default function SubtitleDashboard({ user, subs }: Props) {
                     }
                     lang={sub.lang}
                     viewCount={sub.views}
-                    uploadDate={sub.updatedAt.toString()}
+                    uploadDate={sub.createdAt.toString()}
                   />
                 );
               })}
@@ -145,8 +155,4 @@ export default function SubtitleDashboard({ user, subs }: Props) {
       </Box>
     </>
   );
-}
-
-function _getTabIndex(): number | undefined {
-  throw new Error("Function not implemented.");
 }
