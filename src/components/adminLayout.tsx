@@ -82,7 +82,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               />
             );
           })}
-          <Box h="calc(90vh - 340px)" />
+          <Box h={`calc(90vh - ${145 + dashBoardItems.length * 50}px)`} />
         </Menu>
         <SidebarFooter>
           <Stack alignItems="center" p="5px">
