@@ -12,7 +12,6 @@ import { PageOptions } from "../utils/types";
 import {
   ProSidebar,
   Menu,
-  MenuItem,
   SidebarHeader,
   SidebarFooter,
 } from "react-pro-sidebar";
@@ -40,6 +39,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     { icon: <FaUserCog />, href: "/admin/user", text: "사용자" },
     { icon: <MdAttachMoney />, href: "/admin/settle", text: "수익정산" },
     { icon: <RiSlideshow3Fill />, href: "/admin/example", text: "예시영상" },
+    {
+      icon: <RiSlideshow3Fill />,
+      href: "/admin/withdraw",
+      text: "포인트 송금",
+    },
   ];
   return (
     <HStack h="100%" overflowX="auto">
