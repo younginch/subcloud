@@ -27,6 +27,7 @@
     "@tosspayments/payment-sdk": "^1.1.0",
     "apexcharts": "^3.35.3",
     "axios": "^0.27.2",
+    "chart.js": "^3.8.0",
     "dayjs": "^1.11.3",
     "framer-motion": "^6.3.10",
     "iso-639-1": "^2.1.14",
@@ -42,6 +43,7 @@
     "react": "18.1.0",
     "react-apexcharts": "^1.4.0",
     "react-calendar-heatmap": "^1.8.1",
+    "react-chartjs-2": "^4.2.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "18.1.0",
     "react-dropzone": "^14.2.1",
@@ -59,6 +61,7 @@
     "uuidv4": "^6.2.13"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.2.0",
     "@playwright/test": "^1.22.2",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
