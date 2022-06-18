@@ -15,12 +15,7 @@ export default function LineChart({ viewArray, lineRange }: Props) {
   const dateArray = Array.from({ length: lineRange }, (_, i) =>
     date.subtract(i, "day").format("MM/DD")
   ).reverse();
-  const ratingArray = [3, 4, 5, 3, 4, 2, 1, 1, 2, 5];
   const lineChartData = [
-    {
-      name: "Rating",
-      data: ratingArray,
-    },
     {
       name: "Views",
       data: viewArray,
