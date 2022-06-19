@@ -21,6 +21,7 @@ import {
   AlertDialogOverlay,
   useDisclosure,
   FormErrorMessage,
+  Center,
 } from "@chakra-ui/react";
 import type { Provider } from "next-auth/providers";
 import { getCsrfToken, getProviders, signIn } from "next-auth/react";
@@ -31,6 +32,7 @@ import { PasswordField } from "../../components/signin/passwordField";
 import React, { useRef } from "react";
 import { PageOptions } from "../../utils/types";
 import { useForm } from "react-hook-form";
+import { SubcloudIcon } from "../../components/icons/customIcons";
 
 type Props = {
   providers: Provider[];
@@ -63,13 +65,15 @@ export default function SignIn({ csrfToken }: Props) {
       px={{ base: "0", sm: "8" }}
     >
       <Stack spacing="8">
-        <Stack spacing="6">
-          <Logo />
-          <Stack spacing={{ base: "2", md: "3" }} textAlign="center">
+        <Stack spacing="3">
+          <Center>
+            <SubcloudIcon size={100} fill="gray.600" />
+          </Center>
+          <Center>
             <Heading size={useBreakpointValue({ base: "xs", md: "sm" })}>
               Sign in or sign up to your account
             </Heading>
-          </Stack>
+          </Center>
         </Stack>
         <Box
           py={{ base: "0", sm: "8" }}
