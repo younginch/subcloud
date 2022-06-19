@@ -6,7 +6,6 @@ import {
   Th,
   Tbody,
   Td,
-  Avatar,
   HStack,
   Text,
   Button,
@@ -15,6 +14,7 @@ import { Role } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import AvatarWithName from "../../components/badges/avatarWithName";
 import { YoutubeIcon } from "../../components/icons/customIcons";
 import { PageOptions, ResSubSearch } from "../../utils/types";
 
@@ -57,23 +57,10 @@ export default function Review() {
                     </HStack>
                   </Td>
                   <Td>
-                    <HStack>
-                      <Avatar
-                        name={
-                          sub.video?.youtubeVideo?.channel.title ??
-                          "채널 정보없음"
-                        }
-                        src={
-                          sub.video?.youtubeVideo?.channel.thumbnailUrl ??
-                          undefined
-                        }
-                        size="sm"
-                      />
-                      <Text maxW={120} noOfLines={1}>
-                        {sub.video?.youtubeVideo?.channel.title ??
-                          "채널 정보없음"}
-                      </Text>
-                    </HStack>
+                    <AvatarWithName
+                      imageUrl={sub.video?.youtubeVideo?.channel.thumbnailUrl}
+                      name={sub.video?.youtubeVideo?.channel.title}
+                    />
                   </Td>
                   <Td>
                     <Text>{sub.status}</Text>
