@@ -36,6 +36,7 @@ import { Products } from "../../utils/products";
 import { FaCheckCircle } from "react-icons/fa";
 import { PageOptions } from "../../utils/types";
 import { useSession } from "next-auth/react";
+import SubscribeItem from "../../components/buy/subscribeItem";
 
 function PriceWrapper({ children }: { children: ReactNode }) {
   return (
@@ -248,170 +249,56 @@ export default function Buy() {
           spacing={{ base: 4, lg: 10 }}
           py={10}
         >
-          <PriceWrapper>
-            <Box py={4} px={12}>
-              <Text fontWeight="500" fontSize="2xl">
-                Basic
-              </Text>
-              <HStack justifyContent="center">
-                <Text fontSize="3xl" fontWeight="600">
-                  $
-                </Text>
-                <Text fontSize="5xl" fontWeight="900">
-                  2
-                </Text>
-                <Text fontSize="3xl" color="gray.500">
-                  /month
-                </Text>
-              </HStack>
-            </Box>
-            <VStack
-              bg={useColorModeValue("gray.50", "gray.700")}
-              py={4}
-              borderBottomRadius={"xl"}
-            >
-              <List spacing={3} textAlign="start" px={12}>
-                <ListItem>
-                  <ListIcon as={FaCheckCircle} color="green.500" />
-                  Remove Ads
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={FaCheckCircle} color="green.500" />
-                  Receive free points up to $1
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={FaCheckCircle} color="green.500" />
-                  Subtitles early access
-                </ListItem>
-              </List>
-              <Box w="80%" pt={7}>
-                <Button
-                  w="full"
-                  colorScheme="red"
-                  variant="outline"
-                  onClick={requestSubscription}
-                >
-                  Start trial
-                </Button>
-              </Box>
-            </VStack>
-          </PriceWrapper>
-
-          <PriceWrapper>
-            <Box position="relative">
-              <Box
-                position="absolute"
-                top="-16px"
-                left="50%"
-                style={{ transform: "translate(-50%)" }}
-              >
-                <Text
-                  textTransform="uppercase"
-                  bg={useColorModeValue("red.300", "red.700")}
-                  px={3}
-                  py={1}
-                  color={useColorModeValue("gray.900", "gray.300")}
-                  fontSize="sm"
-                  fontWeight="600"
-                  rounded="xl"
-                >
-                  Most Popular
-                </Text>
-              </Box>
-              <Box py={4} px={12}>
-                <Text fontWeight="500" fontSize="2xl">
-                  Pro
-                </Text>
-                <HStack justifyContent="center">
-                  <Text fontSize="3xl" fontWeight="600">
-                    $
-                  </Text>
-                  <Text fontSize="5xl" fontWeight="900">
-                    4
-                  </Text>
-                  <Text fontSize="3xl" color="gray.500">
-                    /month
-                  </Text>
-                </HStack>
-              </Box>
-              <VStack
-                bg={useColorModeValue("gray.50", "gray.700")}
-                py={4}
-                borderBottomRadius={"xl"}
-              >
-                <List spacing={3} textAlign="start" px={12}>
-                  <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
-                    Remove Ads
-                  </ListItem>
-                  <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
-                    Receive free points up to $2
-                  </ListItem>
-                  <ListItem>
-                    <ListIcon as={FaCheckCircle} color="green.500" />
-                    Subtitles early access
-                  </ListItem>
-                  <ListItem>
-                    <ListIcon as={FaCheckCircle} color="blue.500" />
-                    Support language pair subtitles
-                  </ListItem>
-                  <ListItem>
-                    <ListIcon as={FaCheckCircle} color="blue.500" />
-                    Support custom vocabulary
-                  </ListItem>
-                </List>
-                <Box w="80%" pt={7}>
-                  <Button w="full" colorScheme="red" isDisabled>
-                    Start trial
-                  </Button>
-                </Box>
-              </VStack>
-            </Box>
-          </PriceWrapper>
-          <PriceWrapper>
-            <Box py={4} px={12}>
-              <Text fontWeight="500" fontSize="2xl">
-                Ultimate
-              </Text>
-              <HStack justifyContent="center">
-                <Text fontSize="3xl" fontWeight="600">
-                  plus $
-                </Text>
-                <Text fontSize="5xl" fontWeight="900">
-                  5
-                </Text>
-                <Text fontSize="3xl" color="gray.500">
-                  /month
-                </Text>
-              </HStack>
-            </Box>
-            <VStack
-              bg={useColorModeValue("gray.50", "gray.700")}
-              py={4}
-              borderBottomRadius={"xl"}
-            >
-              <List spacing={3} textAlign="start" px={12}>
-                <ListItem>
-                  <ListIcon as={FaCheckCircle} color="green.500" />
-                  Upgrade your Pro plans
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={FaCheckCircle} color="yellow.500" />
-                  unlimited portfolio update
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={FaCheckCircle} color="yellow.500" />
-                  Enable subtitle co-creation
-                </ListItem>
-              </List>
-              <Box w="80%" pt={7}>
-                <Button w="full" colorScheme="red" variant="outline" isDisabled>
-                  Start trial
-                </Button>
-              </Box>
-            </VStack>
-          </PriceWrapper>
+          <SubscribeItem price="2" title="Basic">
+            <ListItem>
+              <ListIcon as={FaCheckCircle} color="green.500" />
+              Remove Ads
+            </ListItem>
+            <ListItem>
+              <ListIcon as={FaCheckCircle} color="green.500" />
+              Receive free points up to $1
+            </ListItem>
+            <ListItem>
+              <ListIcon as={FaCheckCircle} color="green.500" />
+              Subtitles early access
+            </ListItem>
+          </SubscribeItem>
+          <SubscribeItem price="4" header="MOST POPULAR" title="pro" disabled>
+            <ListItem>
+              <ListIcon as={FaCheckCircle} color="green.500" />
+              Remove Ads
+            </ListItem>
+            <ListItem>
+              <ListIcon as={FaCheckCircle} color="green.500" />
+              Receive free points up to $2
+            </ListItem>
+            <ListItem>
+              <ListIcon as={FaCheckCircle} color="green.500" />
+              Subtitles early access
+            </ListItem>
+            <ListItem>
+              <ListIcon as={FaCheckCircle} color="blue.500" />
+              Support language pair subtitles
+            </ListItem>
+            <ListItem>
+              <ListIcon as={FaCheckCircle} color="blue.500" />
+              Support custom vocabulary
+            </ListItem>
+          </SubscribeItem>
+          <SubscribeItem price="+5" title="Ultimate" disabled>
+            <ListItem>
+              <ListIcon as={FaCheckCircle} color="green.500" />
+              Upgrade your Pro plans
+            </ListItem>
+            <ListItem>
+              <ListIcon as={FaCheckCircle} color="yellow.500" />
+              unlimited portfolio update
+            </ListItem>
+            <ListItem>
+              <ListIcon as={FaCheckCircle} color="yellow.500" />
+              Enable subtitle co-creation
+            </ListItem>
+          </SubscribeItem>
         </Stack>
         <Box py={12} pl={3} pr={3}>
           <VStack spacing={2}>

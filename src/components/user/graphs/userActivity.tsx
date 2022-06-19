@@ -10,8 +10,9 @@ import React, { ReactElement } from "react";
 import ChartStatistics from "./chartStatistics";
 import PurityCard from "../card/purityCard";
 import CardHeader from "../card/cardHeader";
-// Custom icons
-import { CartIcon, RocketIcon, StatsIcon, WalletIcon } from "../icons";
+import { IoTime, IoWallet } from "react-icons/io5";
+import { AiFillEye } from "react-icons/ai";
+import { FaUser } from "react-icons/fa";
 
 type Props = {
   title: string;
@@ -45,25 +46,25 @@ export default function UserActivity({ title, chart, subs, views }: Props) {
               title={"자막 수"}
               amount={subs.toString()}
               percentage={20}
-              icon={<WalletIcon h={"15px"} w={"15px"} color={iconBoxInside} />}
+              icon={<IoWallet size={15} color={iconBoxInside} />}
             />
             <ChartStatistics
               title={"총 조회수"}
               amount={views.toString()}
               percentage={80}
-              icon={<RocketIcon h={"15px"} w={"15px"} color={iconBoxInside} />}
+              icon={<AiFillEye size={15} color={iconBoxInside} />}
             />
             <ChartStatistics
               title={"시청시간"}
               amount={"2,400$"}
               percentage={30}
-              icon={<CartIcon h={"15px"} w={"15px"} color={iconBoxInside} />}
+              icon={<IoTime size={15} color={iconBoxInside} />}
             />
             <ChartStatistics
               title={"구독자 수"}
               amount={"320"}
               percentage={40}
-              icon={<StatsIcon h={"15px"} w={"15px"} color={iconBoxInside} />}
+              icon={<FaUser size={15} color={iconBoxInside} />}
             />
           </SimpleGrid>
         </Flex>
