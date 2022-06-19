@@ -13,7 +13,7 @@ jobs:
         with:
           mode: minimum
           count: 1
-          labels: "enhancement, bug, test, documentation, cicd, dependencies"
+          labels: "enhancement, bug, test, documentation, cicd, dependencies, refactor"
   
   size:
     name: Size Label
