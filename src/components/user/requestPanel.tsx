@@ -9,7 +9,6 @@ import {
   Tbody,
   Td,
   HStack,
-  Avatar,
   Button,
   Menu,
   MenuButton,

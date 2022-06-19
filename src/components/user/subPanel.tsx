@@ -14,7 +14,6 @@ import {
   Th,
   Tbody,
   Td,
-  Avatar,
   Text,
   PopoverCloseButton,
   PopoverArrow,
