@@ -119,7 +119,7 @@ export function Card({ data }: { data: StatData }) {
               w={6}
               h={6}
               color="white"
-              className={`${onHover ? "icon-spin" : ""}`}
+              className={`${onHover ? "spinComponent" : ""}`}
             />
           </Flex>
           <VStack spacing={0} align="start" maxW="lg" h="100%">
