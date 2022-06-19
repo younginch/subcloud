@@ -9,7 +9,6 @@ import {
   Tbody,
   Td,
   HStack,
-  Avatar,
   Button,
   Menu,
   MenuButton,
@@ -24,6 +23,7 @@ import { useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { MoreIcon } from "../../utils/icons";
 import { ResRequestSearch } from "../../utils/types";
+import AvatarWithName from "../badges/avatarWithName";
 import { YoutubeIcon } from "../icons/customIcons";
 
 export default function RequestPanel(props: { requests: ResRequestSearch }) {
@@ -79,23 +79,10 @@ export default function RequestPanel(props: { requests: ResRequestSearch }) {
                   </HStack>
                 </Td>
                 <Td>
-                  <HStack>
-                    <Avatar
-                      name={
-                        request.video?.youtubeVideo?.channel.title ??
-                        "채널 정보없음"
-                      }
-                      src={
-                        request.video?.youtubeVideo?.channel.thumbnailUrl ??
-                        undefined
-                      }
-                      size="sm"
-                    />
-                    <Text maxW={120} noOfLines={1}>
-                      {request.video?.youtubeVideo?.channel.title ??
-                        "채널 정보없음"}
-                    </Text>
-                  </HStack>
+                  <AvatarWithName
+                    imageUrl={request.video?.youtubeVideo?.channel.thumbnailUrl}
+                    name={request.video?.youtubeVideo?.channel.title}
+                  />
                 </Td>
                 <Td>{request.lang}</Td>
                 <Td>{request.point}</Td>

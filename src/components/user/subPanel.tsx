@@ -14,7 +14,6 @@ import {
   Th,
   Tbody,
   Td,
-  Avatar,
   Text,
   PopoverCloseButton,
   PopoverArrow,
@@ -36,6 +35,7 @@ import { ResFileRead, ResSubSearch } from "../../utils/types";
 import { YoutubeIcon } from "../icons/customIcons";
 import DetailViewGraph from "./my/detailViewGraph";
 import ReviewStatusBadge from "../badges/reviewStatusBadge";
+import AvatarWithName from "../badges/avatarWithName";
 
 type SubPanelProps = {
   subs: ResSubSearch;
@@ -122,23 +122,10 @@ export default function SubPanel(props: SubPanelProps) {
                   </HStack>
                 </Td>
                 <Td>
-                  <HStack>
-                    <Avatar
-                      name={
-                        sub.video?.youtubeVideo?.channel.title ??
-                        "채널 정보없음"
-                      }
-                      src={
-                        sub.video?.youtubeVideo?.channel.thumbnailUrl ??
-                        undefined
-                      }
-                      size="sm"
-                    />
-                    <Text maxW={120} noOfLines={1}>
-                      {sub.video?.youtubeVideo?.channel.title ??
-                        "채널 정보없음"}
-                    </Text>
-                  </HStack>
+                  <AvatarWithName
+                    imageUrl={sub.video?.youtubeVideo?.channel.thumbnailUrl}
+                    name={sub.video?.youtubeVideo?.channel.title}
+                  />
                 </Td>
                 <Td>{sub.lang}</Td>
                 <Td>
