@@ -1,7 +1,6 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   useToast,
-  TableContainer,
   HStack,
   Menu,
   MenuButton,
@@ -17,17 +16,25 @@ import {
   Td,
   Avatar,
   Text,
-  IconButton,
-  MenuItem,
+  PopoverCloseButton,
+  PopoverArrow,
+  PopoverContent,
+  PopoverBody,
+  PopoverTrigger,
+  Popover,
+  Stack,
+  Spacer,
 } from "@chakra-ui/react";
 import { SubStatus } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { MoreIcon } from "../../utils/icons";
+import { AiOutlineMenu } from "react-icons/ai";
 import { ResFileRead, ResSubSearch } from "../../utils/types";
 import { YoutubeIcon } from "../icons/customIcons";
+import { faker } from "@faker-js/faker";
+import DetailViewGraph from "./my/detailViewGraph";
 
 type SubPanelProps = {
   subs: ResSubSearch;
@@ -38,8 +45,19 @@ export default function SubPanel(props: SubPanelProps) {
   const toast = useToast();
   const [subs, setSubs] = useState<ResSubSearch>(props.subs);
   const [subStatus, setSubStatus] = useState<SubStatus | "all">("all");
+  const ref = useRef<any>();
+  const [width, setWidth] = useState<number>(0);
+
+  useLayoutEffect(() => {
+    setWidth(ref.current.offsetWidth);
+  }, []);
 
   useEffect(getSubs, [router.query.userId, subStatus, toast]);
+
+  const lineRange = 10;
+  const viewArray = Array.apply(null, Array(lineRange)).map(function () {
+    return faker.datatype.number({ min: 0, max: 1000 });
+  });
 
   function getSubs() {
     axios
@@ -59,13 +77,12 @@ export default function SubPanel(props: SubPanelProps) {
   }
 
   return (
-    <TableContainer>
+    <>
       <HStack>
         <Menu>
-          <MenuButton
-            as={Button}
-            rightIcon={<ChevronDownIcon />}
-          >{`진행도: ${subStatus}`}</MenuButton>
+          <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+            {`진행도: ${subStatus}`}
+          </MenuButton>
           <MenuList minWidth="240px">
             <MenuOptionGroup
               defaultValue="all"
@@ -84,14 +101,16 @@ export default function SubPanel(props: SubPanelProps) {
           </MenuList>
         </Menu>
       </HStack>
-      <Table variant="simple" size="sm">
+
+      <Table variant="simple" size="sm" ref={ref}>
         <Thead>
           <Tr>
             <Th>영상</Th>
             <Th>채널</Th>
             <Th>언어</Th>
             <Th>진행도</Th>
-            <Th>편집</Th>
+            <Th>업로드 날짜</Th>
+            <Th>상세정보</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -127,68 +146,79 @@ export default function SubPanel(props: SubPanelProps) {
                 </Td>
                 <Td>{sub.lang}</Td>
                 <Td>{sub.status}</Td>
+                <Td>2022.4.13</Td>
                 <Td>
-                  <Button marginEnd="6px" isDisabled>
-                    수정
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      axios
-                        .get<ResFileRead>(`/api/file`, {
-                          params: { id: sub.fileId },
-                        })
-                        .then((res) => {
-                          window.open(res.data.url);
-                        });
-                    }}
-                  >
-                    자막 파일 다운로드
-                  </Button>
-                  <Button
-                    colorScheme="red"
-                    onClick={() => {
-                      axios
-                        .delete(`/api/sub`, { params: { id: sub.id } })
-                        .then(() => {
-                          toast({
-                            title: "성공",
-                            description: "자막을 삭제했습니다.",
-                            status: "success",
-                          });
-                          getSubs();
-                        })
-                        .catch(() => {
-                          toast({
-                            title: "오류",
-                            description: "자막을 삭제하는데 실패했습니다.",
-                            status: "error",
-                          });
-                        });
-                    }}
-                  >
-                    삭제
-                  </Button>
-                  <Menu>
-                    <MenuButton
-                      as={IconButton}
-                      aria-label="Options"
-                      icon={<MoreIcon />}
-                      variant="outline"
-                    />
-                    <MenuList>
-                      <MenuItem>
-                        <CopyToClipboard text={sub.id}>
-                          <Button>자막 ID 복사</Button>
-                        </CopyToClipboard>
-                      </MenuItem>
-                    </MenuList>
-                  </Menu>
+                  <Popover placement="bottom-end">
+                    <PopoverTrigger>
+                      <Button>
+                        <AiOutlineMenu />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent w={width - 100} h="370px">
+                      <PopoverArrow />
+                      <PopoverCloseButton />
+                      <PopoverBody>
+                        <Stack>
+                          <DetailViewGraph />
+                          <HStack>
+                            <CopyToClipboard text={sub.id}>
+                              <Button>자막 ID 복사</Button>
+                            </CopyToClipboard>
+                            <Button marginEnd="6px" isDisabled>
+                              수정
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                axios
+                                  .get<ResFileRead>(`/api/file`, {
+                                    params: { id: sub.fileId },
+                                  })
+                                  .then((res) => {
+                                    window.open(res.data.url);
+                                  });
+                              }}
+                            >
+                              자막 파일 다운로드
+                            </Button>
+                            <Spacer />
+                            <Button
+                              colorScheme="red"
+                              onClick={() => {
+                                axios
+                                  .delete(`/api/sub`, {
+                                    params: { id: sub.id },
+                                  })
+                                  .then(() => {
+                                    toast({
+                                      title: "성공",
+                                      description: "자막을 삭제했습니다.",
+                                      status: "success",
+                                    });
+                                    getSubs();
+                                  })
+                                  .catch(() => {
+                                    toast({
+                                      title: "오류",
+                                      description:
+                                        "자막을 삭제하는데 실패했습니다.",
+                                      status: "error",
+                                    });
+                                  });
+                              }}
+                            >
+                              삭제
+                            </Button>
+                          </HStack>
+                        </Stack>
+                      </PopoverBody>
+                    </PopoverContent>
+                  </Popover>
                 </Td>
               </Tr>
             );
           })}
         </Tbody>
       </Table>
-    </TableContainer>
+    </>
   );
 }

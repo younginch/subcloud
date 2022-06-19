@@ -2,13 +2,13 @@ import { Badge } from "@chakra-ui/react";
 import { UserTier } from "../../utils/tier";
 
 type Props = {
-  grade?: UserTier;
+  tier?: UserTier;
 };
 
-export default function GradeBadge({ grade }: Props) {
+export default function TierBadge({ tier }: Props) {
   let color = "gray";
   let isBadge = false;
-  switch (grade) {
+  switch (tier) {
     case UserTier.Grandmaster:
       color = "red";
       isBadge = true;
@@ -36,7 +36,7 @@ export default function GradeBadge({ grade }: Props) {
           fontSize={{ base: "sm", lg: "lg" }}
           textTransform="none"
         >
-          {grade}
+          {tier}
         </Badge>
       )}
     </>
