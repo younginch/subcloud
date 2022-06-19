@@ -22,6 +22,7 @@ import CreateHeader from "../../components/create/createHeader";
 import { PageOptions } from "../../utils/types";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FiUpload } from "react-icons/fi";
+import SwingProvider from "../../components/swingProvider";
 
 type FormData = {
   url: string;
@@ -120,11 +121,13 @@ export default function VideoCreate() {
                 mr="15px"
                 zIndex={3}
               >
-                {router.query.next === "request" ? (
-                  <AiOutlineSearch />
-                ) : (
-                  <FiUpload />
-                )}
+                <SwingProvider>
+                  {router.query.next === "request" ? (
+                    <AiOutlineSearch />
+                  ) : (
+                    <FiUpload />
+                  )}
+                </SwingProvider>
               </Button>
             </Box>
             <Box alignItems="center">

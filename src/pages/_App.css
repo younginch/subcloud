@@ -2,27 +2,31 @@
 @import "~slick-carousel/slick/slick-theme.css";
 
 .mainComponent {
-    position: relative;
+  position: relative;
 }
 
 .sliderPlacer {
-  margin-top:auto !important;
-  margin-bottom:auto !important;
+  margin-top: auto !important;
+  margin-bottom: auto !important;
 }
 
 .mainTyping {
   font-size: 35px;
   color: white;
   background-color: black;
-  padding-left:10px;
-  padding-right:10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .titleOverlay {
-    position: absolute;
-    width: 100%;
-    z-index:2;
-    background: linear-gradient(rgba(0,0,0), rgba(0,0,0,0), rgba(0,0,0,.9));
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+  background: linear-gradient(
+    rgba(0, 0, 0),
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.9)
+  );
 }
 
 .imagePage {
@@ -35,7 +39,7 @@
 .activePage {
   transform: scale(1.2) !important;
   transition: transform 300ms;
-  opacity: .6;
+  opacity: 0.6;
 }
 
 .arrow {
@@ -88,4 +92,30 @@
   position: absolute;
   top: 0;
   left: 0;
+}
+
+@keyframes swing {
+  0%,
+  30%,
+  50%,
+  70%,
+  100% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(10deg);
+  }
+  40% {
+    transform: rotate(-10deg);
+  }
+  60% {
+    transform: rotate(5deg);
+  }
+  80% {
+    transform: rotate(-5deg);
+  }
+}
+
+.spinComponent {
+  animation: swing ease-in-out 0.5s 1 alternate;
 }
