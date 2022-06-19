@@ -38,21 +38,6 @@ import { PageOptions } from "../../utils/types";
 import { useSession } from "next-auth/react";
 import SubscribeItem from "../../components/buy/subscribeItem";
 
-function PriceWrapper({ children }: { children: ReactNode }) {
-  return (
-    <Box
-      mb={4}
-      shadow="base"
-      borderWidth="1px"
-      alignSelf={{ base: "center", lg: "flex-start" }}
-      borderColor={useColorModeValue("gray.200", "gray.500")}
-      borderRadius={"xl"}
-    >
-      {children}
-    </Box>
-  );
-}
-
 const addList = Array<number>(5)
   .fill(0)
   .map((_, i) =>
@@ -206,28 +191,6 @@ export default function Buy() {
         </Box>
       </InViewProvider>
     );
-  }
-
-  function requestSubscription() {
-    axios
-      .post("/api/subscription")
-      .then((res) => {
-        tossPayments.requestBillingAuth("카드", {
-          customerKey: res.data.customerKey,
-          successUrl: `${window.location.origin}/buy/subscription/process`,
-          failUrl: `${window.location.origin}/buy/subscription/fail`,
-          customerName: data?.user.name,
-          customerEmail: data?.user.email,
-        });
-      })
-      .catch((err) => {
-        toast({
-          title: "구독 등록 에러",
-          description: err.message,
-          status: "error",
-          isClosable: true,
-        });
-      });
   }
 
   return (

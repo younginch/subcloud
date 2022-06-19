@@ -8,9 +8,10 @@ import {
   Button,
   List,
 } from "@chakra-ui/react";
+import { loadTossPayments } from "@tosspayments/payment-sdk";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 type Props = {
   price: string;
@@ -47,6 +48,14 @@ export default function SubscribeItem({
   const toast = useToast();
   const headerBgColor = useColorModeValue("red.300", "red.700");
   const headerTextColor = useColorModeValue("gray.900", "gray.300");
+
+  useEffect(() => {
+    loadTossPayments("test_ck_5GePWvyJnrK4bNAaAZe8gLzN97Eo").then(
+      (tossPayments) => {
+        setTossPayments(tossPayments);
+      }
+    );
+  }, []);
 
   function requestSubscription() {
     axios
