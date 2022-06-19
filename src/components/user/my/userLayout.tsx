@@ -85,7 +85,7 @@ export default function UserLayout({ children }: UserLayoutProps) {
           </Stack>
         </SidebarFooter>
       </ProSidebar>
-      <Box maxH="93vh" m="0px !important" w="100%" overflowY="scroll">
+      <Box maxH="93vh" m="0px !important" w="100%" overflowY="hidden">
         {children}
       </Box>
     </HStack>

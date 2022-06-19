@@ -24,6 +24,7 @@ import {
   Popover,
   Stack,
   Spacer,
+  Box,
 } from "@chakra-ui/react";
 import { SubStatus } from "@prisma/client";
 import axios from "axios";
@@ -33,8 +34,8 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { AiOutlineMenu } from "react-icons/ai";
 import { ResFileRead, ResSubSearch } from "../../utils/types";
 import { YoutubeIcon } from "../icons/customIcons";
-import { faker } from "@faker-js/faker";
 import DetailViewGraph from "./my/detailViewGraph";
+import ReviewStatusBadge from "../badges/reviewStatusBadge";
 
 type SubPanelProps = {
   subs: ResSubSearch;
@@ -54,11 +55,6 @@ export default function SubPanel(props: SubPanelProps) {
 
   useEffect(getSubs, [router.query.userId, subStatus, toast]);
 
-  const lineRange = 10;
-  const viewArray = Array.apply(null, Array(lineRange)).map(function () {
-    return faker.datatype.number({ min: 0, max: 1000 });
-  });
-
   function getSubs() {
     axios
       .get<ResSubSearch>("/api/sub/search", {
@@ -77,7 +73,7 @@ export default function SubPanel(props: SubPanelProps) {
   }
 
   return (
-    <>
+    <Box pl="15px" pt="15px">
       <HStack>
         <Menu>
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
@@ -108,7 +104,7 @@ export default function SubPanel(props: SubPanelProps) {
             <Th>영상</Th>
             <Th>채널</Th>
             <Th>언어</Th>
-            <Th>진행도</Th>
+            <Th>상태</Th>
             <Th>업로드 날짜</Th>
             <Th>상세정보</Th>
           </Tr>
@@ -145,7 +141,9 @@ export default function SubPanel(props: SubPanelProps) {
                   </HStack>
                 </Td>
                 <Td>{sub.lang}</Td>
-                <Td>{sub.status}</Td>
+                <Td>
+                  <ReviewStatusBadge status={sub.status} />
+                </Td>
                 <Td>2022.4.13</Td>
                 <Td>
                   <Popover placement="bottom-end">
@@ -219,6 +217,6 @@ export default function SubPanel(props: SubPanelProps) {
           })}
         </Tbody>
       </Table>
-    </>
+    </Box>
   );
 }
