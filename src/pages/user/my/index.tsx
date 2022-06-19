@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Button,
+  Center,
   HStack,
   Spacer,
   Stack,
@@ -23,7 +24,7 @@ import { faker } from "@faker-js/faker";
 import RecentReviews from "../../../components/user/my/recentReviews";
 import DetailViewGraph from "../../../components/user/my/detailViewGraph";
 import SubStatusPreview from "../../../components/user/my/subStatusPreview";
-import { RiCopperCoinFill } from "react-icons/ri";
+import ActivityHeader from "../../../components/user/my/activityHeader";
 
 export default function UserMyIndex() {
   const session = useSession();
@@ -47,7 +48,7 @@ export default function UserMyIndex() {
         h="170px"
         pr="40px"
         pl="40px"
-        borderBottomWidth="2px"
+        borderBottomWidth={useColorModeValue("2px", "none")}
       >
         <Avatar
           size="xl"
@@ -93,6 +94,7 @@ export default function UserMyIndex() {
         </Link>
       </HStack>
       <Box overflowY="scroll" h="calc(90vh - 170px)">
+        <ActivityHeader />
         <Wrap p="30px" spacing={"20px"}>
           <WrapItem>
             <Box
@@ -146,29 +148,37 @@ export default function UserMyIndex() {
           </WrapItem>
           <WrapItem>
             <Box
-              w="150px"
-              h="135px"
-              bg={useColorModeValue("blue.50", "blue.800")}
+              w="180px"
+              h="170px"
+              bg={panelColor}
               boxShadow={"0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"}
               borderRadius="12px"
               p="20px"
               borderWidth={useColorModeValue("1px", "none")}
             >
               <Text fontSize="lg" fontWeight="bold" mb="4px">
-                보유 포인트
+                멤버십
               </Text>
-              <HStack>
-                <RiCopperCoinFill fill="blue" size={30} />
-                <Text fontSize={30} fontWeight={"bold"}>
-                  {data?.point}
+              <Center>
+                <Text
+                  fontSize={50}
+                  fontWeight={"bold"}
+                  bgGradient={useColorModeValue(
+                    "linear(to-l, #7928CA, #FF0080)",
+                    "linear(to-l, #8e50cc, #fb52a7)"
+                  )}
+                  bgClip="text"
+                >
+                  PRO
                 </Text>
-              </HStack>
-              <Link color="teal.500" href={`/buy`}>
+              </Center>
+              <Link href={`/buy`}>
                 <Text
                   color={useColorModeValue("gray.800", "gray.200")}
                   _hover={{ textDecoration: "underline" }}
+                  mt="10px"
                 >
-                  충전하기
+                  업그레이드
                 </Text>
               </Link>
             </Box>

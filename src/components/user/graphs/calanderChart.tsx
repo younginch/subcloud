@@ -27,9 +27,12 @@ export default function CalendarChart({ subRange, subArray }: Props) {
   const mouseLeave = () => {
     setOnHover(false);
   };
+  const mouseEnter = () => {
+    setOnHover(true);
+  };
 
   return (
-    <Box onMouseLeave={mouseLeave} onMouseEnter={() => setOnHover(true)}>
+    <Box onMouseLeave={mouseLeave} onMouseEnter={mouseEnter}>
       <CalendarHeatmap
         startDate={shiftDate(today, -subRange)}
         endDate={today}
