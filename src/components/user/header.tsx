@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { ReactNode } from "react";
-import TierBadge from "./tierBadge";
+import TierBadge from "../badges/tierBadge";
 import { PublicProfileTab } from "../../utils/tabs";
 import { UserTier } from "../../utils/tier";
 
