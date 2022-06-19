@@ -48,7 +48,7 @@ export default function UserMyIndex() {
         h="170px"
         pr="40px"
         pl="40px"
-        borderBottomWidth="2px"
+        borderBottomWidth={useColorModeValue("2px", "none")}
       >
         <Avatar
           size="xl"
@@ -172,7 +172,7 @@ export default function UserMyIndex() {
                   PRO
                 </Text>
               </Center>
-              <Link color="teal.500" href={`/buy`}>
+              <Link href={`/buy`}>
                 <Text
                   color={useColorModeValue("gray.800", "gray.200")}
                   _hover={{ textDecoration: "underline" }}

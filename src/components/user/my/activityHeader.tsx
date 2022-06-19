@@ -5,7 +5,6 @@ import {
   Text,
   useColorModeValue,
   Flex,
-  Link,
   Icon,
   SimpleGrid,
   Container,
@@ -17,6 +16,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import { FiSend } from "react-icons/fi";
 import { IconType } from "react-icons";
 import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
 
 interface StatData {
   id: number;
@@ -24,6 +24,7 @@ interface StatData {
   score: number;
   icon: IconType;
   detail: string;
+  href: string;
 }
 
 export default function ActivityHeader() {
@@ -33,23 +34,26 @@ export default function ActivityHeader() {
     {
       id: 1,
       label: t("dashboard_head_request"),
-      score: 1730,
+      score: 1234,
       icon: FiSend,
       detail: "View All",
+      href: "/user/my/request",
     },
     {
       id: 2,
       label: t("dashboard_head_views"),
-      score: 3245,
+      score: 1234,
       icon: AiOutlineEye,
       detail: "View All",
+      href: "/user/my/sub",
     },
     {
       id: 3,
       label: t("dashboard_head_points"),
-      score: 100,
+      score: 1234,
       icon: GrProductHunt,
       detail: "충전하기",
+      href: "/buy",
     },
   ];
 
@@ -121,8 +125,18 @@ export function Card({ data }: { data: StatData }) {
             </Text>
           </VStack>
         </HStack>
-        <Flex py={3} px={5} hidden={!onHover}>
-          <Link fontSize="md">{data.detail}</Link>
+        <Flex
+          py={3}
+          px={5}
+          hidden={!onHover}
+          w="100%"
+          bg={useColorModeValue("gray.100", "gray.600")}
+        >
+          <Link href={data.href}>
+            <Text fontSize="md" _hover={{ textDecoration: "underline" }}>
+              {data.detail}
+            </Text>
+          </Link>
         </Flex>
       </Stack>
     </motion.div>
