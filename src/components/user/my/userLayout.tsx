@@ -1,11 +1,4 @@
-import {
-  HStack,
-  useMediaQuery,
-  Box,
-  Center,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { HStack, useMediaQuery, Box, Center, Stack } from "@chakra-ui/react";
 import { Role } from "@prisma/client";
 import router from "next/router";
 import { PageOptions } from "../../../utils/types";
@@ -24,6 +17,7 @@ import { BiPurchaseTagAlt } from "react-icons/bi";
 import { AiOutlineHistory, AiTwotoneSetting } from "react-icons/ai";
 import { IoIosSend } from "react-icons/io";
 import MyMenuItem from "./myMenuItem";
+import { BsCashStack } from "react-icons/bs";
 
 type UserLayoutProps = {
   children: React.ReactNode;
@@ -43,14 +37,14 @@ export default function UserLayout({ children }: UserLayoutProps) {
     { icon: <MdSubtitles />, href: "/user/my/sub", text: "My Subtitles" },
     { icon: <BiPurchaseTagAlt />, href: "/user/my/order", text: "Orders" },
     {
-      icon: <BiPurchaseTagAlt />,
+      icon: <BsCashStack />,
       href: "/user/my/withdraw",
       text: "Withdraws",
     },
   ];
 
   return (
-    <HStack h="100%" overflowX="auto">
+    <HStack h="100%" overflowX="auto" alignItems="flex-start">
       <ProSidebar
         collapsed={collapsed && !isPc}
         onMouseEnter={() => {
@@ -91,7 +85,9 @@ export default function UserLayout({ children }: UserLayoutProps) {
           </Stack>
         </SidebarFooter>
       </ProSidebar>
-      <Box h="90vh">{children}</Box>
+      <Box maxH="93vh" m="0px !important" w="100%" overflowY="scroll">
+        {children}
+      </Box>
     </HStack>
   );
 }

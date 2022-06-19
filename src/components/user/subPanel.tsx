@@ -1,7 +1,6 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   useToast,
-  TableContainer,
   HStack,
   Menu,
   MenuButton,
@@ -24,10 +23,7 @@ import {
   PopoverTrigger,
   Popover,
   Stack,
-  Box,
   Spacer,
-  RadioGroup,
-  Radio,
 } from "@chakra-ui/react";
 import { SubStatus } from "@prisma/client";
 import axios from "axios";
@@ -37,17 +33,8 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { AiOutlineMenu } from "react-icons/ai";
 import { ResFileRead, ResSubSearch } from "../../utils/types";
 import { YoutubeIcon } from "../icons/customIcons";
-import { Bar } from "react-chartjs-2";
 import { faker } from "@faker-js/faker";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import DetailViewGraph from "./my/detailViewGraph";
 
 type SubPanelProps = {
   subs: ResSubSearch;
@@ -60,56 +47,17 @@ export default function SubPanel(props: SubPanelProps) {
   const [subStatus, setSubStatus] = useState<SubStatus | "all">("all");
   const ref = useRef<any>();
   const [width, setWidth] = useState<number>(0);
-  const [value, setValue] = useState("1");
 
   useLayoutEffect(() => {
     setWidth(ref.current.offsetWidth);
-  });
+  }, []);
 
   useEffect(getSubs, [router.query.userId, subStatus, toast]);
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top" as const,
-      },
-      title: {
-        display: true,
-        text: "일별 조회수",
-      },
-    },
-  };
-
-  ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-  );
-
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-  ];
-
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "조회수",
-        data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-      },
-    ],
-  };
+  const lineRange = 10;
+  const viewArray = Array.apply(null, Array(lineRange)).map(function () {
+    return faker.datatype.number({ min: 0, max: 1000 });
+  });
 
   function getSubs() {
     axios
@@ -206,21 +154,12 @@ export default function SubPanel(props: SubPanelProps) {
                         <AiOutlineMenu />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent w={width - 50} h="400px">
+                    <PopoverContent w={width - 100} h="370px">
                       <PopoverArrow />
                       <PopoverCloseButton />
                       <PopoverBody>
                         <Stack>
-                          <RadioGroup onChange={setValue} value={value}>
-                            <Stack direction="row">
-                              <Radio value="1">일별</Radio>
-                              <Radio value="2">주별</Radio>
-                              <Radio value="3">월별</Radio>
-                            </Stack>
-                          </RadioGroup>
-                          <Box pl={5} pr={5}>
-                            <Bar options={options} data={data} />
-                          </Box>
+                          <DetailViewGraph />
                           <HStack>
                             <CopyToClipboard text={sub.id}>
                               <Button>자막 ID 복사</Button>
