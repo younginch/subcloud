@@ -204,12 +204,12 @@ describe("Pages (user)", () => {
   });
 
   it("renders UserMy", () => {
-    renderWithSession(<UserMyHistory />);
-    renderWithSession(<UserMyIndex />);
-    renderWithSession(<UserMyOrder />);
-    renderWithSession(<UserMyRequest requests={[]} />);
-    renderWithSession(<UserMySub subs={[]} />);
-    renderWithSession(<UserMyWithdraw />);
+    renderWithThemeAndSession(<UserMyHistory />);
+    renderWithThemeAndSession(<UserMyIndex />);
+    renderWithThemeAndSession(<UserMyOrder />);
+    renderWithThemeAndSession(<UserMyRequest requests={[]} />);
+    renderWithThemeAndSession(<UserMySub subs={[]} />);
+    renderWithThemeAndSession(<UserMyWithdraw />);
   });
 });
 
