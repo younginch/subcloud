@@ -7,7 +7,7 @@ import prisma from "../../utils/prisma";
 describe("/api/review", () => {
   beforeAll(() => {
     jest.spyOn(NextAuth, "getSession").mockResolvedValue({
-      user: { id: "", role: Role.Admin, point: 0 },
+      user: { id: "", role: Role.Reviewer, point: 0 },
       expires: "",
     });
   });
