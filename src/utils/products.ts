@@ -13,17 +13,17 @@ export const Products: Product[] = [
   {
     title: "Small pack",
     point: 500,
-    price: 5900,
+    price: 6900,
   },
   {
     title: "Normal pack",
-    point: 1200,
+    point: 1000,
     price: 12000,
   },
   {
     title: "Large pack",
-    point: 2500,
-    price: 25000,
+    point: 2100,
+    price: 23000,
   },
   {
     title: "Point bucket",

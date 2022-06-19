@@ -22,11 +22,11 @@ import Image, { StaticImageData } from "next/image";
 import { loadTossPayments } from "@tosspayments/payment-sdk";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Point80 from "../../../public/IAPs/point80.png";
-import Point500 from "../../../public/IAPs/point500.png";
-import Point1200 from "../../../public/IAPs/point1200.png";
-import Point2500 from "../../../public/IAPs/point2500.png";
-import Point6500 from "../../../public/IAPs/point6500.png";
+import Point1 from "../../../public/IAPs/point1.png";
+import Point2 from "../../../public/IAPs/point2.png";
+import Point3 from "../../../public/IAPs/point3.png";
+import Point4 from "../../../public/IAPs/point4.png";
+import Point5 from "../../../public/IAPs/point5.png";
 import PointIcon from "../../../public/point.png";
 import InViewProvider from "../../components/inviewProvider";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
@@ -46,7 +46,7 @@ const addList = Array<number>(5)
         (Products[0].point * Products[i].price) / Products[0].price
     )
   );
-const imageList = [Point80, Point500, Point1200, Point2500, Point6500];
+const imageList = [Point1, Point2, Point3, Point4, Point5];
 const discountRate = Array<number>(5)
   .fill(0)
   .map((_, i) =>

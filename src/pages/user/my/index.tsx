@@ -25,6 +25,7 @@ import RecentReviews from "../../../components/user/my/recentReviews";
 import DetailViewGraph from "../../../components/user/my/detailViewGraph";
 import SubStatusPreview from "../../../components/user/my/subStatusPreview";
 import ActivityHeader from "../../../components/user/my/activityHeader";
+import SwingProvider from "../../../components/swingProvider";
 
 export default function UserMyIndex() {
   const session = useSession();
@@ -160,17 +161,19 @@ export default function UserMyIndex() {
                 멤버십
               </Text>
               <Center>
-                <Text
-                  fontSize={50}
-                  fontWeight={"bold"}
-                  bgGradient={useColorModeValue(
-                    "linear(to-l, #7928CA, #FF0080)",
-                    "linear(to-l, #8e50cc, #fb52a7)"
-                  )}
-                  bgClip="text"
-                >
-                  PRO
-                </Text>
+                <SwingProvider>
+                  <Text
+                    fontSize={50}
+                    fontWeight={"bold"}
+                    bgGradient={useColorModeValue(
+                      "linear(to-l, #7928CA, #FF0080)",
+                      "linear(to-l, #8e50cc, #fb52a7)"
+                    )}
+                    bgClip="text"
+                  >
+                    PRO
+                  </Text>
+                </SwingProvider>
               </Center>
               <Link href={`/buy`}>
                 <Text

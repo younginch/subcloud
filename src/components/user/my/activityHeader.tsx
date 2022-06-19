@@ -114,7 +114,13 @@ export function Card({ data }: { data: StatData }) {
             lineHeight={0}
             boxShadow="inset 0 0 1px 1px rgba(0, 0, 0, 0.015)"
           >
-            <Icon as={data.icon} w={6} h={6} color="white" />
+            <Icon
+              as={data.icon}
+              w={6}
+              h={6}
+              color="white"
+              className={`${onHover ? "spinComponent" : ""}`}
+            />
           </Flex>
           <VStack spacing={0} align="start" maxW="lg" h="100%">
             <Text as="h3" fontSize="md" noOfLines={2} color="gray.400">
