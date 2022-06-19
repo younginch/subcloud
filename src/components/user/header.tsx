@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { ReactNode } from "react";
-import GradeBadge from "./gradeBadge";
+import TierBadge from "./tierBadge";
 import { PublicProfileTab } from "../../utils/tabs";
 import { UserTier } from "../../utils/tier";
 
@@ -112,7 +112,7 @@ const Header = ({
                 >
                   {name}
                 </Text>
-                <GradeBadge grade={UserTier.Master} />
+                <TierBadge tier={UserTier.Master} />
               </HStack>
               <Text
                 fontSize={{ base: "sm", md: "md" }}
