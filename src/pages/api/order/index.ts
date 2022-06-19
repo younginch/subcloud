@@ -1,5 +1,5 @@
 import { Order, OrderStatus, Role } from "@prisma/client";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { getPointFromAmount } from "../../../utils/products";
 import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 
