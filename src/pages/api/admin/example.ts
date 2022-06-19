@@ -18,7 +18,7 @@ async function ExampleCreate({ req, res, prisma }: RouteParams<ExampleVideo>) {
       },
     },
   });
-  return res.status(200).json(example);
+  return res.status(201).json(example);
 }
 
 async function ExampleDelete({ req, res, prisma }: RouteParams<ExampleVideo>) {

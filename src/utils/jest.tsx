@@ -1,6 +1,8 @@
 import { ChakraProvider, ChakraProviderProps } from "@chakra-ui/react";
 import { render } from "@testing-library/react";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { SessionProvider, SessionProviderProps } from "next-auth/react";
+import { createMocks, RequestMethod } from "node-mocks-http";
 import { ReactElement } from "react";
 
 export const renderWithTheme = (ui: ReactElement) => {
@@ -30,3 +32,11 @@ export const renderWithThemeAndSession = (ui: ReactElement) => {
 
   return render(ui, { wrapper: Wrapper });
 };
+
+export function mockRequestResponse(method: RequestMethod) {
+  const { req, res } = createMocks({ method });
+  return {
+    req: req as unknown as NextApiRequest,
+    res: res as unknown as NextApiResponse,
+  };
+}
