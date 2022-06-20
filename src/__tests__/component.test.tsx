@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
-import Links from "../header/links";
-import Search from "../header/search";
-import RequestPanel from "../user/requestPanel";
+import Links from "../components/header/links";
+import Search from "../components/header/search";
+import RequestPanel from "../components/user/requestPanel";
 
 describe("Components", () => {
   it("renders a Footer", () => {
