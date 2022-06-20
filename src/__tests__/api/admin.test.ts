@@ -6,6 +6,7 @@ import adminUserRoute from "../../pages/api/admin/user";
 import adminWithdraw from "../../pages/api/admin/withdraw";
 import * as NextAuth from "next-auth/react";
 import { Role } from "@prisma/client";
+import prisma from "../../utils/prisma";
 
 describe("/api/admin", () => {
   beforeAll(() => {
@@ -17,7 +18,6 @@ describe("/api/admin", () => {
 
   it("/remove GET 200", async () => {
     const { req, res } = mockRequestResponse("GET");
-    jest.mock("../../utils/prisma");
     await adminDeleteRoute(req, res);
     expect(res.statusCode).toBe(200);
   });
@@ -31,8 +31,6 @@ describe("/api/admin", () => {
   it("/example POST 201", async () => {
     const { req, res } = mockRequestResponse("POST");
     req.body.url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-    // @ts-ignore
-    jest.spyOn(prisma.exampleVideo, "create").mockResolvedValue({});
     await adminExampleRoute(req, res);
     expect(res.statusCode).toBe(201);
   });
@@ -40,8 +38,6 @@ describe("/api/admin", () => {
   it("/example DELETE 200", async () => {
     const { req, res } = mockRequestResponse("DELETE");
     req.query = { id: "1" };
-    // @ts-ignore
-    jest.spyOn(prisma.exampleVideo, "delete").mockResolvedValue({});
     await adminExampleRoute(req, res);
     expect(res.statusCode).toBe(200);
   });
@@ -91,8 +87,6 @@ describe("/api/admin", () => {
       role: Role.Admin,
       point: 1,
     };
-    // @ts-ignore
-    jest.spyOn(prisma.user, "update").mockResolvedValue({});
     await adminUserRoute(req, res);
     expect(res.statusCode).toBe(200);
   });
@@ -106,8 +100,6 @@ describe("/api/admin", () => {
   it("/user DELETE 200", async () => {
     const { req, res } = mockRequestResponse("DELETE");
     req.query = { id: "1" };
-    // @ts-ignore
-    jest.spyOn(prisma.user, "delete").mockResolvedValue({});
     await adminUserRoute(req, res);
     expect(res.statusCode).toBe(200);
   });

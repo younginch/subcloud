@@ -2,7 +2,6 @@ import { ReviewType, Role } from "@prisma/client";
 import * as NextAuth from "next-auth/react";
 import reviewRoute from "../../pages/api/review";
 import { mockRequestResponse } from "../../utils/jest";
-import prisma from "../../utils/prisma";
 
 describe("/api/review", () => {
   beforeAll(() => {
@@ -25,8 +24,6 @@ describe("/api/review", () => {
       type: ReviewType.Etc,
       content: "etc",
     };
-    // @ts-ignore
-    jest.spyOn(prisma.review, "create").mockResolvedValue({});
     await reviewRoute(req, res);
     expect(res.statusCode).toBe(201);
   });
@@ -40,8 +37,6 @@ describe("/api/review", () => {
   it("DELETE should return 200", async () => {
     const { req, res } = mockRequestResponse("DELETE");
     req.query = { id: "1" };
-    // @ts-ignore
-    jest.spyOn(prisma.review, "delete").mockResolvedValue({});
     await reviewRoute(req, res);
     expect(res.statusCode).toBe(200);
   });

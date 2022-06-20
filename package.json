@@ -83,6 +83,7 @@
     "husky": "^8.0.1",
     "jest": "^28.1.1",
     "jest-environment-jsdom": "^28.1.1",
+    "jest-mock-extended": "^2.0.6",
     "lint-staged": "^13.0.1",
     "next-sitemap": "^3.0.5",
     "node-mocks-http": "^1.11.0",
