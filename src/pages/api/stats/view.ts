@@ -1,9 +1,9 @@
 import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 import { Role } from "@prisma/client";
-import dayjs from "dayjs";
+import dayjs, { OpUnitType } from "dayjs";
 
 async function ViewStatsRead({ req, res, prisma }: RouteParams<Array<number>>) {
-  const { userId, cnt, date } = req.query;
+  const { userId, cnt, date, type } = req.query;
   const subs = await prisma.sub.findMany({
     where: { userId: userId as string },
     include: { subHistories: true },
@@ -14,12 +14,16 @@ async function ViewStatsRead({ req, res, prisma }: RouteParams<Array<number>>) {
       .status(404)
       .json({ error: SubErrorType.NotFound, message: "Sub" });
   }
-  const currentDay = dayjs(date as string).get("date");
+  const dateType = type as OpUnitType;
+  const currentDay = dayjs(date as string).startOf(dateType);
   const viewCountArray = new Array<number>(count).fill(0);
   for (let i = 0; i < subs.length; i += 1) {
     const history = subs[i].subHistories;
     for (let j = 0; j < history.length; j += 1) {
-      const dayDiff = currentDay - dayjs(history[j].viewAt).get("date");
+      const dayDiff = currentDay.diff(
+        dayjs(history[j].viewAt).startOf(dateType),
+        dateType
+      );
       if (dayDiff >= 0 && dayDiff < count) {
         viewCountArray[dayDiff] += 1;
       }

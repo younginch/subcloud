@@ -1,4 +1,7 @@
-import type { CreateStandAloneToastParam } from "@chakra-ui/react";
+import type {
+  CreateStandAloneToastParam,
+  UseRangeSliderReturn,
+} from "@chakra-ui/react";
 import {
   YoutubeVideo,
   Request,
@@ -10,6 +13,8 @@ import {
   User,
   PrismaClient,
   Role,
+  Rating,
+  SubHistory,
 } from "@prisma/client";
 import {
   PrismaClientInitializationError,
@@ -267,6 +272,14 @@ export type RankQueryData = {
   keyword: string;
 };
 
+type RatingWithUser = Rating & {
+  user: User;
+};
+
+type HistoryWithSub = SubHistory & {
+  sub: SubWithVideo;
+};
+
 export type ResFileRead = FileWithUrl;
 export type ResFileDelete = File;
 export type ResFileSearch = File[];
@@ -285,3 +298,5 @@ export type ResVideoSearch = VideoWithCount[];
 export type ResRankingSub = SubWithVideoWithUser[];
 export type ResRankingVideo = VideoWithRequest[];
 export type ResRankingUser = UserWithCount[];
+export type ResRatingSearch = RatingWithUser[];
+export type ResHistory = HistoryWithSub[];

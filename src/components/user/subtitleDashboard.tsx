@@ -15,19 +15,8 @@ import CalendarChart from "./graphs/calanderChart";
 type Props = {
   user: ResUserSearch;
   subs: ResSubSearch;
-  subArray: Array<number>;
-  subRange: number;
-  viewArray: Array<number>;
-  lineRange: number;
 };
-export default function SubtitleDashboard({
-  user,
-  subs,
-  subArray,
-  subRange,
-  viewArray,
-  lineRange,
-}: Props) {
+export default function SubtitleDashboard({ user, subs }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const subTextColor = useColorModeValue("gray.600", "gray.400");
   const bgColor = useColorModeValue("white", "#1F2733");
@@ -95,14 +84,14 @@ export default function SubtitleDashboard({
         >
           <UserActivity
             title="하이라이트"
-            chart={<CalendarChart subRange={subRange} subArray={subArray} />}
+            chart={<CalendarChart range={200} type={"day"} />}
             subs={user._count.subs}
             views={user._count.views}
           />
           <SalesOverview
             title="Activity Overview"
             percentage={5}
-            chart={<LineChart lineRange={lineRange} viewArray={viewArray} />}
+            chart={<LineChart range={10} type={"day"} />}
           />
         </Grid>
         <Box mt={10} bg={bgColor} borderRadius="20px">

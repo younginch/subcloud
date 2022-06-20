@@ -11,7 +11,17 @@ async function getHistory({ req, res, prisma }: RouteParams<SubHistory[]>) {
   }
   const history = await prisma.subHistory.findMany({
     where: {
-      id: userId,
+      userId,
+    },
+    include: {
+      sub: {
+        include: {
+          video: { include: { youtubeVideo: { include: { channel: true } } } },
+        },
+      },
+    },
+    orderBy: {
+      viewAt: "desc",
     },
   });
   return res.status(200).json(history);

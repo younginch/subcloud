@@ -1,8 +1,11 @@
 import { Box } from "@chakra-ui/react";
+import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import ReactTooltip from "react-tooltip";
+import useSWR from "swr";
 
 type CalendarElement = {
   date: Date;
@@ -10,17 +13,24 @@ type CalendarElement = {
 };
 
 type Props = {
-  subRange: number;
-  subArray: Array<number>;
+  range: number;
+  type: string;
 };
 
-export default function CalendarChart({ subRange, subArray }: Props) {
+export default function CalendarChart({ range, type }: Props) {
+  const session = useSession();
   const [onHover, setOnHover] = useState<boolean>(false);
   const today = new Date();
-  const randomValues = getRange(subRange).map((index) => {
+  const currentDate = dayjs();
+  const { data, error } = useSWR(
+    `/api/stats/sub?userId=${
+      session.data?.user.id
+    }&cnt=${range}&date=${currentDate.format("YYYY-MM-DD")}&type=${type}`
+  );
+  const values = getRange(range).map((index) => {
     return {
       date: shiftDate(today, -index),
-      count: subArray.length > index ? subArray[index] : 0,
+      count: data && data.length > index ? data[index] : 0,
     };
   });
 
@@ -34,9 +44,9 @@ export default function CalendarChart({ subRange, subArray }: Props) {
   return (
     <Box onMouseLeave={mouseLeave} onMouseEnter={mouseEnter}>
       <CalendarHeatmap
-        startDate={shiftDate(today, -subRange)}
+        startDate={shiftDate(today, -range)}
         endDate={today}
-        values={randomValues}
+        values={values}
         classForValue={(value: CalendarElement) => {
           if (!value) {
             return "color-empty";
