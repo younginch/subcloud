@@ -27,14 +27,20 @@ interface StatData {
   href: string;
 }
 
-export default function ActivityHeader() {
+type Props = {
+  requests: number;
+  views: number;
+  points: number;
+};
+
+export default function ActivityHeader({ requests, views, points }: Props) {
   const { t } = useTranslation("privateProfile");
 
   const statData: StatData[] = [
     {
       id: 1,
       label: t("dashboard_head_request"),
-      score: 1234,
+      score: requests,
       icon: FiSend,
       detail: "View All",
       href: "/user/my/request",
@@ -42,7 +48,7 @@ export default function ActivityHeader() {
     {
       id: 2,
       label: t("dashboard_head_views"),
-      score: 1234,
+      score: views,
       icon: AiOutlineEye,
       detail: "View All",
       href: "/user/my/sub",
@@ -50,7 +56,7 @@ export default function ActivityHeader() {
     {
       id: 3,
       label: t("dashboard_head_points"),
-      score: 1234,
+      score: points,
       icon: GrProductHunt,
       detail: "충전하기",
       href: "/buy",

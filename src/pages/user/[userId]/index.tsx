@@ -6,8 +6,6 @@ import { FiBox } from "react-icons/fi";
 import SubtitleDashboard from "../../../components/user/subtitleDashboard";
 import PublicProfileLayout from "../../../components/user/publicProfileLayout";
 import { PublicProfileTab } from "../../../utils/tabs";
-import dayjs from "dayjs";
-import useSWR from "swr";
 
 type UserReadProps = {
   user: ResUserSearch;
@@ -15,27 +13,10 @@ type UserReadProps = {
 };
 
 export default function UserIndex({ user, subs }: UserReadProps) {
-  const subRange = 200;
-  const lineRange = 10;
-  const currentDate = dayjs().format("YYYY-MM-DD");
-  const { data: subArray, error: subError } = useSWR(
-    `/api/stats/sub?userId=${user.id}&cnt=${subRange}&date=${currentDate}`
-  );
-  const { data: viewArray, error: viewError } = useSWR(
-    `/api/stats/view?userId=${user.id}&cnt=${lineRange}&date=${currentDate}`
-  );
-
   return (
     <PublicProfileLayout currentTab={PublicProfileTab.Overview}>
-      {subs.length > 0 && subArray && viewArray ? (
-        <SubtitleDashboard
-          user={user}
-          subs={subs}
-          subArray={subArray}
-          subRange={subRange}
-          viewArray={viewArray}
-          lineRange={lineRange}
-        />
+      {subs.length > 0 ? (
+        <SubtitleDashboard user={user} subs={subs} />
       ) : (
         <Stack alignItems="center" spacing={5} h="55vh">
           <FiBox size={100} />
