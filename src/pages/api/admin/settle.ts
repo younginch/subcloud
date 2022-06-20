@@ -63,7 +63,7 @@ async function RecordCreate({ req, res, prisma }: RouteParams<Settle>) {
       },
     });
   });
-  return res.status(200).json(createdSettle);
+  return res.status(201).json(createdSettle);
 }
 
 async function RecordDelete({ req, res, prisma }: RouteParams<Settle>) {

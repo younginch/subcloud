@@ -50,3 +50,42 @@ global.fetch = jest.fn(() =>
     json: () => Promise.resolve({}),
   })
 );
+
+const arrayFn = jest.fn(() => Promise.resolve([]));
+const objectFn = jest.fn(() => Promise.resolve({}));
+
+const dbActions = {
+  findMany: arrayFn,
+  findUnique: objectFn,
+  create: objectFn,
+  update: objectFn,
+  delete: objectFn,
+  deleteMany: arrayFn,
+};
+
+jest.mock("./src/utils/prisma", () => ({
+  __esModule: true,
+  default: {
+    account: dbActions,
+    session: dbActions,
+    user: dbActions,
+    verificationToken: dbActions,
+    video: dbActions,
+    exampleVideo: dbActions,
+    youtubeVideo: dbActions,
+    youtubeChannel: dbActions,
+    request: dbActions,
+    file: dbActions,
+    sub: dbActions,
+    subHistory: dbActions,
+    review: dbActions,
+    rating: dbActions,
+    order: dbActions,
+    subscription: dbActions,
+    coupon: dbActions,
+    requestPoint: dbActions,
+    settle: dbActions,
+    settlePoint: dbActions,
+    withdraw: dbActions,
+  },
+}));

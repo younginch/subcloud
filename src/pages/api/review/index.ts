@@ -34,7 +34,7 @@ async function CreateReview({
       endTime: value.endTime,
     },
   });
-  return res.json(createdReview);
+  return res.status(201).json(createdReview);
 }
 
 async function DeleteReview({ req, res, prisma }: RouteParams<Review>) {
