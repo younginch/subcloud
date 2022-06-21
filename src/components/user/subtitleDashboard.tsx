@@ -91,7 +91,7 @@ export default function SubtitleDashboard({ user, subs }: Props) {
           <SalesOverview
             title="Activity Overview"
             percentage={5}
-            chart={<LineChart range={10} type={"day"} />}
+            chart={<LineChart range={10} type={"day"} subId={undefined} />}
           />
         </Grid>
         <Box mt={10} bg={bgColor} borderRadius="20px">

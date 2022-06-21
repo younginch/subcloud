@@ -196,7 +196,7 @@ export default function UserMyIndex() {
               <Text fontSize="lg" fontWeight="bold" mb="4px">
                 자막 조회수
               </Text>
-              <DetailViewGraph />
+              <DetailViewGraph subId={undefined} />
             </Box>
           </WrapItem>
           <WrapItem>
