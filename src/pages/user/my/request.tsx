@@ -1,29 +1,15 @@
 import { Role } from "@prisma/client";
-import axios from "axios";
-import type { GetServerSideProps } from "next";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
 import RequestPanel from "../../../components/user/requestPanel";
 import { PageOptions, ResRequestSearch } from "../../../utils/types";
 
-type UserMyRequestProps = {
-  requests: ResRequestSearch;
-};
-
-export default function UserMyRequest({ requests }: UserMyRequestProps) {
-  return <RequestPanel requests={requests} />;
-}
-
-export const getServerSideProps: GetServerSideProps<
-  UserMyRequestProps
-> = async (context) => {
-  const { userId } = context.query;
-  const requestsRes = await axios.get(
-    `${process.env.NEXTAUTH_URL}/api/request/search?userId=${userId}`
+export default function UserMyRequest() {
+  const session = useSession();
+  const { data: requests } = useSWR<ResRequestSearch>(
+    `/api/request/search?userId=${session.data?.user.id}`
   );
-  return {
-    props: {
-      requests: requestsRes.data,
-    },
-  };
-};
+  return requests ? <RequestPanel requests={requests} /> : "";
+}
 
 UserMyRequest.options = { role: Role.User, hideTitle: true } as PageOptions;

@@ -11,16 +11,19 @@ import {
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
-import { Role, User } from "@prisma/client";
+import { Role, Sub, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
-import { PageOptions } from "../../../utils/types";
+import {
+  PageOptions,
+  ResRequestSearch,
+  ResSubSearch,
+} from "../../../utils/types";
 import Link from "next/link";
 import TierBadge from "../../../components/badges/tierBadge";
 import { UserTier } from "../../../utils/tier";
 import RoleBadge from "../../../components/badges/roleBadge";
 import CalendarChart from "../../../components/user/graphs/calanderChart";
-import { faker } from "@faker-js/faker";
 import RecentReviews from "../../../components/user/my/recentReviews";
 import DetailViewGraph from "../../../components/user/my/detailViewGraph";
 import SubStatusPreview from "../../../components/user/my/subStatusPreview";
@@ -31,14 +34,14 @@ export default function UserMyIndex() {
   const session = useSession();
 
   const { data } = useSWR<User>(`/api/user?id=${session.data?.user.id}`);
-  const panelColor = useColorModeValue("white", "gray.700");
-
-  const activityRange = 150;
-  const activityArray = Array.apply(null, Array(activityRange)).map(
-    function () {
-      return faker.datatype.number({ min: 0, max: 3 });
-    }
+  const { data: requests } = useSWR<ResRequestSearch>(
+    `/api/request/search?userId=${session.data?.user.id}`
   );
+  const { data: subs } = useSWR<ResSubSearch>(
+    `/api/sub/search?userId=${session.data?.user.id}`
+  );
+  const views = subs?.reduce((prev: number, curr: Sub) => prev + curr.views, 0);
+  const panelColor = useColorModeValue("white", "gray.700");
 
   return (
     <Stack w="fit-content">
@@ -95,7 +98,11 @@ export default function UserMyIndex() {
         </Link>
       </HStack>
       <Box overflowY="scroll" h="calc(90vh - 170px)">
-        <ActivityHeader />
+        <ActivityHeader
+          requests={requests?.length ?? 0}
+          views={views ?? 0}
+          points={session.data?.user.point ?? 0}
+        />
         <Wrap p="30px" spacing={"20px"}>
           <WrapItem>
             <Box
@@ -114,20 +121,10 @@ export default function UserMyIndex() {
               <HStack>
                 <Spacer />
                 <Text fontSize="md" fontWeight="medium" color="gray.500">
-                  총 자막 수 :{" "}
-                  {activityArray.reduce(function add(
-                    sum: number,
-                    value: number
-                  ) {
-                    return sum + value;
-                  },
-                  0)}
+                  총 자막 수 : {subs?.length ?? 0}
                 </Text>
               </HStack>
-              <CalendarChart
-                subRange={activityRange}
-                subArray={activityArray}
-              />
+              <CalendarChart range={150} type={"day"} />
             </Box>
           </WrapItem>
           <WrapItem>
@@ -199,7 +196,7 @@ export default function UserMyIndex() {
               <Text fontSize="lg" fontWeight="bold" mb="4px">
                 자막 조회수
               </Text>
-              <DetailViewGraph />
+              <DetailViewGraph subId={undefined} />
             </Box>
           </WrapItem>
           <WrapItem>
