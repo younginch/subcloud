@@ -3,9 +3,14 @@ import { Role } from "@prisma/client";
 import dayjs, { OpUnitType } from "dayjs";
 
 async function ViewStatsRead({ req, res, prisma }: RouteParams<Array<number>>) {
-  const { userId, cnt, date, type } = req.query;
+  const { userId, subId, cnt, date, type } = req.query;
+  let where: any = { userId: userId as string };
+  if (subId) {
+    where.id = subId as string;
+    console.log(subId);
+  }
   const subs = await prisma.sub.findMany({
-    where: { userId: userId as string },
+    where,
     include: { subHistories: true },
   });
   const count = parseInt(cnt as string);

@@ -10,15 +10,19 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 type Props = {
   range: number;
   type: string;
+  subId: undefined | string;
 };
 
-export default function LineChart({ range, type }: Props) {
+export default function LineChart({ range, type, subId }: Props) {
   const session = useSession();
   const currentDate = dayjs();
+  const subQuery = subId ? `&subId=${subId}` : "";
   const { data: viewArray, error: viewError } = useSWR(
     `/api/stats/view?userId=${
       session.data?.user.id
-    }&cnt=${range}&date=${currentDate.format("YYYY-MM-DD")}&type=${type}`
+    }&cnt=${range}&date=${currentDate.format(
+      "YYYY-MM-DD"
+    )}&type=${type}${subQuery}`
   );
   const dateArray = Array.from({ length: range }, (_, i) =>
     currentDate.subtract(i, "day").format("MM/DD")

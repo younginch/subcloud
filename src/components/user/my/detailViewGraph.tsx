@@ -14,16 +14,23 @@ import { useState } from "react";
 import useSWR from "swr";
 import LineChart from "../graphs/lineChart";
 
-export default function DetailViewGraph() {
+export default function DetailViewGraph({
+  subId,
+}: {
+  subId: undefined | string;
+}) {
   const viewRange = 10;
 
   const [value, setValue] = useState("day");
   const session = useSession();
   const currentDate = dayjs();
+  const subQuery = subId ? `&subId=${subId}` : "";
   const { data, error } = useSWR(
     `/api/stats/view?userId=${
       session.data?.user.id
-    }&cnt=${viewRange}&date=${currentDate.format("YYYY-MM-DD")}&type=${value}`
+    }&cnt=${viewRange}&date=${currentDate.format(
+      "YYYY-MM-DD"
+    )}&type=${value}${subQuery}`
   );
 
   return (
@@ -45,7 +52,7 @@ export default function DetailViewGraph() {
         </Text>
       </HStack>
       <Box pl={1} pr={1} h="250px">
-        <LineChart range={viewRange} type={value} />
+        <LineChart range={viewRange} type={value} subId={subId} />
       </Box>
     </Box>
   );
