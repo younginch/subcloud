@@ -13,7 +13,7 @@ async function ViewStatsRead({ req, res, prisma }: RouteParams<Array<number>>) {
     include: { subHistories: true },
   });
   const count = parseInt(cnt as string);
-  if (!subs) {
+  if (subs === []) {
     return res
       .status(404)
       .json({ error: SubErrorType.NotFound, message: "Sub" });

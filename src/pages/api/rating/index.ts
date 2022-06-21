@@ -43,7 +43,7 @@ async function CreateRating({
       comment: value.comment,
     },
   });
-  return res.json(createdRating);
+  return res.status(201).json(createdRating);
 }
 
 async function UpdateRating({ req, res, prisma }: RouteParams<Rating>) {
@@ -76,7 +76,7 @@ async function DeleteRating({ req, res, prisma }: RouteParams<Rating>) {
       id,
     },
   });
-  return res.json(rating);
+  return res.status(200).json(rating);
 }
 
 export default handleRoute(
