@@ -19,18 +19,19 @@ import { AiOutlineMenu } from "react-icons/ai";
 import ReviewStatusBadge from "../../../components/badges/reviewStatusBadge";
 import { ResSubSearch } from "../../../utils/types";
 import { SubStatus } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
 export default function SubStatusPreview() {
-  const router = useRouter();
+  const session = useSession();
   const toast = useToast();
   const [subs, setSubs] = useState<ResSubSearch>();
   const [subStatus, setSubStatus] = useState<SubStatus | "all">("all");
-  useEffect(getSubs, [router.query.userId, subStatus, toast]);
+  useEffect(getSubs, [session.data?.user.id, subStatus, toast]);
 
   function getSubs() {
     axios
       .get<ResSubSearch>("/api/sub/search", {
-        params: { userId: router.query.userId, status: subStatus },
+        params: { userId: session.data?.user.id, status: subStatus },
       })
       .then((res) => {
         setSubs(res.data);

@@ -27,7 +27,6 @@ import {
 } from "@chakra-ui/react";
 import { SubStatus } from "@prisma/client";
 import axios from "axios";
-import { useRouter } from "next/router";
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { AiOutlineMenu } from "react-icons/ai";
@@ -36,13 +35,15 @@ import { YoutubeIcon } from "../icons/customIcons";
 import DetailViewGraph from "./my/detailViewGraph";
 import ReviewStatusBadge from "../badges/reviewStatusBadge";
 import AvatarWithName from "../badges/avatarWithName";
+import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 
 type SubPanelProps = {
   subs: ResSubSearch;
 };
 
 export default function SubPanel(props: SubPanelProps) {
-  const router = useRouter();
+  const session = useSession();
   const toast = useToast();
   const [subs, setSubs] = useState<ResSubSearch>(props.subs);
   const [subStatus, setSubStatus] = useState<SubStatus | "all">("all");
@@ -53,12 +54,12 @@ export default function SubPanel(props: SubPanelProps) {
     setWidth(ref.current.offsetWidth);
   }, []);
 
-  useEffect(getSubs, [router.query.userId, subStatus, toast]);
+  useEffect(getSubs, [session.data?.user.id, subStatus, toast]);
 
   function getSubs() {
     axios
       .get<ResSubSearch>("/api/sub/search", {
-        params: { userId: router.query.userId, status: subStatus },
+        params: { userId: session.data?.user.id, status: subStatus },
       })
       .then((res) => {
         setSubs(res.data);
@@ -131,9 +132,9 @@ export default function SubPanel(props: SubPanelProps) {
                 <Td>
                   <ReviewStatusBadge status={sub.status} />
                 </Td>
-                <Td>2022.4.13</Td>
+                <Td>{dayjs(sub.createdAt).format("YYYY-MM-DD")}</Td>
                 <Td>
-                  <Popover placement="bottom-end">
+                  <Popover placement="bottom-end" isLazy>
                     <PopoverTrigger>
                       <Button>
                         <AiOutlineMenu />
@@ -144,7 +145,7 @@ export default function SubPanel(props: SubPanelProps) {
                       <PopoverCloseButton />
                       <PopoverBody>
                         <Stack>
-                          <DetailViewGraph />
+                          <DetailViewGraph subId={sub.id} />
                           <HStack>
                             <CopyToClipboard text={sub.id}>
                               <Button>자막 ID 복사</Button>

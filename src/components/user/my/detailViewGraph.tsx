@@ -8,37 +8,51 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { faker } from "@faker-js/faker";
+import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
+import useSWR from "swr";
 import LineChart from "../graphs/lineChart";
 
-export default function DetailViewGraph() {
+export default function DetailViewGraph({
+  subId,
+}: {
+  subId: undefined | string;
+}) {
   const viewRange = 10;
-  const viewArray = Array.apply(null, Array(viewRange)).map(function () {
-    return faker.datatype.number({ min: 0, max: 1000 });
-  });
 
-  const [value, setValue] = useState("1");
+  const [value, setValue] = useState("day");
+  const session = useSession();
+  const currentDate = dayjs();
+  const subQuery = subId ? `&subId=${subId}` : "";
+  const { data, error } = useSWR(
+    `/api/stats/view?userId=${
+      session.data?.user.id
+    }&cnt=${viewRange}&date=${currentDate.format(
+      "YYYY-MM-DD"
+    )}&type=${value}${subQuery}`
+  );
 
   return (
     <Box p={4}>
       <HStack>
         <RadioGroup onChange={setValue} value={value}>
           <Stack direction="row">
-            <Radio value="1">일별</Radio>
-            <Radio value="2">주별</Radio>
-            <Radio value="3">월별</Radio>
+            <Radio value="day">일별</Radio>
+            <Radio value="week">주별</Radio>
+            <Radio value="month">월별</Radio>
           </Stack>
         </RadioGroup>
         <Spacer />
         <Text fontSize="md" fontWeight="medium" color="gray.500" mt={3}>
           최근 {viewRange}일 동안의 조회수 :{" "}
-          {viewArray.reduce(function add(sum: number, value: number) {
-            return sum + value;
-          }, 0)}
+          {data
+            ? data.reduce((prev: number, curr: number) => prev + curr, 0)
+            : 0}
         </Text>
       </HStack>
       <Box pl={1} pr={1} h="250px">
-        <LineChart lineRange={viewRange} viewArray={viewArray} />
+        <LineChart range={viewRange} type={value} subId={subId} />
       </Box>
     </Box>
   );
