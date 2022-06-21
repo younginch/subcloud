@@ -6,8 +6,23 @@ import {
   SubErrorType,
 } from "../../../utils/types";
 import { SubCreateSchema } from "../../../utils/schema";
-import { configuredBucket, configuredS3, getS3Url } from "../../../utils/aws";
+import { getS3Url } from "../../../utils/aws";
 import { Role } from "@prisma/client";
+
+async function SubRead({ req, res, prisma }: RouteParams<ResSubRead>) {
+  const { id } = req.query;
+  const sub = await prisma.sub.findUnique({
+    where: { id: id as string },
+    include: { file: { select: { key: true } } },
+  });
+  if (!sub) {
+    return res
+      .status(404)
+      .json({ error: SubErrorType.NotFound, message: "Sub" });
+  }
+  const url = await getS3Url(sub.file.key);
+  return res.status(200).json({ ...sub, url });
+}
 
 async function SubCreate({ req, res, prisma, session }: RouteParams<ResSub>) {
   const { value, error } = SubCreateSchema.validate(req.body);
@@ -47,21 +62,6 @@ async function SubCreate({ req, res, prisma, session }: RouteParams<ResSub>) {
   return res.status(201).json(createdSub);
 }
 
-async function SubRead({ req, res, prisma }: RouteParams<ResSubRead>) {
-  const { id } = req.query;
-  const sub = await prisma.sub.findUnique({
-    where: { id: id as string },
-    include: { file: { select: { key: true } } },
-  });
-  if (!sub) {
-    return res
-      .status(404)
-      .json({ error: SubErrorType.NotFound, message: "Sub" });
-  }
-  const url = await getS3Url(sub.file.key);
-  return res.status(200).json({ ...sub, url });
-}
-
 async function SubUpdate({ req, res, prisma }: RouteParams<ResSub>) {
   const { id } = req.body;
   const sub = await prisma.sub.findUnique({ where: { id: id as string } });
@@ -79,6 +79,11 @@ async function SubUpdate({ req, res, prisma }: RouteParams<ResSub>) {
 
 async function SubDelete({ req, res, prisma, session }: RouteParams<ResSub>) {
   const { id } = req.query;
+  if (!id) {
+    return res
+      .status(400)
+      .json({ error: SubErrorType.FormValidation, message: "id" });
+  }
   const sub = await prisma.sub.findUnique({ where: { id: id as string } });
   if (!sub) {
     return res
