@@ -9,19 +9,16 @@ import {
 } from "../../../utils/types";
 
 async function FileRead({ req, res, prisma }: RouteParams<ResFileRead>) {
-  if (req.method === "GET") {
-    const file = await prisma.file.findUnique({
-      where: { id: req.query.id as string },
-    });
-    if (!file) {
-      return res
-        .status(404)
-        .json({ error: SubErrorType.NotFound, message: "File" });
-    }
-    const url = await getS3Url(file.key);
-    return res.status(200).json({ ...file, url });
-  } else if (req.method === "DELETE") {
+  const file = await prisma.file.findUnique({
+    where: { id: req.query.id as string },
+  });
+  if (!file) {
+    return res
+      .status(404)
+      .json({ error: SubErrorType.NotFound, message: "File" });
   }
+  const url = await getS3Url(file.key);
+  return res.status(200).json({ ...file, url });
 }
 
 async function FileDelete({

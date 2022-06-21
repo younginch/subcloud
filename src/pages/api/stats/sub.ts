@@ -8,7 +8,7 @@ async function SubStatsRead({ req, res, prisma }: RouteParams<Array<number>>) {
     where: { userId: userId as string },
   });
   const count = parseInt(cnt as string);
-  if (!subs) {
+  if (subs === []) {
     return res
       .status(404)
       .json({ error: SubErrorType.NotFound, message: "Sub" });

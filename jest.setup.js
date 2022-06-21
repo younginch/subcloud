@@ -89,3 +89,7 @@ jest.mock("./src/utils/prisma", () => ({
     withdraw: dbActions,
   },
 }));
+
+jest.mock("uuid", () => ({
+  v4: jest.fn(() => "1234567890"),
+}));
