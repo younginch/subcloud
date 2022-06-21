@@ -10,6 +10,23 @@ import { NextApiResponse } from "next";
 import prisma from "../../../utils/prisma";
 import { Request, Role } from "@prisma/client";
 
+async function RequestRead({ req, res, prisma }: RouteParams<ResRequest>) {
+  if (!req.query.id) {
+    return res
+      .status(400)
+      .json({ error: SubErrorType.Validation, message: "No id provided" });
+  }
+  const request = await prisma.request.findUnique({
+    where: { id: req.query.id as string },
+  });
+  if (!request) {
+    return res
+      .status(404)
+      .json({ error: SubErrorType.NotFound, message: "Request" });
+  }
+  return res.status(200).json(request);
+}
+
 async function RequestCreate({
   req,
   res,
@@ -96,23 +113,6 @@ async function updatePointAndResponse(
       },
     });
   }
-}
-
-async function RequestRead({ req, res, prisma }: RouteParams<ResRequest>) {
-  if (!req.query.id) {
-    return res
-      .status(400)
-      .json({ error: SubErrorType.Validation, message: "No id provided" });
-  }
-  const request = await prisma.request.findUnique({
-    where: { id: req.query.id as string },
-  });
-  if (!request) {
-    return res
-      .status(404)
-      .json({ error: SubErrorType.NotFound, message: "Request" });
-  }
-  return res.status(200).json(request);
 }
 
 async function RequestDelete({
