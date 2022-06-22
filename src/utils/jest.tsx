@@ -33,10 +33,24 @@ export const renderWithThemeAndSession = (ui: ReactElement) => {
   return render(ui, { wrapper: Wrapper });
 };
 
-export function mockRequestResponse(method: RequestMethod) {
+function mockRequestResponse(method: RequestMethod) {
   const { req, res } = createMocks({ method });
   return {
     req: req as unknown as NextApiRequest,
     res: res as unknown as NextApiResponse,
+  };
+}
+
+export function testRes(
+  route: (req: NextApiRequest, res: NextApiResponse) => Promise<void>,
+  method: RequestMethod,
+  statusCode: number,
+  additionalSetup?: (req: NextApiRequest) => void
+) {
+  return async () => {
+    const { req, res } = mockRequestResponse(method);
+    if (additionalSetup) additionalSetup(req);
+    await route(req, res);
+    expect(res.statusCode).toBe(statusCode);
   };
 }
