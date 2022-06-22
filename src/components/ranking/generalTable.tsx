@@ -30,7 +30,7 @@ type Props = {
   }>;
   lang?: string;
   setLang?: (language: string) => void;
-  sortBy: { by: string; order: boolean };
+  sortBy?: { by: string; order: boolean };
   setSortBy?: (sortBy: { by: string; order: boolean }) => void;
   onSubmit?: SubmitHandler<RankQueryData>;
   title?: ReactElement;
@@ -116,8 +116,8 @@ export default function GeneralTable({
                   fontSize={{ base: "12px", md: "15px" }}
                   onClick={() =>
                     data.sortBy && setSortBy
-                      ? data.sortBy === sortBy.by
-                        ? setSortBy({ by: data.sortBy, order: !sortBy.order })
+                      ? data.sortBy === sortBy?.by
+                        ? setSortBy({ by: data.sortBy, order: !sortBy?.order })
                         : setSortBy({ by: data.sortBy, order: true })
                       : undefined
                   }
