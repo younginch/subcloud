@@ -84,13 +84,13 @@ describe("Pages (admin)", () => {
     render(<AdminSettle />);
   });
 
-  // it("renders AdminUser", () => {
-  //   render(<AdminUser />)
-  // })
+  it("renders AdminUser", () => {
+    render(<AdminUser />);
+  });
 
-  // it("renders AdminWithdraw", () => {
-  //   render(<AdminWithdraw />)
-  // })
+  it("renders AdminWithdraw", () => {
+    render(<AdminWithdraw />);
+  });
 });
 
 describe("Pages (auth)", () => {
@@ -166,9 +166,9 @@ describe("Pages (ranking)", () => {
 });
 
 describe("Pages (review)", () => {
-  // it("renders ReviewDetail", () => {
-  //   render(<ReviewDetail />);
-  // });
+  it("renders ReviewDetail", () => {
+    render(<ReviewDetail />);
+  });
 
   it("renders Review", () => {
     render(<Review />);
@@ -215,22 +215,22 @@ describe("Pages (user)", () => {
 });
 
 describe("Pages (video)", () => {
-  // it("renders RequestCreate", () => {
-  //   render(<RequestCreate />);
-  // });
+  it("renders RequestCreate", () => {
+    render(<RequestCreate />);
+  });
 
-  // it("renders SubCreate", () => {
-  //   render(<SubCreate />);
-  // });
+  it("renders SubCreate", () => {
+    render(<SubCreate />);
+  });
 
   it("renders Video", () => {
     // @ts-ignore
     render(<Video video={undefined} requests={[]} subs={[]} />);
   });
 
-  // it("renders VideoCreate", () => {
-  //   render(<VideoCreate />);
-  // });
+  it("renders VideoCreate", () => {
+    render(<VideoCreate />);
+  });
 });
 
 describe("Pages (editor)", () => {

@@ -122,19 +122,19 @@ describe("/api/rating", () => {
     })
   );
 
-  it("PATCH should return 409", async () => {
-    const { req, res } = mockRequestResponse("PATCH");
-    req.body = { id: "1", score: "1" };
-    await ratingRoute(req, res);
-    expect(res.statusCode).toBe(409);
-  });
+  it(
+    "PATCH should return 409",
+    testRes(ratingRoute, "PATCH", 409, (req) => {
+      req.body = { id: "1", score: "1" };
+    })
+  );
 
-  it("DELETE should return 200", async () => {
-    const { req, res } = mockRequestResponse("DELETE");
-    req.query.id = "1";
-    await ratingRoute(req, res);
-    expect(res.statusCode).toBe(200);
-  });
+  it(
+    "DELETE should return 200",
+    testRes(ratingRoute, "DELETE", 200, (req) => {
+      req.query.id = "1";
+    })
+  );
 });
 
 describe("/api/request", () => {
