@@ -134,7 +134,7 @@ export default function UserMyIndex() {
           <WrapItem>
             <Box
               w="500px"
-              h="350px"
+              maxH="350px"
               bg={panelColor}
               boxShadow={"0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"}
               borderRadius="12px"
