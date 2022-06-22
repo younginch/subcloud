@@ -10,23 +10,20 @@ async function RankingSubByView({
   res,
   prisma,
 }: RouteParams<ResRankingSub>) {
-  const { lang, start, end } = req.query;
+  const { lang, start, end, order } = req.query;
   if (!start && !end) {
     return res
       .status(400)
       .json({ error: SubErrorType.FormValidation, message: "FormInvalidated" });
   }
   let where: any = { status: "Approved" };
+  let orderBy: any = { views: order as string };
   if (lang && lang !== "All Lang") {
     where.lang = lang;
   }
   const subs = await prisma.sub.findMany({
     take: Number(end),
-    orderBy: [
-      {
-        views: "desc",
-      },
-    ],
+    orderBy,
     where,
     include: {
       video: { include: { youtubeVideo: { include: { channel: true } } } },

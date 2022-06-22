@@ -9,17 +9,18 @@ import UserRankTableRow from "../../../components/ranking/userRankTableRow";
 import useSWRInfinite from "swr/infinite";
 import GeneralTable from "../../../components/ranking/generalTable";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
+import { useState } from "react";
 
 export default function UserRankingPage() {
   const captions = [
-    "#",
-    "Name",
-    "Total Views",
-    "Total Subs",
-    "Fulfilled",
-    "Rating",
+    { caption: "#" },
+    { caption: "Name" },
+    { caption: "Total Views", sortBy: "view" },
+    { caption: "Total Subs", sortBy: "sub" },
+    { caption: "Fulfilled", sortBy: "fulfilledRequests" },
+    { caption: "Rating" },
   ];
-  const sortBy = "view"; //sub, fulfilledRequests
+  const [sortBy, setSortBy] = useState({ by: "view", order: true });
   const pageSize = 5;
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingUser>(url);
@@ -33,9 +34,9 @@ export default function UserRankingPage() {
 
   const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
     (index) =>
-      `/api/ranking/user/${sortBy}?start=${pageSize * index}&end=${
+      `/api/ranking/user/${sortBy.by}?start=${pageSize * index}&end=${
         pageSize * (index + 1)
-      }`,
+      }&order=${sortBy.order === true ? "desc" : "asc"}`,
     fetcher
   );
 
@@ -69,6 +70,8 @@ export default function UserRankingPage() {
       >
         <GeneralTable
           captions={captions}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
           onSubmit={onSubmit}
           btnComponent={loadMoreBtn}
         >
