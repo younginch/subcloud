@@ -9,6 +9,8 @@ type LinksProps = {
 };
 
 export default function Links({ width }: LinksProps) {
+  const { t } = useTranslation("routes");
+
   return (
     <>
       <LinkButton route="/video/create?next=request" width={width} />
@@ -22,17 +24,17 @@ export default function Links({ width }: LinksProps) {
           rightIcon={<ChevronDownIcon />}
           pr="12px"
         >
-          랭킹
+          {t("/ranking")}
         </MenuButton>
         <MenuList>
           <Link href="/ranking/sub">
-            <MenuItem>Sub</MenuItem>
+            <MenuItem>{t("/ranking/sub")}</MenuItem>
           </Link>
           <Link href="/ranking/user">
-            <MenuItem>User</MenuItem>
+            <MenuItem>{t("/ranking/user")}</MenuItem>
           </Link>
           <Link href="/ranking/video">
-            <MenuItem>Video</MenuItem>
+            <MenuItem>{t("/ranking/video")}</MenuItem>
           </Link>
         </MenuList>
       </Menu>
