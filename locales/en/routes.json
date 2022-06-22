@@ -24,5 +24,9 @@
   "/": "Home",
   "/qna": "Qna",
   "/ranking": "Ranking",
+  "/ranking/sub": "Sub",
+  "/ranking/user": "User",
+  "/ranking/video": "Video",
+  "/ranking/[lang]": "Ranking",
   "/search": "Search result"
 }
