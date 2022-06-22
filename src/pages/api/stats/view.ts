@@ -7,7 +7,6 @@ async function ViewStatsRead({ req, res, prisma }: RouteParams<Array<number>>) {
   let where: any = { userId: userId as string };
   if (subId) {
     where.id = subId as string;
-    console.log(subId);
   }
   const subs = await prisma.sub.findMany({
     where,
