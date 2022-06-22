@@ -7,18 +7,13 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { faker } from "@faker-js/faker";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import useSWR from "swr";
 import LineChart from "../graphs/lineChart";
 
-export default function DetailViewGraph({
-  subId,
-}: {
-  subId: undefined | string;
-}) {
+export default function DetailViewGraph({ subId }: { subId?: string }) {
   const viewRange = 10;
 
   const [value, setValue] = useState("day");
