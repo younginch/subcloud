@@ -33,7 +33,7 @@ export const renderWithThemeAndSession = (ui: ReactElement) => {
   return render(ui, { wrapper: Wrapper });
 };
 
-function mockRequestResponse(method: RequestMethod) {
+export function mockRequestResponse(method: RequestMethod) {
   const { req, res } = createMocks({ method });
   return {
     req: req as unknown as NextApiRequest,

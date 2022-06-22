@@ -1,4 +1,4 @@
-import { testRes } from "../../utils/jest";
+import { mockRequestResponse, testRes } from "../../utils/jest";
 import adminDeleteRoute from "../../pages/api/admin/delete";
 import adminExampleRoute from "../../pages/api/admin/example";
 import adminSettleRoute from "../../pages/api/admin/settle";
@@ -58,45 +58,29 @@ describe("/api/admin", () => {
     })
   );
 
-  it("/user GET 200", async () => {
-    const { req, res } = mockRequestResponse("GET");
-    await adminUserRoute(req, res);
-    expect(res.statusCode).toBe(200);
-  });
+  it("/user GET 200", testRes(adminUserRoute, "GET", 200));
 
-  it("/user PATCH 200", async () => {
-    const { req, res } = mockRequestResponse("PATCH");
-    req.query = { id: "1" };
-    req.body = {
-      role: Role.Admin,
-      point: 1,
-    };
-    await adminUserRoute(req, res);
-    expect(res.statusCode).toBe(200);
-  });
+  it(
+    "/user PATCH 200",
+    testRes(adminUserRoute, "PATCH", 200, (req) => {
+      req.query = { id: "1" };
+      req.body = {
+        role: Role.Admin,
+        point: 1,
+      };
+    })
+  );
 
-  it("/user PATCH 400", async () => {
-    const { req, res } = mockRequestResponse("PATCH");
-    await adminUserRoute(req, res);
-    expect(res.statusCode).toBe(400);
-  });
+  it("/user PATCH 400", testRes(adminUserRoute, "PATCH", 400));
 
-  it("/user DELETE 200", async () => {
-    const { req, res } = mockRequestResponse("DELETE");
-    req.query = { id: "1" };
-    await adminUserRoute(req, res);
-    expect(res.statusCode).toBe(200);
-  });
+  it(
+    "/user DELETE 200",
+    testRes(adminUserRoute, "DELETE", 200, (req) => {
+      req.query = { id: "1" };
+    })
+  );
 
-  it("/user DELETE 400", async () => {
-    const { req, res } = mockRequestResponse("DELETE");
-    await adminUserRoute(req, res);
-    expect(res.statusCode).toBe(400);
-  });
+  it("/user DELETE 400", testRes(adminUserRoute, "DELETE", 400));
 
-  it("/withdraw GET 200", async () => {
-    const { req, res } = mockRequestResponse("GET");
-    await adminWithdraw(req, res);
-    expect(res.statusCode).toBe(200);
-  });
+  it("/withdraw GET 200", testRes(adminWithdraw, "GET", 200));
 });
