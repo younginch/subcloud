@@ -1,7 +1,7 @@
 import fileRoute from "../../pages/api/file";
 import * as aws from "../../utils/aws";
 import * as NextAuth from "next-auth/react";
-import { mockRequestResponse } from "../../utils/jest";
+import { testRes } from "../../utils/jest";
 import { Role } from "@prisma/client";
 import prisma from "../../utils/prisma";
 
@@ -13,44 +13,44 @@ describe("/api/file", () => {
     });
   });
 
-  it("GET should return 200", async () => {
-    const { req, res } = mockRequestResponse("GET");
-    req.query = { id: "1" };
-    jest.spyOn(aws, "getS3Url").mockResolvedValue("");
-    await fileRoute(req, res);
-    expect(res.statusCode).toBe(200);
-  });
+  it(
+    "GET should return 200",
+    testRes(fileRoute, "GET", 200, (req) => {
+      req.query = { id: "1" };
+      jest.spyOn(aws, "getS3Url").mockResolvedValue("");
+    })
+  );
 
-  it("GET should return 404", async () => {
-    const { req, res } = mockRequestResponse("GET");
-    jest.spyOn(prisma.file, "findUnique").mockResolvedValueOnce(null);
-    await fileRoute(req, res);
-    expect(res.statusCode).toBe(404);
-  });
+  it(
+    "GET should return 404",
+    testRes(fileRoute, "GET", 404, (req) => {
+      jest.spyOn(prisma.file, "findUnique").mockResolvedValueOnce(null);
+    })
+  );
 
-  it("DELETE should return 200", async () => {
-    const { req, res } = mockRequestResponse("DELETE");
-    req.query = { id: "1" };
-    jest
-      .spyOn(prisma.file, "findUnique")
-      // @ts-ignore
-      .mockResolvedValueOnce({ userId: "2" });
-    await fileRoute(req, res);
-    expect(res.statusCode).toBe(200);
-  });
+  it(
+    "DELETE should return 200",
+    testRes(fileRoute, "DELETE", 200, (req) => {
+      req.query = { id: "1" };
+      jest
+        .spyOn(prisma.file, "findUnique")
+        // @ts-ignore
+        .mockResolvedValueOnce({ userId: "2" });
+    })
+  );
 
-  it("DELETE should return 403", async () => {
-    const { req, res } = mockRequestResponse("DELETE");
-    req.query = { id: "1" };
-    await fileRoute(req, res);
-    expect(res.statusCode).toBe(403);
-  });
+  it(
+    "DELETE should return 403",
+    testRes(fileRoute, "DELETE", 403, (req) => {
+      req.query = { id: "1" };
+    })
+  );
 
-  it("DELETE should return 404", async () => {
-    const { req, res } = mockRequestResponse("DELETE");
-    req.query = { id: "1" };
-    jest.spyOn(prisma.file, "findUnique").mockResolvedValueOnce(null);
-    await fileRoute(req, res);
-    expect(res.statusCode).toBe(404);
-  });
+  it(
+    "DELETE should return 404",
+    testRes(fileRoute, "DELETE", 404, (req) => {
+      req.query = { id: "1" };
+      jest.spyOn(prisma.file, "findUnique").mockResolvedValueOnce(null);
+    })
+  );
 });
