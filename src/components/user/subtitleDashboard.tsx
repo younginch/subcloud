@@ -84,14 +84,21 @@ export default function SubtitleDashboard({ user, subs }: Props) {
         >
           <UserActivity
             title="하이라이트"
-            chart={<CalendarChart range={200} type={"day"} />}
+            chart={<CalendarChart range={200} type={"day"} userId={user.id} />}
             subs={user._count.subs}
             views={user._count.views}
           />
           <SalesOverview
             title="Activity Overview"
             percentage={5}
-            chart={<LineChart range={10} type={"day"} subId={undefined} />}
+            chart={
+              <LineChart
+                range={10}
+                type={"day"}
+                subId={undefined}
+                userId={user.id}
+              />
+            }
           />
         </Grid>
         <Box mt={10} bg={bgColor} borderRadius="20px">
