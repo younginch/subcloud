@@ -47,7 +47,12 @@ export default function DetailViewGraph({ subId }: { subId?: string }) {
         </Text>
       </HStack>
       <Box pl={1} pr={1} h="250px">
-        <LineChart range={viewRange} type={value} subId={subId} />
+        <LineChart
+          range={viewRange}
+          type={value}
+          subId={subId}
+          userId={session.data?.user.id}
+        />
       </Box>
     </Box>
   );

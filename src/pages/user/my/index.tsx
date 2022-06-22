@@ -124,13 +124,17 @@ export default function UserMyIndex() {
                   총 자막 수 : {subs?.length ?? 0}
                 </Text>
               </HStack>
-              <CalendarChart range={150} type={"day"} />
+              <CalendarChart
+                range={150}
+                type={"day"}
+                userId={session.data?.user.id}
+              />
             </Box>
           </WrapItem>
           <WrapItem>
             <Box
               w="500px"
-              h="350px"
+              maxH="350px"
               bg={panelColor}
               boxShadow={"0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"}
               borderRadius="12px"

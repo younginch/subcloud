@@ -9,6 +9,7 @@ import {
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { AiFillStar } from "react-icons/ai";
+import { FiBox } from "react-icons/fi";
 import useSWR from "swr";
 import { ResRatingSearch } from "../../../utils/types";
 
@@ -20,12 +21,22 @@ export default function RecentReviews() {
     `/api/rating/search?userId=${session.data?.user.id}&cnt=${count}`
   );
 
+  if (!reviewData || reviewData.length == 0) {
+    return (
+      <Stack alignItems="center" spacing={5} pt={5} pb={10}>
+        <FiBox size={50} />
+        <Text fontSize="20px">최근 리뷰가 없습니다</Text>
+      </Stack>
+    );
+  }
+
   return (
     <Stack
       direction="column"
       spacing={5}
       my={4}
       maxH="280px"
+      h="fit-content"
       overflowY="scroll"
     >
       {reviewData?.map((review, index) => {
