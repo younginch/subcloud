@@ -1,4 +1,4 @@
-import { mockRequestResponse, testRes } from "../../utils/jest";
+import { testRes } from "../../utils/jest";
 import adminDeleteRoute from "../../pages/api/admin/delete";
 import adminExampleRoute from "../../pages/api/admin/example";
 import adminSettleRoute from "../../pages/api/admin/settle";
