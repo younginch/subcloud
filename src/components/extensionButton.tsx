@@ -32,11 +32,27 @@ export default function ExtensionButton({
 
   return (
     <Button
-      variant="outline"
+      minW="250px"
       h="48px"
       borderRadius="24px"
+      variant="solid"
       isDisabled={isDisabled}
-      bg="rgb(50,50,50, .5)"
+      bgGradient={
+        isDisabled
+          ? "linear(to-l, rgba(121, 40, 202, .5), rgba(255, 0, 128, .5))"
+          : "linear(to-l, rgba(121, 40, 202, 1), rgba(255, 0, 128, 1))"
+      }
+      _hover={
+        isDisabled
+          ? {
+              bgGradient: "linear(to-l, #8e50cc, #fb52a7)",
+              opacity: 0.2,
+            }
+          : {
+              bgGradient: "linear(to-l, #6119a8, #e00b76)",
+              opacity: 0.9,
+            }
+      }
       zIndex={5}
     >
       <Box w="24px" h="24px">
