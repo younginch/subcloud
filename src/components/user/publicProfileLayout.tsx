@@ -4,14 +4,20 @@ import { FaCube } from "react-icons/fa";
 import { IoDocumentsSharp } from "react-icons/io5";
 import { MdSubtitles } from "react-icons/md";
 import { PublicProfileTab } from "../../utils/tabs";
+import { ResUserSearch } from "../../utils/types";
 import Header from "./header";
 
 type Props = {
   currentTab: PublicProfileTab;
+  user: ResUserSearch;
   children: React.ReactNode;
 };
 
-export default function PublicProfileLayout({ currentTab, children }: Props) {
+export default function PublicProfileLayout({
+  currentTab,
+  children,
+  user,
+}: Props) {
   const { data } = useSession();
   const bgProfile = useColorModeValue(
     "hsla(0,0%,100%,.8)",
@@ -23,9 +29,9 @@ export default function PublicProfileLayout({ currentTab, children }: Props) {
       <Header
         backgroundHeader="https://demos.creative-tim.com/purity-ui-dashboard/static/media/ProfileBackground.4dc796b0.png"
         backgroundProfile={bgProfile}
-        avatarImage={data?.user.image ?? undefined}
-        name={data?.user.name ?? undefined}
-        email={data?.user.email ?? undefined}
+        avatarImage={user.image ?? undefined}
+        name={user.name ?? undefined}
+        email={user.email ?? undefined}
         currentTab={currentTab}
         tabs={[
           {
