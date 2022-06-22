@@ -47,6 +47,7 @@ import Admin from "../pages/admin";
 import AdminSettle from "../pages/admin/settle";
 import AdminUser from "../pages/admin/user";
 import AdminWithdraw from "../pages/admin/withdraw";
+import Editor from "../pages/editor";
 
 describe("Pages (pages)", () => {
   it("renders 404", () => {
@@ -207,7 +208,7 @@ describe("Pages (user)", () => {
     renderWithThemeAndSession(<UserMyHistory />);
     renderWithThemeAndSession(<UserMyIndex />);
     renderWithThemeAndSession(<UserMyOrder />);
-    renderWithThemeAndSession(<UserMyRequest requests={[]} />);
+    renderWithThemeAndSession(<UserMyRequest />);
     renderWithThemeAndSession(<UserMySub subs={[]} />);
     renderWithThemeAndSession(<UserMyWithdraw />);
   });
@@ -230,4 +231,10 @@ describe("Pages (video)", () => {
   // it("renders VideoCreate", () => {
   //   render(<VideoCreate />);
   // });
+});
+
+describe("Pages (editor)", () => {
+  it("renders Editor", () => {
+    render(<Editor />);
+  });
 });
