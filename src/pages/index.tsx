@@ -4,25 +4,20 @@ import { IconContext } from "react-icons";
 import {
   Box,
   Button,
-  calc,
   Center,
   Flex,
   Heading,
   HStack,
-  Icon,
   Spacer,
   Stack,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import Link from "next/link";
 import TitleImage from "../../public/title.png";
 import InViewProvider from "../components/inviewProvider";
 import ExtensionButton from "../components/extensionButton";
-import { SimpleSlider } from "../components/simpleSlider";
 import { PageOptions } from "../utils/types";
-import { GoChevronRight } from "react-icons/go";
 import { DottedBox } from "../components/icons/customIcons";
 
 export default function Home() {
