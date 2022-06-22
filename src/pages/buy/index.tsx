@@ -226,7 +226,7 @@ export default function Buy() {
               Subtitles early access
             </ListItem>
           </SubscribeItem>
-          <SubscribeItem price="4" header="MOST POPULAR" title="pro" disabled>
+          <SubscribeItem price="4" header="MOST POPULAR" title="Pro" disabled>
             <ListItem>
               <ListIcon as={FaCheckCircle} color="green.500" />
               Remove Ads
