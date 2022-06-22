@@ -15,17 +15,18 @@ type CalendarElement = {
 type Props = {
   range: number;
   type: string;
+  userId?: string;
 };
 
-export default function CalendarChart({ range, type }: Props) {
+export default function CalendarChart({ range, type, userId }: Props) {
   const session = useSession();
   const [onHover, setOnHover] = useState<boolean>(false);
   const today = new Date();
   const currentDate = dayjs();
   const { data, error } = useSWR(
-    `/api/stats/sub?userId=${
-      session.data?.user.id
-    }&cnt=${range}&date=${currentDate.format("YYYY-MM-DD")}&type=${type}`
+    `/api/stats/sub?userId=${userId}&cnt=${range}&date=${currentDate.format(
+      "YYYY-MM-DD"
+    )}&type=${type}`
   );
   const values = getRange(range).map((index) => {
     return {
