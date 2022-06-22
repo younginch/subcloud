@@ -1,7 +1,7 @@
 import { Role } from "@prisma/client";
 import * as NextAuth from "next-auth/react";
 import * as aws from "../../utils/aws";
-import { mockRequestResponse } from "../../utils/jest";
+import { mockRequestResponse, testRes } from "../../utils/jest";
 import orderRoute from "../../pages/api/order";
 import orderSearchRoute from "../../pages/api/order/search";
 import ratingRoute from "../../pages/api/rating";
@@ -18,62 +18,54 @@ describe("/api/order", () => {
     });
   });
 
-  it("GET should return 200", async () => {
-    const { req, res } = mockRequestResponse("GET");
-    req.query = { id: "1" };
-    await orderRoute(req, res);
-    expect(res.statusCode).toBe(200);
-  });
+  it(
+    "GET should return 200",
+    testRes(orderRoute, "GET", 200, (req) => {
+      req.query = { id: "1" };
+    })
+  );
 
-  it("GET should return 400", async () => {
-    const { req, res } = mockRequestResponse("GET");
-    await orderRoute(req, res);
-    expect(res.statusCode).toBe(400);
-  });
+  it("GET should return 400", testRes(orderRoute, "GET", 400));
 
-  it("GET should return 404", async () => {
-    const { req, res } = mockRequestResponse("GET");
-    req.query = { id: "1" };
-    jest.spyOn(prisma.order, "findUnique").mockResolvedValueOnce(null);
-    await orderRoute(req, res);
-    expect(res.statusCode).toBe(404);
-  });
+  it(
+    "GET should return 404",
+    testRes(orderRoute, "GET", 404, (req) => {
+      req.query = { id: "1" };
+      jest.spyOn(prisma.order, "findUnique").mockResolvedValueOnce(null);
+    })
+  );
 
-  it("POST should return 201", async () => {
-    const { req, res } = mockRequestResponse("POST");
-    req.body = { amount: "1" };
-    await orderRoute(req, res);
-    expect(res.statusCode).toBe(201);
-  });
+  it(
+    "POST should return 201",
+    testRes(orderRoute, "POST", 201, (req) => {
+      req.body = { amount: "1" };
+    })
+  );
 
-  it("POST should return 400", async () => {
-    const { req, res } = mockRequestResponse("POST");
-    await orderRoute(req, res);
-    expect(res.statusCode).toBe(400);
-  });
+  it("POST should return 400", testRes(orderRoute, "POST", 400));
 
-  it("PATCH should return 200", async () => {
-    const { req, res } = mockRequestResponse("PATCH");
-    req.query.id = "1";
-    req.body = { paymentKey: "1" };
-    jest.spyOn(axios, "post").mockResolvedValueOnce({});
-    await orderRoute(req, res);
-    expect(res.statusCode).toBe(200);
-  });
+  it(
+    "PATCH should return 200",
+    testRes(orderRoute, "PATCH", 200, (req) => {
+      req.query.id = "1";
+      req.body = { paymentKey: "1" };
+      jest.spyOn(axios, "post").mockResolvedValueOnce({});
+    })
+  );
 
-  it("DELETE should return 200", async () => {
-    const { req, res } = mockRequestResponse("DELETE");
-    req.query.id = "1";
-    jest
-      .spyOn(prisma.order, "findUnique")
+  it(
+    "DELETE should return 200",
+    testRes(orderRoute, "DELETE", 200, (req) => {
+      req.query.id = "1";
+      jest
+        .spyOn(prisma.order, "findUnique")
+        // @ts-ignore
+        .mockResolvedValueOnce({ userId: "2" });
+      jest.spyOn(axios, "post").mockResolvedValueOnce({ status: 200 });
       // @ts-ignore
-      .mockResolvedValueOnce({ userId: "2" });
-    jest.spyOn(axios, "post").mockResolvedValueOnce({ status: 200 });
-    // @ts-ignore
-    jest.spyOn(prisma.order, "update").mockResolvedValueOnce({});
-    await orderRoute(req, res);
-    expect(res.statusCode).toBe(200);
-  });
+      jest.spyOn(prisma.order, "update").mockResolvedValueOnce({});
+    })
+  );
 });
 
 describe("/api/order/search", () => {
@@ -84,12 +76,12 @@ describe("/api/order/search", () => {
     });
   });
 
-  it("GET should return 200", async () => {
-    const { req, res } = mockRequestResponse("GET");
-    req.query = { userId: "1" };
-    await orderSearchRoute(req, res);
-    expect(res.statusCode).toBe(200);
-  });
+  it(
+    "GET should return 200",
+    testRes(orderSearchRoute, "GET", 200, (req) => {
+      req.query = { userId: "1" };
+    })
+  );
 });
 
 describe("/api/rating", () => {
@@ -100,49 +92,49 @@ describe("/api/rating", () => {
     });
   });
 
-  it("GET should return 200", async () => {
-    const { req, res } = mockRequestResponse("GET");
-    req.query = { userId: "1" };
-    await ratingRoute(req, res);
-    expect(res.statusCode).toBe(200);
-  });
+  it(
+    "GET should return 200",
+    testRes(ratingRoute, "GET", 200, (req) => {
+      req.query = { userId: "1" };
+    })
+  );
 
-  it("POST should return 201", async () => {
-    const { req, res } = mockRequestResponse("POST");
-    req.body = { subId: "1", score: "1" };
-    jest.spyOn(prisma.rating, "findUnique").mockResolvedValueOnce(null);
-    await ratingRoute(req, res);
-    expect(res.statusCode).toBe(201);
-  });
+  it(
+    "POST should return 201",
+    testRes(ratingRoute, "POST", 201, (req) => {
+      req.body = { subId: "1", score: "1" };
+      jest.spyOn(prisma.rating, "findUnique").mockResolvedValueOnce(null);
+    })
+  );
 
-  it("POST should return 409", async () => {
-    const { req, res } = mockRequestResponse("POST");
-    req.body = { subId: "1", score: "1" };
-    await ratingRoute(req, res);
-    expect(res.statusCode).toBe(409);
-  });
+  it(
+    "POST should return 409",
+    testRes(ratingRoute, "POST", 409, (req) => {
+      req.body = { subId: "1", score: "1" };
+    })
+  );
 
-  it("PATCH should return 200", async () => {
-    const { req, res } = mockRequestResponse("PATCH");
-    req.body = { id: "1", score: "1" };
-    jest.spyOn(prisma.rating, "findUnique").mockResolvedValueOnce(null);
-    await ratingRoute(req, res);
-    expect(res.statusCode).toBe(200);
-  });
+  it(
+    "PATCH should return 200",
+    testRes(ratingRoute, "PATCH", 200, (req) => {
+      req.body = { id: "1", score: "1" };
+      jest.spyOn(prisma.rating, "findUnique").mockResolvedValueOnce(null);
+    })
+  );
 
-  it("PATCH should return 409", async () => {
-    const { req, res } = mockRequestResponse("PATCH");
-    req.body = { id: "1", score: "1" };
-    await ratingRoute(req, res);
-    expect(res.statusCode).toBe(409);
-  });
+  it(
+    "PATCH should return 409",
+    testRes(ratingRoute, "PATCH", 409, (req) => {
+      req.body = { id: "1", score: "1" };
+    })
+  );
 
-  it("DELETE should return 200", async () => {
-    const { req, res } = mockRequestResponse("DELETE");
-    req.query.id = "1";
-    await ratingRoute(req, res);
-    expect(res.statusCode).toBe(200);
-  });
+  it(
+    "DELETE should return 200",
+    testRes(ratingRoute, "DELETE", 200, (req) => {
+      req.query.id = "1";
+    })
+  );
 });
 
 describe("/api/request", () => {

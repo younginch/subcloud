@@ -8,8 +8,6 @@ import {
   Stack,
   useColorModeValue,
   useToast,
-  Text,
-  HStack,
   UnorderedList,
   ListItem,
 } from "@chakra-ui/react";

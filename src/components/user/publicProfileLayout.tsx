@@ -1,8 +1,9 @@
 import { Stack, useColorModeValue } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { FaCube } from "react-icons/fa";
 import { IoDocumentsSharp } from "react-icons/io5";
 import { MdSubtitles } from "react-icons/md";
+import useSWR from "swr";
 import { PublicProfileTab } from "../../utils/tabs";
 import Header from "./header";
 
@@ -12,7 +13,8 @@ type Props = {
 };
 
 export default function PublicProfileLayout({ currentTab, children }: Props) {
-  const { data } = useSession();
+  const router = useRouter();
+  const { data: user, error } = useSWR(`/api/user?id=${router.query.userId}`);
   const bgProfile = useColorModeValue(
     "hsla(0,0%,100%,.8)",
     "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
@@ -23,9 +25,9 @@ export default function PublicProfileLayout({ currentTab, children }: Props) {
       <Header
         backgroundHeader="https://demos.creative-tim.com/purity-ui-dashboard/static/media/ProfileBackground.4dc796b0.png"
         backgroundProfile={bgProfile}
-        avatarImage={data?.user.image ?? undefined}
-        name={data?.user.name ?? undefined}
-        email={data?.user.email ?? undefined}
+        avatarImage={user?.image ?? undefined}
+        name={user?.name ?? undefined}
+        email={user?.email ?? undefined}
         currentTab={currentTab}
         tabs={[
           {
