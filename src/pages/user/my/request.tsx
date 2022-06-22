@@ -9,7 +9,7 @@ export default function UserMyRequest() {
   const { data: requests } = useSWR<ResRequestSearch>(
     `/api/request/search?userId=${session.data?.user.id}`
   );
-  return requests ? <RequestPanel requests={requests} /> : "";
+  return requests ? <RequestPanel requests={requests} /> : <></>;
 }
 
 UserMyRequest.options = { role: Role.User, hideTitle: true } as PageOptions;
