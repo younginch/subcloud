@@ -14,7 +14,7 @@ type UserReadProps = {
 
 export default function UserIndex({ user, subs }: UserReadProps) {
   return (
-    <PublicProfileLayout currentTab={PublicProfileTab.Overview} user={user}>
+    <PublicProfileLayout currentTab={PublicProfileTab.Overview}>
       {subs.length > 0 ? (
         <SubtitleDashboard user={user} subs={subs} />
       ) : (
