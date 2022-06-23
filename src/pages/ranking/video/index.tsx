@@ -10,15 +10,17 @@ import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import GeneralTable from "../../../components/ranking/generalTable";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
+import useTranslation from "next-translate/useTranslation";
 
 export default function VideoRankingPage() {
+  const { t } = useTranslation("rankings");
   const captions = [
     { caption: "#" },
-    { caption: "Title" },
-    { caption: "Duration" },
-    { caption: "Language" },
-    { caption: "Requests", sortBy: "request" },
-    { caption: "Points", sortBy: "point" },
+    { caption: t("title") },
+    { caption: t("duration") },
+    { caption: t("language") },
+    { caption: t("requests"), sortBy: "request" },
+    { caption: t("points"), sortBy: "point" },
   ];
   const [lang, setLang] = useState("All Lang");
   const [sortBy, setSortBy] = useState({ by: "request", order: true });

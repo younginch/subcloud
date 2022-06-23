@@ -10,15 +10,18 @@ import useSWRInfinite from "swr/infinite";
 import GeneralTable from "../../../components/ranking/generalTable";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 import { useState } from "react";
+import useTranslation from "next-translate/useTranslation";
 
 export default function UserRankingPage() {
+  const { t } = useTranslation("rankings");
+
   const captions = [
     { caption: "#" },
-    { caption: "Name" },
-    { caption: "Total Views", sortBy: "view" },
-    { caption: "Total Subs", sortBy: "sub" },
-    { caption: "Fulfilled", sortBy: "fulfilledRequests" },
-    { caption: "Rating" },
+    { caption: t("name") },
+    { caption: t("total views"), sortBy: "view" },
+    { caption: t("total subs"), sortBy: "sub" },
+    { caption: t("fulfilled"), sortBy: "fulfilledRequests" },
+    { caption: t("rating") },
   ];
   const [sortBy, setSortBy] = useState({ by: "view", order: true });
   const pageSize = 5;
