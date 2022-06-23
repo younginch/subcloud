@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Center,
-  Flex,
   Heading,
   HStack,
   Spacer,
@@ -19,6 +18,7 @@ import InViewProvider from "../components/inviewProvider";
 import ExtensionButton from "../components/extensionButton";
 import { PageOptions } from "../utils/types";
 import { DottedBox } from "../components/icons/customIcons";
+import NextLink from "next/link";
 
 export default function Home() {
   return (
@@ -28,7 +28,7 @@ export default function Home() {
         spacing={{ base: 0, md: 20 }}
         justifyContent="center"
         p={10}
-        pt="100px"
+        pt={{ base: "100px", md: "150px" }}
         alignItems="center"
       >
         <Stack
@@ -62,11 +62,11 @@ export default function Home() {
             mb={{ base: "3rem !important", sm: 0 }}
             flexWrap="wrap"
             pt={{ base: 0, md: 10 }}
+            color="white"
           >
             <Button
               w={{ base: "100%", sm: "auto" }}
               h={10}
-              color="white"
               rounded="md"
               mb={{ base: 2, sm: 0 }}
               bgGradient="linear(to-l, #0ea5e9,#2563eb)"
@@ -78,21 +78,21 @@ export default function Home() {
             >
               <Text>Searching Videos</Text>
             </Button>
-            <Box
-              w={{ base: "100%", sm: "auto" }}
-              h={10}
-              as={Flex}
-              alignItems="center"
-              justifyContent="center"
-              p={3}
-              color="white"
-              rounded="md"
-              bgGradient="linear(to-l, #7928CA, #FF0080)"
-              boxShadow="md"
-              fontSize="xl"
-            >
-              <Text>Request Subtitles</Text>
-            </Box>
+            <NextLink href={"/video/create?next=request"}>
+              <Button
+                w={{ base: "100%", sm: "auto" }}
+                h={10}
+                p={3}
+                rounded="md"
+                bgGradient="linear(to-l, #8E54E9, #4776E6)"
+                _hover={{
+                  bgGradient: "linear(to-l, #4776E6, #8E54E9 )",
+                }}
+                fontSize="xl"
+              >
+                <Text>Request Subtitles</Text>
+              </Button>
+            </NextLink>
           </HStack>
         </Stack>
         <Box
@@ -114,7 +114,7 @@ export default function Home() {
       <Box maxW="6xl" margin="auto" p={10}>
         <InViewProvider initialScale={0.95}>
           <Stack
-            marginY="100px"
+            mt="150px"
             direction={{ base: "column", lg: "row" }}
             spacing={10}
             justifyContent="space-between"
@@ -157,7 +157,7 @@ export default function Home() {
         </InViewProvider>
         <InViewProvider initialScale={0.95}>
           <Stack
-            marginY="128px"
+            marginY="150px"
             direction={{ base: "column-reverse", lg: "row" }}
             alignItems="center"
             justifyContent="space-between"
@@ -203,7 +203,7 @@ export default function Home() {
               >
                 자막을 만들어 돈도 벌고, 경력도 쌓아보세요.
               </Text>
-              <Text fontSize="2xl">
+              <Text fontSize={{ base: "xl", md: "2xl" }}>
                 유저들의 감사를 알림으로 받아볼 수 있어요
               </Text>
             </Stack>
@@ -226,7 +226,9 @@ export default function Home() {
               >
                 웹사이트 이동 없이 보던 영상에서 그대로.
               </Text>
-              <Text fontSize="2xl">클릭 몇 번이면 자막을 불러올 수 있어요</Text>
+              <Text fontSize={{ base: "xl", md: "2xl" }}>
+                클릭 몇 번이면 자막을 불러올 수 있어요
+              </Text>
             </Stack>
             <Spacer />
             <Box maxW="80vw" w="500px">
@@ -241,44 +243,46 @@ export default function Home() {
           </Stack>
         </InViewProvider>
       </Box>
-      <Stack alignItems="center" p={10}>
-        <Text
-          fontSize={{ base: "3xl", md: "6xl" }}
-          fontWeight="bold"
-          maxW="500px"
-        >
-          Free downloads
-        </Text>
-        <Text fontSize={{ base: "xl", md: "3xl" }}>
-          Available on web stores
-        </Text>
-        <Stack
-          direction={{ base: "column", md: "row" }}
-          justifyContent="center"
-          spacing={{ base: 1, md: 10 }}
-          alignItems="center"
-          pt={10}
-        >
-          <Stack>
-            <ExtensionButton browser="chrome" />
-            <Text align="center">1000 + Users</Text>
-          </Stack>
-          <Stack>
-            <ExtensionButton browser="safari" isDisabled />
-            <Text align="center" color="gray.400">
-              Comming soon
-            </Text>
-          </Stack>
-          <Stack>
-            <ExtensionButton browser="firefox" isDisabled />
-            <Text align="center" color="gray.400">
-              Comming soon
-            </Text>
+      <InViewProvider initialScale={0.95}>
+        <Stack alignItems="center" p={10}>
+          <Text
+            fontSize={{ base: "3xl", md: "6xl" }}
+            fontWeight="bold"
+            maxW="500px"
+          >
+            Free downloads
+          </Text>
+          <Text fontSize={{ base: "xl", md: "3xl" }}>
+            Available on web stores
+          </Text>
+          <Stack
+            direction={{ base: "column", md: "row" }}
+            justifyContent="center"
+            spacing={{ base: 1, md: 10 }}
+            alignItems="center"
+            pt={10}
+          >
+            <Stack>
+              <ExtensionButton browser="chrome" />
+              <Text align="center">1000 + Users</Text>
+            </Stack>
+            <Stack>
+              <ExtensionButton browser="safari" isDisabled />
+              <Text align="center" color="gray.400">
+                Comming soon
+              </Text>
+            </Stack>
+            <Stack>
+              <ExtensionButton browser="firefox" isDisabled />
+              <Text align="center" color="gray.400">
+                Comming soon
+              </Text>
+            </Stack>
           </Stack>
         </Stack>
-      </Stack>
+      </InViewProvider>
       <Stack
-        bg={useColorModeValue("gray.100", "gray.700")}
+        bg={useColorModeValue("gray.50", "gray.900")}
         pb={10}
         alignItems="center"
         mt="50px"
@@ -307,18 +311,20 @@ export default function Home() {
             spacing={{ base: 0, sm: 3 }}
             w={{ base: "100%", sm: "auto" }}
           >
-            <Button
-              color="white"
-              variant="solid"
-              size="lg"
-              rounded="md"
-              mb={{ base: 2, sm: 0 }}
-              lineHeight={1}
-              bgGradient="linear(to-l, #0ea5e9,#2563eb)"
-              _hover={{ bgGradient: "linear(to-l, #0ea5e9,#2563eb)" }}
-            >
-              Get Started
-            </Button>
+            <NextLink href={"/auth/signin"}>
+              <Button
+                color="white"
+                variant="solid"
+                size="lg"
+                rounded="md"
+                mb={{ base: 2, sm: 0 }}
+                lineHeight={1}
+                bgGradient="linear(to-l, #0ea5e9,#2563eb)"
+                _hover={{ bgGradient: "linear(to-l, #0ea5e9,#2563eb)" }}
+              >
+                Get Started
+              </Button>
+            </NextLink>
           </Stack>
         </Stack>
       </Stack>
