@@ -10,11 +10,20 @@ import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import GeneralTable from "../../../components/ranking/generalTable";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
+import useTranslation from "next-translate/useTranslation";
 
 export default function VideoRankingPage() {
-  const captions = ["#", "Title", "Duration", "Language", "Requests", "Points"];
+  const { t } = useTranslation("rankings");
+  const captions = [
+    { caption: "#" },
+    { caption: t("title") },
+    { caption: t("duration") },
+    { caption: t("language") },
+    { caption: t("requests"), sortBy: "request" },
+    { caption: t("points"), sortBy: "point" },
+  ];
   const [lang, setLang] = useState("All Lang");
-  const sortBy = "request"; //point
+  const [sortBy, setSortBy] = useState({ by: "request", order: true });
   const pageSize = 5;
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingVideo>(url);
@@ -28,9 +37,9 @@ export default function VideoRankingPage() {
 
   const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
     (index) =>
-      `/api/ranking/video/${sortBy}?start=${pageSize * index}&end=${
+      `/api/ranking/video/${sortBy.by}?start=${pageSize * index}&end=${
         pageSize * (index + 1)
-      }&lang=${lang}`,
+      }&lang=${lang}&order=${sortBy.order === true ? "desc" : "asc"}`,
     fetcher
   );
 
@@ -67,6 +76,8 @@ export default function VideoRankingPage() {
           captions={captions}
           lang={lang}
           setLang={setLang}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
           onSubmit={onSubmit}
           btnComponent={loadMoreBtn}
         >

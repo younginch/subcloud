@@ -11,7 +11,7 @@ export async function RankingUser(
   { req, res, prisma }: RouteParams<ResRankingUser>,
   sortBy: (a: UserWithCount, b: UserWithCount) => number
 ) {
-  const { start, end } = req.query;
+  const { start, end, order } = req.query;
   if (!start && !end) {
     return res
       .status(400)
@@ -82,7 +82,11 @@ export async function RankingUser(
       };
     })
     .sort(sortBy);
-
+  if ((order as string) === "asc") {
+    return res
+      .status(200)
+      .json(newUsers.reverse().slice(Number(start), Number(end)));
+  }
   return res.status(200).json(newUsers.slice(Number(start), Number(end)));
 }
 
@@ -90,7 +94,7 @@ export async function RankingVideo(
   { req, res, prisma }: RouteParams<ResRankingVideo>,
   sortBy: (a: VideoWithRequest, b: VideoWithRequest) => number
 ) {
-  const { lang, start, end } = req.query;
+  const { lang, start, end, order } = req.query;
   if (!start && !end) {
     return res
       .status(400)
@@ -145,6 +149,11 @@ export async function RankingVideo(
     return res
       .status(404)
       .json({ error: SubErrorType.NotFound, message: "RankingVideoByRequest" });
+  }
+  if ((order as string) === "asc") {
+    return res
+      .status(200)
+      .json(newVideos.reverse().slice(Number(start), Number(end)));
   }
   return res.status(200).json(newVideos.slice(Number(start), Number(end)));
 }

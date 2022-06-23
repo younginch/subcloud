@@ -20,7 +20,14 @@ export default function SubtitleDashboard({ user, subs }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const subTextColor = useColorModeValue("gray.600", "gray.400");
   const bgColor = useColorModeValue("white", "#1F2733");
-  const captions = ["#", "Title", "Channel", "Language", "Views", "Uploaded"];
+  const captions = [
+    { caption: "#" },
+    { caption: "Title" },
+    { caption: "Channel" },
+    { caption: "Language" },
+    { caption: "Views" },
+    { caption: "Uploaded" },
+  ];
 
   return (
     <>

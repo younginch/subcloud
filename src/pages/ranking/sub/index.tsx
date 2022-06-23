@@ -4,7 +4,7 @@ import {
   RankQueryData,
   ResRankingSub,
 } from "../../../utils/types";
-import { Box, Button, Center } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import SubRankTableRow from "../../../components/ranking/subRankTableRow";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
@@ -14,16 +14,17 @@ import useTranslation from "next-translate/useTranslation";
 
 export default function SubRankingPage() {
   const { t } = useTranslation("rankings");
+
   const captions = [
-    "#",
-    t("title"),
-    t("language"),
-    t("views"),
-    t("Madeby"),
-    t("Uploaded"),
+    { caption: "#" },
+    { caption: t("title") },
+    { caption: t("language") },
+    { caption: t("views"), sortBy: "view" },
+    { caption: t("madeby") },
+    { caption: t("uploaded") },
   ];
   const [lang, setLang] = useState("All Lang");
-  const sortBy = "view";
+  const [sortBy, setSortBy] = useState({ by: "view", order: true });
   const pageSize = 5;
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingSub>(url);
@@ -37,9 +38,9 @@ export default function SubRankingPage() {
 
   const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
     (index) =>
-      `/api/ranking/sub/${sortBy}?start=${pageSize * index}&end=${
+      `/api/ranking/sub/${sortBy.by}?start=${pageSize * index}&end=${
         pageSize * (index + 1)
-      }&lang=${lang}`,
+      }&lang=${lang}&order=${sortBy.order === true ? "desc" : "asc"}`,
     fetcher
   );
 
@@ -75,6 +76,8 @@ export default function SubRankingPage() {
           btnComponent={loadMoreBtn}
           lang={lang}
           setLang={setLang}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
           onSubmit={onSubmit}
         >
           {subs.map((sub, index) => {
