@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useTransition } from "react";
 import {
   Box,
   Button,
@@ -37,6 +37,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { PageOptions } from "../../utils/types";
 import { useSession } from "next-auth/react";
 import SubscribeItem from "../../components/buy/subscribeItem";
+import useTranslation from "next-translate/useTranslation";
 
 const addList = Array<number>(5)
   .fill(0)
@@ -69,6 +70,7 @@ type PointCardProps = {
 };
 
 export default function Buy() {
+  const { t } = useTranslation("menu");
   const toast = useToast();
   const [tossPayments, setTossPayments] = useState<any>();
   const { data } = useSession();
@@ -198,11 +200,10 @@ export default function Buy() {
       <Box py={12} mt={15}>
         <VStack spacing={2} textAlign="center">
           <Heading as="h1" fontSize="4xl">
-            Plans that fit your need
+            {t("membership")}
           </Heading>
           <Text fontSize="lg" color={"gray.500"}>
-            Start with 14-day free trial. No credit card needed. Cancel at
-            anytime.
+            {t("membership_explain")}
           </Text>
         </VStack>
         <Stack
@@ -266,20 +267,19 @@ export default function Buy() {
         <Box py={12} pl={3} pr={3}>
           <VStack spacing={2}>
             <Heading as="h1" fontSize="4xl">
-              Buy Points
+              {t("buy_point_subtitle")}
             </Heading>
             <Flex direction={isMedium ? "row" : "column"}>
               <HStack>
                 <Text fontSize={{ base: "15px", md: "20px" }}>
-                  포인트는 SubCloud내에서 자막을 요청하는데 사용할 수 있는
-                  재화입니다.&nbsp;
+                  {t("buy_point")}&nbsp;
                 </Text>
               </HStack>
               <HStack
                 alignItems="center"
                 fontSize={{ base: "15px", md: "20px" }}
               >
-                <Text>자세한 내용은</Text>
+                <Text>{t("buy_point_front")}</Text>
                 <Link href="/qna" passHref>
                   <Button
                     rightIcon={<ArrowForwardIcon />}
@@ -292,7 +292,7 @@ export default function Buy() {
                     QNA
                   </Button>
                 </Link>
-                <Text>을 참고해 주세요</Text>
+                <Text>{t("buy_point_back")}</Text>
               </HStack>
             </Flex>
           </VStack>

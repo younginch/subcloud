@@ -1,4 +1,5 @@
 {
+  "placeholder": "search...",
   "punchline": "Request and Upload subtitles for Youtube",
   "download": "Download",
   "legal": "Legal",
@@ -8,5 +9,11 @@
   "representative": "Representative: Myeongjin Shin, Mingyu Lee",
   "business_address": "Business Address: 12108 63, Byeollae 4-ro, Namyangju-si, Gyeonggi-do, Republic of Korea, 3408-703",
   "tel": "tel.010-3422-2418",
-  "Byeollae-dong": "(Byeollae-dong, Shinil Utoville Apt)"
+  "Byeollae-dong": "(Byeollae-dong, Shinil Utoville Apt)",
+  "membership": "Sign up for Membership",
+  "membership_explain": "Start with 14-day free trial. No credit card needed. You cancel at anytime.",
+  "buy_point": "Points are goods that can be used to request subtitles within SubCloud.",
+  "buy_point_subtitle": "Buy Points",
+  "buy_point_front": "Please see",
+  "buy_point_back": "for details"
 }
