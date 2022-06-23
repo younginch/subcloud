@@ -40,7 +40,7 @@ export default function Layout({ options, children }: Props) {
           </Box>
         </Box>
       </Box>
-      <Footer />
+      {!options.hideFooter && <Footer />}
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-HW4MKMPX9Y"
         strategy="afterInteractive"

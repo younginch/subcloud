@@ -37,9 +37,9 @@ export type PageOptions = {
   width?: string | number;
   bgColorLight?: string;
   bgColorDark?: string;
-  hideHeader?: boolean;
   hideTitle?: boolean;
   hideNavBar?: boolean;
+  hideFooter?: boolean;
 };
 
 export default interface ResError {
