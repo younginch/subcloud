@@ -12,9 +12,16 @@ import GeneralTable from "../../../components/ranking/generalTable";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 
 export default function VideoRankingPage() {
-  const captions = ["#", "Title", "Duration", "Language", "Requests", "Points"];
+  const captions = [
+    { caption: "#" },
+    { caption: "Title" },
+    { caption: "Duration" },
+    { caption: "Language" },
+    { caption: "Requests", sortBy: "request" },
+    { caption: "Points", sortBy: "point" },
+  ];
   const [lang, setLang] = useState("All Lang");
-  const sortBy = "request"; //point
+  const [sortBy, setSortBy] = useState({ by: "request", order: true });
   const pageSize = 5;
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingVideo>(url);
@@ -28,9 +35,9 @@ export default function VideoRankingPage() {
 
   const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
     (index) =>
-      `/api/ranking/video/${sortBy}?start=${pageSize * index}&end=${
+      `/api/ranking/video/${sortBy.by}?start=${pageSize * index}&end=${
         pageSize * (index + 1)
-      }&lang=${lang}`,
+      }&lang=${lang}&order=${sortBy.order === true ? "desc" : "asc"}`,
     fetcher
   );
 
@@ -67,6 +74,8 @@ export default function VideoRankingPage() {
           captions={captions}
           lang={lang}
           setLang={setLang}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
           onSubmit={onSubmit}
           btnComponent={loadMoreBtn}
         >

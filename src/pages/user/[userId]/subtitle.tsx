@@ -14,8 +14,14 @@ type UserReadProps = {
 };
 
 export default function UserSubtitle({ subs }: UserReadProps) {
-  const captions = ["#", "Title", "Channel", "Language", "Views", "Uploaded"];
-
+  const captions = [
+    { caption: "#" },
+    { caption: "Title" },
+    { caption: "Language" },
+    { caption: "Views" },
+    { caption: "MadeBy" },
+    { caption: "Uploaded" },
+  ];
   return (
     <PublicProfileLayout currentTab={PublicProfileTab.Subtitle}>
       {subs?.length > 0 ? (

@@ -17,15 +17,21 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { sortByTreeOrder } from "framer-motion/types/render/utils/animation";
 import { ReactElement } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineSearch } from "react-icons/ai";
 import { RankQueryData } from "../../utils/types";
 
 type Props = {
-  captions: Array<string>;
+  captions: Array<{
+    caption: string;
+    sortBy?: undefined | string;
+  }>;
   lang?: string;
   setLang?: (language: string) => void;
+  sortBy?: { by: string; order: boolean };
+  setSortBy?: (sortBy: { by: string; order: boolean }) => void;
   onSubmit?: SubmitHandler<RankQueryData>;
   title?: ReactElement;
   btnComponent?: ReactElement;
@@ -36,6 +42,8 @@ export default function GeneralTable({
   captions,
   lang,
   setLang,
+  sortBy,
+  setSortBy,
   onSubmit,
   title,
   children,
@@ -99,15 +107,22 @@ export default function GeneralTable({
       <Table variant="simple" color={textColor} mt={5}>
         <Thead>
           <Tr my=".8rem" ps="0px">
-            {captions.map((caption, index) => {
+            {captions.map((data, index) => {
               return (
                 <Th
                   color="gray.400"
                   key={index}
                   fontWeight="bold"
                   fontSize={{ base: "12px", md: "15px" }}
+                  onClick={() =>
+                    data.sortBy && setSortBy
+                      ? data.sortBy === sortBy?.by
+                        ? setSortBy({ by: data.sortBy, order: !sortBy?.order })
+                        : setSortBy({ by: data.sortBy, order: true })
+                      : undefined
+                  }
                 >
-                  {caption}
+                  {data.caption}
                 </Th>
               );
             })}

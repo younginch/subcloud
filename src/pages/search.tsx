@@ -29,7 +29,13 @@ export default function Search() {
       });
   }, [router.query.q, toast]);
 
-  const captions = ["영상 제목", "채널", "요청 횟수", "자막 수", "총 포인트"];
+  const captions = [
+    { caption: "영상 제목" },
+    { caption: "채널" },
+    { caption: "요청 횟수" },
+    { caption: "자막 수" },
+    { caption: "총 포인트" },
+  ];
   const titleComponent = (
     <Center>
       <Text fontSize="22px" fontWeight="bold" mb={5}>
