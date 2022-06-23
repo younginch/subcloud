@@ -1,9 +1,11 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import { InputGroup, InputLeftElement, Input } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function Search() {
+  const { t } = useTranslation("menu");
   const router = useRouter();
   const [value, setValue] = useState("");
 
@@ -20,7 +22,7 @@ export default function Search() {
           <SearchIcon />
         </InputLeftElement>
         <Input
-          placeholder="검색..."
+          placeholder={t("placeholder")}
           value={value}
           onChange={(e) => setValue(e.currentTarget.value)}
         />

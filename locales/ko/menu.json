@@ -1,6 +1,19 @@
 {
+  "placeholder": "검색...",
   "punchline": "유튜브 영상에 자막을 요청하고, 제작해 보세요",
   "download": "다운로드",
   "legal": "법률 및 정보",
-  "business": "사업자 정보"
+  "business": "사업자 정보",
+  "business_name": "상호명: 주식회사 영인치랩 (young inch lab)",
+  "company_registration_number": "사업자등록번호: 468-81-02692",
+  "representative": "대표자명: 신명진, 이민규",
+  "business_address": "사업장 주소: 12108 경기도 남양주시 별내4로 63, 3408동 703호",
+  "tel": "유선전화: 010-3422-2418",
+  "Byeollae-dong": "(별내동, 신일유토빌)",
+  "membership": "멤버십에 가입하세요",
+  "membership_explain": "신용카드 등록 없이 14일 무료 서비스 이용을 경험해보세요. 언제든지 취소 가능합니다.",
+  "buy_point": "포인트는 SubCloud 내에서 자막을 요청하는데 사용할 수 있는 재화입니다.",
+  "buy_point_subtitle": "포인트 구매",
+  "buy_point_front": "자세한 내용은",
+  "buy_point_back": "을 참고해주세요"
 }

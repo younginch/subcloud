@@ -79,15 +79,14 @@ function SiteMap() {
       <WrapItem>
         <Stack>
           <Heading size="sm">{t("business")}</Heading>
-          <Text fontSize="xs">상호명: 주식회사 영인치랩 (young inch lab)</Text>
-          <Text fontSize="xs">사업자등록번호: 468-81-02692</Text>
-          <Text fontSize="xs">대표자명: 신명진, 이민규</Text>
+          <Text fontSize="xs">{t("business_name")}</Text>
+          <Text fontSize="xs">{t("company_registration_number")}</Text>
+          <Text fontSize="xs">{t("representative")}</Text>
           <Text fontSize="xs">
-            사업장 주소: 12108 경기도 남양주시 별내4로 63, 3408동 703호{" "}
-            <br></br>
-            (별내동, 신일유토빌)
+            {t("business_address")} <br></br>
+            {t("Byeollae-dong")}
           </Text>
-          <Text fontSize="xs">유선전화: 010-3422-2418</Text>
+          <Text fontSize="xs">{t("tel")}</Text>
         </Stack>
       </WrapItem>
     </Wrap>
