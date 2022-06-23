@@ -2,7 +2,7 @@ module.exports = {
   locales: ["ko", "en"],
   defaultLocale: "ko",
   pages: {
-    "*": ["common", "routes", "menu", "privateProfile"],
+    "*": ["common", "routes", "menu", "privateProfile", "rankings"],
     "/": ["common"],
   },
 };

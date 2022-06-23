@@ -10,9 +10,18 @@ import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import GeneralTable from "../../../components/ranking/generalTable";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
+import useTranslation from "next-translate/useTranslation";
 
 export default function SubRankingPage() {
-  const captions = ["#", "Title", "Language", "Views", "Madeby", "Uploaded"];
+  const { t } = useTranslation("rankings");
+  const captions = [
+    "#",
+    t("title"),
+    t("language"),
+    t("views"),
+    t("Madeby"),
+    t("Uploaded"),
+  ];
   const [lang, setLang] = useState("All Lang");
   const sortBy = "view";
   const pageSize = 5;
