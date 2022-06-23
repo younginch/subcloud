@@ -33,6 +33,7 @@ import RequestCreate from "../../pages/video/[serviceId]/[videoId]/request/creat
 import SubCreate from "../../pages/video/[serviceId]/[videoId]/sub/create";
 import Video from "../../pages/video/[serviceId]/[videoId]";
 import Editor from "../../pages/editor";
+import NewTab from "../../pages/newtab";
 
 describe("Pages (pages)", () => {
   it("renders 404", () => {
@@ -53,6 +54,10 @@ describe("Pages (pages)", () => {
 
   it("renders Search", () => {
     render(<Search />);
+  });
+
+  it("renders NewTab", () => {
+    renderWithThemeAndSession(<NewTab />);
   });
 });
 
