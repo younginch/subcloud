@@ -61,13 +61,21 @@ export default function SubscribeItem({
     axios
       .post("/api/subscription")
       .then((res) => {
-        tossPayments.requestBillingAuth("카드", {
-          customerKey: res.data.customerKey,
-          successUrl: `${window.location.origin}/buy/subscription/process`,
-          failUrl: `${window.location.origin}/buy/subscription/fail`,
-          customerName: data?.user.name,
-          customerEmail: data?.user.email,
-        });
+        tossPayments
+          .requestBillingAuth("카드", {
+            customerKey: res.data.customerKey,
+            successUrl: `${window.location.origin}/buy/subscription/process`,
+            failUrl: `${window.location.origin}/buy/subscription/fail`,
+            customerName: data?.user.name,
+            customerEmail: data?.user.email,
+          })
+          .then(() => {})
+          .catch(() => {
+            toast({
+              title: "오류가 발생했습니다.",
+              status: "error",
+            });
+          });
       })
       .catch((err) => {
         toast({
