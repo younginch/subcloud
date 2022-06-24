@@ -216,51 +216,53 @@ export default function Buy() {
           <SubscribeItem price="2" title="Basic">
             <ListItem>
               <ListIcon as={FaCheckCircle} color="green.500" />
-              Remove Ads
+              {t("remove_ads")}
             </ListItem>
             <ListItem>
               <ListIcon as={FaCheckCircle} color="green.500" />
-              Receive free points up to $1
+              {t("free_points")}
+              {t("$1")}
             </ListItem>
             <ListItem>
               <ListIcon as={FaCheckCircle} color="green.500" />
-              Subtitles early access
+              {t("subtitle_access")}
             </ListItem>
           </SubscribeItem>
           <SubscribeItem price="4" header="MOST POPULAR" title="Pro" disabled>
             <ListItem>
               <ListIcon as={FaCheckCircle} color="green.500" />
-              Remove Ads
+              {t("remove_ads")}
             </ListItem>
             <ListItem>
               <ListIcon as={FaCheckCircle} color="green.500" />
-              Receive free points up to $2
+              {t("free_points")}
+              {t("$2")}
             </ListItem>
             <ListItem>
               <ListIcon as={FaCheckCircle} color="green.500" />
-              Subtitles early access
+              {t("subtitle_access")}
             </ListItem>
             <ListItem>
               <ListIcon as={FaCheckCircle} color="blue.500" />
-              Support language pair subtitles
+              {t("lang_pair")}
             </ListItem>
             <ListItem>
               <ListIcon as={FaCheckCircle} color="blue.500" />
-              Support custom vocabulary
+              {t("custom_voca")}
             </ListItem>
           </SubscribeItem>
           <SubscribeItem price="+5" title="Ultimate" disabled>
             <ListItem>
               <ListIcon as={FaCheckCircle} color="green.500" />
-              Upgrade your Pro plans
+              {t("upgrade_pro")}
             </ListItem>
             <ListItem>
               <ListIcon as={FaCheckCircle} color="yellow.500" />
-              unlimited portfolio update
+              {t("portfolio")}
             </ListItem>
             <ListItem>
               <ListIcon as={FaCheckCircle} color="yellow.500" />
-              Enable subtitle co-creation
+              {t("sub_co_creation")}
             </ListItem>
           </SubscribeItem>
         </Stack>
