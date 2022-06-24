@@ -216,4 +216,9 @@ export default function NewTab() {
   );
 }
 
-NewTab.options = { auth: false, hideTitle: true } as PageOptions;
+NewTab.options = {
+  auth: false,
+  hideTitle: true,
+  hideNavBar: true,
+  hideFooter: true,
+} as PageOptions;
