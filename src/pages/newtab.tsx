@@ -11,6 +11,7 @@ import {
   Button,
   Wrap,
   WrapItem,
+  Link,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { AiFillYoutube, AiOutlineSearch } from "react-icons/ai";
@@ -71,7 +72,7 @@ export default function NewTab() {
             {" · Views"}
           </Text>
           <Spacer />
-          <Text>Gmail</Text>
+          <Link>Gmail</Link>
           <Text>Drive</Text>
           <Box w="25px" h="25px">
             <CgMenuGridO size="100%" color="black" />
