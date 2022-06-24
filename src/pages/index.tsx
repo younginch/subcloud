@@ -41,7 +41,7 @@ export default function Home() {
           alignItems="flex-start"
         >
           <Text
-            fontSize={{ base: "4xl", lg: "6xl" }}
+            fontSize={{ base: "5xl", lg: "6xl" }}
             lineHeight={1}
             fontWeight="bold"
             textAlign="left"
