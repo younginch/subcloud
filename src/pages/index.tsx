@@ -19,8 +19,10 @@ import ExtensionButton from "../components/extensionButton";
 import { PageOptions } from "../utils/types";
 import { DottedBox } from "../components/icons/customIcons";
 import NextLink from "next/link";
+import useTranslation from "next-translate/useTranslation";
 
 export default function Home() {
+  const { t } = useTranslation("menu");
   return (
     <>
       <Stack
@@ -44,8 +46,8 @@ export default function Home() {
             fontWeight="bold"
             textAlign="left"
           >
-            Watch Subtitles free <br />
-            <Text color="teal">in SubCloud</Text>
+            {t("watch_sub_free")} <br />
+            <Text color="teal">{t("in_sub")}</Text>
           </Text>
           <Text
             fontSize="1.8rem"
@@ -54,8 +56,7 @@ export default function Home() {
             fontWeight="400"
             color="gray.500"
           >
-            SubCloud aims to overcome language barriers on the web through
-            subtitles.
+            {t("subcloud_aim")}
           </Text>
           <HStack
             spacing={{ base: 0, sm: 2 }}
@@ -76,7 +77,7 @@ export default function Home() {
               }}
               fontSize="xl"
             >
-              <Text>Searching Videos</Text>
+              <Text>{t("search_vid")}</Text>
             </Button>
             <NextLink href={"/video/create?next=request"}>
               <Button
@@ -90,7 +91,7 @@ export default function Home() {
                 }}
                 fontSize="xl"
               >
-                <Text>Request Subtitles</Text>
+                <Text>{t("request_sub")}</Text>
               </Button>
             </NextLink>
           </HStack>
@@ -122,18 +123,16 @@ export default function Home() {
           >
             <Stack>
               <Heading color="blue.400" size="md">
-                무료 자막 요청
+                {t("free_request")}
               </Heading>
               <Text
                 fontSize={{ base: "3xl", md: "4xl" }}
                 fontWeight="bold"
                 maxW="500px"
               >
-                자막이 필요한 영상이 생기면 언제든지 요청하세요.
+                {t("free_request_ex_front")}
               </Text>
-              <Text fontSize="2xl">
-                자막이 생기면 바로 알림으로 알려드릴게요.
-              </Text>
+              <Text fontSize="2xl">{t("free_request_ex_back")}</Text>
             </Stack>
             <Box
               boxShadow="2xl"
@@ -146,10 +145,10 @@ export default function Home() {
               <Center flexDir="column">
                 <CheckCircleIcon w={14} h={14} color="blue.400" marginTop={8} />
                 <Heading marginTop={6} size="lg">
-                  요청 전송 완료
+                  {t("Request_sent_complete")}
                 </Heading>
                 <Text color="blue.400" marginTop={7}>
-                  52명이 같은 영상에 요청했어요.
+                  {t("N_people")}
                 </Text>
               </Center>
             </Box>
@@ -182,29 +181,29 @@ export default function Home() {
                   </IconContext.Provider>
                 </Box>
                 <Heading marginTop={6} size="lg">
-                  현재까지 18730명이
+                  {t("use_sub_front")}
                 </Heading>
                 <Heading marginTop={1} size="md">
-                  영인치님의 자막을 사용했어요
+                  {t("use_sub_back")}
                 </Heading>
                 <Text color="blue.400" marginTop={7}>
-                  자막 제작자 상위 28%
+                  {t("top_maker")}
                 </Text>
               </Center>
             </Box>
             <Stack>
               <Heading color="blue.400" size="md">
-                자유로운 자막 제작
+                {t("unconstrained_sub_production")}
               </Heading>
               <Text
                 fontSize={{ base: "3xl", md: "4xl" }}
                 fontWeight="bold"
                 maxW="500px"
               >
-                자막을 만들어 돈도 벌고, 경력도 쌓아보세요.
+                {t("unconstrained_sub_production_ex_front")}
               </Text>
               <Text fontSize={{ base: "xl", md: "2xl" }}>
-                유저들의 감사를 알림으로 받아볼 수 있어요
+                {t("unconstrained_sub_production_ex_back")}
               </Text>
             </Stack>
           </Stack>
@@ -217,17 +216,17 @@ export default function Home() {
           >
             <Stack>
               <Heading color="blue.400" size="md">
-                간편한 자막 시청
+                {t("simple_view")}
               </Heading>
               <Text
                 fontSize={{ base: "3xl", md: "4xl" }}
                 fontWeight="bold"
                 maxW="500px"
               >
-                웹사이트 이동 없이 보던 영상에서 그대로.
+                {t("without_moving_front")}
               </Text>
               <Text fontSize={{ base: "xl", md: "2xl" }}>
-                클릭 몇 번이면 자막을 불러올 수 있어요
+                {t("without_moving_back")}
               </Text>
             </Stack>
             <Spacer />
@@ -250,11 +249,9 @@ export default function Home() {
             fontWeight="bold"
             maxW="500px"
           >
-            Free downloads
+            {t("free_download")}
           </Text>
-          <Text fontSize={{ base: "xl", md: "3xl" }}>
-            Available on web stores
-          </Text>
+          <Text fontSize={{ base: "xl", md: "3xl" }}>{t("available_on")}</Text>
           <Stack
             direction={{ base: "column", md: "row" }}
             justifyContent="center"
@@ -295,7 +292,7 @@ export default function Home() {
         >
           <Box>
             <Text fontSize="4xl" lineHeight={1.2} fontWeight="bold">
-              Ready to get started?
+              {t("get_start")}
             </Text>
             <Text
               fontSize="2xl"
@@ -303,7 +300,7 @@ export default function Home() {
               bgGradient="linear(to-l, #0ea5e9,#2563eb)"
               bgClip="text"
             >
-              Get in touch or create an account.
+              {t("get_touch_account")}
             </Text>
           </Box>
           <Stack
@@ -322,7 +319,7 @@ export default function Home() {
                 bgGradient="linear(to-l, #0ea5e9,#2563eb)"
                 _hover={{ bgGradient: "linear(to-l, #0ea5e9,#2563eb)" }}
               >
-                Get Started
+                {t("account_create")}
               </Button>
             </NextLink>
           </Stack>
