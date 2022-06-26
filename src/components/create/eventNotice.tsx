@@ -22,7 +22,7 @@ export default function EventNotice() {
         What{"'"}s new?
       </Box>
       <HStack spacing={1} alignItems="center" justifyContent="center">
-        <Text lineHeight={1}>Upload subtitles and get reward!</Text>
+        <Text lineHeight={1}>Upload subtitles and get rewards!</Text>
         <Icon as={GoChevronRight} w={4} h={4} />
       </HStack>
     </HStack>
