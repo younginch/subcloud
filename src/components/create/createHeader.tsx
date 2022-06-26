@@ -6,6 +6,7 @@ import {
   Heading,
   Stack,
 } from "@chakra-ui/react";
+import { GoChevronRight } from "react-icons/go";
 
 type Props = {
   type: "request" | "sub";

@@ -14,11 +14,12 @@ import {
   MenuList,
   MenuItem,
   Wrap,
-  Center,
   HStack,
   useMediaQuery,
   Checkbox,
   MenuOptionGroup,
+  Box,
+  keyframes,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -35,6 +36,11 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import InViewProvider from "../../../../../components/inviewProvider";
 import { useEffect, useState } from "react";
 import ISO6391, { LanguageCode } from "iso-639-1";
+import { CgShapeTriangle } from "react-icons/cg";
+import { TbDiamond, TbDiamonds } from "react-icons/tb";
+import { BiRocket } from "react-icons/bi";
+import { BsLightningCharge } from "react-icons/bs";
+import { HiOutlineFire } from "react-icons/hi";
 
 type FormData = {
   serviceId: string;
@@ -43,11 +49,15 @@ type FormData = {
   point: number;
 };
 
+type PointElement = {
+  amount: number;
+  hoverColor: string;
+  icon: React.ReactElement;
+};
+
 export default function RequestCreate() {
   const textColor = useColorModeValue("gray.700", "gray.300");
-  const subTextColor = useColorModeValue("gray.600", "gray.400");
   const [summaryToggle] = useMediaQuery("(min-width: 1450px)");
-  const [videoInfoToggle] = useMediaQuery("(min-width: 900px)");
   const router = useRouter();
   const serviceId = router.query.serviceId as string;
   const videoId = router.query.videoId as string;
@@ -60,14 +70,37 @@ export default function RequestCreate() {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({ resolver: joiResolver(RequestCreateSchema) });
-  const pointArray = [10, 50, 100, 500, 1000, 5000];
-  const pointArrayColor = [
-    "red.200",
-    "green.200",
-    "tomato",
-    "blue.200",
-    "gray.200",
-    "yellow",
+  const points: Array<PointElement> = [
+    {
+      amount: 10,
+      hoverColor: useColorModeValue("#C0F3F8", "#19BFD1"),
+      icon: <CgShapeTriangle size="100%" />,
+    },
+    {
+      amount: 50,
+      hoverColor: useColorModeValue("green.200", "green.800"),
+      icon: <TbDiamonds size="100%" />,
+    },
+    {
+      amount: 100,
+      hoverColor: useColorModeValue("blue.200", "blue.800"),
+      icon: <TbDiamond size="100%" />,
+    },
+    {
+      amount: 500,
+      hoverColor: useColorModeValue("#F4B183", "#B74B09"),
+      icon: <HiOutlineFire size="100%" />,
+    },
+    {
+      amount: 1000,
+      hoverColor: useColorModeValue("#D8BEEC", "#7330A6"),
+      icon: <BiRocket size="100%" />,
+    },
+    {
+      amount: 5000,
+      hoverColor: useColorModeValue("#FFE699", "#A29A00"),
+      icon: <BsLightningCharge size="100%" strokeWidth="0.2px" />,
+    },
   ];
   const codeList: LanguageCode[] = [
     "en",
@@ -81,6 +114,40 @@ export default function RequestCreate() {
     "zh",
     "ko",
   ];
+
+  const pulseRing = keyframes`
+	0% {
+    transform: scale(0.33);
+  }
+  40%,
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+  `;
+  const changeRadius = keyframes`
+  0% {
+    border-radius: 20%;
+  }
+  10% {
+    border-radius: 45%;
+  }
+  40% {
+    border-radius: 48%;
+  }
+  100% {
+    border-radius: 50%;
+  }
+  `;
+
+  const getLevel = (point: number) => {
+    for (let i = points.length - 1; i >= 0; i--) {
+      if (points[i].amount <= point) return i;
+    }
+    return -1;
+  };
   function onSubmit(values: FormData) {
     return new Promise<void>((resolve, reject) => {
       axios
@@ -121,14 +188,11 @@ export default function RequestCreate() {
     setValue("point", 0);
   }, [setValue]);
 
+  const pointBg = useColorModeValue("gray.100", "gray.800");
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack ms={{ base: "20px", xl: "calc(15vw - 150px)" }} spacing={5}>
-        <Card
-          w={videoInfoToggle ? "fit-content" : "calc(100vw - 40px)"}
-          mt={5}
-          maxW="calc(100vw - 40px)"
-        >
+        <Card w="850px" mt={5} maxW="calc(100vw - 40px)">
           <CardHeader mb="10px">
             <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
               요청 영상
@@ -178,22 +242,39 @@ export default function RequestCreate() {
               포인트
             </Text>
           </CardHeader>
-          <Wrap>
-            {pointArray.map((value, index) => {
+          <Wrap p={5} justify="space-evenly">
+            {points.map((element, index) => {
               return (
-                <WrapItem key={index}>
-                  <InViewProvider whileHover={1.05} initialScale={0.95}>
-                    <Center
+                <WrapItem key={index} zIndex={10}>
+                  <InViewProvider whileHover={1.15} initialScale={0.95}>
+                    <Box
+                      as={Stack}
+                      justifyContent="center"
+                      alignItems="center"
+                      spacing="-3px"
                       w="80px"
                       h="80px"
                       borderRadius="20%"
-                      bg={pointArrayColor[index]}
+                      bg={pointBg}
                       onClick={() =>
-                        setValue("point", Number(value) + Number(watch().point))
+                        setValue(
+                          "point",
+                          Number(element.amount) + Number(watch().point)
+                        )
                       }
+                      _hover={{
+                        bg: element.hoverColor,
+                        animation: `1s ${changeRadius}`,
+                        borderRadius: "50%",
+                      }}
                     >
-                      {value}P
-                    </Center>
+                      <Box w="40%" h="40%">
+                        {element.icon}
+                      </Box>
+                      <Text fontWeight="bold" fontSize="lg">
+                        {element.amount}P
+                      </Text>
+                    </Box>
                   </InViewProvider>
                 </WrapItem>
               );
@@ -223,15 +304,15 @@ export default function RequestCreate() {
           maxW="calc(100vw - 40px)"
         >
           <CardHeader mb="24px">
-            <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
+            <Text color={textColor} fontSize="20px" fontWeight="bold" mb="4px">
               요청 요약
             </Text>
           </CardHeader>
-          <Text fontSize="15px">영상 제목</Text>
+          <Text fontSize="18px">영상 제목</Text>
           <Text fontWeight="bold" fontSize="20px">
             {video?.youtubeVideo?.title ?? "unknown"}
           </Text>
-          <Text fontSize="15px" mt="20px">
+          <Text fontSize="18px" mt="20px">
             영상 길이
           </Text>
           <Text fontWeight="bold" fontSize="20px">
@@ -241,15 +322,47 @@ export default function RequestCreate() {
                 }초`
               : "unknown"}
           </Text>
-          <Text fontSize="15px" mt="20px">
+          <Text fontSize="18px" mt="20px">
             요청 언어
           </Text>
           <Text fontWeight="bold" fontSize="20px">
             {ISO6391.getName(watch().lang)}
           </Text>
-          <Text fontSize="15px" mt="20px">
-            제공 포인트
-          </Text>
+          <HStack mt="20px !important">
+            <Text fontSize="18px">제공 포인트</Text>
+            {getLevel(watch().point) >= 0 && (
+              <Box
+                as="div"
+                w="20px"
+                h="20px"
+                position="relative"
+                _before={{
+                  content: "''",
+                  position: "relative",
+                  display: "block",
+                  width: "350%",
+                  height: "350%",
+                  boxSizing: "border-box",
+                  marginLeft: "-125%",
+                  marginTop: "-125%",
+                  borderRadius: "50%",
+                  bgColor: points[getLevel(watch().point)].hoverColor,
+                  animation: `3s ${pulseRing} cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.7s infinite`,
+                }}
+              >
+                <Box
+                  as="div"
+                  w="full"
+                  h="full"
+                  zIndex="100"
+                  mt="-225%"
+                  position="absolute"
+                >
+                  {points[getLevel(watch().point)].icon}
+                </Box>
+              </Box>
+            )}
+          </HStack>
           <Text fontWeight="bold" fontSize="20px">
             {watch().point}
           </Text>
