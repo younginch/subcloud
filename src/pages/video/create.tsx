@@ -21,6 +21,7 @@ import { PageOptions } from "../../utils/types";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FiUpload } from "react-icons/fi";
 import SwingProvider from "../../components/swingProvider";
+import EventNotice from "../../components/create/eventNotice";
 
 type FormData = {
   url: string;
@@ -134,6 +135,7 @@ export default function VideoCreate() {
               </FormErrorMessage>
             </Box>
           </FormControl>
+          {router.query.next === "sub" && <EventNotice />}
           <UnorderedList>
             <ListItem mt="12vh">Lorem ipsum dolor sit amet</ListItem>
             <ListItem>Consectetur adipiscing elit</ListItem>
