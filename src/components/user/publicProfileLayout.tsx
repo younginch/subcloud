@@ -1,4 +1,5 @@
 import { Stack, useColorModeValue } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { FaCube } from "react-icons/fa";
 import { IoDocumentsSharp } from "react-icons/io5";
@@ -13,6 +14,7 @@ type Props = {
 };
 
 export default function PublicProfileLayout({ currentTab, children }: Props) {
+  const { t } = useTranslation("publicProfile");
   const router = useRouter();
   const { data: user, error } = useSWR(`/api/user?id=${router.query.userId}`);
   const bgProfile = useColorModeValue(
@@ -31,17 +33,17 @@ export default function PublicProfileLayout({ currentTab, children }: Props) {
         currentTab={currentTab}
         tabs={[
           {
-            name: "OVERVIEW",
+            name: t("dashboard_header_overview"),
             router: "overview",
             icon: <FaCube width="100%" height="100%" />,
           },
           {
-            name: "Subtitle",
+            name: t("dashboard_header_subtitle"),
             router: "subtitle",
             icon: <MdSubtitles width="100%" height="100%" />,
           },
           {
-            name: "Request",
+            name: t("dashboard_header_request"),
             router: "request",
             icon: <IoDocumentsSharp width="100%" height="100%" />,
           },

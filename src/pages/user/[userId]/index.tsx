@@ -6,6 +6,7 @@ import { FiBox } from "react-icons/fi";
 import SubtitleDashboard from "../../../components/user/subtitleDashboard";
 import PublicProfileLayout from "../../../components/user/publicProfileLayout";
 import { PublicProfileTab } from "../../../utils/tabs";
+import useTranslation from "next-translate/useTranslation";
 
 type UserReadProps = {
   user: ResUserSearch;
@@ -13,6 +14,7 @@ type UserReadProps = {
 };
 
 export default function UserIndex({ user, subs }: UserReadProps) {
+  const { t } = useTranslation("publicProfile");
   return (
     <PublicProfileLayout currentTab={PublicProfileTab.Overview}>
       {subs.length > 0 ? (
@@ -20,7 +22,7 @@ export default function UserIndex({ user, subs }: UserReadProps) {
       ) : (
         <Stack alignItems="center" spacing={5} h="55vh">
           <FiBox size={100} />
-          <Text fontSize="20px">유저가 업로드한 자막이 없습니다</Text>
+          <Text fontSize="20px">{t("dashboard_middle")}</Text>
         </Stack>
       )}
     </PublicProfileLayout>
