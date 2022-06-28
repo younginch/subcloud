@@ -27,7 +27,7 @@ export default function Layout({ options, children }: Props) {
       <Box w="100%" h="100%" minH="calc(100vh - 84px)" m="0" p="0">
         {!options.hideNavBar && <NavBar />}
         <Box
-          w={options.width ?? "100%"}
+          maxW={options.width}
           padding={options.width ? "12px" : 0}
           marginX={options.width ? "auto" : 0}
           overflow="hidden"
