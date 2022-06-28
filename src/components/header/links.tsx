@@ -39,7 +39,7 @@ export default function Links({ width }: LinksProps) {
         </MenuList>
       </Menu>
       <LinkButton route="/buy" width={width} />
-      <LinkButton route="/qna" width={width} />
+      <LinkButton route="/editor" width={width} />
     </>
   );
 }

@@ -7,8 +7,9 @@ import Links from "../components/header/links";
 import Search from "../components/header/search";
 import Layout from "../components/layout";
 import SelectLanguage from "../components/selectLanguage";
+import UserLayout from "../components/user/my/userLayout";
 import RequestPanel from "../components/user/requestPanel";
-import { renderWithSession, renderWithThemeAndSession } from "../utils/jest";
+import { renderWithThemeAndSession } from "../utils/jest";
 
 describe("Components", () => {
   it("renders a Footer", () => {
@@ -64,5 +65,9 @@ describe("Components", () => {
 
   it("renders EventNotice", () => {
     renderWithThemeAndSession(<EventNotice />);
+  });
+
+  it("renders userLayout", () => {
+    render(<UserLayout>a</UserLayout>);
   });
 });
