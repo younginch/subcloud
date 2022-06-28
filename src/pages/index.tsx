@@ -112,7 +112,7 @@ export default function Home() {
           />
         </Box>
       </Stack>
-      <Box maxW="6xl" margin="auto" p={10}>
+      <Box maxW="1340px" margin="auto" p={10}>
         <InViewProvider initialScale={0.95}>
           <Stack
             mt="150px"
@@ -156,7 +156,7 @@ export default function Home() {
         </InViewProvider>
         <InViewProvider initialScale={0.95}>
           <Stack
-            marginY="150px"
+            marginY="200px"
             direction={{ base: "column-reverse", lg: "row" }}
             alignItems="center"
             justifyContent="space-between"
@@ -210,7 +210,7 @@ export default function Home() {
         </InViewProvider>
         <InViewProvider initialScale={0.95}>
           <Stack
-            mb="60px"
+            mb="100px"
             direction={{ base: "column-reverse", lg: "row" }}
             alignItems="center"
           >
@@ -282,7 +282,7 @@ export default function Home() {
         bg={useColorModeValue("gray.50", "gray.900")}
         pb={10}
         alignItems="center"
-        mt="50px"
+        mt={{ base: "50px", md: "150px" }}
       >
         <Stack
           direction={{ base: "column", md: "row" }}
