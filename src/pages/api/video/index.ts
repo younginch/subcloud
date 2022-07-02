@@ -23,7 +23,10 @@ async function VideoCreate({ req, res, prisma }: RouteParams<ResVideo>) {
     where: { url: regUrl },
     include: {
       subs: {
-        include: { user: { select: { name: true } } },
+        include: {
+          user: { select: { name: true } },
+          ratings: true,
+        },
       },
       youtubeVideo: { include: { channel: true } },
     },
