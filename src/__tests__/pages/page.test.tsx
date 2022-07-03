@@ -1,6 +1,5 @@
 import { render } from "@testing-library/react";
 import Home from "../../pages/index";
-import "@testing-library/jest-dom";
 import Page404 from "../../pages/404";
 import Page500 from "../../pages/500";
 import {
