@@ -1,4 +1,4 @@
-import { testRes } from "../../utils/jest";
+import { testRes, testAllMethod } from "../../utils/jest";
 import adminDeleteRoute from "../../pages/api/admin/delete";
 import adminExampleRoute from "../../pages/api/admin/example";
 import adminSettleRoute from "../../pages/api/admin/settle";
@@ -7,6 +7,23 @@ import adminWithdraw from "../../pages/api/admin/withdraw";
 import * as NextAuth from "next-auth/react";
 import { Role } from "@prisma/client";
 import prisma from "../../utils/prisma";
+
+describe("", () => {
+  it(
+    "should return 403 if user is ",
+    testAllMethod(
+      [
+        [adminDeleteRoute, ["GET"]],
+        [adminExampleRoute, ["GET"]],
+        [adminSettleRoute, ["GET"]],
+        [adminUserRoute, ["GET"]],
+        [adminWithdraw, ["GET"]],
+      ],
+      403,
+      Role.Reviewer
+    )
+  );
+});
 
 describe("/api/admin", () => {
   beforeAll(() => {
@@ -84,3 +101,6 @@ describe("/api/admin", () => {
 
   it("/withdraw GET 200", testRes(adminWithdraw, "GET", 200));
 });
+function mockRequestResponse(method: string): { req: any; res: any } {
+  throw new Error("Function not implemented.");
+}
