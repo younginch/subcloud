@@ -37,7 +37,7 @@ export default function VideoRankingPage() {
 
   const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
     (index) =>
-      `/api/ranking/video/${sortBy.by}?start=${pageSize * index}&end=${
+      `/api/public/ranking/video/${sortBy.by}?start=${pageSize * index}&end=${
         pageSize * (index + 1)
       }&lang=${lang}&order=${sortBy.order === true ? "desc" : "asc"}`,
     fetcher

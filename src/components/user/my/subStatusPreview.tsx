@@ -30,7 +30,7 @@ export default function SubStatusPreview() {
 
   function getSubs() {
     axios
-      .get<ResSubSearch>("/api/sub/search", {
+      .get<ResSubSearch>("/api/public/search/sub", {
         params: { userId: session.data?.user.id, status: subStatus },
       })
       .then((res) => {

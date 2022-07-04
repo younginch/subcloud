@@ -148,7 +148,7 @@ export default function Buy() {
             <Button
               onClick={() => {
                 axios
-                  .post("/api/order", {
+                  .post("/api/user/order", {
                     type: OrderType.ChargePoint,
                     amount: price,
                   })

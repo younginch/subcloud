@@ -38,7 +38,7 @@ export default function SubRankingPage() {
 
   const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
     (index) =>
-      `/api/ranking/sub/${sortBy.by}?start=${pageSize * index}&end=${
+      `/api/public/ranking/sub/${sortBy.by}?start=${pageSize * index}&end=${
         pageSize * (index + 1)
       }&lang=${lang}&order=${sortBy.order === true ? "desc" : "asc"}`,
     fetcher

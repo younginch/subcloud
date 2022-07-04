@@ -33,7 +33,7 @@ export default function RequestPanel(props: { requests: ResRequestSearch }) {
 
   function getRequests() {
     axios
-      .get<ResRequestSearch>("/api/request/search", {
+      .get<ResRequestSearch>("/api/public/search/request", {
         params: { userId: router.query.userId },
       })
       .then((res) => {
@@ -92,7 +92,9 @@ export default function RequestPanel(props: { requests: ResRequestSearch }) {
                     colorScheme="red"
                     onClick={() => {
                       axios
-                        .delete(`/api/request`, { params: { id: request.id } })
+                        .delete(`/api/user/request`, {
+                          params: { id: request.id },
+                        })
                         .then(() => {
                           toast({
                             title: "성공",

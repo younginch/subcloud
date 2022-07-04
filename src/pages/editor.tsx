@@ -20,7 +20,6 @@ import {
   Text,
   Textarea,
   useToast,
-  VStack,
 } from "@chakra-ui/react";
 import { FormEvent, useCallback, useRef, useState } from "react";
 import dayjs from "dayjs";
@@ -30,7 +29,6 @@ import { useDropzone } from "react-dropzone";
 import { DeleteIcon } from "@chakra-ui/icons";
 import React from "react";
 import { useInterval } from "../utils/subtitle";
-import { Timeline } from "vis-timeline/esnext";
 import ReactTimeline from "../components/timeline";
 
 dayjs.extend(duration);
@@ -254,7 +252,7 @@ export default function Editor() {
       </ReflexElement>
       <ReflexSplitter />
       <ReflexElement minSize={100}>
-        <ReactTimeline />
+        <ReactTimeline contents={contents} />
       </ReflexElement>
       <ReflexSplitter />
       <ReflexElement className="right-pane">

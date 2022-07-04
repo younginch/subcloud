@@ -41,7 +41,7 @@ export default function VideoCreate() {
     return new Promise<void>((resolve, reject) => {
       const { url } = values;
       axios
-        .post("/api/video", { url })
+        .post("/api/user/video", { url })
         .then((res) => {
           resolve(res.data);
           if (router.query.next === "request") {
