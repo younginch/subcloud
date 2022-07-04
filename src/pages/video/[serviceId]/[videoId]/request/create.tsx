@@ -151,7 +151,7 @@ export default function RequestCreate() {
   function onSubmit(values: FormData) {
     return new Promise<void>((resolve, reject) => {
       axios
-        .post("/api/request", {
+        .post("/api/user/request", {
           serviceId,
           videoId,
           lang: values.lang,
@@ -179,7 +179,7 @@ export default function RequestCreate() {
   const [video, setVideo] = useState<ResVideo>();
   useEffect(() => {
     axios
-      .get<ResVideo>(`/api/video`, { params: { serviceId, videoId } })
+      .get<ResVideo>(`/api/user/video`, { params: { serviceId, videoId } })
       .then(({ data }) => {
         setVideo(data);
       });

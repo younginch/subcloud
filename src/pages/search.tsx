@@ -13,7 +13,7 @@ export default function Search() {
   const [videos, setVideos] = useState<ResVideoSearch>([]);
   useEffect(() => {
     axios
-      .get<ResVideoSearch>("/api/video/search", {
+      .get<ResVideoSearch>("/api/public/search/video", {
         params: { query: router.query.q },
       })
       .then((res) => {

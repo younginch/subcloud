@@ -29,7 +29,7 @@ export default function OrderSuccess() {
       return;
     }
     axios
-      .get("/api/order", { params: { id: router.query.id } })
+      .get("/api/user/order", { params: { id: router.query.id } })
       .then((res) => {
         setOrder(res.data);
       })

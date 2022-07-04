@@ -26,7 +26,7 @@ import { PageOptions } from "../../../utils/types";
 export default function UserMyOrder() {
   const session = useSession();
   const { data, mutate } = useSWR<Order[]>(
-    `/api/order/search?userId=${session.data?.user.id}`
+    `/api/user/order/search?userId=${session.data?.user.id}`
   );
 
   return (
@@ -71,7 +71,7 @@ function DeleteOrderButton({ id, mutate }: DeleteOrderButtonProps) {
 
   function handleRefund() {
     axios
-      .delete(`/api/order?id=${id}`)
+      .delete(`/api/user/order?id=${id}`)
       .then(() => {
         toast({
           title: "주문이 취소되었습니다.",

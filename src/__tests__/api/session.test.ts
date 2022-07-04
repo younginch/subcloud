@@ -1,11 +1,11 @@
-import fileRoute from "../../pages/api/file";
+import fileRoute from "../../pages/api/user/file";
 import * as aws from "../../utils/aws";
 import * as NextAuth from "next-auth/react";
 import { testRes } from "../../utils/jest";
 import { Role } from "@prisma/client";
 import prisma from "../../utils/prisma";
 
-describe("/api/file", () => {
+describe("/api/user/file", () => {
   beforeAll(() => {
     jest.spyOn(NextAuth, "getSession").mockResolvedValue({
       user: { id: "2", role: Role.User, point: 0 },

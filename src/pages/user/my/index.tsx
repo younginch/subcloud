@@ -35,10 +35,10 @@ export default function UserMyIndex() {
 
   const { data } = useSWR<User>(`/api/user?id=${session.data?.user.id}`);
   const { data: requests } = useSWR<ResRequestSearch>(
-    `/api/request/search?userId=${session.data?.user.id}`
+    `/api/public/search/request?userId=${session.data?.user.id}`
   );
   const { data: subs } = useSWR<ResSubSearch>(
-    `/api/sub/search?userId=${session.data?.user.id}`
+    `/api/public/search/sub?userId=${session.data?.user.id}`
   );
   const views = subs?.reduce((prev: number, curr: Sub) => prev + curr.views, 0);
   const panelColor = useColorModeValue("white", "gray.700");

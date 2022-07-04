@@ -49,12 +49,12 @@ export default function SubCreate() {
       const formData = new FormData();
       formData.append("file", file!);
       try {
-        const newFile = await axios.post("/api/file/upload", formData, {
+        const newFile = await axios.post("/api/user/file/upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
-        const newSub = await axios.post("/api/sub", {
+        const newSub = await axios.post("/api/user/sub", {
           fileId: newFile.data.id,
           serviceId,
           videoId,
@@ -117,7 +117,7 @@ export default function SubCreate() {
   const [video, setVideo] = useState<ResVideo>();
   useEffect(() => {
     axios
-      .get<ResVideo>(`/api/video`, { params: { serviceId, videoId } })
+      .get<ResVideo>(`/api/user/video`, { params: { serviceId, videoId } })
       .then(({ data }) => {
         setVideo(data);
       });

@@ -37,7 +37,7 @@ export default function UserRankingPage() {
 
   const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
     (index) =>
-      `/api/ranking/user/${sortBy.by}?start=${pageSize * index}&end=${
+      `/api/public/ranking/user/${sortBy.by}?start=${pageSize * index}&end=${
         pageSize * (index + 1)
       }&order=${sortBy.order === true ? "desc" : "asc"}`,
     fetcher

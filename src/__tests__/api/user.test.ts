@@ -2,15 +2,15 @@ import { Role } from "@prisma/client";
 import * as NextAuth from "next-auth/react";
 import * as aws from "../../utils/aws";
 import { mockRequestResponse, testRes } from "../../utils/jest";
-import orderRoute from "../../pages/api/order";
-import orderSearchRoute from "../../pages/api/order/search";
-import ratingRoute from "../../pages/api/rating";
-import requestRoute from "../../pages/api/request";
-import subIndexRoute from "../../pages/api/sub";
+import orderRoute from "../../pages/api/user/order";
+import orderSearchRoute from "../../pages/api/user/order/search";
+import ratingRoute from "../../pages/api/user/rating";
+import requestRoute from "../../pages/api/user/request";
+import subIndexRoute from "../../pages/api/user/sub";
 import prisma from "../../utils/prisma";
 import axios from "axios";
 
-describe("/api/order", () => {
+describe("/api/user/order", () => {
   beforeAll(() => {
     jest.spyOn(NextAuth, "getSession").mockResolvedValue({
       user: { id: "2", role: Role.User, point: 0 },
@@ -68,7 +68,7 @@ describe("/api/order", () => {
   );
 });
 
-describe("/api/order/search", () => {
+describe("/api/user/order/search", () => {
   beforeAll(() => {
     jest.spyOn(NextAuth, "getSession").mockResolvedValue({
       user: { id: "2", role: Role.User, point: 0 },
@@ -137,7 +137,7 @@ describe("/api/rating", () => {
   );
 });
 
-describe("/api/request", () => {
+describe("/api/user/request", () => {
   beforeAll(() => {
     jest.spyOn(NextAuth, "getSession").mockResolvedValue({
       user: { id: "2", role: Role.User, point: 0 },
@@ -226,7 +226,7 @@ describe("/api/request", () => {
   });
 });
 
-describe("/api/sub", () => {
+describe("/api/user/sub", () => {
   beforeAll(() => {
     jest.spyOn(NextAuth, "getSession").mockResolvedValue({
       user: { id: "2", role: Role.User, point: 0 },
