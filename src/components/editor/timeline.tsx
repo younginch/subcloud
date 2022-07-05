@@ -147,5 +147,9 @@ export default function ReactTimeline({ contents }: ReactTimelineProps) {
     timeline?.redraw();
   }, []);
 
-  return <Box w="100%" h="100px" ref={ref} />;
+  useEffect(() => {
+    timeline?.redraw();
+  }, []);
+
+  return <Box w="100%" h="100%" ref={ref} />;
 }

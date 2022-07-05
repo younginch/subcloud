@@ -1,11 +1,6 @@
 import { ReflexContainer, ReflexElement, ReflexSplitter } from "react-reflex";
 import { PageOptions } from "../utils/types";
 import "react-reflex/styles.css";
-import YouTube, {
-  YouTubeEvent,
-  YouTubePlayer,
-  YouTubeProps,
-} from "react-youtube";
 import {
   Box,
   Button,
@@ -21,139 +16,26 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { FormEvent, useCallback, useRef, useState } from "react";
+import { FormEvent, useCallback, useState } from "react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { SRTContent, SRTFile } from "@younginch/subtitle";
 import { useDropzone } from "react-dropzone";
 import { DeleteIcon } from "@chakra-ui/icons";
 import React from "react";
-import { useInterval } from "../utils/subtitle";
-import ReactTimeline from "../components/timeline";
+import ReactTimeline from "../components/editor/timeline";
+import { v4 as uuidv4 } from "uuid";
+import Shortcuts from "../components/editor/shortcuts";
+import YoutubeWithSub from "../components/editor/contentItem";
+import { useHotkeys } from "react-hotkeys-hook";
 
 dayjs.extend(duration);
 
 function miliToString(mili: number): string {
-  return dayjs.duration(mili * 1000).format("HH:mm:ss,SSS");
-}
-
-function calculateLayout(sliderValue: number): [number, number] | undefined {
-  const outerVideo = document.querySelector(".youtubeContainer") as HTMLElement;
-  const outerHeight = outerVideo?.offsetHeight;
-
-  const innerWidth = outerVideo.offsetWidth;
-  const innerHeight = outerVideo.offsetHeight;
-  const fontSize = (innerWidth / 2500.0) * sliderValue;
-  const subtitleMt =
-    (outerHeight - innerHeight) / 2 + innerHeight * 0.87 - fontSize / 2;
-
-  return [fontSize, subtitleMt];
-}
-
-type SubtitleComponentProps = {
-  element: HTMLDivElement | null;
-  textArray: string[];
-};
-
-function SubtitleComponent({ element, textArray }: SubtitleComponentProps) {
-  const [fontSize, setFontSize] = useState<number>(12);
-  const [subtitleMt, setSubtitleMt] = useState<number>(300);
-
-  function layoutUpdater() {
-    const res = calculateLayout(60);
-    if (res) {
-      setFontSize(res[0]);
-      setSubtitleMt(res[1]);
-    }
-  }
-
-  useInterval(layoutUpdater, 20);
-
-  return (
-    <Box
-      position="absolute"
-      zIndex={1}
-      top={element?.clientTop}
-      left={element?.clientLeft}
-      width={element?.clientWidth}
-      height={element?.clientHeight}
-    >
-      <Box textAlign="center">
-        {textArray
-          ? textArray.map((text, index) => (
-              <Box
-                key={index}
-                w="max-content"
-                margin="auto"
-                style={{
-                  fontSize: `${fontSize}px`,
-                }}
-              >
-                {text}
-              </Box>
-            ))
-          : ""}
-      </Box>
-    </Box>
-  );
-}
-
-type YoutubeWithSubProps = {
-  youtubeId?: string;
-  contents: SRTContent[];
-};
-
-function YoutubeWithSub({ youtubeId, contents }: YoutubeWithSubProps) {
-  const toast = useToast();
-  const boxRef = useRef<HTMLDivElement>(null);
-  const [player, setPlayer] = useState<YouTubePlayer>();
-  const [textArray, setTextArray] = useState<string[]>([]);
-
-  const intervalSub = () => {
-    const currentTime = player?.getCurrentTime();
-    if (!currentTime) {
-      return;
-    }
-
-    for (let i = 0; i < contents.length; i++) {
-      if (
-        contents[i].startTime <= currentTime &&
-        currentTime <= contents[i].endTime
-      ) {
-        setTextArray(contents[i].textArray);
-        return;
-      }
-    }
-    setTextArray([]);
-  };
-
-  useInterval(intervalSub, 200);
-
-  function onPlayerError(event: YouTubeEvent<number>) {
-    toast({
-      title: "Error (Youtube)",
-      description: `${event.data}`,
-      status: "error",
-    });
-  }
-
-  const opts: YouTubeProps["opts"] = {
-    height: boxRef.current?.offsetHeight,
-    width: boxRef.current?.offsetWidth,
-  };
-
-  return (
-    <Box h="100%" ref={boxRef} style={{ aspectRatio: "16/9" }}>
-      <SubtitleComponent element={boxRef.current} textArray={textArray} />
-      <YouTube
-        videoId={youtubeId}
-        opts={opts}
-        className="youtubeContainer"
-        onReady={(event) => setPlayer(event.target)}
-        onError={onPlayerError}
-      />
-    </Box>
-  );
+  return dayjs
+    .duration(mili * 1000)
+    .format("HH:mm:ss,SSS")
+    .substring(0, 12);
 }
 
 export default function Editor() {
@@ -169,6 +51,11 @@ export default function Editor() {
     });
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  useHotkeys("tab", () => console.log("sex"), {
+    filterPreventDefault: true,
+    enableOnContentEditable: true,
+  });
 
   function downloadSRT() {
     const srtFile = new SRTFile();
@@ -248,21 +135,18 @@ export default function Editor() {
               <Button type="submit">변경</Button>
             </form>
           </Stack>
+          <Shortcuts />
         </HStack>
       </ReflexElement>
       <ReflexSplitter />
-      <ReflexElement minSize={100}>
+      <ReflexElement minSize={50} size={50}>
         <ReactTimeline contents={contents} />
       </ReflexElement>
       <ReflexSplitter />
       <ReflexElement className="right-pane">
         {contents.map((value, index) => {
           return (
-            <HStack
-              key={`${index}${value.startTime}${
-                value.endTime
-              }${value.toText()}`}
-            >
+            <HStack key={uuidv4()}>
               <Text>{index + 1}</Text>
               <Stack w="170px">
                 <Editable defaultValue={miliToString(value.startTime!)}>
@@ -276,7 +160,7 @@ export default function Editor() {
               </Stack>
               <Textarea
                 noOfLines={2}
-                defaultValue={value.toText()}
+                value={value.toText()}
                 onChange={(event) => {
                   contents[index].textArray = event.target.value.split("\n");
                   setContents(contents);
@@ -286,9 +170,10 @@ export default function Editor() {
                 aria-label="Delete subtitle"
                 icon={<DeleteIcon />}
                 onClick={() => {
-                  const newContents = [...contents].splice(index, 1);
-                  setContents([]);
-                  setContents(newContents);
+                  setContents((prevContents) => {
+                    const newContents = [...prevContents].splice(index, 1);
+                    return newContents;
+                  });
                 }}
               />
             </HStack>
@@ -301,7 +186,7 @@ export default function Editor() {
               "00:00:00,000 --> 00:00:00,000",
               []
             );
-            setContents([...contents, newContent]);
+            setContents((prevContents) => [...prevContents, newContent]);
           }}
         >
           자막 추가

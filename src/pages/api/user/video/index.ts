@@ -44,10 +44,19 @@ async function VideoCreate({ req, res, prisma }: RouteParams<ResVideo>) {
 }
 
 function getYoutubeVideo(url: URL): Video {
-  const videoId = url.searchParams.get("v");
   if (url.pathname !== "/watch") {
+    if (url.hostname === "youtu.be") {
+      const videoId = url.pathname.split("/")[1];
+      return {
+        serviceId: "youtube",
+        videoId,
+        url: `https://www.youtube.com/watch?v=${videoId}`,
+        youtubeVideoId: null,
+      };
+    }
     throw new Error("Not a video url");
   }
+  const videoId = url.searchParams.get("v");
   if (!videoId) {
     throw new Error("No video id");
   }
@@ -61,7 +70,7 @@ function getYoutubeVideo(url: URL): Video {
 
 function getVideoFromUrl(urlString: string): Video {
   const url = new URL(urlString);
-  if (url.hostname === "www.youtube.com") {
+  if (url.hostname.includes("youtu")) {
     return getYoutubeVideo(url);
   }
   return {
