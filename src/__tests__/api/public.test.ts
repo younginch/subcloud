@@ -1,12 +1,12 @@
-import subByViewRoute from "../../pages/api/ranking/sub/view";
-import userByFulfilledRequestsRoute from "../../pages/api/ranking/user/fulfilledRequests";
-import userBySubRoute from "../../pages/api/ranking/user/sub";
-import userByViewRoute from "../../pages/api/ranking/user/view";
-import videoByPoint from "../../pages/api/ranking/video/point";
-import videoByRequest from "../../pages/api/ranking/video/request";
+import subByViewRoute from "../../pages/api/public/ranking/sub/view";
+import userByFulfilledRequestsRoute from "../../pages/api/public/ranking/user/fulfilledRequests";
+import userBySubRoute from "../../pages/api/public/ranking/user/sub";
+import userByViewRoute from "../../pages/api/public/ranking/user/view";
+import videoByPoint from "../../pages/api/public/ranking/video/point";
+import videoByRequest from "../../pages/api/public/ranking/video/request";
 import { testRes } from "../../utils/jest";
 
-describe("/api/ranking", () => {
+describe("/api/public/ranking", () => {
   it(
     "Sub By View should return 200",
     testRes(subByViewRoute, "GET", 200, (req) => {

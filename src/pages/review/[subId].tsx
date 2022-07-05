@@ -236,7 +236,7 @@ export default function ReviewDetail() {
 
   useEffect(() => {
     axios
-      .get<ResSubRead>(`/api/sub`, { params: { id: router.query.subId } })
+      .get<ResSubRead>(`/api/user/sub`, { params: { id: router.query.subId } })
       .then((res) => {
         setSub(res.data);
         axios.get(res.data.url, { responseType: "blob" }).then((res) => {
@@ -272,7 +272,7 @@ export default function ReviewDetail() {
 
   function onSubmit(subStatus: SubStatus) {
     axios
-      .post(`/api/sub/review?subId=${sub?.id}`, {
+      .post(`/api/user/sub/review?subId=${sub?.id}`, {
         subStatus,
       })
       .then(() => {

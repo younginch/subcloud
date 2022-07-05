@@ -19,7 +19,7 @@ export const getServerSideProps: GetServerSideProps<UserMySub> = async (
 ) => {
   const { userId } = context.query;
   const subsRes = await axios.get(
-    `${process.env.NEXTAUTH_URL}/api/sub/search?userId=${userId}`
+    `${process.env.NEXTAUTH_URL}/api/public/search/sub?userId=${userId}`
   );
   return {
     props: {

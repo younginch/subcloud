@@ -31,7 +31,11 @@ export default function OrderProcess({
   const textColor = useColorModeValue("gray.700", "gray.300");
   useEffect(() => {
     axios
-      .patch("/api/order", { paymentKey, amount }, { params: { id: orderId } })
+      .patch(
+        "/api/user/order",
+        { paymentKey, amount },
+        { params: { id: orderId } }
+      )
       .then((res) => {
         router.push(`/buy/order/success?id=${res.data.id}`);
       })

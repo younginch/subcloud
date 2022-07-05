@@ -23,7 +23,7 @@ export default function Review() {
   const router = useRouter();
 
   useEffect(() => {
-    axios.get<ResSubSearch>("/api/sub/search").then((res) => {
+    axios.get<ResSubSearch>("/api/public/search/sub").then((res) => {
       setSubs(res.data);
     });
   });

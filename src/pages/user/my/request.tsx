@@ -7,7 +7,7 @@ import { PageOptions, ResRequestSearch } from "../../../utils/types";
 export default function UserMyRequest() {
   const session = useSession();
   const { data: requests } = useSWR<ResRequestSearch>(
-    `/api/request/search?userId=${session.data?.user.id}`
+    `/api/public/search/request?userId=${session.data?.user.id}`
   );
   return requests ? <RequestPanel requests={requests} /> : <></>;
 }

@@ -136,16 +136,16 @@ export const getServerSideProps: GetServerSideProps<VideoProps> = async (
 ) => {
   const { serviceId, videoId } = context.query;
   const videoRes = await axios.get<ResVideo>(
-    `${process.env.NEXTAUTH_URL}/api/video`,
+    `${process.env.NEXTAUTH_URL}/api/user/video`,
     {
       params: { serviceId, videoId },
     }
   );
   const requestsRes = await axios.get<ResRequestSearch>(
-    `${process.env.NEXTAUTH_URL}/api/request/search?serviceId=${serviceId}&videoId=${videoId}`
+    `${process.env.NEXTAUTH_URL}/api/public/search/request?serviceId=${serviceId}&videoId=${videoId}`
   );
   const subsRes = await axios.get<ResSubSearch>(
-    `${process.env.NEXTAUTH_URL}/api/sub/search?serviceId=${serviceId}&videoId=${videoId}`
+    `${process.env.NEXTAUTH_URL}/api/public/search/sub?serviceId=${serviceId}&videoId=${videoId}`
   );
   return {
     props: {

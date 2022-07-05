@@ -58,7 +58,7 @@ export default function SubPanel(props: SubPanelProps) {
 
   function getSubs() {
     axios
-      .get<ResSubSearch>("/api/sub/search", {
+      .get<ResSubSearch>("/api/public/search/sub", {
         params: { userId: session.data?.user.id, status: subStatus },
       })
       .then((res) => {
@@ -156,7 +156,7 @@ export default function SubPanel(props: SubPanelProps) {
                             <Button
                               onClick={() => {
                                 axios
-                                  .get<ResFileRead>(`/api/file`, {
+                                  .get<ResFileRead>(`/api/user/file`, {
                                     params: { id: sub.fileId },
                                   })
                                   .then((res) => {
@@ -171,7 +171,7 @@ export default function SubPanel(props: SubPanelProps) {
                               colorScheme="red"
                               onClick={() => {
                                 axios
-                                  .delete(`/api/sub`, {
+                                  .delete(`/api/user/sub`, {
                                     params: { id: sub.id },
                                   })
                                   .then(() => {
