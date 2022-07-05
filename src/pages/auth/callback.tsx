@@ -1,4 +1,3 @@
-import { Role } from "@prisma/client";
 import { PageOptions } from "../../utils/types";
 
 export default function Callback() {
