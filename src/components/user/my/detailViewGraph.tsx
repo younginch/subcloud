@@ -21,7 +21,7 @@ export default function DetailViewGraph({ subId }: { subId?: string }) {
   const currentDate = dayjs();
   const subQuery = subId ? `&subId=${subId}` : "";
   const { data, error } = useSWR(
-    `/api/stats/view?userId=${
+    `/api/user/stats/view?userId=${
       session.data?.user.id
     }&cnt=${viewRange}&date=${currentDate.format(
       "YYYY-MM-DD"

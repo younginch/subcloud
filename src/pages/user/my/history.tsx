@@ -20,7 +20,7 @@ import { PageOptions, ResHistory } from "../../../utils/types";
 export default function UserMyHistory() {
   const session = useSession();
   const { data } = useSWR<ResHistory>(
-    `/api/history?userId=${session.data?.user.id}`
+    `/api/user/history?userId=${session.data?.user.id}`
   );
 
   return (
