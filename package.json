@@ -54,6 +54,7 @@
     "react-dropzone": "^14.2.1",
     "react-hook-form": "^7.32.0",
     "react-hook-inview": "^4.5.0",
+    "react-hotkeys-hook": "^3.4.6",
     "react-icons": "^4.4.0",
     "react-pro-sidebar": "^0.7.1",
     "react-reflex": "^4.0.9",
