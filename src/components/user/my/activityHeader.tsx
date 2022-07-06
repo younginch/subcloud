@@ -9,6 +9,7 @@ import {
   SimpleGrid,
   Container,
   Stack,
+  Box,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { GrProductHunt } from "react-icons/gr";
@@ -64,13 +65,13 @@ export default function ActivityHeader({ requests, views, points }: Props) {
   ];
 
   return (
-    <Container maxW="7xl" h="150px" maxH="150px" pl={10} pr={10} pt={5}>
+    <Box maxW="7xl" h="fit-content" pl={10} pr={10} pt={5}>
       <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={5} mb={4}>
         {statData.map((data, index) => (
           <Card key={index} data={data} />
         ))}
       </SimpleGrid>
-    </Container>
+    </Box>
   );
 }
 export function Card({ data }: { data: StatData }) {
@@ -85,7 +86,6 @@ export function Card({ data }: { data: StatData }) {
   return (
     <motion.div whileHover={{ translateY: -15 }}>
       <Stack
-        direction="column"
         rounded="md"
         boxShadow={useColorModeValue(
           "0 4px 6px rgba(160, 174, 192, 0.6)",
