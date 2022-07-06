@@ -6,7 +6,7 @@ async function getNotices({ req, res, prisma }: RouteParams<Notice[]>) {
     orderBy: { createdAt: "desc" },
     include: { notifications: true },
   });
-  return res.status(201).json(notices);
+  return res.status(200).json(notices);
 }
 
 async function createNotice({ req, res, prisma }: RouteParams<Notice>) {

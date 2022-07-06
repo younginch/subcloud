@@ -54,3 +54,10 @@ export const WithdrawCreateSchema = joi.object({
   bankName: joi.string().required(),
   accountNumber: joi.string().required(),
 });
+
+export const UninstallFormSchema = joi.object({
+  reason: joi.string().required().messages({
+    "any.required": `불편한 점을 선택해 주세요`,
+  }),
+  opinion: joi.string().allow(null).allow("").optional(),
+});

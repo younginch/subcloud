@@ -60,8 +60,8 @@ model User {
   subHistories  SubHistory[]
   subscriptions Subscription[]
   coupons       Coupon[]
-  Withdraw      Withdraw[]
-  Notification  Notification[]
+  withdraws      Withdraw[]
+  notifications  Notification[]
 }
 
 model VerificationToken {
