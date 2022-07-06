@@ -272,7 +272,7 @@ export default function ReviewDetail() {
 
   function onSubmit(subStatus: SubStatus) {
     axios
-      .post(`/api/user/sub/review?subId=${sub?.id}`, {
+      .post(`/api/review/sub?subId=${sub?.id}`, {
         subStatus,
       })
       .then(() => {

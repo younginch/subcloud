@@ -6,9 +6,6 @@ import {
 
 async function SubSearch({ req, res, prisma }: RouteParams<ResSubSearch>) {
   const { serviceId, videoId, userId, status } = req.query;
-  const include = {
-    video: { include: { youtubeVideo: { include: { channel: true } } } },
-  };
   let where: any = {};
   if (userId) {
     where.userId = userId;
@@ -25,7 +22,11 @@ async function SubSearch({ req, res, prisma }: RouteParams<ResSubSearch>) {
 
   const subs = await prisma.sub.findMany({
     where,
-    include,
+    include: {
+      video: { include: { youtubeVideo: { include: { channel: true } } } },
+      user: { select: { name: true } },
+      ratings: true,
+    },
   });
 
   return res.status(200).json(subs);
