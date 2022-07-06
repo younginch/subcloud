@@ -20,15 +20,7 @@ async function VideoCreate({ req, res, prisma }: RouteParams<ResVideo>) {
   const regUrl = getVideoFromUrl(value.url).url;
   const video = await prisma.video.findUnique({
     where: { url: regUrl },
-    include: {
-      subs: {
-        include: {
-          user: { select: { name: true } },
-          ratings: true,
-        },
-      },
-      youtubeVideo: { include: { channel: true } },
-    },
+    include: { youtubeVideo: { include: { channel: true } } },
   });
   if (video) {
     return res.status(200).json(video);
