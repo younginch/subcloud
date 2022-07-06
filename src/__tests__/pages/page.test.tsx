@@ -59,6 +59,10 @@ describe("Pages (pages)", () => {
   it("renders NewTab", () => {
     renderWithThemeAndSession(<NewTab />);
   });
+
+  it("renders Uninstall", () => {
+    render(<Uninstall />);
+  });
 });
 
 describe("Pages (info)", () => {
@@ -160,11 +164,5 @@ describe("Pages (user)", () => {
 describe("Pages (editor)", () => {
   it("renders Editor", () => {
     render(<Editor />);
-  });
-});
-
-describe("Pages Uninstall", () => {
-  it("renders Uuninstall", () => {
-    render(<Uninstall />);
   });
 });
