@@ -57,7 +57,7 @@ function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
     accountNumber,
   }: CreateWithdrawFormData) => {
     axios
-      .post(`/api/withdraw`, { point, bankName, accountNumber })
+      .post(`/api/user/withdraw`, { point, bankName, accountNumber })
       .then(() => {
         mutate();
         toast({

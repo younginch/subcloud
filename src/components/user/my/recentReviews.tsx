@@ -18,7 +18,7 @@ export default function RecentReviews() {
   const textColor = useColorModeValue("gray.700", "gray.400");
   const count = 5;
   const { data: reviewData, error } = useSWR<ResRatingSearch>(
-    `/api/rating/search?userId=${session.data?.user.id}&cnt=${count}`
+    `/api/public/search/rating?userId=${session.data?.user.id}&cnt=${count}`
   );
 
   if (!reviewData || reviewData.length == 0) {

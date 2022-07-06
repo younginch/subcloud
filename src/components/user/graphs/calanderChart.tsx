@@ -24,7 +24,7 @@ export default function CalendarChart({ range, type, userId }: Props) {
   const today = new Date();
   const currentDate = dayjs();
   const { data, error } = useSWR(
-    `/api/stats/sub?userId=${userId}&cnt=${range}&date=${currentDate.format(
+    `/api/user/stats/sub?userId=${userId}&cnt=${range}&date=${currentDate.format(
       "YYYY-MM-DD"
     )}&type=${type}`
   );

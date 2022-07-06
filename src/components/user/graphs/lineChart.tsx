@@ -18,7 +18,7 @@ export default function LineChart({ range, type, subId, userId }: Props) {
   const currentDate = dayjs();
   const subQuery = subId ? `&subId=${subId}` : "";
   const { data: viewArray, error: viewError } = useSWR(
-    `/api/stats/view?userId=${userId}&cnt=${range}&date=${currentDate.format(
+    `/api/user/stats/view?userId=${userId}&cnt=${range}&date=${currentDate.format(
       "YYYY-MM-DD"
     )}&type=${type}${subQuery}`
   );

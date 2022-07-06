@@ -16,36 +16,32 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { Role, Settle, SettlePoint } from "@prisma/client";
+import { Role, Notice, Notification } from "@prisma/client";
 import axios from "axios";
 import dayjs from "dayjs";
 import { ChangeEvent, useRef, useState } from "react";
 import useSWR from "swr";
 import { PageOptions } from "../../utils/types";
 
-export default function AdminSettle() {
+export default function AdminNotice() {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
-  const [point, setPoint] = useState(0);
+  const [message, setMessage] = useState("");
   const { data, mutate } = useSWR<
-    (Settle & {
-      settlePoints: SettlePoint[];
+    (Notice & {
+      notifications: Notification[];
     })[]
-  >("/api/admin/settle");
+  >("/api/admin/notice");
 
   async function handleSettle() {
     axios
-      .post(`/api/admin/settle`, {
-        startAt: new Date(0),
-        endAt: new Date(),
-        totalPoint: point,
-      })
+      .post(`/api/admin/notice`, { message })
       .then(() => {
         mutate();
         toast({
           title: "Success",
-          description: "All settlement are distributed",
+          description: "Notice completed",
           status: "success",
         });
       })
@@ -61,14 +57,14 @@ export default function AdminSettle() {
 
   function handleDelete(id: string) {
     axios
-      .delete(`/api/admin/settle`, {
+      .delete(`/api/admin/notice`, {
         params: { id },
       })
       .then(() => {
         mutate();
         toast({
           title: "Success",
-          description: "Settlement are rollbacked",
+          description: "Notice deleted",
           status: "success",
         });
       })
@@ -82,35 +78,37 @@ export default function AdminSettle() {
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
-    setPoint(Number(event.target.value));
+    setMessage(event.target.value);
 
   return (
     <>
       <Button colorScheme="blue" onClick={onOpen}>
-        수익 정산
+        공지하기
       </Button>
       <TableContainer>
         <Table variant="simple" size="sm">
           <Thead>
             <Tr>
-              <Th>총 정산 포인트</Th>
-              <Th>정산시작 날짜</Th>
-              <Th>정산종료 날짜</Th>
-              <Th>정산 명수</Th>
+              <Th>공지 종류</Th>
+              <Th>공지 메세지</Th>
+              <Th>공지 날짜</Th>
+              <Th>공지 명수</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {data?.map((record) => {
+            {data?.map((notice) => {
               return (
-                <Tr key={record.id}>
-                  <Td>{record.totalPoint}</Td>
-                  <Td>{dayjs(record.startAt).format("YYYY-MM-DD HH:mm:ss")}</Td>
-                  <Td>{dayjs(record.endAt).format("YYYY-MM-DD HH:mm:ss")}</Td>
-                  <Td>{record.settlePoints.length}</Td>
+                <Tr key={notice.id}>
+                  <Td>{notice.type}</Td>
+                  <Td>{notice.message}</Td>
+                  <Td>
+                    {dayjs(notice.createdAt).format("YYYY-MM-DD HH:mm:ss")}
+                  </Td>
+                  <Td>{notice.notifications.length}</Td>
                   <Td>
                     <Button
-                      id={record.id}
-                      onClick={() => handleDelete(record.id)}
+                      id={notice.id}
+                      onClick={() => handleDelete(notice.id)}
                     >
                       삭제
                     </Button>
@@ -129,10 +127,10 @@ export default function AdminSettle() {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              정산하기
+              공지하기
             </AlertDialogHeader>
             <Input
-              value={point}
+              value={message}
               onChange={handleChange}
               placeholder="Here is a sample placeholder"
               size="sm"
@@ -152,4 +150,4 @@ export default function AdminSettle() {
   );
 }
 
-AdminSettle.options = { role: Role.Admin, hideTitle: true } as PageOptions;
+AdminNotice.options = { role: Role.Admin, hideTitle: true } as PageOptions;
