@@ -57,13 +57,13 @@ export function testRes(
   };
 }
 
-type RouteInfo = [
+export type Requests = [
   route: (req: NextApiRequest, res: NextApiResponse<unknown>) => Promise<void>,
   methods: RequestMethod[]
-];
+][];
 
-export function testAllMethod(
-  routeArray: RouteInfo[],
+export function testRequests(
+  routeArray: Requests,
   statusCode: number,
   role?: Role
 ) {

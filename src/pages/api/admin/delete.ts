@@ -23,6 +23,11 @@ async function AdminDelete({ res, prisma }: RouteParams<{}>) {
   await prisma.subscription.deleteMany({});
   await prisma.coupon.deleteMany({});
   await prisma.requestPoint.deleteMany({});
+  await prisma.settle.deleteMany({});
+  await prisma.settlePoint.deleteMany({});
+  await prisma.withdraw.deleteMany({});
+  await prisma.notice.deleteMany({});
+  await prisma.notification.deleteMany({});
   return res.status(200).json({});
 }
 

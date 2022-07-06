@@ -1,6 +1,7 @@
-import { testRes, testAllMethod } from "../../utils/jest";
+import { testRes, testRequests, Requests } from "../../utils/jest";
 import adminDeleteRoute from "../../pages/api/admin/delete";
 import adminExampleRoute from "../../pages/api/admin/example";
+import adminNoticeRoute from "../../pages/api/admin/notice";
 import adminSettleRoute from "../../pages/api/admin/settle";
 import adminUserRoute from "../../pages/api/admin/user";
 import adminWithdraw from "../../pages/api/admin/withdraw";
@@ -8,21 +9,26 @@ import * as NextAuth from "next-auth/react";
 import { Role } from "@prisma/client";
 import prisma from "../../utils/prisma";
 
-describe("", () => {
+const allRequests: Requests = [
+  [adminDeleteRoute, ["GET"]],
+  [adminExampleRoute, ["GET", "POST", "DELETE"]],
+  [adminSettleRoute, ["GET", "POST", "DELETE"]],
+  [adminUserRoute, ["GET", "PATCH", "DELETE"]],
+  [adminWithdraw, ["GET"]],
+];
+
+describe("Admin APIs role test", () => {
   it(
-    "should return 403 if user is ",
-    testAllMethod(
-      [
-        [adminDeleteRoute, ["GET"]],
-        [adminExampleRoute, ["GET"]],
-        [adminSettleRoute, ["GET"]],
-        [adminUserRoute, ["GET"]],
-        [adminWithdraw, ["GET"]],
-      ],
-      403,
-      Role.Reviewer
-    )
+    "should return 403 if role is reviewer",
+    testRequests(allRequests, 403, Role.Reviewer)
   );
+
+  it(
+    "should return 403 if role is user",
+    testRequests(allRequests, 403, Role.User)
+  );
+
+  it("should return 403 if role is undefined", testRequests(allRequests, 403));
 });
 
 describe("/api/admin", () => {
@@ -51,7 +57,20 @@ describe("/api/admin", () => {
 
   it("/example DELETE 400", testRes(adminExampleRoute, "DELETE", 400));
 
-  it("/settle GET 200", testRes(adminSettleRoute, "GET", 200));
+  it("/notice GET 200", testRes(adminNoticeRoute, "GET", 200));
+
+  it("/notice POST 201", testRes(adminNoticeRoute, "POST", 201));
+
+  it("/notice PATCH 200", testRes(adminNoticeRoute, "PATCH", 200));
+
+  it(
+    "/notice DELETE 200",
+    testRes(adminNoticeRoute, "DELETE", 200, (req) => {
+      req.query = { id: "1" };
+    })
+  );
+
+  it("/notice DELETE 400", testRes(adminNoticeRoute, "DELETE", 400));
 
   it(
     "/settle POST 201",
@@ -101,6 +120,3 @@ describe("/api/admin", () => {
 
   it("/withdraw GET 200", testRes(adminWithdraw, "GET", 200));
 });
-function mockRequestResponse(method: string): { req: any; res: any } {
-  throw new Error("Function not implemented.");
-}
