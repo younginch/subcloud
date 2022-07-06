@@ -4,6 +4,7 @@ import AdminSettle from "../../pages/admin/settle";
 import AdminUser from "../../pages/admin/user";
 import AdminWithdraw from "../../pages/admin/withdraw";
 import { render } from "@testing-library/react";
+import AdminNotice from "../../pages/admin/notice";
 
 describe("Pages (admin)", () => {
   it("renders AdminExample", () => {
@@ -12,6 +13,10 @@ describe("Pages (admin)", () => {
 
   it("renders Admin", () => {
     render(<Admin />);
+  });
+
+  it("renders AdminNotice", () => {
+    render(<AdminNotice />);
   });
 
   it("renders AdminSettle", () => {

@@ -87,6 +87,8 @@ jest.mock("./src/utils/prisma", () => ({
     settle: dbActions,
     settlePoint: dbActions,
     withdraw: dbActions,
+    notice: dbActions,
+    notification: dbActions,
   },
 }));
 

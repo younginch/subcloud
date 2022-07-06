@@ -60,7 +60,8 @@ model User {
   subHistories  SubHistory[]
   subscriptions Subscription[]
   coupons       Coupon[]
-  Withdraw      Withdraw[]
+  withdraws      Withdraw[]
+  notifications  Notification[]
 }
 
 model VerificationToken {
@@ -327,4 +328,28 @@ model Withdraw {
   isCompleted Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Notice {
+  id            String @id @default(cuid())
+  type          NotifyType
+  message       String?
+  notifications Notification[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Notification {
+  id            String @id @default(cuid())
+  userId        String
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  noticeId      String
+  notice        Notice  @relation(fields: [noticeId], references: [id], onDelete: Cascade)
+  checked       Boolean
+}
+
+enum NotifyType {
+  Announce
+  Upload
+  Review
 }

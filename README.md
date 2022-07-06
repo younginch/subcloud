@@ -34,20 +34,32 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Troubleshoting
+## Guide to develop
+
 - postgresql 연결이 안될때
+
 ```bash
 rm -f /usr/local/var/postgres/postmaster.pid
 brew services restart postgresql && brew services list
 ```
 
 - prisma 연결
+
 ```javascipt
 //const prisma = new PrismaClient();
 prisma
 ```
 
+### Adding new models on DB
+
+1. schema.prisma 에 model 추가
+2. 자동 생성되는 relation을 `Withdraw` 에서 `withdraws` 와 같이 변경
+3. pages/api/admin/delete 에 추가된 model 삭제 코드 추가
+4. jest.setup.js에 mocking 추가
+5. PR 머지 후 DB 변경 팀원에 알리기
+
 ## Deploy on Vercel
 
 ### env
+
 Fill out environment variables listed on .env with production settings.
