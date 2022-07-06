@@ -42,7 +42,7 @@ export default function ExtensionButton({
         borderRadius="24px"
         isDisabled={isDisabled}
         zIndex={5}
-        colorScheme="messenger"
+        colorScheme="blue"
         variant={useColorModeValue("solid", "outline")}
       >
         <Box w="24px" h="24px">

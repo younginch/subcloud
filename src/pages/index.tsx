@@ -59,7 +59,7 @@ export default function Home() {
             {t("subcloud_aim")}
           </Text>
           <HStack
-            spacing={{ base: 0, sm: 2 }}
+            spacing={{ base: 0, sm: 10 }}
             mb={{ base: "3rem !important", sm: 0 }}
             flexWrap="wrap"
             pt={{ base: 0, md: 10 }}
@@ -94,6 +94,7 @@ export default function Home() {
                 <Text>{t("request_sub")}</Text>
               </Button>
             </NextLink>
+            <Spacer />
           </HStack>
         </Stack>
         <Box
