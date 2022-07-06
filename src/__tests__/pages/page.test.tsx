@@ -33,6 +33,7 @@ import SubCreate from "../../pages/video/[serviceId]/[videoId]/sub/create";
 import Video from "../../pages/video/[serviceId]/[videoId]";
 import Editor from "../../pages/editor";
 import NewTab from "../../pages/newtab";
+import Uninstall from "../../pages/uninstall";
 
 describe("Pages (pages)", () => {
   it("renders 404", () => {
@@ -159,5 +160,11 @@ describe("Pages (user)", () => {
 describe("Pages (editor)", () => {
   it("renders Editor", () => {
     render(<Editor />);
+  });
+});
+
+describe("Pages Uninstall", () => {
+  it("renders Uuninstall", () => {
+    render(<Uninstall />);
   });
 });
