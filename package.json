@@ -39,7 +39,7 @@
     "multer": "1.4.5-lts.1",
     "multer-s3": "^3.0.1",
     "next": "12.1.6",
-    "next-auth": "^4.5.0",
+    "next-auth": "^4.9.0",
     "next-connect": "^0.12.2",
     "next-sitemap": "^3.1.7",
     "next-translate": "^1.4.0",
