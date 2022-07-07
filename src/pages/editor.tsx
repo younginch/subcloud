@@ -16,7 +16,7 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { SRTContent, SRTFile } from "@younginch/subtitle";
