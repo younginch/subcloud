@@ -20,11 +20,18 @@ import { PageOptions } from "../utils/types";
 import { DottedBox } from "../components/icons/customIcons";
 import NextLink from "next/link";
 import useTranslation from "next-translate/useTranslation";
+import Features from "../components/features";
 
 export default function Home() {
   const { t } = useTranslation("menu");
   return (
-    <>
+    <Box
+      backgroundImage={useColorModeValue(
+        "https://user-images.githubusercontent.com/17401630/177977272-7e7b91c9-c172-4bd0-a759-1318d8ebdd4e.PNG",
+        "https://user-images.githubusercontent.com/17401630/177992461-7e910806-4751-429e-823d-9b88adfd211c.png"
+      )}
+      backgroundSize="cover"
+    >
       <Stack
         direction={{ base: "column", md: "row" }}
         spacing={{ base: 0, md: 20 }}
@@ -41,7 +48,7 @@ export default function Home() {
           alignItems="flex-start"
         >
           <Text
-            fontSize={{ base: "5xl", lg: "6xl" }}
+            fontSize={{ base: "5xl", lg: "7xl" }}
             lineHeight={1}
             fontWeight="bold"
             textAlign="left"
@@ -59,7 +66,7 @@ export default function Home() {
             {t("subcloud_aim")}
           </Text>
           <HStack
-            spacing={{ base: 0, sm: 2 }}
+            spacing={{ base: 0, sm: 10 }}
             mb={{ base: "3rem !important", sm: 0 }}
             flexWrap="wrap"
             pt={{ base: 0, md: 10 }}
@@ -70,10 +77,9 @@ export default function Home() {
               h={10}
               rounded="md"
               mb={{ base: 2, sm: 0 }}
-              bgGradient="linear(to-l, #0ea5e9,#2563eb)"
+              bgGradient="linear(to-l, #0ea5e9,#25c3cb)"
               _hover={{
-                bgGradient: "linear(to-l, #0ea5e9,#2563eb)",
-                opacity: 0.9,
+                bgGradient: "linear(to-l, #25a3cb,#0fcdb9)",
               }}
               fontSize="xl"
             >
@@ -85,15 +91,16 @@ export default function Home() {
                 h={10}
                 p={3}
                 rounded="md"
-                bgGradient="linear(to-l, #8E54E9, #4776E6)"
+                bgGradient="linear(to-l, #008686,#3386a0)"
                 _hover={{
-                  bgGradient: "linear(to-l, #4776E6, #8E54E9 )",
+                  bgGradient: "linear(to-l, #0098aa,#33a0c3)",
                 }}
                 fontSize="xl"
               >
                 <Text>{t("request_sub")}</Text>
               </Button>
             </NextLink>
+            <Spacer />
           </HStack>
         </Stack>
         <Box
@@ -135,11 +142,20 @@ export default function Home() {
               <Text fontSize="2xl">{t("free_request_ex_back")}</Text>
             </Stack>
             <Box
+              bg={useColorModeValue(
+                "rgba( 255, 255, 255, 0.4 )",
+                "rgba( 85, 85, 85, 0.2 )"
+              )}
+              className="landing-glassmorphism"
+              borderRadius="24px"
+              border={useColorModeValue(
+                "2px solid rgba( 255, 255, 255, 0.5 )",
+                "2px solid rgba( 105, 105, 105, 0.5 )"
+              )}
               boxShadow="2xl"
               w="420px"
-              h="300px"
+              h="280px"
               maxW="80vw"
-              borderRadius="24px"
               padding="24px"
             >
               <Center flexDir="column">
@@ -163,11 +179,20 @@ export default function Home() {
             spacing={10}
           >
             <Box
+              bg={useColorModeValue(
+                "rgba( 255, 255, 255, 0.4 )",
+                "rgba( 85, 85, 85, 0.2 )"
+              )}
+              className="landing-glassmorphism"
+              borderRadius="24px"
+              border={useColorModeValue(
+                "2px solid rgba( 255, 255, 255, 0.5 )",
+                "2px solid rgba( 105, 105, 105, 0.5 )"
+              )}
               boxShadow="2xl"
               w="420px"
               h="300px"
               maxW="80vw"
-              borderRadius="24px"
               padding="24px"
             >
               <Center flexDir="column">
@@ -210,7 +235,7 @@ export default function Home() {
         </InViewProvider>
         <InViewProvider initialScale={0.95}>
           <Stack
-            mb="100px"
+            mb="80px"
             direction={{ base: "column-reverse", lg: "row" }}
             alignItems="center"
           >
@@ -230,7 +255,22 @@ export default function Home() {
               </Text>
             </Stack>
             <Spacer />
-            <Box maxW="80vw" w="500px">
+            <Box
+              maxW="80vw"
+              w="500px"
+              bg={useColorModeValue("rgba( 255, 255, 255, 0.2 )", "gray.900")}
+              boxShadow={useColorModeValue(
+                "0 0 24px 0 rgba( 31, 38, 135, 0.37 )",
+                "0 8px 32px 0 rgba( 31, 38, 135, 0.37 )"
+              )}
+              className="landing-glassmorphism"
+              borderRadius="15px"
+              border={useColorModeValue(
+                "2px solid rgba( 255, 255, 255, 0.5 )",
+                "2px solid rgba( 105, 105, 105, 0.5 )"
+              )}
+              overflow="hidden"
+            >
               <object
                 type="image/svg+xml"
                 data="tutorial_popup_sub.svg"
@@ -242,8 +282,9 @@ export default function Home() {
           </Stack>
         </InViewProvider>
       </Box>
+      <Features />
       <InViewProvider initialScale={0.95}>
-        <Stack alignItems="center" p={10}>
+        <Stack alignItems="center" p={10} mt="100px">
           <Text
             fontSize={{ base: "3xl", md: "6xl" }}
             fontWeight="bold"
@@ -259,17 +300,16 @@ export default function Home() {
             alignItems="center"
             pt={10}
           >
-            <Stack>
+            <Stack justifyContent="flex-start" h="80px">
               <ExtensionButton browser="chrome" />
-              <Text align="center">1000 + Users</Text>
             </Stack>
-            <Stack>
+            <Stack justifyContent="flex-start" h="80px">
               <ExtensionButton browser="safari" isDisabled />
               <Text align="center" color="gray.400">
                 Comming soon
               </Text>
             </Stack>
-            <Stack>
+            <Stack justifyContent="flex-start" h="80px">
               <ExtensionButton browser="firefox" isDisabled />
               <Text align="center" color="gray.400">
                 Comming soon
@@ -278,36 +318,48 @@ export default function Home() {
           </Stack>
         </Stack>
       </InViewProvider>
-      <Stack
-        bg={useColorModeValue("gray.50", "gray.900")}
-        pb={10}
-        alignItems="center"
-        mt={{ base: "50px", md: "150px" }}
-      >
+      <Center pb="100px">
         <Stack
-          direction={{ base: "column", md: "row" }}
-          spacing={{ base: 5, md: "10vw", lg: "300px", xl: "400px" }}
-          alignItems={{ base: "flex-start", md: "center" }}
-          p={{ base: 10, sm: 20 }}
+          bg={useColorModeValue("rgba( 255, 255, 255, 0.25 )", "gray.900")}
+          boxShadow={useColorModeValue(
+            "0 8px 32px 0 rgba( 31, 38, 135, 0.37 )",
+            "0 8px 52px 0 rgba( 31, 38, 135, 0.47 )"
+          )}
+          className="landing-glassmorphism"
+          borderRadius="15px"
+          border={useColorModeValue(
+            "2px solid rgba( 255, 255, 255, 0.5 )",
+            "2px solid rgba( 105, 105, 105, 0.5 )"
+          )}
+          alignItems="center"
+          mt={{ base: "50px", lg: "150px" }}
+          w={{ base: "90%", lg: "80%" }}
         >
-          <Box>
-            <Text fontSize="4xl" lineHeight={1.2} fontWeight="bold">
-              {t("get_start")}
-            </Text>
-            <Text
-              fontSize="2xl"
-              fontWeight="bold"
-              bgGradient="linear(to-l, #0ea5e9,#2563eb)"
-              bgClip="text"
-            >
-              {t("get_touch_account")}
-            </Text>
-          </Box>
           <Stack
-            direction={{ base: "column", sm: "row" }}
-            spacing={{ base: 0, sm: 3 }}
-            w={{ base: "100%", sm: "auto" }}
+            direction={{ base: "column", lg: "row" }}
+            spacing={{ base: 2, lg: 5 }}
+            alignItems={{ base: "flex-start", lg: "center" }}
+            p={{ base: "40px 50px 40px 50px", lg: 20 }}
+            w="100%"
           >
+            <Box>
+              <Text
+                fontSize={{ base: "3xl", sm: "4xl" }}
+                lineHeight={1.2}
+                fontWeight="bold"
+              >
+                {t("get_start")}
+              </Text>
+              <Text
+                fontSize={{ base: "xl", sm: "2xl" }}
+                fontWeight="bold"
+                bgGradient="linear(to-l, #0ea5e9,#2563eb)"
+                bgClip="text"
+              >
+                {t("get_touch_account")}
+              </Text>
+            </Box>
+            <Spacer />
             <NextLink href={"/auth/signin"}>
               <Button
                 color="white"
@@ -324,8 +376,8 @@ export default function Home() {
             </NextLink>
           </Stack>
         </Stack>
-      </Stack>
-    </>
+      </Center>
+    </Box>
   );
 }
 
