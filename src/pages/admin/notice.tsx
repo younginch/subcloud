@@ -27,7 +27,8 @@ export default function AdminNotice() {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<string | undefined>();
+  const [url, setUrl] = useState<string | undefined>();
   const { data, mutate } = useSWR<
     (Notice & {
       notifications: Notification[];
@@ -36,7 +37,7 @@ export default function AdminNotice() {
 
   async function handleSettle() {
     axios
-      .post(`/api/admin/notice`, { message })
+      .post(`/api/admin/notice`, { message, url })
       .then(() => {
         mutate();
         toast({
@@ -77,8 +78,11 @@ export default function AdminNotice() {
       });
   }
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
+  const handleMessage = (event: ChangeEvent<HTMLInputElement>) =>
     setMessage(event.target.value);
+
+  const handleUrl = (event: ChangeEvent<HTMLInputElement>) =>
+    setUrl(event.target.value);
 
   return (
     <>
@@ -91,6 +95,7 @@ export default function AdminNotice() {
             <Tr>
               <Th>공지 종류</Th>
               <Th>공지 메세지</Th>
+              <Th>공지 링크</Th>
               <Th>공지 날짜</Th>
               <Th>공지 명수</Th>
             </Tr>
@@ -101,6 +106,7 @@ export default function AdminNotice() {
                 <Tr key={notice.id}>
                   <Td>{notice.type}</Td>
                   <Td>{notice.message}</Td>
+                  <Td>{notice.url ?? "링크 없음"}</Td>
                   <Td>
                     {dayjs(notice.createdAt).format("YYYY-MM-DD HH:mm:ss")}
                   </Td>
@@ -131,8 +137,14 @@ export default function AdminNotice() {
             </AlertDialogHeader>
             <Input
               value={message}
-              onChange={handleChange}
-              placeholder="Here is a sample placeholder"
+              onChange={handleMessage}
+              placeholder="메세지"
+              size="sm"
+            />
+            <Input
+              value={url}
+              onChange={handleUrl}
+              placeholder="링크"
               size="sm"
             />
             <AlertDialogFooter>
