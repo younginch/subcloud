@@ -43,6 +43,7 @@ export default function ExtensionButton({
         isDisabled={isDisabled}
         zIndex={5}
         colorScheme="blue"
+        bgColor={useColorModeValue("blue.400", "transparent")}
         variant={useColorModeValue("solid", "outline")}
       >
         <Box w="24px" h="24px">

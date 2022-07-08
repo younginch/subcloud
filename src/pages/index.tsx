@@ -20,6 +20,7 @@ import { PageOptions } from "../utils/types";
 import { DottedBox } from "../components/icons/customIcons";
 import NextLink from "next/link";
 import useTranslation from "next-translate/useTranslation";
+import Features from "../components/features";
 
 export default function Home() {
   const { t } = useTranslation("menu");
@@ -41,7 +42,7 @@ export default function Home() {
           alignItems="flex-start"
         >
           <Text
-            fontSize={{ base: "5xl", lg: "6xl" }}
+            fontSize={{ base: "5xl", lg: "7xl" }}
             lineHeight={1}
             fontWeight="bold"
             textAlign="left"
@@ -70,10 +71,9 @@ export default function Home() {
               h={10}
               rounded="md"
               mb={{ base: 2, sm: 0 }}
-              bgGradient="linear(to-l, #0ea5e9,#2563eb)"
+              bgGradient="linear(to-l, #0ea5e9,#25c3cb)"
               _hover={{
-                bgGradient: "linear(to-l, #0ea5e9,#2563eb)",
-                opacity: 0.9,
+                bgGradient: "linear(to-l, #25a3cb,#0fcdb9)",
               }}
               fontSize="xl"
             >
@@ -85,9 +85,9 @@ export default function Home() {
                 h={10}
                 p={3}
                 rounded="md"
-                bgGradient="linear(to-l, #8E54E9, #4776E6)"
+                bgGradient="linear(to-l, #008686,#3386a0)"
                 _hover={{
-                  bgGradient: "linear(to-l, #4776E6, #8E54E9 )",
+                  bgGradient: "linear(to-l, #0098aa,#33a0c3)",
                 }}
                 fontSize="xl"
               >
@@ -211,7 +211,7 @@ export default function Home() {
         </InViewProvider>
         <InViewProvider initialScale={0.95}>
           <Stack
-            mb="100px"
+            mb="80px"
             direction={{ base: "column-reverse", lg: "row" }}
             alignItems="center"
           >
@@ -243,8 +243,9 @@ export default function Home() {
           </Stack>
         </InViewProvider>
       </Box>
+      <Features />
       <InViewProvider initialScale={0.95}>
-        <Stack alignItems="center" p={10}>
+        <Stack alignItems="center" p={10} mt="100px">
           <Text
             fontSize={{ base: "3xl", md: "6xl" }}
             fontWeight="bold"
@@ -260,17 +261,16 @@ export default function Home() {
             alignItems="center"
             pt={10}
           >
-            <Stack>
+            <Stack justifyContent="flex-start" h="80px">
               <ExtensionButton browser="chrome" />
-              <Text align="center">1000 + Users</Text>
             </Stack>
-            <Stack>
+            <Stack justifyContent="flex-start" h="80px">
               <ExtensionButton browser="safari" isDisabled />
               <Text align="center" color="gray.400">
                 Comming soon
               </Text>
             </Stack>
-            <Stack>
+            <Stack justifyContent="flex-start" h="80px">
               <ExtensionButton browser="firefox" isDisabled />
               <Text align="center" color="gray.400">
                 Comming soon
