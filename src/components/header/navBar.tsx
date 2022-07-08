@@ -45,6 +45,7 @@ export default function NavBar(): JSX.Element {
       style={{
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
+        backgroundColor: "rgba(255,255,255,.2)",
       }}
       w="100%"
       h="54px"
