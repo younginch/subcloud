@@ -7,6 +7,7 @@ import orderSearchRoute from "../../pages/api/user/order/search";
 import ratingRoute from "../../pages/api/user/rating";
 import requestRoute from "../../pages/api/user/request";
 import subIndexRoute from "../../pages/api/user/sub";
+import langRoute from "../../pages/api/user/lang";
 import prisma from "../../utils/prisma";
 import axios from "axios";
 
@@ -294,5 +295,30 @@ describe("/api/user/sub", () => {
     req.query.id = "1";
     await subIndexRoute(req, res);
     expect(res.statusCode).toBe(403);
+  });
+});
+
+describe("/api/user/lang", () => {
+  beforeAll(() => {
+    jest.spyOn(NextAuth, "getSession").mockResolvedValue({
+      user: { id: "2", role: Role.User, point: 0 },
+      expires: "",
+    });
+  });
+
+  it("GET should return 200", async () => {
+    const { req, res } = mockRequestResponse("GET");
+    await langRoute(req, res);
+    expect(res.statusCode).toBe(200);
+  });
+
+  it("PATCH should return 200", async () => {
+    const { req, res } = mockRequestResponse("PATCH");
+    req.body = {
+      baseLang: "en",
+      requestLang: "ko",
+    };
+    await langRoute(req, res);
+    expect(res.statusCode).toBe(200);
   });
 });

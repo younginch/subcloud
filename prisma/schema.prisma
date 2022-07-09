@@ -47,6 +47,7 @@ model User {
   role          Role           @default(User)
   point         Int            @default(0)
   baseLangs     String[]
+  requestLangs  String[]
   settlePoints  SettlePoint[]
   accounts      Account[]
   sessions      Session[]
