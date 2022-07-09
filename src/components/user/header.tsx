@@ -1,4 +1,3 @@
-// Chakra imports
 import {
   Avatar,
   Box,
@@ -9,7 +8,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useRef } from "react";
 import TierBadge from "../badges/tierBadge";
 import { PublicProfileTab } from "../../utils/tabs";
 import { UserTier } from "../../utils/tier";
@@ -48,6 +47,14 @@ const Header = ({
   const emailColor = useColorModeValue("gray.400", "gray.300");
   const tabTextSize = { base: "xs", md: "12px", lg: "15px" };
   const headerMargin = { base: "5px", md: "10px", xl: "15px" };
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
   return (
     <Box
       m={headerMargin}
@@ -94,7 +101,9 @@ const Header = ({
             direction={{ base: "column", md: "row" }}
             w={{ base: "100%" }}
             textAlign={{ base: "center", md: "start" }}
+            position="relative"
           >
+            <Box position="absolute" top="-84px" ref={ref} w={0} h={0} />
             <Avatar
               me={{ md: "22px" }}
               src={avatarImage}

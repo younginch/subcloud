@@ -6,7 +6,8 @@ import {
   Box,
   Button,
 } from "@chakra-ui/react";
-import GradientProgress from "@delowar/react-circle-progressbar";
+import { CircularProgressbarWithChildren } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import { IoEllipsisHorizontal } from "react-icons/io5";
 import Card from "../card/card";
 
@@ -21,6 +22,8 @@ export default function FulfilledGraph({
 }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const subTextColor = useColorModeValue("gray.600", "gray.400");
+  const size =
+    window.innerWidth >= 1024 ? 200 : window.innerWidth >= 768 ? 170 : 200;
   return (
     <Card gridArea={{ md: "2 / 2 / 3 / 3", "2xl": "auto" }} color={textColor}>
       <Flex direction="column">
@@ -70,25 +73,8 @@ export default function FulfilledGraph({
               </Text>
             </Flex>
           </Flex>
-          <Box mx={{ sm: "auto", md: "0px" }}>
-            <GradientProgress
-              percent={percentage}
-              viewport
-              size={
-                window.innerWidth >= 1024
-                  ? 200
-                  : window.innerWidth >= 768
-                  ? 170
-                  : 200
-              }
-              isGradient
-              gradient={{
-                angle: 90,
-                startColor: "rgba(5, 205, 153, 0)",
-                stopColor: "#05CD99",
-              }}
-              emptyColor="transparent"
-            >
+          <Box mx={{ sm: "auto", md: "0px" }} w={size} h={size}>
+            <CircularProgressbarWithChildren value={percentage}>
               <Flex direction="column" justify="center" align="center">
                 <Text color="gray.400" fontSize="sm" mb="4px">
                   상위
@@ -105,7 +91,7 @@ export default function FulfilledGraph({
                   기여도
                 </Text>
               </Flex>
-            </GradientProgress>
+            </CircularProgressbarWithChildren>
           </Box>
         </Flex>
       </Flex>

@@ -66,7 +66,7 @@ export default function SubCreate() {
           description: "Subtitles created successfully",
           status: "success",
         });
-        router.push(`/user/${data?.user.id}?tab=sub`);
+        router.push(`/user/my/sub`);
       } catch (e: any) {
         reject();
         toast({
