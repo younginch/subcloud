@@ -108,7 +108,7 @@ export default function SubtitleDashboard({ user, subs }: Props) {
             }
           />
         </Grid>
-        <Box mt={10} bg={bgColor} borderRadius="20px">
+        <Box mt={10} pb="20px" bg={bgColor} borderRadius="20px">
           <Text p="22px" fontSize="lg" color={textColor} fontWeight="bold">
             인기 자막
           </Text>

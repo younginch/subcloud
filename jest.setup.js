@@ -30,6 +30,8 @@ Object.defineProperty(global, "IntersectionObserver", {
   value: IntersectionObserver,
 });
 
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
 jest.mock("next/router", () => ({
   useRouter() {
     return {
