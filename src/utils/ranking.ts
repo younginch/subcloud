@@ -46,6 +46,7 @@ export async function RankingUser(
         role: user.role,
         point: user.point,
         baseLangs: user.baseLangs,
+        requestLangs: user.requestLangs,
         _count: {
           subs: subs.length,
           views: subs.reduce((prev, curr) => prev + curr.views, 0),
