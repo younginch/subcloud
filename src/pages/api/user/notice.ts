@@ -10,6 +10,7 @@ async function getNotification({
     where: {
       userId: session?.user.id!,
     },
+    orderBy: { notice: { createdAt: "desc" } },
     include: { notice: true },
   });
   return res.status(200).json(notifications);

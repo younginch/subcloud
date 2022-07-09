@@ -10,11 +10,12 @@ async function getNotices({ req, res, prisma }: RouteParams<Notice[]>) {
 }
 
 async function createNotice({ req, res, prisma }: RouteParams<Notice>) {
-  const { message } = req.body;
+  const { message, url } = req.body;
   const notice = await prisma.notice.create({
     data: {
       type: "Announce",
       message,
+      url,
     },
   });
   const users = await prisma.user.findMany({});
