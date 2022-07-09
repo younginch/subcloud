@@ -73,8 +73,8 @@ export default function VideoCreate() {
         h="100vh"
         pt="8em"
         backgroundImage={useColorModeValue(
-          "url(https://user-images.githubusercontent.com/17401630/178089529-4ba16131-df52-42ed-b307-6d1b5d2be0a8.png)",
-          "url(https://user-images.githubusercontent.com/17401630/178091288-cd1bfeb4-5f32-4f45-abc8-4494b408e7d5.png)"
+          "url(https://user-images.githubusercontent.com/17401630/178095314-2e21cba6-7622-4339-8a48-6b4acf20e0bf.svg)",
+          "url(https://user-images.githubusercontent.com/17401630/178095101-d5de300f-80be-48db-99f3-795098bf9db0.png)"
         )}
         backgroundSize="cover"
       >
@@ -112,10 +112,10 @@ export default function VideoCreate() {
                 }}
                 bg={useColorModeValue(
                   "rgba( 255, 255, 255, 0.2 )",
-                  "rgba( 20, 10, 20, 0.7 )"
+                  "rgba( 60, 55, 66, 0.7 )"
                 )}
                 maxW="800px"
-                h="3.2em"
+                h={{ base: "50px", sm: "60px", md: "65px" }}
                 fontSize={{ base: "18px", sm: "20px", md: "25px" }}
                 borderRadius="5em"
                 pr="70px"
@@ -133,9 +133,9 @@ export default function VideoCreate() {
                 fontSize="20px"
                 borderRadius="50%"
                 position="absolute"
-                maxW={{ base: "35px", md: "50px" }}
-                maxH={{ base: "35px", md: "50px" }}
+                minW={{ base: "35px", md: "50px" }}
                 h={{ base: "35px", md: "50px" }}
+                w={{ base: "35px", md: "50px" }}
                 mr="15px"
                 zIndex={3}
               >
@@ -194,6 +194,6 @@ export default function VideoCreate() {
 VideoCreate.options = {
   role: Role.User,
   hideTitle: true,
-  hideFooter: false,
+  hideFooter: true,
   bgColorLight: "#F7FAFC",
 } as PageOptions;
