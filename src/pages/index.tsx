@@ -28,7 +28,7 @@ export default function Home() {
     <Box
       backgroundImage={useColorModeValue(
         "https://user-images.githubusercontent.com/17401630/177977272-7e7b91c9-c172-4bd0-a759-1318d8ebdd4e.PNG",
-        "https://user-images.githubusercontent.com/17401630/177992461-7e910806-4751-429e-823d-9b88adfd211c.png"
+        undefined
       )}
       backgroundSize="cover"
     >

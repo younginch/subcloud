@@ -3,6 +3,7 @@ import { render } from "@testing-library/react";
 import AdminLayout from "../components/adminLayout";
 import ReviewStatusBadge from "../components/badges/reviewStatusBadge";
 import EventNotice from "../components/create/eventNotice";
+import TimeLine from "../components/editor/timeLine";
 import Links from "../components/header/links";
 import Search from "../components/header/search";
 import Layout from "../components/layout";
@@ -69,5 +70,9 @@ describe("Components", () => {
 
   it("renders userLayout", () => {
     render(<UserLayout>a</UserLayout>);
+  });
+
+  it("renders timeLine", () => {
+    render(<TimeLine />);
   });
 });

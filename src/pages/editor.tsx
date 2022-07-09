@@ -27,6 +27,7 @@ import Shortcuts from "../components/editor/shortcuts";
 import YoutubeWithSub from "../components/editor/contentItem";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useRouter } from "next/router";
+import TimeLine from "../components/editor/timeLine";
 
 dayjs.extend(duration);
 
@@ -136,7 +137,7 @@ export default function Editor() {
                   type="url"
                   id="url"
                   value={urlInput}
-                  onChange={(event) => {
+                  onChange={(event: any) => {
                     setUrlInput(event.target.value);
                   }}
                 />
@@ -148,8 +149,16 @@ export default function Editor() {
         </HStack>
       </ReflexElement>
       <ReflexSplitter />
-      <ReflexElement minSize={50} size={50}>
-        몰라몰라타임라인
+      <ReflexElement minSize={120} size={120}>
+        <Box h="100%" w="100%" position="relative" overflow="hidden">
+          <TimeLine />
+          <Text position="absolute" mt="50px">
+            컴포넌트들 삽입
+          </Text>
+          <Text position="absolute" mt="50px" ml="150px">
+            이게 current time thumb
+          </Text>
+        </Box>
       </ReflexElement>
       <ReflexSplitter />
       <ReflexElement className="right-pane">
@@ -170,7 +179,7 @@ export default function Editor() {
               <Textarea
                 noOfLines={2}
                 value={value.content.toText()}
-                onChange={(event) => {
+                onChange={(event: any) => {
                   content[index].content.textArray =
                     event.target.value.split("\n");
                   setContents(content);
