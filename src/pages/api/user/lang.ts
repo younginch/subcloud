@@ -44,7 +44,7 @@ async function updateLangs({ req, res, prisma, session }: RouteParams<Langs>) {
     where: { id: session?.user.id! },
     data,
   });
-  return res.status(201).json({
+  return res.status(200).json({
     baseLangs: updatedUser.baseLangs,
     requestLangs: updatedUser.requestLangs,
   });
