@@ -19,10 +19,10 @@ export default function EventNotice() {
         color="white"
         bgGradient="linear(to-l, #0ea5e9,#2563eb)"
       >
-        What{"'"}s new?
+        자막 업로드 이벤트
       </Box>
       <HStack spacing={1} alignItems="center" justifyContent="center">
-        <Text lineHeight={1}>Upload subtitles and get rewards!</Text>
+        <Text lineHeight={1}>자막 업로드시 포인트 증정</Text>
         <Icon as={GoChevronRight} w={4} h={4} />
       </HStack>
     </HStack>

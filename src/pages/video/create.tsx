@@ -67,8 +67,18 @@ export default function VideoCreate() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box alignItems="center" w="100%" h="100vh" pt="12em">
-        <Stack alignItems="center" w="100%" m="auto" backdropFilter="blur(5px)">
+      <Box
+        alignItems="center"
+        w="100%"
+        h="100vh"
+        pt="8em"
+        backgroundImage={useColorModeValue(
+          "url(https://user-images.githubusercontent.com/17401630/178089529-4ba16131-df52-42ed-b307-6d1b5d2be0a8.png)",
+          "url(https://user-images.githubusercontent.com/17401630/178091288-cd1bfeb4-5f32-4f45-abc8-4494b408e7d5.png)"
+        )}
+        backgroundSize="cover"
+      >
+        <Stack alignItems="center" w="100%" m="auto">
           <CreateHeader
             type={router.query.next as "request" | "sub"}
             step={1}
@@ -88,7 +98,11 @@ export default function VideoCreate() {
             >
               <Input
                 id="url"
+                className="create-glassmorphism"
                 placeholder="이곳에 유튜브 링크 입력"
+                _placeholder={{
+                  color: useColorModeValue("gray.200", "gray.400"),
+                }}
                 w={{
                   base: "90vw",
                   sm: "85vw",
@@ -96,17 +110,21 @@ export default function VideoCreate() {
                   lg: "60vw",
                   xl: "50vw",
                 }}
+                bg={useColorModeValue(
+                  "rgba( 255, 255, 255, 0.2 )",
+                  "rgba( 20, 10, 20, 0.7 )"
+                )}
                 maxW="800px"
                 h="3.2em"
-                fontSize="25px"
+                fontSize={{ base: "18px", sm: "20px", md: "25px" }}
                 borderRadius="5em"
-                pl="1em"
+                pr="70px"
                 shadow="md"
                 {...register("url", {
                   required: "This is required",
                 })}
                 textAlign="center"
-                bg={bgColor}
+                color="white"
               />
               <Button
                 colorScheme="blue"
@@ -115,8 +133,9 @@ export default function VideoCreate() {
                 fontSize="20px"
                 borderRadius="50%"
                 position="absolute"
-                w="50px"
-                h="50px"
+                maxW={{ base: "35px", md: "50px" }}
+                maxH={{ base: "35px", md: "50px" }}
+                h={{ base: "35px", md: "50px" }}
                 mr="15px"
                 zIndex={3}
               >
@@ -129,18 +148,42 @@ export default function VideoCreate() {
                 </SwingProvider>
               </Button>
             </Box>
-            <Box alignItems="center">
+            <Box alignItems="center" fontSize="20px">
               <FormErrorMessage m="auto" fontSize="15px">
                 {errors.url && errors.url.message}
               </FormErrorMessage>
             </Box>
           </FormControl>
           {router.query.next === "sub" && <EventNotice />}
-          <UnorderedList>
-            <ListItem mt="12vh">Lorem ipsum dolor sit amet</ListItem>
-            <ListItem>Consectetur adipiscing elit</ListItem>
-            <ListItem>Integer molestie lorem at massa</ListItem>
-            <ListItem>Facilisis in pretium nisl aliquet</ListItem>
+          <UnorderedList
+            color="white"
+            bg={useColorModeValue(
+              "rgba( 205, 205, 255, 0.2 )",
+              "rgba( 85, 85, 85, 0.2 )"
+            )}
+            border={useColorModeValue(
+              "2px solid rgba( 255, 255, 255, 0.4 )",
+              "2px solid rgba( 105, 105, 105, 0.5 )"
+            )}
+            className="create-glassmorphism"
+            mt="12vh !important"
+            p={{ base: "20px 10px 20px 40px", md: "20px 20px 20px 50px" }}
+            borderRadius="15px"
+            boxShadow="2xl"
+            fontSize={{ base: "14px", md: "18px" }}
+            spacing="10px"
+            maxW="85%"
+          >
+            <ListItem>클릭 몇 번으로 무료 자막을 요청해 보세요</ListItem>
+            <ListItem>
+              요청하신 영상에 자막이 생기면 알림으로 알려드려요
+            </ListItem>
+            <ListItem>
+              포인트를 사용하면 자막이 빨리 만들어질 가능성이 높아집니다
+            </ListItem>
+            <ListItem>
+              자막이 만들어지기 전까지 포인트는 사용되지 않습니다
+            </ListItem>
           </UnorderedList>
         </Stack>
       </Box>
@@ -151,5 +194,6 @@ export default function VideoCreate() {
 VideoCreate.options = {
   role: Role.User,
   hideTitle: true,
+  hideFooter: false,
   bgColorLight: "#F7FAFC",
 } as PageOptions;
