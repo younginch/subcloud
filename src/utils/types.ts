@@ -1,7 +1,4 @@
-import type {
-  CreateStandAloneToastParam,
-  UseRangeSliderReturn,
-} from "@chakra-ui/react";
+import type { CreateStandAloneToastParam } from "@chakra-ui/react";
 import {
   YoutubeVideo,
   Request,
