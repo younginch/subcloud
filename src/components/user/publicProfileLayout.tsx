@@ -23,7 +23,7 @@ export default function PublicProfileLayout({ currentTab, children }: Props) {
   );
 
   return (
-    <Stack>
+    <Stack mb={12}>
       <Header
         backgroundHeader="https://demos.creative-tim.com/purity-ui-dashboard/static/media/ProfileBackground.4dc796b0.png"
         backgroundProfile={bgProfile}

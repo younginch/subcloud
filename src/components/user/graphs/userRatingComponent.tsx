@@ -6,7 +6,8 @@ import {
   Stack,
   Box,
 } from "@chakra-ui/react";
-import GradientProgress from "@delowar/react-circle-progressbar";
+import { CircularProgressbarWithChildren } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import { AiFillHeart } from "react-icons/ai";
 import IconBox from "../../icons/iconBox";
 import Card from "../card/card";
@@ -43,19 +44,8 @@ export default function UserRatingComponent({
         align="center"
         position="relative"
       >
-        <Box zIndex="-1" bg="">
-          <GradientProgress
-            percent={percentage}
-            viewport
-            size={200}
-            isGradient
-            gradient={{
-              angle: 90,
-              startColor: "rgba(117, 81, 255, 0)",
-              stopColor: "#582CFF",
-            }}
-            emptyColor="#22234B"
-          >
+        <Box zIndex="-1" bg="" h={200} w={200}>
+          <CircularProgressbarWithChildren value={percentage}>
             <IconBox
               bg="brand.200"
               borderRadius="50%"
@@ -68,7 +58,7 @@ export default function UserRatingComponent({
             >
               <Icon as={AiFillHeart} color="red.400" w="30px" h="30px" />
             </IconBox>
-          </GradientProgress>
+          </CircularProgressbarWithChildren>
         </Box>
         <Stack
           direction="row"
