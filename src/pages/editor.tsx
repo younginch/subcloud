@@ -16,18 +16,17 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useState } from "react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { SRTContent, SRTFile } from "@younginch/subtitle";
 import { useDropzone } from "react-dropzone";
 import { DeleteIcon } from "@chakra-ui/icons";
-import React from "react";
-import ReactTimeline from "../components/editor/timeline";
 import { v4 as uuidv4 } from "uuid";
 import Shortcuts from "../components/editor/shortcuts";
 import YoutubeWithSub from "../components/editor/contentItem";
 import { useHotkeys } from "react-hotkeys-hook";
+import { useRouter } from "next/router";
 
 dayjs.extend(duration);
 
@@ -38,16 +37,23 @@ function miliToString(mili: number): string {
     .substring(0, 12);
 }
 
+type contentArray = {
+  uuid: string;
+  content: SRTContent;
+};
+
 export default function Editor() {
+  const router = useRouter();
   const toast = useToast();
-  const [youtubeId, setYoutubeId] = useState("i7muqI90138");
+  const [youtubeId, setYoutubeId] = useState(router.query.youtubeId as string);
   const [urlInput, setUrlInput] = useState("");
-  const [contents, setContents] = useState<SRTContent[]>([]);
+  const [content, setContents] = useState<contentArray[]>([]);
   const onDrop = useCallback((acceptedFiles: File[]) => {
     acceptedFiles[0].text().then((text) => {
       const srtFile = SRTFile.fromText(text);
-      setContents([]);
-      setContents(srtFile.array);
+      setContents(
+        srtFile.array.map((content) => ({ uuid: uuidv4(), content }))
+      );
     });
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -59,7 +65,7 @@ export default function Editor() {
 
   function downloadSRT() {
     const srtFile = new SRTFile();
-    srtFile.array = contents;
+    srtFile.array = content.map((item) => item.content);
     const url = window.URL.createObjectURL(new Blob([srtFile.toText()]));
     const link = document.createElement("a");
     link.href = url;
@@ -71,12 +77,15 @@ export default function Editor() {
 
   return (
     <ReflexContainer
-      style={{ width: "100vw", height: "80vh" }}
+      style={{ width: "100vw", height: "calc(100vh - 54px)" }}
       orientation="horizontal"
     >
       <ReflexElement minSize={100}>
         <HStack h="100%" w="100%">
-          <YoutubeWithSub youtubeId={youtubeId} contents={contents} />
+          <YoutubeWithSub
+            youtubeId={youtubeId}
+            contents={content.map((item) => item.content)}
+          />
           <Stack>
             <Box
               maxW="200px"
@@ -140,30 +149,31 @@ export default function Editor() {
       </ReflexElement>
       <ReflexSplitter />
       <ReflexElement minSize={50} size={50}>
-        <ReactTimeline contents={contents} />
+        몰라몰라타임라인
       </ReflexElement>
       <ReflexSplitter />
       <ReflexElement className="right-pane">
-        {contents.map((value, index) => {
+        {content.map((value, index) => {
           return (
-            <HStack key={uuidv4()}>
+            <HStack key={value.uuid}>
               <Text>{index + 1}</Text>
               <Stack w="170px">
-                <Editable defaultValue={miliToString(value.startTime!)}>
+                <Editable defaultValue={miliToString(value.content.startTime!)}>
                   <EditablePreview />
                   <EditableInput />
                 </Editable>
-                <Editable defaultValue={miliToString(value.endTime!)}>
+                <Editable defaultValue={miliToString(value.content.endTime!)}>
                   <EditablePreview />
                   <EditableInput />
                 </Editable>
               </Stack>
               <Textarea
                 noOfLines={2}
-                value={value.toText()}
+                value={value.content.toText()}
                 onChange={(event) => {
-                  contents[index].textArray = event.target.value.split("\n");
-                  setContents(contents);
+                  content[index].content.textArray =
+                    event.target.value.split("\n");
+                  setContents(content);
                 }}
               />
               <IconButton
@@ -181,12 +191,15 @@ export default function Editor() {
         })}
         <Button
           onClick={() => {
-            const newContent = new SRTContent(
-              contents.length.toString(),
-              "00:00:00,000 --> 00:00:00,000",
-              []
-            );
-            setContents((prevContents) => [...prevContents, newContent]);
+            const newItem = {
+              uuid: uuidv4(),
+              content: new SRTContent(
+                content.length.toString(),
+                "00:00:00,000 --> 00:00:00,000",
+                []
+              ),
+            };
+            setContents((prevContents) => [...prevContents, newItem]);
           }}
         >
           자막 추가
@@ -196,4 +209,8 @@ export default function Editor() {
   );
 }
 
-Editor.options = { auth: false, hideTitle: true } as PageOptions;
+Editor.options = {
+  auth: false,
+  hideTitle: true,
+  hideFooter: true,
+} as PageOptions;
