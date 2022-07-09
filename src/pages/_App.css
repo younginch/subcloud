@@ -122,5 +122,10 @@
 
 .landing-glassmorphism {
   backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+.create-glassmorphism {
+  backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
