@@ -36,6 +36,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { useRouter } from "next/router";
 import TimeLine from "../components/editor/timeLine";
 import TimeLineContainer from "../components/editor/timeLineContainer";
+import SelectTheme from "../components/footer/selectTheme";
 
 dayjs.extend(duration);
 
@@ -239,21 +240,24 @@ export default function Editor() {
               </HStack>
             );
           })}
-          <Button
-            onClick={() => {
-              const newItem = {
-                uuid: uuidv4(),
-                content: new SRTContent(
-                  content.length.toString(),
-                  "00:00:00,000 --> 00:00:00,000",
-                  []
-                ),
-              };
-              setContents((prevContents) => [...prevContents, newItem]);
-            }}
-          >
-            자막 추가
-          </Button>
+          <HStack>
+            <Button
+              onClick={() => {
+                const newItem = {
+                  uuid: uuidv4(),
+                  content: new SRTContent(
+                    content.length.toString(),
+                    "00:00:00,000 --> 00:00:00,000",
+                    []
+                  ),
+                };
+                setContents((prevContents) => [...prevContents, newItem]);
+              }}
+            >
+              자막 추가
+            </Button>
+            <SelectTheme isLarge={true} />
+          </HStack>
         </ReflexElement>
       </ReflexContainer>
     </TimeLineProvider>
