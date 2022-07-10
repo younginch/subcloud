@@ -1,14 +1,11 @@
 import { useContext, WheelEvent } from "react";
-import { contentArray, TimeLineContext } from "../../pages/editor";
+import { contentArray, EditorContext } from "../../pages/editor";
 import TimeLine from "./timeLine";
 import { Box, Text } from "@chakra-ui/react";
+import TimeLineBoxes from "./timeLineBoxes";
 
-type Props = {
-  contents: contentArray[];
-};
-
-export default function TimeLineContainer({ contents }: Props) {
-  const { leftTime, rightTime, changeLRTime } = useContext(TimeLineContext);
+export default function TimeLineContainer() {
+  const { leftTime, rightTime, changeLRTime } = useContext(EditorContext);
 
   const handleScroll = (e: WheelEvent<HTMLDivElement>) => {
     const fixedPos = e.screenX + 2000;
@@ -35,14 +32,7 @@ export default function TimeLineContainer({ contents }: Props) {
       onWheel={handleScroll}
     >
       <TimeLine />
-      <Box w="100%" position="absolute" mt="50px">
-        {contents.map((item) => (
-          <Box key={item.uuid}>{item.content.toText()}</Box>
-        ))}
-      </Box>
-      <Text position="absolute" mt="50px" ml="150px">
-        이게 current time thumb
-      </Text>
+      <TimeLineBoxes contents={[]} />
     </Box>
   );
 }
