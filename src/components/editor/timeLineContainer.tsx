@@ -1,15 +1,11 @@
 import { useContext, WheelEvent } from "react";
-import { contentArray, TimeLineContext } from "../../pages/editor";
+import { contentArray, EditorContext } from "../../pages/editor";
 import TimeLine from "./timeLine";
 import { Box, Text } from "@chakra-ui/react";
 import TimeLineBoxes from "./timeLineBoxes";
 
-type Props = {
-  contents: contentArray[];
-};
-
-export default function TimeLineContainer({ contents }: Props) {
-  const { leftTime, rightTime, changeLRTime } = useContext(TimeLineContext);
+export default function TimeLineContainer() {
+  const { leftTime, rightTime, changeLRTime } = useContext(EditorContext);
 
   const handleScroll = (e: WheelEvent<HTMLDivElement>) => {
     const fixedPos = e.screenX + 2000;

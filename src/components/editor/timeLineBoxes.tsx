@@ -1,7 +1,7 @@
 import { Box, Text } from "@chakra-ui/react";
 import { SRTContent } from "@younginch/subtitle";
 import { useContext } from "react";
-import { TimeLineContext } from "../../pages/editor";
+import { EditorContext } from "../../pages/editor";
 
 type contentArray = {
   uuid: string;
@@ -13,7 +13,7 @@ type TimelineBoxesProps = {
 };
 
 export default function TimeLineBoxes({ contents }: TimelineBoxesProps) {
-  const { leftTime, rightTime } = useContext(TimeLineContext);
+  const { leftTime, rightTime } = useContext(EditorContext);
 
   return (
     <Box w="100%" position="absolute" mt="50px" zIndex={10}>

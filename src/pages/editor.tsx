@@ -19,10 +19,10 @@ import {
 import {
   createContext,
   FormEvent,
+  SetStateAction,
   useCallback,
   useContext,
   useState,
-  WheelEvent,
 } from "react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
@@ -34,7 +34,6 @@ import Shortcuts from "../components/editor/shortcuts";
 import YoutubeWithSub from "../components/editor/contentItem";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useRouter } from "next/router";
-import TimeLine from "../components/editor/timeLine";
 import TimeLineContainer from "../components/editor/timeLineContainer";
 
 dayjs.extend(duration);
@@ -51,30 +50,37 @@ export type contentArray = {
   content: SRTContent;
 };
 
-type TimeLineContextProps = {
+type EditorContextProps = {
   /// The left time in milliseconds
   leftTime: number;
   /// The right time in milliseconds
   rightTime: number;
   changeLRTime: (left: number, right: number) => void;
+  contents: contentArray[];
+  setContents: (
+    newContentsFromPrev: (prevContents: SRTContent[]) => SRTContent[]
+  ) => void;
 };
 
-export const TimeLineContext = createContext<TimeLineContextProps>({
+export const EditorContext = createContext<EditorContextProps>({
   leftTime: 0,
   rightTime: 1000 * 10,
-  changeLRTime: (left, right) => {},
+  changeLRTime: (_, __) => {},
+  contents: [],
+  setContents: (_) => {},
 });
 
-type TimeLineProviderProps = {
+type EditorProviderProps = {
   children: React.ReactNode;
 };
 
-function TimeLineProvider({ children }: TimeLineProviderProps) {
+function EditorProvider({ children }: EditorProviderProps) {
   const [leftTime, setLeftTime] = useState<number>(0);
   const [rightTime, setRightTime] = useState<number>(1000 * 10);
+  const [contents, setContents] = useState<contentArray[]>([]);
 
   return (
-    <TimeLineContext.Provider
+    <EditorContext.Provider
       value={{
         leftTime,
         rightTime,
@@ -82,10 +88,18 @@ function TimeLineProvider({ children }: TimeLineProviderProps) {
           setLeftTime(left);
           setRightTime(right);
         },
+        contents,
+        setContents: (newContents) => {
+          return setContents(
+            newContents(contents.map((content) => content.content)).map(
+              (content: any) => ({ uuid: uuidv4(), content })
+            )
+          );
+        },
       }}
     >
       {children}
-    </TimeLineContext.Provider>
+    </EditorContext.Provider>
   );
 }
 
@@ -94,15 +108,18 @@ function EditorWithoutContext() {
   const toast = useToast();
   const [youtubeId, setYoutubeId] = useState(router.query.youtubeId as string);
   const [urlInput, setUrlInput] = useState("");
-  const [content, setContents] = useState<contentArray[]>([]);
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles[0].text().then((text) => {
-      const srtFile = SRTFile.fromText(text);
-      setContents(
-        srtFile.array.map((content) => ({ uuid: uuidv4(), content }))
-      );
-    });
-  }, []);
+
+  const { contents, setContents } = useContext(EditorContext);
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      acceptedFiles[0].text().then((text) => {
+        const srtFile = SRTFile.fromText(text);
+        setContents(() => srtFile.array);
+      });
+    },
+    [setContents]
+  );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   useHotkeys("tab", () => console.log("sex"), {
@@ -112,7 +129,7 @@ function EditorWithoutContext() {
 
   function downloadSRT() {
     const srtFile = new SRTFile();
-    srtFile.array = content.map((item) => item.content);
+    srtFile.array = contents.map((item) => item.content);
     const url = window.URL.createObjectURL(new Blob([srtFile.toText()]));
     const link = document.createElement("a");
     link.href = url;
@@ -131,7 +148,7 @@ function EditorWithoutContext() {
         <HStack h="100%" w="100%">
           <YoutubeWithSub
             youtubeId={youtubeId}
-            contents={content.map((item) => item.content)}
+            contents={contents.map((item) => item.content)}
           />
           <Stack>
             <Box
@@ -155,7 +172,7 @@ function EditorWithoutContext() {
             <Button onClick={downloadSRT}>Save to SRT</Button>
             <Button
               onClick={() => {
-                setContents([]);
+                setContents(() => []);
               }}
             >
               Delete all
@@ -196,11 +213,11 @@ function EditorWithoutContext() {
       </ReflexElement>
       <ReflexSplitter />
       <ReflexElement minSize={120} size={120}>
-        <TimeLineContainer contents={content} />
+        <TimeLineContainer />
       </ReflexElement>
       <ReflexSplitter />
       <ReflexElement className="right-pane">
-        {content.map((value, index) => {
+        {contents.map((value, index) => {
           return (
             <HStack key={value.uuid}>
               <Text>{index + 1}</Text>
@@ -218,19 +235,19 @@ function EditorWithoutContext() {
                 noOfLines={2}
                 value={value.content.toText()}
                 onChange={(event: any) => {
-                  content[index].content.textArray =
+                  contents[index].content.textArray =
                     event.target.value.split("\n");
-                  setContents(content);
+                  setContents((prev: SRTContent[]): SRTContent[] => [...prev]);
                 }}
               />
               <IconButton
                 aria-label="Delete subtitle"
                 icon={<DeleteIcon />}
                 onClick={() => {
-                  setContents((prevContents) => {
-                    const newContents = [...prevContents].splice(index, 1);
-                    return newContents;
-                  });
+                  setContents((prevContents: any) => [
+                    ...prevContents.slice(0, index),
+                    ...prevContents.slice(index + 1),
+                  ]);
                 }}
               />
             </HStack>
@@ -238,14 +255,11 @@ function EditorWithoutContext() {
         })}
         <Button
           onClick={() => {
-            const newItem = {
-              uuid: uuidv4(),
-              content: new SRTContent(
-                content.length.toString(),
-                "00:00:00,000 --> 00:00:00,000",
-                []
-              ),
-            };
+            const newItem = new SRTContent(
+              contents.length.toString(),
+              "00:00:00,000 --> 00:00:00,000",
+              []
+            );
             setContents((prevContents) => [...prevContents, newItem]);
           }}
         >
@@ -258,9 +272,9 @@ function EditorWithoutContext() {
 
 export default function Editor() {
   return (
-    <TimeLineProvider>
+    <EditorProvider>
       <EditorWithoutContext />
-    </TimeLineProvider>
+    </EditorProvider>
   );
 }
 

@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { number } from "joi";
 import { useContext, useEffect, useRef } from "react";
 import { RiArchiveDrawerLine } from "react-icons/ri";
-import { TimeLineContext } from "../../pages/editor";
+import { EditorContext } from "../../pages/editor";
 
 const breakPointConfig = [
   {
@@ -101,7 +101,7 @@ export default function TimeLine() {
   const mainRulerColor = useColorModeValue("black", "white");
   const subRulerColor = useColorModeValue("black", "white");
 
-  const { leftTime, rightTime, changeLRTime } = useContext(TimeLineContext);
+  const { leftTime, rightTime, changeLRTime } = useContext(EditorContext);
 
   const currentBreakPoint = getBreakPoint(rightTime - leftTime);
   const config = breakPointConfig[currentBreakPoint];
