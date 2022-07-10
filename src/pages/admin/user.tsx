@@ -105,7 +105,11 @@ function UpdateButton({ user, mutate }: UpdateButtonProps) {
     return new Promise<void>((resolve, reject) => {
       const { role, point } = values;
       axios
-        .patch("/api/admin/user", { role, point }, { params: { id: user.id } })
+        .patch(
+          "/api/admin/user",
+          { role: role as Role, point },
+          { params: { id: user.id } }
+        )
         .then((res) => {
           onClose();
           mutate();
