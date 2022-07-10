@@ -16,7 +16,14 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { createContext, FormEvent, useCallback, useState } from "react";
+import {
+  createContext,
+  FormEvent,
+  useCallback,
+  useContext,
+  useState,
+  WheelEvent,
+} from "react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { SRTContent, SRTFile } from "@younginch/subtitle";
@@ -28,17 +35,18 @@ import YoutubeWithSub from "../components/editor/contentItem";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useRouter } from "next/router";
 import TimeLine from "../components/editor/timeLine";
+import TimeLineContainer from "../components/editor/timeLineContainer";
 
 dayjs.extend(duration);
 
-function miliToString(mili: number): string {
+function miliToString(second: number): string {
   return dayjs
-    .duration(mili * 1000)
+    .duration(second * 1000)
     .format("HH:mm:ss,SSS")
     .substring(0, 12);
 }
 
-type contentArray = {
+export type contentArray = {
   uuid: string;
   content: SRTContent;
 };
@@ -51,7 +59,7 @@ type TimeLineContextProps = {
   changeLRTime: (left: number, right: number) => void;
 };
 
-const TimeLineContext = createContext<TimeLineContextProps>({
+export const TimeLineContext = createContext<TimeLineContextProps>({
   leftTime: 0,
   rightTime: 1000 * 10,
   changeLRTime: (left, right) => {},
@@ -189,23 +197,7 @@ export default function Editor() {
         </ReflexElement>
         <ReflexSplitter />
         <ReflexElement minSize={120} size={120}>
-          <Box
-            h="100%"
-            w="6000px"
-            left="-2000px"
-            position="relative"
-            overflow="hidden"
-          >
-            <TimeLine />
-            <Box w="100%" position="absolute" mt="50px">
-              {content.map((item) => (
-                <Box key={item.uuid}>{item.content.toText()}</Box>
-              ))}
-            </Box>
-            <Text position="absolute" mt="50px" ml="150px">
-              이게 current time thumb
-            </Text>
-          </Box>
+          <TimeLineContainer contents={content} />
         </ReflexElement>
         <ReflexSplitter />
         <ReflexElement className="right-pane">
