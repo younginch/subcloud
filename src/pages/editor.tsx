@@ -48,16 +48,38 @@ type TimeLineContextProps = {
   leftTime: number;
   /// The right time in milliseconds
   rightTime: number;
+  changeLRTime: (left: number, right: number) => void;
 };
 
-const initialTimeLineContext: TimeLineContextProps = {
+const TimeLineContext = createContext<TimeLineContextProps>({
   leftTime: 0,
   rightTime: 1000 * 10,
+  changeLRTime: (left, right) => {},
+});
+
+type TimeLineProviderProps = {
+  children: React.ReactNode;
 };
 
-const TimeLineContext = createContext<TimeLineContextProps>(
-  initialTimeLineContext
-);
+function TimeLineProvider({ children }: TimeLineProviderProps) {
+  const [leftTime, setLeftTime] = useState<number>(0);
+  const [rightTime, setRightTime] = useState<number>(1000 * 10);
+
+  return (
+    <TimeLineContext.Provider
+      value={{
+        leftTime,
+        rightTime,
+        changeLRTime: (left, right) => {
+          setLeftTime(left);
+          setRightTime(right);
+        },
+      }}
+    >
+      {children}
+    </TimeLineContext.Provider>
+  );
+}
 
 export default function Editor() {
   const router = useRouter();
@@ -93,7 +115,7 @@ export default function Editor() {
   }
 
   return (
-    <TimeLineContext.Provider value={initialTimeLineContext}>
+    <TimeLineProvider>
       <ReflexContainer
         style={{ width: "100vw", height: "calc(100vh - 54px)" }}
         orientation="horizontal"
@@ -175,14 +197,11 @@ export default function Editor() {
             overflow="hidden"
           >
             <TimeLine />
-            <Box w="100%">
+            <Box w="100%" position="absolute" mt="50px">
               {content.map((item) => (
                 <Box key={item.uuid}>{item.content.toText()}</Box>
               ))}
             </Box>
-            <Text position="absolute" mt="50px">
-              컴포넌트들 삽입
-            </Text>
             <Text position="absolute" mt="50px" ml="150px">
               이게 current time thumb
             </Text>
@@ -245,7 +264,7 @@ export default function Editor() {
           </Button>
         </ReflexElement>
       </ReflexContainer>
-    </TimeLineContext.Provider>
+    </TimeLineProvider>
   );
 }
 
