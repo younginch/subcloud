@@ -18,7 +18,7 @@ export default function TimeLineContainer({ contents }: Props) {
     if (e.deltaY > 0) newInterval = (rightTime - leftTime) * 1.1;
     else newInterval = (rightTime - leftTime) * 0.9;
     if (newInterval > 3600000) return;
-    if (newInterval < 5760) return;
+    if (newInterval < 3600) return;
 
     const newLeft = fixedTime - (newInterval * fixedPos) / 6000;
     const newRight = fixedTime + (newInterval * (6000 - fixedPos)) / 6000;
