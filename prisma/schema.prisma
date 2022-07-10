@@ -152,6 +152,7 @@ model Sub {
 
   reviews      Review[]
   subHistories SubHistory[]
+  notice       Notice?
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
 
@@ -190,7 +191,7 @@ model Rating {
   comment String?
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
-
+  notice  Notice?
   @@unique([subId, userId])
 }
 
@@ -339,6 +340,10 @@ model Notice {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   url           String?
+  ratingId      String?  @unique
+  rating        Rating?  @relation(fields: [ratingId], references: [id], onDelete: Cascade)
+  subId         String?  @unique
+  sub           Sub?     @relation(fields: [subId], references: [id], onDelete: Cascade)
 }
 
 model Notification {

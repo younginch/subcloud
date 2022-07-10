@@ -103,8 +103,23 @@ describe("/api/rating", () => {
   it(
     "POST should return 201",
     testRes(ratingRoute, "POST", 201, (req) => {
+      jest
+        .spyOn(prisma.sub, "findUnique")
+        // @ts-ignore
+        .mockResolvedValueOnce({ userId: "1" });
       req.body = { subId: "1", score: "1" };
       jest.spyOn(prisma.rating, "findUnique").mockResolvedValueOnce(null);
+    })
+  );
+
+  it(
+    "POST should return 400",
+    testRes(ratingRoute, "POST", 400, (req) => {
+      jest
+        .spyOn(prisma.sub, "findUnique")
+        // @ts-ignore
+        .mockResolvedValueOnce({ userId: "2" });
+      req.body = { subId: "1", score: "1" };
     })
   );
 
