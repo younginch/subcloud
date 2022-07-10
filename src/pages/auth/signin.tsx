@@ -26,7 +26,6 @@ import {
 import type { Provider } from "next-auth/providers";
 import { getCsrfToken, getProviders, signIn } from "next-auth/react";
 import type { GetServerSidePropsContext } from "next/types";
-import { Logo } from "../../components/signin/logo";
 import OAuthButtonGroup from "../../components/signin/oAuthButtonGroup";
 import { PasswordField } from "../../components/signin/passwordField";
 import React, { useRef } from "react";
