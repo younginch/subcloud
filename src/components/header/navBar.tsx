@@ -72,7 +72,7 @@ export default function NavBar(): JSX.Element {
             onClick={isOpen ? onClose : onOpen}
           />
         )}
-        <Heading size="md" marginX="6px">
+        <Heading size="md" marginX="6px" onClick={onClose}>
           <Link href="/">{t("title")}</Link>
         </Heading>
         <Flex flex={1}>
@@ -89,7 +89,7 @@ export default function NavBar(): JSX.Element {
               <DrawerContent>
                 <DrawerBody marginTop="54px">
                   <VStack>
-                    <Links width="96vw" />
+                    <Links width="96vw" onClick={onClose} />
                   </VStack>
                 </DrawerBody>
               </DrawerContent>

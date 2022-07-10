@@ -6,15 +6,24 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 
 type LinksProps = {
   width?: string;
+  onClick?: () => void;
 };
 
-export default function Links({ width }: LinksProps) {
+export default function Links({ width, onClick }: LinksProps) {
   const { t } = useTranslation("routes");
 
   return (
     <>
-      <LinkButton route="/video/create?next=request" width={width} />
-      <LinkButton route="/video/create?next=sub" width={width} />
+      <LinkButton
+        route="/video/create?next=request"
+        width={width}
+        onClick={onClick}
+      />
+      <LinkButton
+        route="/video/create?next=sub"
+        width={width}
+        onClick={onClick}
+      />
       <Menu>
         <MenuButton
           as={Button}
@@ -28,18 +37,18 @@ export default function Links({ width }: LinksProps) {
         </MenuButton>
         <MenuList>
           <Link href="/ranking/sub">
-            <MenuItem>{t("/ranking/sub")}</MenuItem>
+            <MenuItem onClick={onClick}>{t("/ranking/sub")}</MenuItem>
           </Link>
           <Link href="/ranking/user">
-            <MenuItem>{t("/ranking/user")}</MenuItem>
+            <MenuItem onClick={onClick}>{t("/ranking/user")}</MenuItem>
           </Link>
           <Link href="/ranking/video">
-            <MenuItem>{t("/ranking/video")}</MenuItem>
+            <MenuItem onClick={onClick}>{t("/ranking/video")}</MenuItem>
           </Link>
         </MenuList>
       </Menu>
-      <LinkButton route="/buy" width={width} />
-      <LinkButton route="/editor" width={width} />
+      <LinkButton route="/buy" width={width} onClick={onClick} />
+      <LinkButton route="/editor" width={width} onClick={onClick} />
     </>
   );
 }
@@ -47,9 +56,10 @@ export default function Links({ width }: LinksProps) {
 type LinkButtonProps = {
   route: string;
   width?: string;
+  onClick?: () => void;
 };
 
-function LinkButton({ route, width }: LinkButtonProps) {
+function LinkButton({ route, width, onClick }: LinkButtonProps) {
   const { t } = useTranslation("routes");
 
   return (
@@ -60,6 +70,7 @@ function LinkButton({ route, width }: LinkButtonProps) {
         flexDirection="column"
         alignItems="start"
         width={width}
+        onClick={onClick}
       >
         {t(`${route}`)}
       </Button>
