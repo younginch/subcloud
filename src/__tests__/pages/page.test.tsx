@@ -163,6 +163,6 @@ describe("Pages (user)", () => {
 
 describe("Pages (editor)", () => {
   it("renders Editor", () => {
-    render(<Editor />);
+    renderWithTheme(<Editor />);
   });
 });
