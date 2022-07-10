@@ -91,18 +91,20 @@ export default function TimeLine() {
   const subRulerColor = useColorModeValue("black", "white");
 
   const startTime = 0;
-  const endTime = 3000000;
+  const endTime = 1000 * 10;
+
   const currentBreakPoint = getBreakPoint(endTime - startTime);
-  const unitSize =
+  const unitSize = Math.round(
     (12000 * breakPointConfig[currentBreakPoint].unitTime) /
-    (endTime - startTime);
+      (endTime - startTime)
+  );
 
   const formatNumber = (mili: number) => {
     return dayjs.duration(mili).format("mm:ss:SSS").substring(0, 9);
   };
 
   const render = (ctx: CanvasRenderingContext2D) => {
-    ctx.fillStyle = "white";
+    ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
     let currentTime = startTime;
@@ -117,7 +119,9 @@ export default function TimeLine() {
       ctx.font = "34px Consolas";
       ctx.fillStyle = textColor;
       ctx.fillText(formatNumber(currentTime), x - 90, 38);
-      currentTime += breakPointConfig[currentBreakPoint].unitTime;
+      currentTime +=
+        breakPointConfig[currentBreakPoint].unitTime *
+        breakPointConfig[currentBreakPoint].num;
     }
     for (let x = 0; x < ctx.canvas.width; x += unitSize) {
       drawLine(
