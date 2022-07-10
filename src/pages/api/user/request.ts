@@ -39,7 +39,13 @@ async function RequestCreate({
       .status(400)
       .json({ error: SubErrorType.FormValidation, message: error.message });
   }
-  const { serviceId, videoId, lang } = value;
+  const { serviceId, videoId, lang, point } = value;
+  if (session?.user.point! < point) {
+    return res.status(400).json({
+      error: SubErrorType.InvalidRequest,
+      message: "Insufficient Point",
+    });
+  }
   const request = await prisma.request.findUnique({
     where: { serviceId_videoId_lang: { serviceId, videoId, lang } },
     include: { users: { where: { id: session?.user.id } } },
@@ -64,7 +70,7 @@ async function RequestCreate({
         },
       },
     });
-    updatePointAndResponse(value.point, session, res, updatedRequest);
+    updatePointAndResponse(point, session, res, updatedRequest);
     const finalRequest = await prisma.request.findUnique({
       where: { id: updatedRequest.id },
     });
@@ -77,7 +83,7 @@ async function RequestCreate({
       users: { connect: { id: session?.user?.id } },
     },
   });
-  updatePointAndResponse(value.point, session, res, createdRequest);
+  updatePointAndResponse(point, session, res, createdRequest);
   const finalRequest = await prisma.request.findUnique({
     where: { id: createdRequest.id },
   });
@@ -91,12 +97,6 @@ async function updatePointAndResponse(
   request: Request
 ): Promise<void> {
   if (requestedPoint !== 0) {
-    if (session?.user.point! < requestedPoint) {
-      return res.status(400).json({
-        error: SubErrorType.InvalidRequest,
-        message: "Insufficient Point",
-      });
-    }
     await prisma.user.update({
       where: { id: session?.user.id },
       data: { point: session?.user.point! - requestedPoint },
