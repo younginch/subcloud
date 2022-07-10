@@ -31,9 +31,9 @@ import TimeLine from "../components/editor/timeLine";
 
 dayjs.extend(duration);
 
-function miliToString(mili: number): string {
+function miliToString(second: number): string {
   return dayjs
-    .duration(mili * 1000)
+    .duration(second * 1000)
     .format("HH:mm:ss,SSS")
     .substring(0, 12);
 }
