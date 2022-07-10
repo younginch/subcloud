@@ -24,6 +24,22 @@ async function CreateRating({
       .status(400)
       .json({ error: SubErrorType.FormValidation, message: error.message });
   }
+  const sub = await prisma.sub.findUnique({
+    where: { id: value.subId },
+  });
+  if (!sub) {
+    return res
+      .status(400)
+      .json({ error: SubErrorType.FormValidation, message: "No sub" });
+  }
+  if (sub.userId === session?.user.id) {
+    return res
+      .status(400)
+      .json({
+        error: SubErrorType.FormValidation,
+        message: "Cannot rate own sub",
+      });
+  }
   const rating = await prisma.rating.findUnique({
     where: {
       subId_userId: {
@@ -41,6 +57,20 @@ async function CreateRating({
       sub: { connect: { id: value.subId } },
       score: value.score,
       comment: value.comment,
+    },
+  });
+  const notice = await prisma.notice.create({
+    data: {
+      type: "Review",
+      message: value.comment,
+      rating: { connect: { id: createdRating.id } },
+    },
+  });
+  await prisma.notification.create({
+    data: {
+      userId: sub.userId,
+      noticeId: notice.id,
+      checked: false,
     },
   });
   return res.status(201).json(createdRating);
