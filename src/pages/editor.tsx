@@ -35,6 +35,7 @@ import YoutubeWithSub from "../components/editor/contentItem";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useRouter } from "next/router";
 import TimeLineContainer from "../components/editor/timeLineContainer";
+import SelectTheme from "../components/footer/selectTheme";
 
 dayjs.extend(duration);
 
@@ -253,18 +254,21 @@ function EditorWithoutContext() {
             </HStack>
           );
         })}
-        <Button
-          onClick={() => {
-            const newItem = new SRTContent(
-              contents.length.toString(),
-              "00:00:00,000 --> 00:00:00,000",
-              []
-            );
-            setContents((prevContents) => [...prevContents, newItem]);
-          }}
-        >
-          자막 추가
-        </Button>
+        <HStack>
+          <Button
+            onClick={() => {
+              const newItem = new SRTContent(
+                contents.length.toString(),
+                "00:00:00,000 --> 00:00:00,000",
+                []
+              );
+              setContents((prevContents) => [...prevContents, newItem]);
+            }}
+          >
+            자막 추가
+          </Button>
+          <SelectTheme isLarge={true} />
+        </HStack>
       </ReflexElement>
     </ReflexContainer>
   );
