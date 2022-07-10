@@ -1,9 +1,7 @@
-import { useColorModeValue } from "@chakra-ui/react";
+import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { number } from "joi";
 import { useContext, useEffect, useRef } from "react";
-import { RiArchiveDrawerLine } from "react-icons/ri";
-import { TimeLineContext } from "../../pages/editor";
+import { EditorContext } from "../../pages/editor";
 
 const breakPointConfig = [
   {
@@ -88,6 +86,7 @@ function getBreakPoint(intervalSize: number) {
 
 export default function TimeLine() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { colorMode } = useColorMode();
 
   const canvasHeight = 80;
   const canvasWidth = 12000;
@@ -101,7 +100,7 @@ export default function TimeLine() {
   const mainRulerColor = useColorModeValue("black", "white");
   const subRulerColor = useColorModeValue("black", "white");
 
-  const { leftTime, rightTime, changeLRTime } = useContext(TimeLineContext);
+  const { leftTime, rightTime } = useContext(EditorContext);
 
   const currentBreakPoint = getBreakPoint(rightTime - leftTime);
   const config = breakPointConfig[currentBreakPoint];
@@ -153,18 +152,17 @@ export default function TimeLine() {
     );
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      const ctx = canvasRef.current?.getContext("2d", { alpha: false });
-      if (ctx) render(ctx);
-    };
-    window.addEventListener("resize", handleResize);
-  }, []);
+  const handleResize = () => {
+    const ctx = canvasRef.current?.getContext("2d", { alpha: false });
+    if (ctx) render(ctx);
+  };
 
   useEffect(() => {
     const ctx = canvasRef.current?.getContext("2d", { alpha: false });
     if (ctx) render(ctx);
-  }, [leftTime, rightTime]);
+    window.addEventListener("resize", handleResize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [colorMode, leftTime, rightTime]);
 
   return (
     <canvas
