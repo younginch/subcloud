@@ -5,6 +5,7 @@ import { useContext, useEffect, useRef } from "react";
 import { RiArchiveDrawerLine } from "react-icons/ri";
 import { TimeLineContext } from "../../pages/editor";
 
+/*
 const breakPointConfig = [
   {
     num: 5,
@@ -44,6 +45,55 @@ const breakPointConfig = [
   {
     num: 10,
     unitTime: 48,
+    unitPx: 40,
+  },
+];
+*/
+
+const breakPointConfig = [
+  {
+    num: 5,
+    unitTime: 12000,
+    unitPx: 40,
+  },
+  {
+    num: 5,
+    unitTime: 6000,
+    unitPx: 40,
+  },
+  {
+    num: 5,
+    unitTime: 3000,
+    unitPx: 40,
+  },
+  {
+    num: 5,
+    unitTime: 1500,
+    unitPx: 40,
+  },
+  {
+    num: 10,
+    unitTime: 750,
+    unitPx: 40,
+  },
+  {
+    num: 5,
+    unitTime: 300,
+    unitPx: 40,
+  },
+  {
+    num: 10,
+    unitTime: 150,
+    unitPx: 40,
+  },
+  {
+    num: 5,
+    unitTime: 60,
+    unitPx: 40,
+  },
+  {
+    num: 10,
+    unitTime: 30,
     unitPx: 40,
   },
 ];
