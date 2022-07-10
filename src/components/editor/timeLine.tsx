@@ -1,44 +1,50 @@
 import { useColorModeValue } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { number } from "joi";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { RiArchiveDrawerLine } from "react-icons/ri";
+import { TimeLineContext } from "../../pages/editor";
 
 const breakPointConfig = [
   {
     num: 5,
     unitTime: 12000,
-    unitPx: 35,
+    unitPx: 40,
   },
   {
     num: 10,
     unitTime: 6000,
-    unitPx: 35,
+    unitPx: 40,
   },
   {
     num: 5,
     unitTime: 2400,
-    unitPx: 35,
+    unitPx: 40,
   },
   {
     num: 10,
     unitTime: 1200,
-    unitPx: 35,
+    unitPx: 40,
   },
   {
     num: 5,
     unitTime: 480,
-    unitPx: 35,
+    unitPx: 40,
   },
   {
     num: 10,
     unitTime: 240,
-    unitPx: 35,
+    unitPx: 40,
   },
   {
     num: 5,
     unitTime: 96,
-    unitPx: 35,
+    unitPx: 40,
+  },
+  {
+    num: 10,
+    unitTime: 48,
+    unitPx: 40,
   },
 ];
 
@@ -90,48 +96,49 @@ export default function TimeLine() {
   const mainRulerColor = useColorModeValue("black", "white");
   const subRulerColor = useColorModeValue("black", "white");
 
-  const startTime = 0;
-  const endTime = 1000 * 10;
+  const { leftTime, rightTime, changeLRTime } = useContext(TimeLineContext);
 
-  const currentBreakPoint = getBreakPoint(endTime - startTime);
-  const unitSize = Math.round(
-    (12000 * breakPointConfig[currentBreakPoint].unitTime) /
-      (endTime - startTime)
-  );
-
+  const currentBreakPoint = getBreakPoint(rightTime - leftTime);
+  const config = breakPointConfig[currentBreakPoint];
+  const unitSize = (canvasWidth * config.unitTime) / (rightTime - leftTime);
   const formatNumber = (mili: number) => {
     return dayjs.duration(mili).format("mm:ss:SSS").substring(0, 9);
   };
 
   const render = (ctx: CanvasRenderingContext2D) => {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-    let currentTime = startTime;
-    for (let x = 0; x < ctx.canvas.width; x += unitSize * 5) {
-      drawLine(
-        ctx,
-        [x, canvasHeight - mainRulerHeight],
-        [x, canvasHeight],
-        mainRulerColor,
-        mainRulerWidth
-      );
+    for (
+      let i = Math.ceil(leftTime / config.unitTime);
+      i <= Math.round(rightTime / config.unitTime);
+      i++
+    ) {
+      const x = ((i * config.unitTime - leftTime) * unitSize) / config.unitTime;
+
       ctx.font = "34px Consolas";
       ctx.fillStyle = textColor;
-      ctx.fillText(formatNumber(currentTime), x - 90, 38);
-      currentTime +=
-        breakPointConfig[currentBreakPoint].unitTime *
-        breakPointConfig[currentBreakPoint].num;
+      if (i % config.num == 0) {
+        ctx.fillText(formatNumber(i * config.unitTime), x - 90, 38);
+        drawLine(
+          ctx,
+          [x, canvasHeight - mainRulerHeight],
+          [x, canvasHeight],
+          mainRulerColor,
+          mainRulerWidth
+        );
+      } else {
+        drawLine(
+          ctx,
+          [x, canvasHeight - subRulerHeight],
+          [x, canvasHeight],
+          subRulerColor,
+          subRulerWidth
+        );
+      }
     }
-    for (let x = 0; x < ctx.canvas.width; x += unitSize) {
-      drawLine(
-        ctx,
-        [x, canvasHeight - subRulerHeight],
-        [x, canvasHeight],
-        subRulerColor,
-        subRulerWidth
-      );
-    }
+
     drawLine(
       ctx,
       [0, canvasHeight],
@@ -144,12 +151,15 @@ export default function TimeLine() {
   useEffect(() => {
     const handleResize = () => {
       const ctx = canvasRef.current?.getContext("2d", { alpha: false });
-      if (!ctx) return;
-      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-      render(ctx);
+      if (ctx) render(ctx);
     };
     window.addEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    const ctx = canvasRef.current?.getContext("2d", { alpha: false });
+    if (ctx) render(ctx);
+  }, [leftTime, rightTime]);
 
   return (
     <canvas
