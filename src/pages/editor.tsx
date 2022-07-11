@@ -36,6 +36,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { useRouter } from "next/router";
 import TimeLineContainer from "../components/editor/timeLineContainer";
 import SelectTheme from "../components/footer/selectTheme";
+import { YouTubePlayer } from "react-youtube";
 
 dayjs.extend(duration);
 
@@ -61,6 +62,9 @@ type EditorContextProps = {
   setContents: (
     newContentsFromPrev: (prevContents: SRTContent[]) => SRTContent[]
   ) => void;
+  setPlayer: (player: YouTubePlayer) => void;
+  getPlayerTime: () => number;
+  setPlayerTime: (time: number) => void;
 };
 
 export const EditorContext = createContext<EditorContextProps>({
@@ -69,6 +73,9 @@ export const EditorContext = createContext<EditorContextProps>({
   changeLRTime: (_, __) => {},
   contents: [],
   setContents: (_) => {},
+  setPlayer: () => {},
+  getPlayerTime: () => 0,
+  setPlayerTime: (_) => {},
 });
 
 type EditorProviderProps = {
@@ -79,6 +86,7 @@ function EditorProvider({ children }: EditorProviderProps) {
   const [leftTime, setLeftTime] = useState<number>(0);
   const [rightTime, setRightTime] = useState<number>(1000 * 10);
   const [contents, setContents] = useState<contentArray[]>([]);
+  const [player, setPlayer] = useState<YouTubePlayer>();
 
   return (
     <EditorContext.Provider
@@ -96,6 +104,15 @@ function EditorProvider({ children }: EditorProviderProps) {
               (content: any) => ({ uuid: uuidv4(), content })
             )
           );
+        },
+        setPlayer: (newPlayer) => {
+          setPlayer(newPlayer);
+        },
+        getPlayerTime: () => {
+          return player?.getDuration();
+        },
+        setPlayerTime: (time) => {
+          player?.seekTo(time);
         },
       }}
     >
