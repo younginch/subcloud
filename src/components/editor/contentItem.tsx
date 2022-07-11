@@ -1,4 +1,4 @@
-import { useInterval, Box, useToast } from "@chakra-ui/react";
+import { useInterval, Box, useToast, Stack } from "@chakra-ui/react";
 import { SRTContent } from "@younginch/subtitle";
 import { useContext, useRef, useState } from "react";
 import YouTube, { YouTubeEvent, YouTubeProps } from "react-youtube";
@@ -114,15 +114,23 @@ export default function YoutubeWithSub({
   };
 
   return (
-    <Box h="100%" ref={boxRef} style={{ aspectRatio: "16/9" }}>
-      <SubtitleComponent element={boxRef.current} textArray={textArray} />
-      <YouTube
-        videoId={youtubeId}
-        opts={opts}
-        className="youtubeContainer"
-        onReady={(event) => setPlayer(event.target)}
-        onError={onPlayerError}
-      />
-    </Box>
+    <Stack w="100%" h="100%" alignItems="center">
+      <Box
+        h="100%"
+        maxH="100%"
+        maxW="100%"
+        ref={boxRef}
+        style={{ aspectRatio: "16/9" }}
+      >
+        <SubtitleComponent element={boxRef.current} textArray={textArray} />
+        <YouTube
+          videoId={youtubeId}
+          opts={opts}
+          className="youtubeContainer"
+          onReady={(event) => setPlayer(event.target)}
+          onError={onPlayerError}
+        />
+      </Box>
+    </Stack>
   );
 }
