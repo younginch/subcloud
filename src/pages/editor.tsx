@@ -4,7 +4,6 @@ import "react-reflex/styles.css";
 import {
   Box,
   Button,
-  Divider,
   Editable,
   EditableInput,
   EditablePreview,
@@ -17,14 +16,12 @@ import {
   Stack,
   Text,
   Textarea,
-  useColorMode,
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
 import {
   createContext,
   FormEvent,
-  SetStateAction,
   useCallback,
   useContext,
   useState,
@@ -36,11 +33,10 @@ import { useDropzone } from "react-dropzone";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { v4 as uuidv4 } from "uuid";
 import Shortcuts from "../components/editor/shortcuts";
-import YoutubeWithSub from "../components/editor/contentItem";
+import YoutubeWithSub from "../components/editor/youtubeWithSub";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useRouter } from "next/router";
 import TimeLineContainer from "../components/editor/timeLineContainer";
-import SelectTheme from "../components/footer/selectTheme";
 import { YouTubePlayer } from "react-youtube";
 import ToggleTheme from "../components/editor/toggleTheme";
 import { MdDelete, MdTimer } from "react-icons/md";
@@ -70,6 +66,8 @@ type EditorContextProps = {
   setContents: (
     newContentsFromPrev: (prevContents: SRTContent[]) => SRTContent[]
   ) => void;
+  id: string;
+  setId: (id: string) => void;
   setPlayer: (player: YouTubePlayer) => void;
   getPlayerTime: () => number;
   setPlayerTime: (time: number) => void;
@@ -81,6 +79,8 @@ export const EditorContext = createContext<EditorContextProps>({
   changeLRTime: (_, __) => {},
   contents: [],
   setContents: (_) => {},
+  id: "",
+  setId: (_) => {},
   setPlayer: () => {},
   getPlayerTime: () => 0,
   setPlayerTime: (_) => {},
@@ -94,6 +94,7 @@ function EditorProvider({ children }: EditorProviderProps) {
   const [leftTime, setLeftTime] = useState<number>(0);
   const [rightTime, setRightTime] = useState<number>(1000 * 10);
   const [contents, setContents] = useState<contentArray[]>([]);
+  const [id, setId] = useState<string>("");
   const [player, setPlayer] = useState<YouTubePlayer>();
 
   return (
@@ -112,6 +113,10 @@ function EditorProvider({ children }: EditorProviderProps) {
               (content: any) => ({ uuid: uuidv4(), content })
             )
           );
+        },
+        id,
+        setId: (newId) => {
+          setId(newId);
         },
         setPlayer: (newPlayer) => {
           setPlayer(newPlayer);
@@ -132,10 +137,9 @@ function EditorProvider({ children }: EditorProviderProps) {
 function EditorWithoutContext() {
   const router = useRouter();
   const toast = useToast();
-  const [youtubeId, setYoutubeId] = useState(router.query.youtubeId as string);
   const [urlInput, setUrlInput] = useState("");
 
-  const { contents, setContents } = useContext(EditorContext);
+  const { contents, setContents, id, setId } = useContext(EditorContext);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -173,10 +177,7 @@ function EditorWithoutContext() {
       <ReflexElement minSize={100}>
         <ReflexContainer orientation="vertical">
           <ReflexElement minSize={600}>
-            <YoutubeWithSub
-              youtubeId={youtubeId}
-              contents={contents.map((item) => item.content)}
-            />
+            <YoutubeWithSub id={id} />
           </ReflexElement>
           <ReflexSplitter propagate={true} />
           <ReflexElement minSize={200} maxSize={400}>
@@ -234,7 +235,12 @@ function EditorWithoutContext() {
                     if (!id) {
                       throw new Error("");
                     }
-                    setYoutubeId(id);
+                    setId(id);
+                    toast({
+                      title: "동영상 변경 완료",
+                      description: "동영상이 변경되었습니다",
+                      status: "success",
+                    });
                   } catch {
                     toast({
                       title: "Error (URL)",
