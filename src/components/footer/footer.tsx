@@ -84,7 +84,7 @@ function SiteMap() {
           <Text fontSize="xs">{t("representative")}</Text>
           <Text fontSize="xs">
             {t("business_address")} <br></br>
-            {t("Byeollae-dong")}
+            {t("business_address_end")}
           </Text>
           <Text fontSize="xs">{t("tel")}</Text>
         </Stack>
