@@ -70,7 +70,7 @@ type PointCardProps = {
 };
 
 export default function Buy() {
-  const { t } = useTranslation("menu");
+  const { t } = useTranslation("goods");
   const toast = useToast();
   const [tossPayments, setTossPayments] = useState<any>();
   const { data } = useSession();

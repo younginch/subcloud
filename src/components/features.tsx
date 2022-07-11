@@ -47,7 +47,7 @@ const features: IFeature[] = [
 ];
 
 export default function Features() {
-  const { t } = useTranslation("menu");
+  const { t } = useTranslation("landing");
   return (
     <Container maxW="6xl" p={{ base: 5, md: 10 }}>
       <Heading
