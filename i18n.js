@@ -12,6 +12,7 @@ module.exports = {
       "publicProfile",
       "qna",
       "rankings",
+      "requestSub",
     ],
     "/": ["common"],
   },
