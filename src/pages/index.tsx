@@ -23,7 +23,7 @@ import useTranslation from "next-translate/useTranslation";
 import Features from "../components/features";
 
 export default function Home() {
-  const { t } = useTranslation("menu");
+  const { t } = useTranslation("landing");
   return (
     <Box
       backgroundImage={useColorModeValue(

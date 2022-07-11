@@ -4,6 +4,8 @@ module.exports = {
   pages: {
     "*": [
       "common",
+      "landing",
+      "goods",
       "routes",
       "menu",
       "privateProfile",
