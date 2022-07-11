@@ -3,11 +3,13 @@ import { contentArray, EditorContext } from "../../pages/editor";
 import TimeLine from "./timeLine";
 import { Box, Text } from "@chakra-ui/react";
 import TimeLineBoxes from "./timeLineBoxes";
+import Draggable from "react-draggable";
 
 export default function TimeLineContainer() {
   const { leftTime, rightTime, changeLRTime } = useContext(EditorContext);
 
   const handleScroll = (e: WheelEvent<HTMLDivElement>) => {
+    e.preventDefault();
     const fixedPos = e.screenX + 2000;
     const fixedTime = (fixedPos / 6000) * (rightTime - leftTime) + leftTime;
     let newInterval;
@@ -23,16 +25,18 @@ export default function TimeLineContainer() {
   };
 
   return (
-    <Box
-      h="100%"
-      w="6000px"
-      left="-2000px"
-      position="relative"
-      overflow="hidden"
-      onWheel={handleScroll}
-    >
-      <TimeLine />
-      <TimeLineBoxes contents={[]} />
-    </Box>
+    <Draggable axis="x">
+      <Box
+        h="100%"
+        w="6000px"
+        left="-2000px"
+        position="relative"
+        overflow="hidden"
+        onWheel={handleScroll}
+      >
+        <TimeLine />
+        <TimeLineBoxes />
+      </Box>
+    </Draggable>
   );
 }

@@ -1,24 +1,14 @@
 import { Box, Text } from "@chakra-ui/react";
-import { SRTContent } from "@younginch/subtitle";
 import { useContext } from "react";
 import { EditorContext } from "../../pages/editor";
 
-type contentArray = {
-  uuid: string;
-  content: SRTContent;
-};
-
-type TimelineBoxesProps = {
-  contents: contentArray[];
-};
-
-export default function TimeLineBoxes({ contents }: TimelineBoxesProps) {
-  const { leftTime, rightTime } = useContext(EditorContext);
+export default function TimeLineBoxes() {
+  const { contents } = useContext(EditorContext);
 
   return (
     <Box w="100%" position="absolute" mt="50px" zIndex={10}>
       {contents.map((item) => (
-        <Box key={item.uuid}>
+        <Box key={item.uuid} left={2000}>
           <Text>{item.content.toText()}</Text>
         </Box>
       ))}
