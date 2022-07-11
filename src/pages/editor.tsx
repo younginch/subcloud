@@ -71,6 +71,7 @@ type EditorContextProps = {
   setPlayer: (player: YouTubePlayer) => void;
   getPlayerTime: () => number;
   setPlayerTime: (time: number) => void;
+  getVideoFraction: () => number;
 };
 
 export const EditorContext = createContext<EditorContextProps>({
@@ -84,6 +85,7 @@ export const EditorContext = createContext<EditorContextProps>({
   setPlayer: () => {},
   getPlayerTime: () => 0,
   setPlayerTime: (_) => {},
+  getVideoFraction: () => 0,
 });
 
 type EditorProviderProps = {
@@ -126,6 +128,9 @@ function EditorProvider({ children }: EditorProviderProps) {
         },
         setPlayerTime: (time) => {
           player?.seekTo(time);
+        },
+        getVideoFraction: () => {
+          return player?.getVideoLoadedFraction();
         },
       }}
     >
@@ -379,7 +384,10 @@ function EditorWithoutContext() {
                   </Stack>
                   <Textarea
                     noOfLines={2}
-                    value={value.content.toText()}
+                    value={value.content.textArray.reduce(
+                      (acc, cur) => `${acc} \r\n${cur}`,
+                      ""
+                    )}
                     onChange={(event: any) => {
                       contents[index].content.textArray =
                         event.target.value.split("\n");
