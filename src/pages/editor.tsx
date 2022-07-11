@@ -176,10 +176,6 @@ function EditorWithoutContext() {
     >
       <ReflexElement minSize={100}>
         <ReflexContainer orientation="vertical">
-          <ReflexElement minSize={600}>
-            <YoutubeWithSub id={id} />
-          </ReflexElement>
-          <ReflexSplitter propagate={true} />
           <ReflexElement minSize={200} maxSize={400}>
             <Stack>
               <Heading
@@ -268,6 +264,14 @@ function EditorWithoutContext() {
                 </Stack>
               </form>
             </Stack>
+          </ReflexElement>
+          <ReflexSplitter propagate={true} />
+          <ReflexElement
+            minSize={600}
+            style={{ overflow: "hidden" }}
+            size={1000}
+          >
+            <YoutubeWithSub id={id} />
           </ReflexElement>
           <ReflexSplitter propagate={true} />
           <ReflexElement minSize={300}>
