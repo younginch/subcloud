@@ -4,16 +4,20 @@ import "react-reflex/styles.css";
 import {
   Box,
   Button,
+  Divider,
   Editable,
   EditableInput,
   EditablePreview,
   FormControl,
+  Heading,
   HStack,
   IconButton,
   Input,
   Stack,
   Text,
   Textarea,
+  useColorMode,
+  useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
 import {
@@ -163,128 +167,194 @@ function EditorWithoutContext() {
       orientation="horizontal"
     >
       <ReflexElement minSize={100}>
-        <HStack h="100%" w="100%">
-          <YoutubeWithSub
-            youtubeId={youtubeId}
-            contents={contents.map((item) => item.content)}
-          />
-          <Stack>
-            <Box
-              maxW="200px"
-              maxH="100px"
-              borderWidth="1px"
-              borderRadius="6px"
-              m={6}
-              {...getRootProps()}
+        <ReflexContainer
+          style={{ width: "100%", minHeight: "100px" }}
+          orientation="vertical"
+        >
+          <ReflexElement minSize={500} style={{ width: "calc(100vw - 800px)" }}>
+            <YoutubeWithSub
+              youtubeId={youtubeId}
+              contents={contents.map((item) => item.content)}
+            />
+          </ReflexElement>
+          <ReflexSplitter propagate={true} />
+          <ReflexElement minSize={250} size={400}>
+            <Stack>
+              <Heading
+                fontSize="lg"
+                bg={useColorModeValue("gray.100", "gray.700")}
+                w="100%"
+                borderBottomWidth="2px"
+                p="5px"
+                textAlign="center"
+              >
+                자막 업로드 및 내보내기
+              </Heading>
+              <Stack p="10px" mt="0px !important" spacing="10px">
+                <Box
+                  h="100px"
+                  borderWidth="1px"
+                  borderRadius="6px"
+                  {...getRootProps()}
+                  bg={useColorModeValue(
+                    isDragActive ? "blue.100" : "blue.50",
+                    isDragActive ? "blue.800" : "blue.900"
+                  )}
+                  p="15px"
+                >
+                  <input {...getInputProps()} />
+                  {isDragActive ? (
+                    <p>파일을 여기에 놓으세요</p>
+                  ) : (
+                    <p>클릭하거나 드래그 앤 드롭으로 자막을 업로드 하세요</p>
+                  )}
+                </Box>
+                <Button onClick={downloadSRT} colorScheme="blue">
+                  Save to SRT
+                </Button>
+              </Stack>
+              <Heading
+                fontSize="lg"
+                bg={useColorModeValue("gray.100", "gray.700")}
+                w="100%"
+                borderBottomWidth="2px"
+                borderTopWidth="2px"
+                p="5px"
+                textAlign="center"
+              >
+                동영상 변경
+              </Heading>
+              <form
+                onSubmit={(event: FormEvent) => {
+                  event.preventDefault();
+                  try {
+                    const id = new URL(urlInput).searchParams.get("v");
+                    if (!id) {
+                      throw new Error("");
+                    }
+                    setYoutubeId(id);
+                  } catch {
+                    toast({
+                      title: "Error (URL)",
+                      description: "Invalid URL",
+                      status: "error",
+                    });
+                  }
+                }}
+              >
+                <Stack p="10px" spacing="10px">
+                  <FormControl>
+                    <Input
+                      type="url"
+                      id="url"
+                      value={urlInput}
+                      onChange={(event: any) => {
+                        setUrlInput(event.target.value);
+                      }}
+                      placeholder="변경할 url 입력"
+                    />
+                  </FormControl>
+                  <Button type="submit" colorScheme="blue">
+                    변경
+                  </Button>
+                </Stack>
+              </form>
+            </Stack>
+          </ReflexElement>
+          <ReflexSplitter propagate={true} />
+          <ReflexElement minSize={350} size={400}>
+            <Shortcuts />
+          </ReflexElement>
+        </ReflexContainer>
+      </ReflexElement>
+      <ReflexSplitter propagate={true} />
+      <ReflexElement minSize={120} size={120} maxSize={200}>
+        <TimeLineContainer />
+      </ReflexElement>
+      <ReflexSplitter propagate={true} />
+      <ReflexElement className="right-pane" size={400}>
+        <HStack maxH="100%" h="100%">
+          <Stack
+            h="100%"
+            w="180px"
+            bg={useColorModeValue("gray.100", "gray.700")}
+            p="20px"
+            alignItems="center"
+            spacing="20px"
+          >
+            <Button
+              onClick={() => {
+                const newItem = new SRTContent(
+                  contents.length.toString(),
+                  "00:00:00,000 --> 00:00:00,000",
+                  []
+                );
+                setContents((prevContents) => [...prevContents, newItem]);
+              }}
+              colorScheme="blue"
             >
-              <input {...getInputProps()} />
-              {isDragActive ? (
-                <p>Drop the files here ...</p>
-              ) : (
-                <p>
-                  Drag &apos;n&apos; drop some files here, or click to select
-                  files
-                </p>
-              )}
-            </Box>
-            <Button onClick={downloadSRT}>Save to SRT</Button>
+              자막 추가
+            </Button>
             <Button
               onClick={() => {
                 setContents(() => []);
               }}
+              colorScheme="blue"
             >
               Delete all
             </Button>
-            <form
-              onSubmit={(event: FormEvent) => {
-                event.preventDefault();
-                try {
-                  const id = new URL(urlInput).searchParams.get("v");
-                  if (!id) {
-                    throw new Error("");
-                  }
-                  setYoutubeId(id);
-                } catch {
-                  toast({
-                    title: "Error (URL)",
-                    description: "Invalid URL",
-                    status: "error",
-                  });
-                }
-              }}
-            >
-              <FormControl>
-                <Input
-                  type="url"
-                  id="url"
-                  value={urlInput}
-                  onChange={(event: any) => {
-                    setUrlInput(event.target.value);
-                  }}
-                />
-              </FormControl>
-              <Button type="submit">변경</Button>
-            </form>
+            <SelectTheme isLarge={true} />
           </Stack>
-          <Shortcuts />
-        </HStack>
-      </ReflexElement>
-      <ReflexSplitter />
-      <ReflexElement minSize={120} size={120}>
-        <TimeLineContainer />
-      </ReflexElement>
-      <ReflexSplitter />
-      <ReflexElement className="right-pane">
-        {contents.map((value, index) => {
-          return (
-            <HStack key={value.uuid}>
-              <Text>{index + 1}</Text>
-              <Stack w="170px">
-                <Editable defaultValue={miliToString(value.content.startTime!)}>
-                  <EditablePreview />
-                  <EditableInput />
-                </Editable>
-                <Editable defaultValue={miliToString(value.content.endTime!)}>
-                  <EditablePreview />
-                  <EditableInput />
-                </Editable>
-              </Stack>
-              <Textarea
-                noOfLines={2}
-                value={value.content.toText()}
-                onChange={(event: any) => {
-                  contents[index].content.textArray =
-                    event.target.value.split("\n");
-                  setContents((prev: SRTContent[]): SRTContent[] => [...prev]);
-                }}
-              />
-              <IconButton
-                aria-label="Delete subtitle"
-                icon={<DeleteIcon />}
-                onClick={() => {
-                  setContents((prevContents: any) => [
-                    ...prevContents.slice(0, index),
-                    ...prevContents.slice(index + 1),
-                  ]);
-                }}
-              />
-            </HStack>
-          );
-        })}
-        <HStack>
-          <Button
-            onClick={() => {
-              const newItem = new SRTContent(
-                contents.length.toString(),
-                "00:00:00,000 --> 00:00:00,000",
-                []
-              );
-              setContents((prevContents) => [...prevContents, newItem]);
-            }}
+          <Stack
+            h="100%"
+            maxH="100%"
+            overflowY="scroll"
+            overflowX="hidden"
+            w="full"
           >
-            자막 추가
-          </Button>
-          <SelectTheme isLarge={true} />
+            {contents.map((value, index) => {
+              return (
+                <HStack key={value.uuid}>
+                  <Text>{index + 1}</Text>
+                  <Stack w="170px">
+                    <Editable
+                      defaultValue={miliToString(value.content.startTime!)}
+                    >
+                      <EditablePreview />
+                      <EditableInput />
+                    </Editable>
+                    <Editable
+                      defaultValue={miliToString(value.content.endTime!)}
+                    >
+                      <EditablePreview />
+                      <EditableInput />
+                    </Editable>
+                  </Stack>
+                  <Textarea
+                    noOfLines={2}
+                    value={value.content.toText()}
+                    onChange={(event: any) => {
+                      contents[index].content.textArray =
+                        event.target.value.split("\n");
+                      setContents((prev: SRTContent[]): SRTContent[] => [
+                        ...prev,
+                      ]);
+                    }}
+                  />
+                  <IconButton
+                    aria-label="Delete subtitle"
+                    icon={<DeleteIcon />}
+                    onClick={() => {
+                      setContents((prevContents: any) => [
+                        ...prevContents.slice(0, index),
+                        ...prevContents.slice(index + 1),
+                      ]);
+                    }}
+                  />
+                </HStack>
+              );
+            })}
+          </Stack>
         </HStack>
       </ReflexElement>
     </ReflexContainer>

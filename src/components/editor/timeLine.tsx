@@ -95,7 +95,7 @@ export default function TimeLine() {
   const subRulerHeight = 18;
   const subRulerWidth = 3;
 
-  const bgColor = useColorModeValue("white", "black");
+  const bgColor = useColorModeValue("#dddddd", "black");
   const textColor = useColorModeValue("black", "white");
   const mainRulerColor = useColorModeValue("black", "white");
   const subRulerColor = useColorModeValue("black", "white");
