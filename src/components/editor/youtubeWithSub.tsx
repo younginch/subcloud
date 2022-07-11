@@ -1,6 +1,5 @@
 import { useInterval, Box, useToast, Stack } from "@chakra-ui/react";
-import { SRTContent } from "@younginch/subtitle";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import YouTube, { YouTubeEvent, YouTubeProps } from "react-youtube";
 import { v4 as uuidv4 } from "uuid";
 import { EditorContext } from "../../pages/editor";
@@ -66,19 +65,13 @@ function SubtitleComponent({ element, textArray }: SubtitleComponentProps) {
   );
 }
 
-type YoutubeWithSubProps = {
-  youtubeId?: string;
-  contents: SRTContent[];
-};
-
-export default function YoutubeWithSub({
-  youtubeId,
-  contents,
-}: YoutubeWithSubProps) {
+export default function YoutubeWithSub({ id }: { id: string }) {
   const { setPlayer, getPlayerTime } = useContext(EditorContext);
   const toast = useToast();
   const boxRef = useRef<HTMLDivElement>(null);
   const [textArray, setTextArray] = useState<string[]>([]);
+
+  const { contents } = useContext(EditorContext);
 
   const intervalSub = () => {
     const currentTime = getPlayerTime();
@@ -88,10 +81,10 @@ export default function YoutubeWithSub({
 
     for (let i = 0; i < contents.length; i++) {
       if (
-        contents[i].startTime <= currentTime &&
-        currentTime <= contents[i].endTime
+        contents[i].content.startTime <= currentTime &&
+        currentTime <= contents[i].content.endTime
       ) {
-        setTextArray(contents[i].textArray);
+        setTextArray(contents[i].content.textArray);
         return;
       }
     }
@@ -124,7 +117,7 @@ export default function YoutubeWithSub({
       >
         <SubtitleComponent element={boxRef.current} textArray={textArray} />
         <YouTube
-          videoId={youtubeId}
+          videoId={id}
           opts={opts}
           className="youtubeContainer"
           onReady={(event) => setPlayer(event.target)}
