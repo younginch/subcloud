@@ -1,12 +1,9 @@
 import { useInterval, Box, useToast } from "@chakra-ui/react";
 import { SRTContent } from "@younginch/subtitle";
-import { useRef, useState } from "react";
-import YouTube, {
-  YouTubeEvent,
-  YouTubePlayer,
-  YouTubeProps,
-} from "react-youtube";
+import { useContext, useRef, useState } from "react";
+import YouTube, { YouTubeEvent, YouTubeProps } from "react-youtube";
 import { v4 as uuidv4 } from "uuid";
+import { EditorContext } from "../../pages/editor";
 
 function calculateLayout(sliderValue: number): [number, number] | undefined {
   const outerVideo = document.querySelector(".youtubeContainer") as HTMLElement;
@@ -78,13 +75,13 @@ export default function YoutubeWithSub({
   youtubeId,
   contents,
 }: YoutubeWithSubProps) {
+  const { setPlayer, getPlayerTime } = useContext(EditorContext);
   const toast = useToast();
   const boxRef = useRef<HTMLDivElement>(null);
-  const [player, setPlayer] = useState<YouTubePlayer>();
   const [textArray, setTextArray] = useState<string[]>([]);
 
   const intervalSub = () => {
-    const currentTime = player?.getCurrentTime();
+    const currentTime = getPlayerTime();
     if (!currentTime) {
       return;
     }
