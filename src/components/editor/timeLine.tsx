@@ -100,7 +100,7 @@ export default function TimeLine() {
   const mainRulerColor = useColorModeValue("black", "white");
   const subRulerColor = useColorModeValue("black", "white");
 
-  const { leftTime, rightTime } = useContext(EditorContext);
+  const { leftTime, rightTime, getVideoFraction } = useContext(EditorContext);
 
   const currentBreakPoint = getBreakPoint(rightTime - leftTime);
   const config = breakPointConfig[currentBreakPoint];
@@ -108,6 +108,8 @@ export default function TimeLine() {
   const formatNumber = (mili: number) => {
     return dayjs.duration(mili).format("mm:ss:SSS").substring(0, 9);
   };
+
+  console.log("hi", getVideoFraction());
 
   const render = (ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
