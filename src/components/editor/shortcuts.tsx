@@ -28,20 +28,20 @@ const shortcutsData = [
 
 export default function Shortcuts() {
   return (
-    <TableContainer>
+    <TableContainer h="full" overflowX="hidden">
       <Table variant="simple">
         <TableCaption>Imperial to metric conversion factors</TableCaption>
         <Thead>
           <Tr>
-            <Th>Action</Th>
-            <Th>Shortcut</Th>
+            <Th p="8px 10px 8px 10px">Action</Th>
+            <Th p="8px 10px 8px 10px">Shortcut</Th>
           </Tr>
         </Thead>
         <Tbody>
           {shortcutsData.map(({ action, keys }, index) => (
             <Tr key={index}>
-              <Td>{action}</Td>
-              <Td>
+              <Td p="8px 10px 8px 10px">{action}</Td>
+              <Td p="8px 10px 8px 10px">
                 {keys.map((key, index) => (
                   <Kbd key={index} me={1}>
                     {key}
