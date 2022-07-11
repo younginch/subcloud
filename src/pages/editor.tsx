@@ -13,6 +13,7 @@ import {
   HStack,
   IconButton,
   Input,
+  Spacer,
   Stack,
   Text,
   Textarea,
@@ -41,6 +42,9 @@ import { useRouter } from "next/router";
 import TimeLineContainer from "../components/editor/timeLineContainer";
 import SelectTheme from "../components/footer/selectTheme";
 import { YouTubePlayer } from "react-youtube";
+import ToggleTheme from "../components/editor/toggleTheme";
+import { MdDelete, MdTimer } from "react-icons/md";
+import { FaPlus, FaSave } from "react-icons/fa";
 
 dayjs.extend(duration);
 
@@ -167,28 +171,25 @@ function EditorWithoutContext() {
       orientation="horizontal"
     >
       <ReflexElement minSize={100}>
-        <ReflexContainer
-          style={{ width: "100%", minHeight: "100px" }}
-          orientation="vertical"
-        >
-          <ReflexElement minSize={500} style={{ width: "calc(100vw - 800px)" }}>
+        <ReflexContainer orientation="vertical">
+          <ReflexElement minSize={600}>
             <YoutubeWithSub
               youtubeId={youtubeId}
               contents={contents.map((item) => item.content)}
             />
           </ReflexElement>
           <ReflexSplitter propagate={true} />
-          <ReflexElement minSize={250} size={400}>
+          <ReflexElement minSize={200} maxSize={400}>
             <Stack>
               <Heading
                 fontSize="lg"
-                bg={useColorModeValue("gray.100", "gray.700")}
+                bg={useColorModeValue("gray.100", "#18161d")}
                 w="100%"
                 borderBottomWidth="2px"
                 p="5px"
                 textAlign="center"
               >
-                자막 업로드 및 내보내기
+                자막 업로드
               </Heading>
               <Stack p="10px" mt="0px !important" spacing="10px">
                 <Box
@@ -200,7 +201,11 @@ function EditorWithoutContext() {
                     isDragActive ? "blue.100" : "blue.50",
                     isDragActive ? "blue.800" : "blue.900"
                   )}
+                  _hover={{
+                    bg: useColorModeValue("blue.100", "blue.800"),
+                  }}
                   p="15px"
+                  cursor="pointer"
                 >
                   <input {...getInputProps()} />
                   {isDragActive ? (
@@ -209,13 +214,10 @@ function EditorWithoutContext() {
                     <p>클릭하거나 드래그 앤 드롭으로 자막을 업로드 하세요</p>
                   )}
                 </Box>
-                <Button onClick={downloadSRT} colorScheme="blue">
-                  Save to SRT
-                </Button>
               </Stack>
               <Heading
                 fontSize="lg"
-                bg={useColorModeValue("gray.100", "gray.700")}
+                bg={useColorModeValue("gray.100", "#18161d")}
                 w="100%"
                 borderBottomWidth="2px"
                 borderTopWidth="2px"
@@ -242,7 +244,7 @@ function EditorWithoutContext() {
                   }
                 }}
               >
-                <Stack p="10px" spacing="10px">
+                <Stack p="10px" spacing="10px" alignItems="center">
                   <FormControl>
                     <Input
                       type="url"
@@ -254,7 +256,7 @@ function EditorWithoutContext() {
                       placeholder="변경할 url 입력"
                     />
                   </FormControl>
-                  <Button type="submit" colorScheme="blue">
+                  <Button type="submit" colorScheme="blue" w="80px">
                     변경
                   </Button>
                 </Stack>
@@ -262,27 +264,40 @@ function EditorWithoutContext() {
             </Stack>
           </ReflexElement>
           <ReflexSplitter propagate={true} />
-          <ReflexElement minSize={350} size={400}>
-            <Shortcuts />
+          <ReflexElement minSize={300}>
+            <Stack>
+              <Heading
+                fontSize="lg"
+                bg={useColorModeValue("gray.100", "#18161d")}
+                w="100%"
+                borderBottomWidth="2px"
+                p="5px"
+                textAlign="center"
+              >
+                단축키
+              </Heading>
+              <Shortcuts />
+            </Stack>
           </ReflexElement>
         </ReflexContainer>
       </ReflexElement>
       <ReflexSplitter propagate={true} />
-      <ReflexElement minSize={120} size={120} maxSize={200}>
+      <ReflexElement minSize={100} size={120} maxSize={200}>
         <TimeLineContainer />
       </ReflexElement>
       <ReflexSplitter propagate={true} />
       <ReflexElement className="right-pane" size={400}>
-        <HStack maxH="100%" h="100%">
+        <HStack maxH="100%" h="100%" overflowY="hidden">
           <Stack
             h="100%"
             w="180px"
-            bg={useColorModeValue("gray.100", "gray.700")}
+            bg={useColorModeValue("gray.100", "#18161d")}
             p="20px"
             alignItems="center"
             spacing="20px"
           >
             <Button
+              rightIcon={<FaPlus />}
               onClick={() => {
                 const newItem = new SRTContent(
                   contents.length.toString(),
@@ -292,18 +307,28 @@ function EditorWithoutContext() {
                 setContents((prevContents) => [...prevContents, newItem]);
               }}
               colorScheme="blue"
+              w="full"
             >
               자막 추가
             </Button>
             <Button
+              rightIcon={<FaSave />}
+              onClick={downloadSRT}
+              colorScheme="blue"
+            >
+              Save to SRT
+            </Button>
+            <Button
+              rightIcon={<MdDelete />}
               onClick={() => {
                 setContents(() => []);
               }}
-              colorScheme="blue"
+              colorScheme="red"
+              w="full"
             >
               Delete all
             </Button>
-            <SelectTheme isLarge={true} />
+            <ToggleTheme />
           </Stack>
           <Stack
             h="100%"
@@ -316,19 +341,31 @@ function EditorWithoutContext() {
               return (
                 <HStack key={value.uuid}>
                   <Text>{index + 1}</Text>
-                  <Stack w="170px">
-                    <Editable
-                      defaultValue={miliToString(value.content.startTime!)}
-                    >
-                      <EditablePreview />
-                      <EditableInput />
-                    </Editable>
-                    <Editable
-                      defaultValue={miliToString(value.content.endTime!)}
-                    >
-                      <EditablePreview />
-                      <EditableInput />
-                    </Editable>
+                  <Stack w="200px" minW="200px" ml="15px !important">
+                    <HStack>
+                      <Text>시작 시간</Text>
+                      <Spacer />
+                      <Editable
+                        defaultValue={miliToString(value.content.startTime!)}
+                        maxW="100px"
+                      >
+                        <EditablePreview />
+                        <EditableInput />
+                      </Editable>
+                      <MdTimer />
+                    </HStack>
+                    <HStack>
+                      <Text>끝 시간</Text>
+                      <Spacer />
+                      <Editable
+                        defaultValue={miliToString(value.content.endTime!)}
+                        maxW="100px"
+                      >
+                        <EditablePreview />
+                        <EditableInput />
+                      </Editable>
+                      <MdTimer />
+                    </HStack>
                   </Stack>
                   <Textarea
                     noOfLines={2}
