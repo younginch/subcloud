@@ -109,8 +109,6 @@ export default function TimeLine() {
     return dayjs.duration(mili).format("mm:ss:SSS").substring(0, 9);
   };
 
-  console.log("hi", getVideoFraction());
-
   const render = (ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     ctx.fillStyle = bgColor;
