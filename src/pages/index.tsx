@@ -23,7 +23,7 @@ import useTranslation from "next-translate/useTranslation";
 import Features from "../components/features";
 
 export default function Home() {
-  const { t } = useTranslation("menu");
+  const { t } = useTranslation("landing");
   return (
     <Box
       backgroundImage={useColorModeValue(
@@ -161,10 +161,10 @@ export default function Home() {
               <Center flexDir="column">
                 <CheckCircleIcon w={14} h={14} color="blue.400" marginTop={8} />
                 <Heading marginTop={6} size="lg">
-                  {t("Request_sent_complete")}
+                  {t("request_sent_complete")}
                 </Heading>
                 <Text color="blue.400" marginTop={7}>
-                  {t("N_people")}
+                  {t("n_people")}
                 </Text>
               </Center>
             </Box>

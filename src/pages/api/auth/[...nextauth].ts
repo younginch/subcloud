@@ -68,6 +68,7 @@ export default NextAuth({
   adapter: PrismaAdapter(prisma),
   pages: {
     signIn: "/auth/signin",
+    signOut: "/auth/signout",
     verifyRequest: "/auth/verify-request",
   },
   providers,

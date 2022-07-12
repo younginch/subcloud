@@ -15,6 +15,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import AvatarWithName from "../../components/badges/avatarWithName";
+import ReviewStatusBadge from "../../components/badges/reviewStatusBadge";
 import { YoutubeIcon } from "../../components/icons/customIcons";
 import { PageOptions, ResSubSearch } from "../../utils/types";
 
@@ -36,6 +37,7 @@ export default function Review() {
             <Tr>
               <Th>Title</Th>
               <Th>Channel</Th>
+              <Th>Date</Th>
               <Th>Status</Th>
               <Th>Actions</Th>
             </Tr>
@@ -62,8 +64,9 @@ export default function Review() {
                       name={sub.video?.youtubeVideo?.channel.title}
                     />
                   </Td>
+                  <Td>{sub.updatedAt.toString()}</Td>
                   <Td>
-                    <Text>{sub.status}</Text>
+                    <ReviewStatusBadge status={sub.status} />
                   </Td>
                   <Td>
                     <Button

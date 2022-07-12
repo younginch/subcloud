@@ -95,12 +95,12 @@ export default function TimeLine() {
   const subRulerHeight = 18;
   const subRulerWidth = 3;
 
-  const bgColor = useColorModeValue("white", "black");
+  const bgColor = useColorModeValue("#dddddd", "#18161d");
   const textColor = useColorModeValue("black", "white");
   const mainRulerColor = useColorModeValue("black", "white");
   const subRulerColor = useColorModeValue("black", "white");
 
-  const { leftTime, rightTime } = useContext(EditorContext);
+  const { leftTime, rightTime, getVideoFraction } = useContext(EditorContext);
 
   const currentBreakPoint = getBreakPoint(rightTime - leftTime);
   const config = breakPointConfig[currentBreakPoint];
@@ -174,6 +174,7 @@ export default function TimeLine() {
         position: "absolute",
         transformOrigin: "left top",
         transform: "scale(0.5)",
+        cursor: "grab",
       }}
     >
       브라우저가 HTML5 canvas를 지원하지 않아 Timeline을 불러올 수 없습니다.

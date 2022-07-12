@@ -1,15 +1,18 @@
 module.exports = {
   locales: ["ko", "en"],
-  defaultLocale: "ko",
+  defaultLocale: "en",
   pages: {
     "*": [
       "common",
+      "landing",
+      "goods",
       "routes",
       "menu",
       "privateProfile",
       "publicProfile",
       "qna",
       "rankings",
+      "requestSub",
     ],
     "/": ["common"],
   },

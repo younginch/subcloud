@@ -1,12 +1,8 @@
-import { useInterval, Box, useToast } from "@chakra-ui/react";
-import { SRTContent } from "@younginch/subtitle";
-import { useRef, useState } from "react";
-import YouTube, {
-  YouTubeEvent,
-  YouTubePlayer,
-  YouTubeProps,
-} from "react-youtube";
+import { useInterval, Box, useToast, Stack } from "@chakra-ui/react";
+import { useContext, useEffect, useRef, useState } from "react";
+import YouTube, { YouTubeEvent, YouTubeProps } from "react-youtube";
 import { v4 as uuidv4 } from "uuid";
+import { EditorContext } from "../../pages/editor";
 
 function calculateLayout(sliderValue: number): [number, number] | undefined {
   const outerVideo = document.querySelector(".youtubeContainer") as HTMLElement;
@@ -69,32 +65,26 @@ function SubtitleComponent({ element, textArray }: SubtitleComponentProps) {
   );
 }
 
-type YoutubeWithSubProps = {
-  youtubeId?: string;
-  contents: SRTContent[];
-};
-
-export default function YoutubeWithSub({
-  youtubeId,
-  contents,
-}: YoutubeWithSubProps) {
+export default function YoutubeWithSub({ id }: { id: string }) {
+  const { setPlayer, getPlayerTime } = useContext(EditorContext);
   const toast = useToast();
   const boxRef = useRef<HTMLDivElement>(null);
-  const [player, setPlayer] = useState<YouTubePlayer>();
   const [textArray, setTextArray] = useState<string[]>([]);
 
+  const { contents } = useContext(EditorContext);
+
   const intervalSub = () => {
-    const currentTime = player?.getCurrentTime();
+    const currentTime = getPlayerTime();
     if (!currentTime) {
       return;
     }
 
     for (let i = 0; i < contents.length; i++) {
       if (
-        contents[i].startTime <= currentTime &&
-        currentTime <= contents[i].endTime
+        contents[i].content.startTime <= currentTime &&
+        currentTime <= contents[i].content.endTime
       ) {
-        setTextArray(contents[i].textArray);
+        setTextArray(contents[i].content.textArray);
         return;
       }
     }
@@ -117,15 +107,23 @@ export default function YoutubeWithSub({
   };
 
   return (
-    <Box h="100%" ref={boxRef} style={{ aspectRatio: "16/9" }}>
-      <SubtitleComponent element={boxRef.current} textArray={textArray} />
-      <YouTube
-        videoId={youtubeId}
-        opts={opts}
-        className="youtubeContainer"
-        onReady={(event) => setPlayer(event.target)}
-        onError={onPlayerError}
-      />
-    </Box>
+    <Stack w="100%" h="100%" alignItems="center">
+      <Box
+        h="100%"
+        maxH="100%"
+        maxW="100%"
+        ref={boxRef}
+        style={{ aspectRatio: "16/9" }}
+      >
+        <SubtitleComponent element={boxRef.current} textArray={textArray} />
+        <YouTube
+          videoId={id}
+          opts={opts}
+          className="youtubeContainer"
+          onReady={(event) => setPlayer(event.target)}
+          onError={onPlayerError}
+        />
+      </Box>
+    </Stack>
   );
 }

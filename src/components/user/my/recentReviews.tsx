@@ -48,32 +48,33 @@ export default function RecentReviews() {
                 name={review.user.name ?? review.user.id}
                 src={review.user.image ?? ""}
               />
-              <HStack>
-                <Text fontWeight="bold" fontSize="md">
-                  {review.user.name}
-                </Text>
-                <Text fontWeight="light" fontSize="xs">
-                  {dayjs(review.updatedAt).format("YYYY-MM-DD")}
-                </Text>
-              </HStack>
+              <Text fontWeight="bold" fontSize="md">
+                {review.user.name}
+              </Text>
+              <Flex my={3} alignItems="center" justify="start">
+                {Array.from(Array(review.score).keys()).map((id) => {
+                  return <AiFillStar key={id} fill="#EACA4E" />;
+                })}
+                {Array.from(Array(5 - review.score).keys()).map((id) => {
+                  return <AiFillStar key={id} fill="#e2e8f0" />;
+                })}
+              </Flex>
+              <Text fontWeight="light" fontSize="xs">
+                {dayjs(review.updatedAt).format("YYYY-MM-DD")}
+              </Text>
             </HStack>
-            <Flex my={3} alignItems="center" justify="start">
-              {Array.from(Array(review.score).keys()).map((id) => {
-                return <AiFillStar key={id} fill="#EACA4E" />;
-              })}
-              {Array.from(Array(5 - review.score).keys()).map((id) => {
-                return <AiFillStar key={id} fill="#e2e8f0" />;
-              })}
-            </Flex>
-            <Text
-              color={textColor}
-              fontSize="0.87rem"
-              textAlign="left"
-              lineHeight="1.375"
-              fontWeight="300"
-            >
-              {review.comment ?? ""}
-            </Text>
+            {review.comment && (
+              <Text
+                color={textColor}
+                fontSize="15px"
+                textAlign="left"
+                lineHeight="1.375"
+                fontWeight="300"
+                pl="45px"
+              >
+                {review.comment}
+              </Text>
+            )}
           </Stack>
         );
       }) ?? ""}
