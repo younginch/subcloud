@@ -70,7 +70,6 @@ export default function UserMyIndex() {
             >
               {data?.name}
             </Text>
-            <TierBadge tier={UserTier.Master} />
             <RoleBadge role={data?.role} />
           </HStack>
           <Text
