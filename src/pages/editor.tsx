@@ -300,7 +300,12 @@ function EditorWithoutContext() {
         </ReflexContainer>
       </ReflexElement>
       <ReflexSplitter propagate={true} />
-      <ReflexElement minSize={100} size={120} maxSize={200}>
+      <ReflexElement
+        minSize={100}
+        size={120}
+        maxSize={200}
+        style={{ overflow: "hidden" }}
+      >
         <TimeLineContainer />
       </ReflexElement>
       <ReflexSplitter propagate={true} />
