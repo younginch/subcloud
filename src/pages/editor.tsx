@@ -77,7 +77,7 @@ type EditorContextProps = {
 
 export const EditorContext = createContext<EditorContextProps>({
   leftTime: 0,
-  rightTime: 1000 * 10,
+  rightTime: 100 * 1000,
   changeLRTime: (_, __) => {},
   contents: [],
   setContents: (_) => {},
