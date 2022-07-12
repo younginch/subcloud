@@ -41,6 +41,7 @@ import { YouTubePlayer } from "react-youtube";
 import ToggleTheme from "../components/editor/toggleTheme";
 import { MdDelete, MdTimer } from "react-icons/md";
 import { FaPlus, FaSave } from "react-icons/fa";
+import NoVideo from "../components/editor/noVideo";
 
 dayjs.extend(duration);
 
@@ -181,7 +182,7 @@ function EditorWithoutContext() {
     >
       <ReflexElement minSize={100}>
         <ReflexContainer orientation="vertical">
-          <ReflexElement minSize={200} maxSize={400}>
+          <ReflexElement minSize={200} maxSize={500}>
             <Stack>
               <Heading
                 fontSize="lg"
@@ -226,7 +227,7 @@ function EditorWithoutContext() {
                 p="5px"
                 textAlign="center"
               >
-                동영상 변경
+                {id.length === 0 ? "동영상 선택" : "동영상 변경"}
               </Heading>
               <form
                 onSubmit={(event: FormEvent) => {
@@ -260,11 +261,13 @@ function EditorWithoutContext() {
                       onChange={(event: any) => {
                         setUrlInput(event.target.value);
                       }}
-                      placeholder="변경할 url 입력"
+                      placeholder={
+                        id.length === 0 ? "동영상 url 입력" : "변경할 url 입력"
+                      }
                     />
                   </FormControl>
                   <Button type="submit" colorScheme="blue" w="80px">
-                    변경
+                    {id.length === 0 ? "선택" : "변경"}
                   </Button>
                 </Stack>
               </form>
@@ -276,7 +279,7 @@ function EditorWithoutContext() {
             style={{ overflow: "hidden" }}
             size={1000}
           >
-            <YoutubeWithSub id={id} />
+            {id.length === 0 ? <NoVideo /> : <YoutubeWithSub id={id} />}
           </ReflexElement>
           <ReflexSplitter propagate={true} />
           <ReflexElement minSize={300}>

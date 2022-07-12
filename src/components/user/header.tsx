@@ -121,7 +121,6 @@ const Header = ({
                 >
                   {name}
                 </Text>
-                <TierBadge tier={UserTier.Master} />
               </HStack>
               <Text
                 fontSize={{ base: "sm", md: "md" }}
