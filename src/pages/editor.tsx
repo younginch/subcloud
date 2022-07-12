@@ -42,6 +42,7 @@ import ToggleTheme from "../components/editor/toggleTheme";
 import { MdDelete, MdTimer } from "react-icons/md";
 import { FaPlus, FaSave } from "react-icons/fa";
 import NoVideo from "../components/editor/noVideo";
+import axios from "axios";
 
 dayjs.extend(duration);
 
@@ -72,7 +73,7 @@ type EditorContextProps = {
   setPlayer: (player: YouTubePlayer) => void;
   getPlayerTime: () => number;
   setPlayerTime: (time: number) => void;
-  getVideoFraction: () => number;
+  aspectRatio: number;
 };
 
 export const EditorContext = createContext<EditorContextProps>({
@@ -86,7 +87,7 @@ export const EditorContext = createContext<EditorContextProps>({
   setPlayer: () => {},
   getPlayerTime: () => 0,
   setPlayerTime: (_) => {},
-  getVideoFraction: () => 0,
+  aspectRatio: 0,
 });
 
 type EditorProviderProps = {
@@ -99,6 +100,7 @@ function EditorProvider({ children }: EditorProviderProps) {
   const [contents, setContents] = useState<contentArray[]>([]);
   const [id, setId] = useState<string>("");
   const [player, setPlayer] = useState<YouTubePlayer>();
+  const [videoFraction, setVideoFraction] = useState<number>(0);
 
   return (
     <EditorContext.Provider
@@ -123,6 +125,13 @@ function EditorProvider({ children }: EditorProviderProps) {
         },
         setPlayer: (newPlayer) => {
           setPlayer(newPlayer);
+          axios
+            .get(
+              `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`
+            )
+            .then((res) => {
+              setVideoFraction(res.data.width / res.data.height);
+            });
         },
         getPlayerTime: () => {
           return player?.getDuration();
@@ -130,9 +139,7 @@ function EditorProvider({ children }: EditorProviderProps) {
         setPlayerTime: (time) => {
           player?.seekTo(time);
         },
-        getVideoFraction: () => {
-          return player?.getVideoLoadedFraction();
-        },
+        aspectRatio: videoFraction,
       }}
     >
       {children}
@@ -141,7 +148,6 @@ function EditorProvider({ children }: EditorProviderProps) {
 }
 
 function EditorWithoutContext() {
-  const router = useRouter();
   const toast = useToast();
   const [urlInput, setUrlInput] = useState("");
 

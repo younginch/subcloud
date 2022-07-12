@@ -100,7 +100,7 @@ export default function TimeLine() {
   const mainRulerColor = useColorModeValue("black", "white");
   const subRulerColor = useColorModeValue("black", "white");
 
-  const { leftTime, rightTime, getVideoFraction } = useContext(EditorContext);
+  const { leftTime, rightTime } = useContext(EditorContext);
 
   const currentBreakPoint = getBreakPoint(rightTime - leftTime);
   const config = breakPointConfig[currentBreakPoint];
