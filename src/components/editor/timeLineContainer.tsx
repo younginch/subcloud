@@ -1,5 +1,5 @@
 import { useContext, WheelEvent } from "react";
-import { contentArray, EditorContext } from "../../pages/editor";
+import { EditorContext } from "../../pages/editor";
 import TimeLine from "./timeLine";
 import { Box, Text } from "@chakra-ui/react";
 import TimeLineBoxes from "./timeLineBoxes";

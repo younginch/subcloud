@@ -1,5 +1,6 @@
 import { Box, HStack, Text } from "@chakra-ui/react";
 import { useContext } from "react";
+import { uuid } from "uuidv4";
 import { EditorContext } from "../../pages/editor";
 
 export default function TimeLineBoxes() {
@@ -8,28 +9,18 @@ export default function TimeLineBoxes() {
   return (
     <Box w="100%" position="absolute" mt="50px" zIndex={10}>
       {contents.map((item) => {
-        if (
-          item.content.endTime <= leftTime ||
-          item.content.startTime >= rightTime
-        ) {
+        if (item.endTime <= leftTime || item.startTime >= rightTime) {
           return;
         }
-        console.log({
-          a: item.content.startTime - leftTime,
-          b: rightTime - leftTime,
-        });
         return (
           <Box
-            key={item.uuid}
+            key={uuid()}
             position="absolute"
             left={`${
-              ((item.content.startTime - leftTime) / (rightTime - leftTime)) *
-              6000
+              ((item.startTime - leftTime) / (rightTime - leftTime)) * 6000
             }px`}
             w={`${
-              ((item.content.endTime - item.content.startTime) /
-                (rightTime - leftTime)) *
-              6000
+              ((item.endTime - item.startTime) / (rightTime - leftTime)) * 6000
             }px`}
             h="60px"
             borderWidth="1px"
@@ -45,7 +36,7 @@ export default function TimeLineBoxes() {
                 cursor="ew-resize"
               />
               <Text m="0px !important" w="calc(100% - 14px)">
-                {item.content.toText()}
+                {item.toText()}
               </Text>
               <Box
                 w="7px"
