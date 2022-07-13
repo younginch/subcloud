@@ -113,7 +113,9 @@ export default function YoutubeWithSub({ id }: { id: string }) {
         maxH="100%"
         maxW="100%"
         ref={boxRef}
-        style={{ aspectRatio: "16/9" }}
+        style={{ aspectRatio: "2" }}
+        display="flex"
+        alignItems="center"
       >
         <SubtitleComponent element={boxRef.current} textArray={textArray} />
         <YouTube
