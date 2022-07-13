@@ -9,6 +9,7 @@ import {
   Textarea,
   IconButton,
   Text,
+  Box,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
@@ -47,12 +48,30 @@ export default function EditArray() {
     <Stack h="100%" maxH="100%" overflowY="scroll" overflowX="hidden" w="full">
       {contents.map((value, index) => {
         return (
-          <HStack key={uuid()}>
-            <Text>{index + 1}</Text>
-            <Stack w="200px" minW="200px" ml="15px !important">
-              <HStack>
-                <Text>시작 시간</Text>
-                <Spacer />
+          <HStack key={uuid()} position="relative">
+            <Box position="relative" h="100%" w="70px">
+              <div
+                style={{
+                  borderStyle: "solid",
+                  borderColor: "#3197ee transparent transparent transparent",
+                  borderWidth: "20px 20px 0 0",
+                  display: "inline-block",
+                  height: "0px",
+                  width: "0px",
+                  position: "absolute",
+                }}
+              />
+              <Stack
+                alignItems="center"
+                w="100%"
+                h="100%"
+                justifyContent="center"
+              >
+                <Text>{index + 1}</Text>
+              </Stack>
+            </Box>
+            <Stack w="110px" minW="110px" ml="0px !important" spacing="-8px">
+              <HStack justifyContent="space-between">
                 <Editable
                   defaultValue={miliToString(value.startTime!)}
                   maxW="100px"
@@ -62,9 +81,8 @@ export default function EditArray() {
                 </Editable>
                 <MdTimer />
               </HStack>
-              <HStack>
-                <Text>끝 시간</Text>
-                <Spacer />
+              <Text pl="30px">~</Text>
+              <HStack justifyContent="space-between">
                 <Editable
                   defaultValue={miliToString(value.endTime!)}
                   maxW="100px"
@@ -86,6 +104,7 @@ export default function EditArray() {
                 ];
                 setContents(newContents);
               }}
+              colorScheme="red"
             />
           </HStack>
         );
