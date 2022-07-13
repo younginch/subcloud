@@ -12,6 +12,16 @@ import {
   ListIcon,
   UnorderedList,
   List,
+  Stack,
+  useColorModeValue,
+  MenuList,
+  Menu,
+  MenuItem,
+  MenuOptionGroup,
+  MenuButton,
+  HStack,
+  Tooltip,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { SetStateAction, useCallback, useEffect, useState } from "react";
@@ -20,11 +30,18 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import VideoInfo from "../../../../../components/create/videoInfo";
-import CreateHeader from "../../../../../components/create/createHeader";
-import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
+import {
+  CheckCircleIcon,
+  ChevronDownIcon,
+  WarningIcon,
+} from "@chakra-ui/icons";
 import { PageOptions, ResVideo } from "../../../../../utils/types";
 import { Role } from "@prisma/client";
 import SelectLanguage from "../../../../../components/selectLanguage";
+import Card from "../../../../../components/user/card/card";
+import CardHeader from "../../../../../components/user/card/cardHeader";
+import ISO6391, { LanguageCode } from "iso-639-1";
+import { AiOutlineInfoCircle, AiOutlineUser } from "react-icons/ai";
 
 type FormData = {
   lang: string;
@@ -114,6 +131,7 @@ export default function SubCreate() {
       </UnorderedList>
     </ListItem>
   ));
+
   const [video, setVideo] = useState<ResVideo>();
   useEffect(() => {
     axios
@@ -123,51 +141,193 @@ export default function SubCreate() {
       });
   }, [serviceId, videoId]);
 
+  const textColor = useColorModeValue("gray.700", "gray.300");
+  const codeList: LanguageCode[] = [
+    "en",
+    "fr",
+    "de",
+    "it",
+    "es",
+    "pt",
+    "ru",
+    "ja",
+    "zh",
+    "ko",
+  ];
+  const [uploadToggle] = useMediaQuery("(min-width: 1350px)");
+
   return (
-    <>
-      <CreateHeader type="sub" step={2} />
-      <Wrap>
-        <WrapItem>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Stack ms={{ base: "20px", xl: "calc(15vw - 150px)" }} spacing={5}>
+        <Card w="850px" mt={5} maxW="calc(100vw - 40px)">
+          <CardHeader mb="10px">
+            <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
+              자막 업로드 영상
+            </Text>
+          </CardHeader>
           <VideoInfo video={video} />
-        </WrapItem>
-        <WrapItem paddingX="36px">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <FormControl isInvalid={errors.file !== undefined}>
-              <FormLabel htmlFor="name">자막 파일</FormLabel>
-              <Box w="360px" h="120px" borderWidth="1px" borderRadius="6px">
-                <div {...getRootProps()}>
-                  <input {...getInputProps()} />
-                  <Text>
-                    Drag &apos;n&apos; drop some files here, or click to select
-                    files
-                  </Text>
-                </div>
-              </Box>
-              <List>{acceptedFileItems}</List>
-              <FormErrorMessage>
-                <List>{fileRejectionItems}</List>
-              </FormErrorMessage>
-            </FormControl>
+        </Card>
+        <Card w="850px" mt={5} zIndex={2} maxW="calc(100vw - 40px)">
+          <CardHeader mb="24px">
+            <Text color={textColor} fontSize="lg" fontWeight="bold">
+              자막 업로드
+            </Text>
+          </CardHeader>
+          <FormControl isInvalid={errors.file !== undefined}>
+            <Box w="360px" h="120px" borderWidth="1px" borderRadius="6px">
+              <div {...getRootProps()}>
+                <input {...getInputProps()} />
+                <Text>
+                  Drag &apos;n&apos; drop some files here, or click to select
+                  files
+                </Text>
+              </div>
+            </Box>
+            <List>{acceptedFileItems}</List>
+            <FormErrorMessage>
+              <List>{fileRejectionItems}</List>
+            </FormErrorMessage>
+          </FormControl>
+        </Card>
+        <Card w="850px" mt={5} zIndex={2} maxW="calc(100vw - 40px)">
+          <CardHeader mb="24px">
+            <HStack>
+              <Text color={textColor} fontSize="lg" fontWeight="bold">
+                자막 언어 선택
+              </Text>
+              <Tooltip label="자막의 내용과 다른 언어를 선택할시 심사가 거절될 수 있습니다.">
+                <Box>
+                  <AiOutlineInfoCircle size="20px" />
+                </Box>
+              </Tooltip>
+            </HStack>
+          </CardHeader>
+          <Menu>
             <FormControl as="fieldset">
-              <FormLabel as="legend">자막 언어</FormLabel>
-              <SelectLanguage register={register("lang")} />
+              <MenuOptionGroup>
+                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                  언어 선택
+                </MenuButton>
+                <MenuList>
+                  {codeList.map((code) => {
+                    return (
+                      <MenuItem key={code}>
+                        {`${ISO6391.getName(code)} (${ISO6391.getNativeName(
+                          code
+                        )})`}
+                      </MenuItem>
+                    );
+                  })}
+                </MenuList>
+              </MenuOptionGroup>
               <FormErrorMessage>
                 {errors.lang && errors.lang.message}
               </FormErrorMessage>
             </FormControl>
-            <Button
-              mt={4}
-              colorScheme="teal"
-              isLoading={isSubmitting}
-              type="submit"
-            >
-              업로드
-            </Button>
-          </form>
+          </Menu>
+        </Card>
+        <Card
+          w="400px"
+          className={uploadToggle ? "requestFixed" : "requestBottom"}
+          zIndex={3}
+          maxW="calc(100vw - 40px)"
+        >
+          <CardHeader mb="24px">
+            <Text color={textColor} fontSize="20px" fontWeight="bold" mb="4px">
+              업로드 요약
+            </Text>
+          </CardHeader>
+          <Text fontSize="18px">영상 제목</Text>
+          <Text
+            fontWeight="bold"
+            fontSize="20px"
+            overflow="hidden"
+            maxW="full"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+          >
+            {video?.youtubeVideo?.title ?? "unknown"}
+          </Text>
+          <Text fontSize="18px" mt="20px">
+            자막 파일명
+          </Text>
+          <Text
+            fontWeight="bold"
+            fontSize="20px"
+            overflow="hidden"
+            maxW="full"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+          >
+            널 지워야해 en.kr
+          </Text>
+          <Text fontSize="18px" mt="20px">
+            요청 언어
+          </Text>
+          <Text fontWeight="bold" fontSize="20px">
+            한국어
+          </Text>
+          <HStack mt="20px !important">
+            <Text fontSize="18px">획득 포인트</Text>
+            <Tooltip label="포인트는 검토를 통과한 시점에 지급됩니다.">
+              <Box>
+                <AiOutlineInfoCircle size="20px" />
+              </Box>
+            </Tooltip>
+          </HStack>
+          <Text fontWeight="bold" fontSize="20px">
+            {100}
+          </Text>
+
+          <HStack mt="20px !important">
+            <Text fontSize="18px">요청 충족 수</Text>
+            <Tooltip label="검토를 통과한 시점에 업데이트됩니다.">
+              <Box>
+                <AiOutlineInfoCircle size="20px" />
+              </Box>
+            </Tooltip>
+          </HStack>
+          <HStack>
+            <Text fontWeight="bold" fontSize="20px">
+              +{100}
+            </Text>
+            <AiOutlineUser color={textColor} stroke="2px" />
+          </HStack>
+          <Button
+            colorScheme="blue"
+            mt="20px"
+            isLoading={isSubmitting}
+            type="submit"
+          >
+            자막 업로드
+          </Button>
+        </Card>
+      </Stack>
+      <Wrap>
+        <WrapItem paddingX="36px">
+          <FormControl as="fieldset">
+            <FormLabel as="legend">자막 언어</FormLabel>
+            <SelectLanguage register={register("lang")} />
+            <FormErrorMessage>
+              {errors.lang && errors.lang.message}
+            </FormErrorMessage>
+          </FormControl>
+          <Button
+            mt={4}
+            colorScheme="teal"
+            isLoading={isSubmitting}
+            type="submit"
+          >
+            업로드
+          </Button>
         </WrapItem>
       </Wrap>
-    </>
+    </form>
   );
 }
 
-SubCreate.options = { role: Role.User, hideTitle: true } as PageOptions;
+SubCreate.options = {
+  role: Role.User,
+  hideTitle: true,
+  bgColorLight: "#F7FAFC",
+} as PageOptions;

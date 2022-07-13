@@ -25,14 +25,12 @@ export default function Card(props: any) {
     p: "22px",
     display: "flex",
     flexDirection: "column",
-    backdropFilter: "blur(120px)",
     width: "100%",
     borderRadius: "20px",
     backgroundClip: "border-box",
     boxShadow: "0px 3.5px 5.5px rgba(0, 0, 0, 0.02)",
     bg: bgColor,
   };
-  // Pass the computed styles into the `__css` prop
   return (
     <Box __css={styles} {...rest}>
       {children}
