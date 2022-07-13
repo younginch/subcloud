@@ -12,7 +12,6 @@ import {
   HStack,
   IconButton,
   Input,
-  Spacer,
   Stack,
   Text,
   Textarea,

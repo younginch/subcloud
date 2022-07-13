@@ -10,6 +10,19 @@ export default function TimeLineContainer() {
 
   const handleScroll = (e: WheelEvent<HTMLDivElement>) => {
     e.preventDefault();
+    const mouseRatio = e.screenX / window.screen.width;
+    let zoom = 1;
+    zoom = 1 + e.deltaY / 1000;
+    const left =
+      ((mouseRatio - mouseRatio * zoom - zoom) * (rightTime - leftTime) +
+        (rightTime + 2 * leftTime)) /
+      3;
+    const right =
+      ((mouseRatio - mouseRatio * zoom + 2 * zoom) * (rightTime - leftTime) +
+        (rightTime + 2 * leftTime)) /
+      3;
+    changeLRTime(left, right);
+    /*
     const fixedPos = e.screenX + 2000;
     const fixedTime = (fixedPos / 6000) * (rightTime - leftTime) + leftTime;
     let newInterval;
@@ -22,6 +35,7 @@ export default function TimeLineContainer() {
     const newRight = fixedTime + (newInterval * (6000 - fixedPos)) / 6000;
     if (newLeft < 0) changeLRTime(0, newInterval);
     else changeLRTime(newLeft, newRight);
+    */
   };
 
   return (
