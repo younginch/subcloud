@@ -9,13 +9,13 @@ export default function TimeLineBoxes() {
     <Box w="100%" position="absolute" mt="50px" zIndex={10}>
       {contents.map((item) => {
         if (
-          item.content.endTime * 1000 <= leftTime ||
-          item.content.startTime * 1000 >= rightTime
+          item.content.endTime <= leftTime ||
+          item.content.startTime >= rightTime
         ) {
           return;
         }
         console.log({
-          a: item.content.startTime * 1000 - leftTime,
+          a: item.content.startTime - leftTime,
           b: rightTime - leftTime,
         });
         return (
@@ -23,12 +23,11 @@ export default function TimeLineBoxes() {
             key={item.uuid}
             position="absolute"
             left={`${
-              ((item.content.startTime * 1000 - leftTime) /
-                (rightTime - leftTime)) *
+              ((item.content.startTime - leftTime) / (rightTime - leftTime)) *
               6000
             }px`}
             w={`${
-              ((item.content.endTime * 1000 - item.content.startTime * 1000) /
+              ((item.content.endTime - item.content.startTime) /
                 (rightTime - leftTime)) *
               6000
             }px`}

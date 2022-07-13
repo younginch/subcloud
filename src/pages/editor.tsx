@@ -45,10 +45,7 @@ import axios from "axios";
 dayjs.extend(duration);
 
 function miliToString(second: number): string {
-  return dayjs
-    .duration(second * 1000)
-    .format("mm:ss,SSS")
-    .substring(0, 9);
+  return dayjs.duration(second).format("mm:ss,SSS").substring(0, 9);
 }
 
 export type contentArray = {
