@@ -18,6 +18,7 @@ import {
   useColorModeValue,
   Center,
   Spacer,
+  useInterval,
 } from "@chakra-ui/react";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { Review, ReviewType, Role, SubStatus } from "@prisma/client";
@@ -29,11 +30,11 @@ import YouTube, { YouTubePlayer } from "react-youtube";
 import useSWR, { mutate } from "swr";
 import CommentComponent from "../../components/review/commentComponent";
 import { ReviewCreateSchema } from "../../utils/schema";
-import { parseSrt, useInterval } from "../../utils/subtitle";
 import { PageOptions, ResSubRead } from "../../utils/types";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { AiFillTool } from "react-icons/ai";
 import { MdReport } from "react-icons/md";
+import { SRTContent, SRTFile } from "@younginch/subtitle";
 
 type ReviewAddFormData = {
   type: ReviewType;
@@ -218,7 +219,7 @@ export default function ReviewDetail() {
   const [options, setOptions] = useState<YoutubeOptions>();
   const [player, setPlayer] = useState<YouTubePlayer>();
   const [sub, setSub] = useState<ResSubRead>();
-  const [subData, setSubData] = useState<SubtitleData>([]);
+  const [contentArray, setContentArray] = useState<SRTContent[]>([]);
   const [subText, setSubText] = useState<string>("");
   const [isLargerThan1280] = useMediaQuery("(min-width: 1280px)");
 
@@ -245,24 +246,24 @@ export default function ReviewDetail() {
           });
           const file = new File([blob], "file.srt");
           file.text().then((text) => {
-            setSubData(parseSrt(text));
+            setContentArray(SRTFile.fromText(text).array);
           });
         });
       });
   }, [router.query.subId]);
 
   const intervalSub = () => {
-    const currentTime = player?.getCurrentTime();
+    const currentTime = player?.getCurrentTime() * 1000;
     if (!currentTime) {
       return;
     }
 
-    for (let i = 0; i < subData.length; i++) {
+    for (let i = 0; i < contentArray.length; i++) {
       if (
-        subData[i].startTime <= currentTime &&
-        currentTime <= subData[i].endTime
+        contentArray[i].startTime <= currentTime &&
+        currentTime <= contentArray[i].endTime
       ) {
-        setSubText(subData[i].text);
+        setSubText(contentArray[i].toText());
         break;
       }
     }
