@@ -42,12 +42,7 @@ import { MdDelete, MdTimer } from "react-icons/md";
 import { FaPlus, FaSave } from "react-icons/fa";
 import NoVideo from "../components/editor/noVideo";
 import axios from "axios";
-
-dayjs.extend(duration);
-
-function miliToString(second: number): string {
-  return dayjs.duration(second).format("HH:mm:ss,SSS").substring(0, 12);
-}
+import EditArray from "../components/editor/editArray";
 
 export type contentArray = {
   uuid: string;
@@ -357,71 +352,7 @@ function EditorWithoutContext() {
             </Button>
             <ToggleTheme />
           </Stack>
-          <Stack
-            h="100%"
-            maxH="100%"
-            overflowY="scroll"
-            overflowX="hidden"
-            w="full"
-          >
-            {contents.map((value, index) => {
-              return (
-                <HStack key={value.uuid}>
-                  <Text>{index + 1}</Text>
-                  <Stack w="200px" minW="200px" ml="15px !important">
-                    <HStack>
-                      <Text>시작 시간</Text>
-                      <Spacer />
-                      <Editable
-                        defaultValue={miliToString(value.content.startTime!)}
-                        maxW="100px"
-                      >
-                        <EditablePreview />
-                        <EditableInput />
-                      </Editable>
-                      <MdTimer />
-                    </HStack>
-                    <HStack>
-                      <Text>끝 시간</Text>
-                      <Spacer />
-                      <Editable
-                        defaultValue={miliToString(value.content.endTime!)}
-                        maxW="100px"
-                      >
-                        <EditablePreview />
-                        <EditableInput />
-                      </Editable>
-                      <MdTimer />
-                    </HStack>
-                  </Stack>
-                  <Textarea
-                    noOfLines={2}
-                    value={value.content.textArray.reduce(
-                      (acc, cur) => `${acc} \r\n${cur}`,
-                      ""
-                    )}
-                    onChange={(event: any) => {
-                      contents[index].content.textArray =
-                        event.target.value.split("\n");
-                      setContents((prev: SRTContent[]): SRTContent[] => [
-                        ...prev,
-                      ]);
-                    }}
-                  />
-                  <IconButton
-                    aria-label="Delete subtitle"
-                    icon={<DeleteIcon />}
-                    onClick={() => {
-                      setContents((prevContents: any) => [
-                        ...prevContents.slice(0, index),
-                        ...prevContents.slice(index + 1),
-                      ]);
-                    }}
-                  />
-                </HStack>
-              );
-            })}
-          </Stack>
+          <EditArray />
         </HStack>
       </ReflexElement>
     </ReflexContainer>
