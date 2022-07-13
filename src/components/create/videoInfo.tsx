@@ -31,7 +31,15 @@ export default function VideoInfo({ video }: Props) {
       />
       {video?.youtubeVideo ? (
         <Box padding="12px">
-          <Heading size="md">{video?.youtubeVideo.title}</Heading>
+          <Heading
+            size="md"
+            overflow="hidden"
+            maxW="75%"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+          >
+            {video?.youtubeVideo.title}
+          </Heading>
           <Text marginY="10px">
             {`조회수 ${video?.youtubeVideo.viewCount}회 | ${video?.youtubeVideo.publishedAt}`}
           </Text>
