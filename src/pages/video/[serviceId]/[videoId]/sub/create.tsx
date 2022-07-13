@@ -22,6 +22,7 @@ import {
   HStack,
   Tooltip,
   useMediaQuery,
+  Spacer,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { SetStateAction, useCallback, useEffect, useState } from "react";
@@ -33,6 +34,7 @@ import VideoInfo from "../../../../../components/create/videoInfo";
 import {
   CheckCircleIcon,
   ChevronDownIcon,
+  EditIcon,
   WarningIcon,
 } from "@chakra-ui/icons";
 import { PageOptions, ResVideo } from "../../../../../utils/types";
@@ -169,9 +171,19 @@ export default function SubCreate() {
         </Card>
         <Card w="850px" mt={5} zIndex={2} maxW="calc(100vw - 40px)">
           <CardHeader mb="24px">
-            <Text color={textColor} fontSize="lg" fontWeight="bold">
-              자막 업로드
-            </Text>
+            <HStack w="full">
+              <Text color={textColor} fontSize="lg" fontWeight="bold">
+                자막 파일 업로드
+              </Text>
+              <Spacer />
+              <Button
+                leftIcon={<EditIcon w="14px" h="14px" />}
+                colorScheme="teal"
+                variant="solid"
+              >
+                <Text fontSize="14px">Edit on SubCloud</Text>
+              </Button>
+            </HStack>
           </CardHeader>
           <FormControl isInvalid={errors.file !== undefined}>
             <Box w="360px" h="120px" borderWidth="1px" borderRadius="6px">
