@@ -35,7 +35,6 @@ import { v4 as uuidv4 } from "uuid";
 import Shortcuts from "../components/editor/shortcuts";
 import YoutubeWithSub from "../components/editor/youtubeWithSub";
 import { useHotkeys } from "react-hotkeys-hook";
-import { useRouter } from "next/router";
 import TimeLineContainer from "../components/editor/timeLineContainer";
 import { YouTubePlayer } from "react-youtube";
 import ToggleTheme from "../components/editor/toggleTheme";
@@ -77,6 +76,8 @@ type EditorContextProps = {
 };
 
 export const EditorContext = createContext<EditorContextProps>({
+  /* The left time in milliseconds
+   */
   leftTime: 0,
   rightTime: 100 * 1000,
   changeLRTime: (_, __) => {},
@@ -96,7 +97,7 @@ type EditorProviderProps = {
 
 function EditorProvider({ children }: EditorProviderProps) {
   const [leftTime, setLeftTime] = useState<number>(0);
-  const [rightTime, setRightTime] = useState<number>(1000 * 10);
+  const [rightTime, setRightTime] = useState<number>(1000 * 100);
   const [contents, setContents] = useState<contentArray[]>([]);
   const [id, setId] = useState<string>("");
   const [player, setPlayer] = useState<YouTubePlayer>();
