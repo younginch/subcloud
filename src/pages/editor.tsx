@@ -12,7 +12,6 @@ import {
   HStack,
   IconButton,
   Input,
-  Spacer,
   Stack,
   Text,
   Textarea,
@@ -48,8 +47,8 @@ dayjs.extend(duration);
 function miliToString(second: number): string {
   return dayjs
     .duration(second * 1000)
-    .format("HH:mm:ss,SSS")
-    .substring(0, 12);
+    .format("mm:ss,SSS")
+    .substring(0, 9);
 }
 
 export type contentArray = {
@@ -366,15 +365,40 @@ function EditorWithoutContext() {
             overflowY="scroll"
             overflowX="hidden"
             w="full"
+            m="0px !important"
           >
             {contents.map((value, index) => {
               return (
-                <HStack key={value.uuid}>
-                  <Text>{index + 1}</Text>
-                  <Stack w="200px" minW="200px" ml="15px !important">
-                    <HStack>
-                      <Text>시작 시간</Text>
-                      <Spacer />
+                <HStack key={value.uuid} position="relative">
+                  <Box position="relative" h="100%" w="70px">
+                    <div
+                      style={{
+                        borderStyle: "solid",
+                        borderColor:
+                          "#3197ee transparent transparent transparent",
+                        borderWidth: "20px 20px 0 0",
+                        display: "inline-block",
+                        height: "0px",
+                        width: "0px",
+                        position: "absolute",
+                      }}
+                    />
+                    <Stack
+                      alignItems="center"
+                      w="100%"
+                      h="100%"
+                      justifyContent="center"
+                    >
+                      <Text>{index + 1}</Text>
+                    </Stack>
+                  </Box>
+                  <Stack
+                    w="110px"
+                    minW="110px"
+                    ml="0px !important"
+                    spacing="-8px"
+                  >
+                    <HStack justifyContent="space-between">
                       <Editable
                         defaultValue={miliToString(value.content.startTime!)}
                         maxW="100px"
@@ -384,9 +408,8 @@ function EditorWithoutContext() {
                       </Editable>
                       <MdTimer />
                     </HStack>
-                    <HStack>
-                      <Text>끝 시간</Text>
-                      <Spacer />
+                    <Text pl="30px">~</Text>
+                    <HStack justifyContent="space-between">
                       <Editable
                         defaultValue={miliToString(value.content.endTime!)}
                         maxW="100px"
@@ -420,6 +443,7 @@ function EditorWithoutContext() {
                         ...prevContents.slice(index + 1),
                       ]);
                     }}
+                    colorScheme="red"
                   />
                 </HStack>
               );
