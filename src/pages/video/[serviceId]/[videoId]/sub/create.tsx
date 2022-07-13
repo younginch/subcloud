@@ -44,6 +44,8 @@ import Card from "../../../../../components/user/card/card";
 import CardHeader from "../../../../../components/user/card/cardHeader";
 import ISO6391, { LanguageCode } from "iso-639-1";
 import { AiOutlineInfoCircle, AiOutlineUser } from "react-icons/ai";
+import { YoutubeIcon } from "../../../../../components/icons/customIcons";
+import Link from "next/link";
 
 type FormData = {
   lang: string;
@@ -104,20 +106,45 @@ export default function SubCreate() {
     []
   );
 
-  const { getRootProps, getInputProps, acceptedFiles, fileRejections } =
-    useDropzone({
-      onDrop,
-      multiple: false,
-      maxSize: 5 * 1024 * 1024, // 5 MB
-    });
+  const {
+    getRootProps,
+    getInputProps,
+    acceptedFiles,
+    fileRejections,
+    isDragActive,
+  } = useDropzone({
+    onDrop,
+    multiple: false,
+    maxSize: 5 * 1024 * 1024, // 5 MB
+  });
+
+  const [video, setVideo] = useState<ResVideo>();
+  useEffect(() => {
+    axios
+      .get<ResVideo>(`/api/user/video`, { params: { serviceId, videoId } })
+      .then(({ data }) => {
+        setVideo(data);
+      });
+  }, [serviceId, videoId]);
+  console.log(video);
 
   const acceptedFileItems = acceptedFiles.map((file) => (
-    <ListItem key={file.name}>
-      <ListIcon as={CheckCircleIcon} />
-      <Text>
+    <>
+      <CheckCircleIcon color="green" w="20px" h="20px" />
+      <Text fontSize="20px">
         {file.name} - {file.size} bytes
       </Text>
-    </ListItem>
+      <Spacer />
+      <Link href={`https://www.youtube.com/watch?v=${video?.videoId}`} passHref>
+        <Button
+          leftIcon={<YoutubeIcon size="20px" />}
+          colorScheme="red"
+          variant="outline"
+        >
+          유튜브에서 자막 미리보기
+        </Button>
+      </Link>
+    </>
   ));
 
   const fileRejectionItems = fileRejections.map(({ file, errors }) => (
@@ -133,15 +160,6 @@ export default function SubCreate() {
       </UnorderedList>
     </ListItem>
   ));
-
-  const [video, setVideo] = useState<ResVideo>();
-  useEffect(() => {
-    axios
-      .get<ResVideo>(`/api/user/video`, { params: { serviceId, videoId } })
-      .then(({ data }) => {
-        setVideo(data);
-      });
-  }, [serviceId, videoId]);
 
   const textColor = useColorModeValue("gray.700", "gray.300");
   const codeList: LanguageCode[] = [
@@ -171,31 +189,45 @@ export default function SubCreate() {
         </Card>
         <Card w="850px" mt={5} zIndex={2} maxW="calc(100vw - 40px)">
           <CardHeader mb="24px">
-            <HStack w="full">
+            <HStack w="full" spacing="15px">
               <Text color={textColor} fontSize="lg" fontWeight="bold">
                 자막 파일 업로드
               </Text>
-              <Spacer />
-              <Button
-                leftIcon={<EditIcon w="14px" h="14px" />}
-                colorScheme="teal"
-                variant="solid"
-              >
-                <Text fontSize="14px">Edit on SubCloud</Text>
-              </Button>
+              <Link href={`/editor/?youtubeId=${video?.videoId}`} passHref>
+                <Button
+                  leftIcon={<EditIcon />}
+                  colorScheme="teal"
+                  variant="solid"
+                >
+                  Edit on SubCloud
+                </Button>
+              </Link>
             </HStack>
           </CardHeader>
           <FormControl isInvalid={errors.file !== undefined}>
-            <Box w="360px" h="120px" borderWidth="1px" borderRadius="6px">
-              <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                <Text>
-                  Drag &apos;n&apos; drop some files here, or click to select
-                  files
-                </Text>
-              </div>
+            <Box
+              h="100px"
+              borderWidth="1px"
+              borderRadius="6px"
+              {...getRootProps()}
+              bg={useColorModeValue(
+                isDragActive ? "blue.100" : "blue.50",
+                isDragActive ? "blue.800" : "blue.900"
+              )}
+              _hover={{
+                bg: useColorModeValue("blue.100", "blue.800"),
+              }}
+              p="15px"
+              cursor="pointer"
+            >
+              <input {...getInputProps()} />
+              {isDragActive ? (
+                <p>파일을 여기에 놓으세요</p>
+              ) : (
+                <p>클릭하거나 드래그 앤 드롭으로 자막을 업로드 하세요</p>
+              )}
             </Box>
-            <List>{acceptedFileItems}</List>
+            <HStack mt="15px">{acceptedFileItems}</HStack>
             <FormErrorMessage>
               <List>{fileRejectionItems}</List>
             </FormErrorMessage>
