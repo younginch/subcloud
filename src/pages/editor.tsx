@@ -4,17 +4,11 @@ import "react-reflex/styles.css";
 import {
   Box,
   Button,
-  Editable,
-  EditableInput,
-  EditablePreview,
   FormControl,
   Heading,
   HStack,
-  IconButton,
   Input,
   Stack,
-  Text,
-  Textarea,
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
@@ -25,28 +19,20 @@ import {
   useContext,
   useState,
 } from "react";
-import dayjs from "dayjs";
-import duration from "dayjs/plugin/duration";
 import { SRTContent, SRTFile } from "@younginch/subtitle";
 import { useDropzone } from "react-dropzone";
-import { DeleteIcon } from "@chakra-ui/icons";
-import { v4 as uuidv4 } from "uuid";
 import Shortcuts from "../components/editor/shortcuts";
 import YoutubeWithSub from "../components/editor/youtubeWithSub";
 import { useHotkeys } from "react-hotkeys-hook";
 import TimeLineContainer from "../components/editor/timeLineContainer";
 import { YouTubePlayer } from "react-youtube";
 import ToggleTheme from "../components/editor/toggleTheme";
-import { MdDelete, MdTimer } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { FaPlus, FaSave } from "react-icons/fa";
 import NoVideo from "../components/editor/noVideo";
 import axios from "axios";
 import EditArray from "../components/editor/editArray";
-
-export type contentArray = {
-  uuid: string;
-  content: SRTContent;
-};
+import { uuid } from "uuidv4";
 
 type EditorContextProps = {
   /// The left time in milliseconds
@@ -54,10 +40,8 @@ type EditorContextProps = {
   /// The right time in milliseconds
   rightTime: number;
   changeLRTime: (left: number, right: number) => void;
-  contents: contentArray[];
-  setContents: (
-    newContentsFromPrev: (prevContents: SRTContent[]) => SRTContent[]
-  ) => void;
+  contents: SRTContent[];
+  setContents: (newContents: SRTContent[]) => void;
   id: string;
   setId: (id: string) => void;
   setPlayer: (player: YouTubePlayer) => void;
@@ -89,7 +73,7 @@ type EditorProviderProps = {
 function EditorProvider({ children }: EditorProviderProps) {
   const [leftTime, setLeftTime] = useState<number>(0);
   const [rightTime, setRightTime] = useState<number>(1000 * 100);
-  const [contents, setContents] = useState<contentArray[]>([]);
+  const [contents, setContents] = useState<SRTContent[]>([]);
   const [id, setId] = useState<string>("");
   const [player, setPlayer] = useState<YouTubePlayer>();
   const [videoFraction, setVideoFraction] = useState<number>(0);
@@ -105,11 +89,7 @@ function EditorProvider({ children }: EditorProviderProps) {
         },
         contents,
         setContents: (newContents) => {
-          return setContents(
-            newContents(contents.map((content) => content.content)).map(
-              (content: any) => ({ uuid: uuidv4(), content })
-            )
-          );
+          setContents(() => newContents);
         },
         id,
         setId: (newId) => {
@@ -149,7 +129,7 @@ function EditorWithoutContext() {
     (acceptedFiles: File[]) => {
       acceptedFiles[0].text().then((text) => {
         const srtFile = SRTFile.fromText(text);
-        setContents(() => srtFile.array);
+        setContents(srtFile.array);
       });
     },
     [setContents]
@@ -163,7 +143,7 @@ function EditorWithoutContext() {
 
   function downloadSRT() {
     const srtFile = new SRTFile();
-    srtFile.array = contents.map((item) => item.content);
+    srtFile.array = contents;
     const url = window.URL.createObjectURL(new Blob([srtFile.toText()]));
     const link = document.createElement("a");
     link.href = url;
@@ -325,7 +305,7 @@ function EditorWithoutContext() {
                   "00:00:00,000 --> 00:00:00,000",
                   []
                 );
-                setContents((prevContents) => [...prevContents, newItem]);
+                setContents([...contents, newItem]);
               }}
               colorScheme="blue"
               w="full"
@@ -342,7 +322,7 @@ function EditorWithoutContext() {
             <Button
               rightIcon={<MdDelete />}
               onClick={() => {
-                setContents(() => []);
+                setContents([]);
               }}
               colorScheme="red"
               w="full"
