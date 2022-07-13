@@ -117,11 +117,6 @@
   animation: swing ease-in-out 0.5s 1 alternate;
 }
 
-.landing-glassmorphism {
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-}
-
 .create-glassmorphism {
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);

@@ -57,7 +57,7 @@ type PointElement = {
 
 export default function RequestCreate() {
   const textColor = useColorModeValue("gray.700", "gray.300");
-  const [summaryToggle] = useMediaQuery("(min-width: 1450px)");
+  const [summaryToggle] = useMediaQuery("(min-width: 1350px)");
   const router = useRouter();
   const serviceId = router.query.serviceId as string;
   const videoId = router.query.videoId as string;
@@ -298,7 +298,7 @@ export default function RequestCreate() {
           </HStack>
         </Card>
         <Card
-          w="500px"
+          w="400px"
           className={summaryToggle ? "requestFixed" : "requestBottom"}
           zIndex={3}
           maxW="calc(100vw - 40px)"
