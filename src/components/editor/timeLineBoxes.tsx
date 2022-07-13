@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, HStack, Text } from "@chakra-ui/react";
 import { useContext } from "react";
 import { EditorContext } from "../../pages/editor";
 
@@ -34,10 +34,27 @@ export default function TimeLineBoxes() {
             h="60px"
             borderWidth="1px"
             borderRadius="6px"
-            padding="3px"
             overflow="hidden"
           >
-            <Text>{item.content.toText()}</Text>
+            <HStack w="100%" h="100%" cursor="move">
+              <Box
+                w="7px"
+                h="100%"
+                bg="red.400"
+                m="0px !important"
+                cursor="ew-resize"
+              />
+              <Text m="0px !important" w="calc(100% - 14px)">
+                {item.content.toText()}
+              </Text>
+              <Box
+                w="7px"
+                h="100%"
+                bg="green.400"
+                m="0px !important"
+                cursor="ew-resize"
+              />
+            </HStack>
           </Box>
         );
       })}
