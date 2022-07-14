@@ -78,4 +78,8 @@ export default function Admin() {
   );
 }
 
-Admin.options = { role: Role.Admin, hideTitle: true } as PageOptions;
+Admin.options = {
+  role: Role.Admin,
+  hideTitle: true,
+  hideFooter: true,
+} as PageOptions;

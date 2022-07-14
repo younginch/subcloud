@@ -1,4 +1,11 @@
 {
+  "dashboard": "Dashboard",
+  "my_request": "My requests",
+  "history": "History",
+  "my_sub": "My subtitles",
+  "orders": "Orders",
+  "withdraws": "Withdraws",
+  "settings": "Settings",
   "public_profile": "My public profile",
   "dashboard_head_request": "Total subtitle requests",
   "dashboard_head_views": "Total post views",
