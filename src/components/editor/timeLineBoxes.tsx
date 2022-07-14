@@ -7,7 +7,7 @@ export default function TimeLineBoxes() {
   const { contents, leftTime, rightTime } = useContext(EditorContext);
 
   return (
-    <Box w="100%" position="absolute" mt="50px" zIndex={10}>
+    <Box w="100%" position="absolute" mt="45px" zIndex={10} h="100%">
       {contents.map((item) => {
         if (item.endTime <= leftTime || item.startTime >= rightTime) {
           return;
@@ -22,7 +22,7 @@ export default function TimeLineBoxes() {
             w={`${
               ((item.endTime - item.startTime) / (rightTime - leftTime)) * 6000
             }px`}
-            h="60px"
+            h="calc(100% - 50px)"
             borderWidth="1px"
             borderRadius="6px"
             overflow="hidden"

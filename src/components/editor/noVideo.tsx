@@ -1,7 +1,12 @@
 import { Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import { RefObject } from "react";
 import { BiVideoPlus } from "react-icons/bi";
 
-export default function NoVideo() {
+type Props = {
+  urlRef: RefObject<HTMLInputElement>;
+};
+
+export default function NoVideo({ urlRef }: Props) {
   return (
     <Stack
       w="100%"
@@ -9,6 +14,7 @@ export default function NoVideo() {
       alignItems="center"
       justifyContent="center"
       bg={useColorModeValue("gray.100", "#222222")}
+      onClick={() => urlRef.current?.focus()}
     >
       <BiVideoPlus size="30%" />
       <Text fontSize="20px" fontWeight="bold">

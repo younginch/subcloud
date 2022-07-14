@@ -8,15 +8,25 @@ import {
   Heading,
   HStack,
   Input,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  Portal,
   Stack,
   useColorModeValue,
   useToast,
+  Text,
 } from "@chakra-ui/react";
 import {
   createContext,
   FormEvent,
   useCallback,
   useContext,
+  useRef,
   useState,
 } from "react";
 import { SRTContent, SRTFile } from "@younginch/subtitle";
@@ -32,7 +42,6 @@ import { FaPlus, FaSave } from "react-icons/fa";
 import NoVideo from "../components/editor/noVideo";
 import axios from "axios";
 import EditArray from "../components/editor/editArray";
-import { uuid } from "uuidv4";
 
 type EditorContextProps = {
   /// The left time in milliseconds
@@ -122,6 +131,7 @@ function EditorProvider({ children }: EditorProviderProps) {
 function EditorWithoutContext() {
   const toast = useToast();
   const [urlInput, setUrlInput] = useState("");
+  const urlField = useRef<HTMLInputElement>(null);
 
   const { contents, setContents, id, setId } = useContext(EditorContext);
 
@@ -242,6 +252,7 @@ function EditorWithoutContext() {
                       placeholder={
                         id.length === 0 ? "동영상 url 입력" : "변경할 url 입력"
                       }
+                      ref={urlField}
                     />
                   </FormControl>
                   <Button type="submit" colorScheme="blue" w="80px">
@@ -257,7 +268,11 @@ function EditorWithoutContext() {
             style={{ overflow: "hidden" }}
             size={1000}
           >
-            {id.length === 0 ? <NoVideo /> : <YoutubeWithSub id={id} />}
+            {id.length === 0 ? (
+              <NoVideo urlRef={urlField} />
+            ) : (
+              <YoutubeWithSub id={id} />
+            )}
           </ReflexElement>
           <ReflexSplitter propagate={true} />
           <ReflexElement minSize={300}>
@@ -286,7 +301,12 @@ function EditorWithoutContext() {
       >
         <TimeLineContainer />
       </ReflexElement>
-      <ReflexSplitter propagate={true} />
+      <ReflexSplitter
+        propagate={true}
+        style={{
+          height: "3px",
+        }}
+      />
       <ReflexElement className="right-pane" size={400}>
         <HStack maxH="100%" h="100%" overflowY="hidden">
           <Stack
@@ -319,16 +339,42 @@ function EditorWithoutContext() {
             >
               Save to SRT
             </Button>
-            <Button
-              rightIcon={<MdDelete />}
-              onClick={() => {
-                setContents([]);
-              }}
-              colorScheme="red"
-              w="full"
-            >
-              Delete all
-            </Button>
+            <Popover placement="right">
+              {({ onClose }) => (
+                <>
+                  <PopoverTrigger>
+                    <Button rightIcon={<MdDelete />} colorScheme="red" w="full">
+                      Delete all
+                    </Button>
+                  </PopoverTrigger>
+                  <Portal>
+                    <PopoverContent>
+                      <PopoverArrow />
+                      <PopoverHeader>Confirmation!</PopoverHeader>
+                      <PopoverCloseButton />
+                      <PopoverBody>
+                        <Stack>
+                          <Text>
+                            SRT파일로 저장하지 않으면 지금까지의 수정사항을 전부
+                            잃게 됩니다.
+                          </Text>
+                          <Button
+                            colorScheme="red"
+                            onClick={() => {
+                              setContents([]);
+                              onClose();
+                            }}
+                          >
+                            자막 전체 삭제
+                          </Button>
+                        </Stack>
+                      </PopoverBody>
+                    </PopoverContent>
+                  </Portal>
+                </>
+              )}
+            </Popover>
+
             <ToggleTheme />
           </Stack>
           <EditArray />
