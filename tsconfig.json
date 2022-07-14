@@ -16,6 +16,12 @@
     "incremental": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/utils/prisma.ts", "src/utils/resolver.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/utils/prisma.ts",
+    "src/utils/resolver.js"
+  ],
   "exclude": ["node_modules"]
 }
