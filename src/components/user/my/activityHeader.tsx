@@ -43,7 +43,7 @@ export default function ActivityHeader({ requests, views, points }: Props) {
       label: t("dashboard_head_request"),
       score: requests,
       icon: FiSend,
-      detail: "View All",
+      detail: t("activityHeader_view"),
       href: "/user/my/request",
     },
     {
@@ -51,7 +51,7 @@ export default function ActivityHeader({ requests, views, points }: Props) {
       label: t("dashboard_head_views"),
       score: views,
       icon: AiOutlineEye,
-      detail: "View All",
+      detail: t("activityHeader_view"),
       href: "/user/my/sub",
     },
     {
@@ -59,7 +59,7 @@ export default function ActivityHeader({ requests, views, points }: Props) {
       label: t("dashboard_head_points"),
       score: points,
       icon: GrProductHunt,
-      detail: "충전하기",
+      detail: t("activityHeader_charge"),
       href: "/buy",
     },
   ];
