@@ -9,9 +9,11 @@ import {
   Center,
   HStack,
 } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { PageOptions } from "../../../utils/types";
 export default function OrderFail() {
+  const { t } = useTranslation("buyPageFail");
   return (
     <>
       <Container maxW={"3xl"}>
@@ -30,12 +32,10 @@ export default function OrderFail() {
             lineHeight={"110%"}
           >
             <Text as={"span"} color={"gray.900"}>
-              결제 실패
+              {t("order_fail_error")}
             </Text>
           </Heading>
-          <Text color={"gray.500"}>
-            모종의 이유로 결제 과정에서 오류가 발생했습니다.
-          </Text>
+          <Text color={"gray.500"}>{t("order_fail_error_process")}</Text>
           <Stack
             direction={"column"}
             spacing={3}
@@ -54,7 +54,7 @@ export default function OrderFail() {
                     bg: "green.500",
                   }}
                 >
-                  프로필로 가기
+                  {t("profile_button")}
                 </Button>
               </Link>
               <Link href="/buy" passHref>
@@ -67,7 +67,7 @@ export default function OrderFail() {
                     bg: "green.500",
                   }}
                 >
-                  다시 시도하기
+                  {t("order_fail_retry")}
                 </Button>
               </Link>
             </HStack>

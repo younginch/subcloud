@@ -21,7 +21,7 @@ import { SRTContent } from "@younginch/subtitle";
 dayjs.extend(duration);
 
 function miliToString(second: number): string {
-  return dayjs.duration(second).format("HH:mm:ss,SSS").substring(0, 12);
+  return dayjs.duration(second).format("mm:ss,SSS").substring(0, 9);
 }
 
 function EditComponent({ index }: { index: number }) {
@@ -32,7 +32,7 @@ function EditComponent({ index }: { index: number }) {
     <Textarea
       noOfLines={2}
       value={value}
-      onEnded={(event: ChangeEvent<HTMLTextAreaElement>) => {
+      onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
         setValue(event.target.value);
         const newContents = [...contents];
         newContents[index].textArray = event.target.value.split("\n");
@@ -66,7 +66,7 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
         <HStack justifyContent="space-between">
           <Editable
             defaultValue={miliToString(data[index].startTime!)}
-            maxW="100px"
+            maxW="80px"
           >
             <EditablePreview />
             <EditableInput />
@@ -77,7 +77,7 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
         <HStack justifyContent="space-between">
           <Editable
             defaultValue={miliToString(data[index].endTime!)}
-            maxW="100px"
+            maxW="80px"
           >
             <EditablePreview />
             <EditableInput />
@@ -107,15 +107,13 @@ export default function EditArray() {
   const ref = useRef<HTMLDivElement>(null);
 
   return (
-    <Box h="100%" maxH="100%" w="full" ref={ref}>
+    <Box h="100%" maxH="100%" w="full" ref={ref} ml="0px !important">
       <FixedSizeList
         height={Number(ref.current?.clientHeight)}
         itemData={contents}
         itemCount={contents.length}
         itemKey={(index) =>
-          `${index}${contents[index].startTime}${
-            contents[index].endTime
-          }${contents[index].toText()}`
+          `${index}${contents[index].startTime}${contents[index].endTime}`
         }
         itemSize={90}
         width="100%"
