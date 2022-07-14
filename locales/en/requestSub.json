@@ -1,5 +1,6 @@
 {
     "center_h1" : "Request Subtitle",
+    "center_h1_up" : "Upload Subtitle",
     "center_below_front" : "Select video",
     "center_below_back" : "Select language",
     "search_box" : "Type the video link to request...",
