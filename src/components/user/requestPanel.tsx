@@ -18,6 +18,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import axios from "axios";
+import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
@@ -27,6 +28,7 @@ import AvatarWithName from "../badges/avatarWithName";
 import { YoutubeIcon } from "../icons/customIcons";
 
 export default function RequestPanel(props: { requests: ResRequestSearch }) {
+  const { t } = useTranslation("privateProfile");
   const router = useRouter();
   const toast = useToast();
   const [requests, setRequests] = useState<ResRequestSearch>(props.requests);
@@ -53,11 +55,11 @@ export default function RequestPanel(props: { requests: ResRequestSearch }) {
       <Table variant="simple" size="sm">
         <Thead>
           <Tr>
-            <Th>비디오</Th>
-            <Th>채널</Th>
-            <Th>요청 언어</Th>
-            <Th>포인트</Th>
-            <Th>작업</Th>
+            <Th>{t("vid")}</Th>
+            <Th>{t("channel")}</Th>
+            <Th>{t("language")}</Th>
+            <Th>{t("point")}</Th>
+            <Th>{t("task")}</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -74,7 +76,7 @@ export default function RequestPanel(props: { requests: ResRequestSearch }) {
                   <HStack>
                     <YoutubeIcon size="36px" />
                     <Text maxW={480} noOfLines={1}>
-                      {request.video?.youtubeVideo?.title ?? "비디오 정보없음"}
+                      {request.video?.youtubeVideo?.title ?? "Invalid video"}
                     </Text>
                   </HStack>
                 </Td>
@@ -112,7 +114,7 @@ export default function RequestPanel(props: { requests: ResRequestSearch }) {
                         });
                     }}
                   >
-                    취소
+                    {t("delete")}
                   </Button>
                   <Menu>
                     <MenuButton

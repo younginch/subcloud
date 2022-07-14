@@ -43,7 +43,7 @@ export default function ActivityHeader({ requests, views, points }: Props) {
       label: t("dashboard_head_request"),
       score: requests,
       icon: FiSend,
-      detail: t("activityHeader_view"),
+      detail: t("dash_activityHeader_view"),
       href: "/user/my/request",
     },
     {
@@ -51,7 +51,7 @@ export default function ActivityHeader({ requests, views, points }: Props) {
       label: t("dashboard_head_views"),
       score: views,
       icon: AiOutlineEye,
-      detail: t("activityHeader_view"),
+      detail: t("dash_activityHeader_view"),
       href: "/user/my/sub",
     },
     {
@@ -59,7 +59,7 @@ export default function ActivityHeader({ requests, views, points }: Props) {
       label: t("dashboard_head_points"),
       score: points,
       icon: GrProductHunt,
-      detail: t("activityHeader_charge"),
+      detail: t("dash_activityHeader_charge"),
       href: "/buy",
     },
   ];

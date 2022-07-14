@@ -27,7 +27,7 @@ export default function RecentReviews() {
     return (
       <Stack alignItems="center" spacing={5} pt={5} pb={10}>
         <FiBox size={50} />
-        <Text fontSize="20px">{t("no_review")}</Text>
+        <Text fontSize="20px">{t("dash_no_review")}</Text>
       </Stack>
     );
   }
