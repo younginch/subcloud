@@ -94,7 +94,7 @@ export default function UserMyIndex() {
               boxShadow: "lg",
             }}
           >
-            {t("public_profile")}
+            {t("dash_public_profile")}
           </Button>
         </Link>
       </HStack>
@@ -117,12 +117,12 @@ export default function UserMyIndex() {
               borderWidth={useColorModeValue("1px", "none")}
             >
               <Text fontSize="lg" fontWeight="bold" mb="4px">
-                {t("stat_sub")}
+                {t("dash_stat_sub")}
               </Text>
               <HStack>
                 <Spacer />
                 <Text fontSize="md" fontWeight="medium" color="gray.500">
-                  {t("total_sub")} : {subs?.length ?? 0}
+                  {t("dash_total_sub")} : {subs?.length ?? 0}
                 </Text>
               </HStack>
               <CalendarChart
@@ -144,7 +144,7 @@ export default function UserMyIndex() {
               borderWidth={useColorModeValue("1px", "none")}
             >
               <Text fontSize="lg" fontWeight="bold">
-                {t("recent_review")}
+                {t("dash_recent_review")}
               </Text>
               <RecentReviews />
             </Box>
@@ -183,7 +183,7 @@ export default function UserMyIndex() {
                   _hover={{ textDecoration: "underline" }}
                   mt="10px"
                 >
-                  {t("upgrade")}
+                  {t("dash_upgrade")}
                 </Text>
               </Link>
             </Box>
@@ -199,7 +199,7 @@ export default function UserMyIndex() {
               borderWidth={useColorModeValue("1px", "none")}
             >
               <Text fontSize="lg" fontWeight="bold" mb="4px">
-                {t("sub_view")}
+                {t("dash_sub_view")}
               </Text>
               <DetailViewGraph subId={undefined} />
             </Box>
@@ -216,7 +216,7 @@ export default function UserMyIndex() {
               borderWidth={useColorModeValue("1px", "none")}
             >
               <Text fontSize="lg" fontWeight="bold" mb="4px">
-                {t("sub_review")}
+                {t("dash_sub_review")}
               </Text>
               <Box maxH="300px" overflowY="scroll">
                 <SubStatusPreview />

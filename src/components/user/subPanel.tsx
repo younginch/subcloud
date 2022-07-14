@@ -37,12 +37,14 @@ import ReviewStatusBadge from "../badges/reviewStatusBadge";
 import AvatarWithName from "../badges/avatarWithName";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import useTranslation from "next-translate/useTranslation";
 
 type SubPanelProps = {
   subs: ResSubSearch;
 };
 
 export default function SubPanel(props: SubPanelProps) {
+  const { t } = useTranslation("privateProfile");
   const session = useSession();
   const toast = useToast();
   const [subs, setSubs] = useState<ResSubSearch>(props.subs);
@@ -78,22 +80,32 @@ export default function SubPanel(props: SubPanelProps) {
       <HStack>
         <Menu>
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-            {`진행도: ${subStatus}`}
+            {`${t("my_sub_progress")}: ${subStatus}`}
           </MenuButton>
           <MenuList minWidth="240px">
             <MenuOptionGroup
               defaultValue="all"
-              title="진행도"
+              title={t("my_sub_progress")}
               type="radio"
               onChange={(value) => {
                 setSubStatus(value as SubStatus | "all");
               }}
             >
-              <MenuItemOption value="all">전체</MenuItemOption>
-              <MenuItemOption value={SubStatus.Pending}>대기중</MenuItemOption>
-              <MenuItemOption value={SubStatus.Approved}>승인</MenuItemOption>
-              <MenuItemOption value={SubStatus.Rejected}>거부</MenuItemOption>
-              <MenuItemOption value={SubStatus.Reported}>신고</MenuItemOption>
+              <MenuItemOption value="all">
+                {t("my_sub_progress_all")}
+              </MenuItemOption>
+              <MenuItemOption value={SubStatus.Pending}>
+                {t("my_sub_progress_wait")}
+              </MenuItemOption>
+              <MenuItemOption value={SubStatus.Approved}>
+                {t("my_sub_progress_approve")}
+              </MenuItemOption>
+              <MenuItemOption value={SubStatus.Rejected}>
+                {t("my_sub_progress_denial")}
+              </MenuItemOption>
+              <MenuItemOption value={SubStatus.Reported}>
+                {t("my_sub_progress_report")}
+              </MenuItemOption>
             </MenuOptionGroup>
           </MenuList>
         </Menu>
@@ -102,12 +114,12 @@ export default function SubPanel(props: SubPanelProps) {
       <Table variant="simple" size="sm" ref={ref}>
         <Thead>
           <Tr>
-            <Th>영상</Th>
-            <Th>채널</Th>
-            <Th>언어</Th>
-            <Th>상태</Th>
-            <Th>업로드 날짜</Th>
-            <Th>상세정보</Th>
+            <Th>{t("vid")}</Th>
+            <Th>{t("channel")}</Th>
+            <Th>{t("language")}</Th>
+            <Th>{t("status")}</Th>
+            <Th>{t("my_sub_upload")}</Th>
+            <Th>{t("my_sub_info")}</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -148,10 +160,10 @@ export default function SubPanel(props: SubPanelProps) {
                           <DetailViewGraph subId={sub.id} />
                           <HStack>
                             <CopyToClipboard text={sub.id}>
-                              <Button>자막 ID 복사</Button>
+                              <Button>{t("my_sub_copy")}</Button>
                             </CopyToClipboard>
                             <Button marginEnd="6px" isDisabled>
-                              수정
+                              {t("my_sub_edit")}
                             </Button>
                             <Button
                               onClick={() => {
@@ -164,7 +176,7 @@ export default function SubPanel(props: SubPanelProps) {
                                   });
                               }}
                             >
-                              자막 파일 다운로드
+                              {t("my_sub_download")}
                             </Button>
                             <Spacer />
                             <Button
@@ -192,7 +204,7 @@ export default function SubPanel(props: SubPanelProps) {
                                   });
                               }}
                             >
-                              삭제
+                              {t("delete")}
                             </Button>
                           </HStack>
                         </Stack>
