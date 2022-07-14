@@ -12,4 +12,8 @@ export default function UserMyRequest() {
   return requests ? <RequestPanel requests={requests} /> : <></>;
 }
 
-UserMyRequest.options = { role: Role.User, hideTitle: true } as PageOptions;
+UserMyRequest.options = {
+  role: Role.User,
+  hideTitle: true,
+  hideFooter: true,
+} as PageOptions;
