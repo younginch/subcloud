@@ -77,13 +77,7 @@ export default function UserLayout({ children }: UserLayoutProps) {
               />
             );
           })}
-          <Box h={`calc(90vh - ${135 + dashBoardItems.length * 50}px)`} />
-          <MenuItem
-            icon={<AiTwotoneSetting />}
-            onClick={() => router.push("/user/my/settings")}
-          >
-            {t("settings")}
-          </MenuItem>
+          <Box h={`calc(90vh - ${94 + dashBoardItems.length * 50}px)`} />
         </Menu>
         <SidebarFooter>
           <Stack alignItems="center" p="5px">

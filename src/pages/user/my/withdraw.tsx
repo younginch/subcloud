@@ -184,4 +184,8 @@ export default function UserMyWithdraw() {
   );
 }
 
-UserMyWithdraw.options = { auth: true, hideTitle: true } as PageOptions;
+UserMyWithdraw.options = {
+  auth: true,
+  hideTitle: true,
+  hideFooter: true,
+} as PageOptions;
