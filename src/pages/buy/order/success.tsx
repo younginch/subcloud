@@ -17,8 +17,10 @@ import { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Link from "next/link";
 import { PageOptions } from "../../../utils/types";
+import useTranslation from "next-translate/useTranslation";
 
 export default function OrderSuccess() {
+  const { t } = useTranslation("buyPage");
   const router = useRouter();
   const toast = useToast();
 
@@ -35,7 +37,7 @@ export default function OrderSuccess() {
       })
       .catch(() => {
         toast({
-          title: "주문 정보를 불러오는데 실패했습니다.",
+          title: t("order_sucess_error"),
           status: "error",
           isClosable: true,
         });
@@ -60,17 +62,15 @@ export default function OrderSuccess() {
             lineHeight={"110%"}
           >
             <Text as={"span"} color={"green.400"}>
-              결제가 완료되었습니다
+              {t("order_sucess")}
             </Text>
           </Heading>
           <Text color={"gray.500"}>
-            포인트를 사용하여 자막을 요청할 수 있습니다. 원하는 자막을 빠르게
-            얻어보세요.
+            {t("sucess_p1")}
             <br />
-            요청이 취소되면 포인트를 그대로 돌려받습니다.
+            {t("sucess_p2")}
             <br />
-            프리미엄 서비스를 구독하면 정기적으로 ____ 포인트를 얻을 수
-            있습니다.
+            {t("order_sucess_p3")}
           </Text>
           <Stack
             direction={"column"}
@@ -90,7 +90,7 @@ export default function OrderSuccess() {
                     bg: "green.500",
                   }}
                 >
-                  프로필로 가기
+                  {t("profile_button")}
                 </Button>
               </Link>
               <Link href="/video/create?next=request" passHref>
@@ -103,19 +103,23 @@ export default function OrderSuccess() {
                     bg: "green.500",
                   }}
                 >
-                  자막 요청하기
+                  {t("request_button")}
                 </Button>
               </Link>
             </HStack>
-            <Text>결제 금액 : {order?.amount}원</Text>
+            <Text>
+              {t("payment")} : {order?.amount}₩
+            </Text>
             <HStack>
-              <Text>결제 id :{order?.id}</Text>
+              <Text>
+                {t("order_payment_id")} :{order?.id}
+              </Text>
               <CopyToClipboard
                 text={order?.id ? order.id : "error"}
                 onCopy={() => setIsCopied(true)}
               >
-                <Text as="u" color="blue">
-                  {isCopied ? "복사됨" : "복사하기"}
+                <Text as="u" color="blue" cursor="pointer">
+                  {isCopied ? t("copied") : t("copy")}
                 </Text>
               </CopyToClipboard>
             </HStack>
