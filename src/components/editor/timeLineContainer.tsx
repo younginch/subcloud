@@ -1,13 +1,29 @@
 import { useContext, WheelEvent } from "react";
-import { contentArray, EditorContext } from "../../pages/editor";
+import { EditorContext } from "../../pages/editor";
 import TimeLine from "./timeLine";
 import { Box, Text } from "@chakra-ui/react";
 import TimeLineBoxes from "./timeLineBoxes";
+import Draggable from "react-draggable";
+import TimeLineMarker from "./timeLineMarker";
 
 export default function TimeLineContainer() {
   const { leftTime, rightTime, changeLRTime } = useContext(EditorContext);
 
   const handleScroll = (e: WheelEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const mouseRatio = e.screenX / window.screen.width;
+    let zoom = 1;
+    zoom = 1 + e.deltaY / 1000;
+    const left =
+      ((mouseRatio - mouseRatio * zoom - zoom) * (rightTime - leftTime) +
+        (rightTime + 2 * leftTime)) /
+      3;
+    const right =
+      ((mouseRatio - mouseRatio * zoom + 2 * zoom) * (rightTime - leftTime) +
+        (rightTime + 2 * leftTime)) /
+      3;
+    changeLRTime(left, right);
+    /*
     const fixedPos = e.screenX + 2000;
     const fixedTime = (fixedPos / 6000) * (rightTime - leftTime) + leftTime;
     let newInterval;
@@ -20,19 +36,23 @@ export default function TimeLineContainer() {
     const newRight = fixedTime + (newInterval * (6000 - fixedPos)) / 6000;
     if (newLeft < 0) changeLRTime(0, newInterval);
     else changeLRTime(newLeft, newRight);
+    */
   };
 
   return (
-    <Box
-      h="100%"
-      w="6000px"
-      left="-2000px"
-      position="relative"
-      overflow="hidden"
-      onWheel={handleScroll}
-    >
-      <TimeLine />
-      <TimeLineBoxes contents={[]} />
-    </Box>
+    <Draggable axis="x">
+      <Box
+        h="100%"
+        w="6000px"
+        left="-2000px"
+        position="relative"
+        overflow="hidden"
+        onWheel={handleScroll}
+      >
+        <TimeLine />
+        <TimeLineBoxes />
+        <TimeLineMarker />
+      </Box>
+    </Draggable>
   );
 }

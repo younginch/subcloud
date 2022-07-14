@@ -4,18 +4,11 @@ import "react-reflex/styles.css";
 import {
   Box,
   Button,
-  Editable,
-  EditableInput,
-  EditablePreview,
   FormControl,
   Heading,
   HStack,
-  IconButton,
   Input,
-  Spacer,
   Stack,
-  Text,
-  Textarea,
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
@@ -26,35 +19,20 @@ import {
   useContext,
   useState,
 } from "react";
-import dayjs from "dayjs";
-import duration from "dayjs/plugin/duration";
 import { SRTContent, SRTFile } from "@younginch/subtitle";
 import { useDropzone } from "react-dropzone";
-import { DeleteIcon } from "@chakra-ui/icons";
-import { v4 as uuidv4 } from "uuid";
 import Shortcuts from "../components/editor/shortcuts";
 import YoutubeWithSub from "../components/editor/youtubeWithSub";
 import { useHotkeys } from "react-hotkeys-hook";
-import { useRouter } from "next/router";
 import TimeLineContainer from "../components/editor/timeLineContainer";
 import { YouTubePlayer } from "react-youtube";
 import ToggleTheme from "../components/editor/toggleTheme";
-import { MdDelete, MdTimer } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { FaPlus, FaSave } from "react-icons/fa";
-
-dayjs.extend(duration);
-
-function miliToString(second: number): string {
-  return dayjs
-    .duration(second * 1000)
-    .format("HH:mm:ss,SSS")
-    .substring(0, 12);
-}
-
-export type contentArray = {
-  uuid: string;
-  content: SRTContent;
-};
+import NoVideo from "../components/editor/noVideo";
+import axios from "axios";
+import EditArray from "../components/editor/editArray";
+import { uuid } from "uuidv4";
 
 type EditorContextProps = {
   /// The left time in milliseconds
@@ -62,21 +40,21 @@ type EditorContextProps = {
   /// The right time in milliseconds
   rightTime: number;
   changeLRTime: (left: number, right: number) => void;
-  contents: contentArray[];
-  setContents: (
-    newContentsFromPrev: (prevContents: SRTContent[]) => SRTContent[]
-  ) => void;
+  contents: SRTContent[];
+  setContents: (newContents: SRTContent[]) => void;
   id: string;
   setId: (id: string) => void;
   setPlayer: (player: YouTubePlayer) => void;
   getPlayerTime: () => number;
   setPlayerTime: (time: number) => void;
-  getVideoFraction: () => number;
+  aspectRatio: number;
 };
 
 export const EditorContext = createContext<EditorContextProps>({
+  /* The left time in milliseconds
+   */
   leftTime: 0,
-  rightTime: 1000 * 10,
+  rightTime: 100 * 1000,
   changeLRTime: (_, __) => {},
   contents: [],
   setContents: (_) => {},
@@ -85,7 +63,7 @@ export const EditorContext = createContext<EditorContextProps>({
   setPlayer: () => {},
   getPlayerTime: () => 0,
   setPlayerTime: (_) => {},
-  getVideoFraction: () => 0,
+  aspectRatio: 0,
 });
 
 type EditorProviderProps = {
@@ -94,10 +72,11 @@ type EditorProviderProps = {
 
 function EditorProvider({ children }: EditorProviderProps) {
   const [leftTime, setLeftTime] = useState<number>(0);
-  const [rightTime, setRightTime] = useState<number>(1000 * 10);
-  const [contents, setContents] = useState<contentArray[]>([]);
+  const [rightTime, setRightTime] = useState<number>(1000 * 100);
+  const [contents, setContents] = useState<SRTContent[]>([]);
   const [id, setId] = useState<string>("");
   const [player, setPlayer] = useState<YouTubePlayer>();
+  const [videoFraction, setVideoFraction] = useState<number>(0);
 
   return (
     <EditorContext.Provider
@@ -110,11 +89,7 @@ function EditorProvider({ children }: EditorProviderProps) {
         },
         contents,
         setContents: (newContents) => {
-          return setContents(
-            newContents(contents.map((content) => content.content)).map(
-              (content: any) => ({ uuid: uuidv4(), content })
-            )
-          );
+          setContents(() => newContents);
         },
         id,
         setId: (newId) => {
@@ -122,6 +97,13 @@ function EditorProvider({ children }: EditorProviderProps) {
         },
         setPlayer: (newPlayer) => {
           setPlayer(newPlayer);
+          axios
+            .get(
+              `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`
+            )
+            .then((res) => {
+              setVideoFraction(res.data.width / res.data.height);
+            });
         },
         getPlayerTime: () => {
           return player?.getDuration();
@@ -129,9 +111,7 @@ function EditorProvider({ children }: EditorProviderProps) {
         setPlayerTime: (time) => {
           player?.seekTo(time);
         },
-        getVideoFraction: () => {
-          return player?.getVideoLoadedFraction();
-        },
+        aspectRatio: videoFraction,
       }}
     >
       {children}
@@ -140,7 +120,6 @@ function EditorProvider({ children }: EditorProviderProps) {
 }
 
 function EditorWithoutContext() {
-  const router = useRouter();
   const toast = useToast();
   const [urlInput, setUrlInput] = useState("");
 
@@ -150,7 +129,7 @@ function EditorWithoutContext() {
     (acceptedFiles: File[]) => {
       acceptedFiles[0].text().then((text) => {
         const srtFile = SRTFile.fromText(text);
-        setContents(() => srtFile.array);
+        setContents(srtFile.array);
       });
     },
     [setContents]
@@ -164,7 +143,7 @@ function EditorWithoutContext() {
 
   function downloadSRT() {
     const srtFile = new SRTFile();
-    srtFile.array = contents.map((item) => item.content);
+    srtFile.array = contents;
     const url = window.URL.createObjectURL(new Blob([srtFile.toText()]));
     const link = document.createElement("a");
     link.href = url;
@@ -181,7 +160,7 @@ function EditorWithoutContext() {
     >
       <ReflexElement minSize={100}>
         <ReflexContainer orientation="vertical">
-          <ReflexElement minSize={200} maxSize={400}>
+          <ReflexElement minSize={200} maxSize={500}>
             <Stack>
               <Heading
                 fontSize="lg"
@@ -226,7 +205,7 @@ function EditorWithoutContext() {
                 p="5px"
                 textAlign="center"
               >
-                동영상 변경
+                {id.length === 0 ? "동영상 선택" : "동영상 변경"}
               </Heading>
               <form
                 onSubmit={(event: FormEvent) => {
@@ -260,11 +239,13 @@ function EditorWithoutContext() {
                       onChange={(event: any) => {
                         setUrlInput(event.target.value);
                       }}
-                      placeholder="변경할 url 입력"
+                      placeholder={
+                        id.length === 0 ? "동영상 url 입력" : "변경할 url 입력"
+                      }
                     />
                   </FormControl>
                   <Button type="submit" colorScheme="blue" w="80px">
-                    변경
+                    {id.length === 0 ? "선택" : "변경"}
                   </Button>
                 </Stack>
               </form>
@@ -276,7 +257,7 @@ function EditorWithoutContext() {
             style={{ overflow: "hidden" }}
             size={1000}
           >
-            <YoutubeWithSub id={id} />
+            {id.length === 0 ? <NoVideo /> : <YoutubeWithSub id={id} />}
           </ReflexElement>
           <ReflexSplitter propagate={true} />
           <ReflexElement minSize={300}>
@@ -297,7 +278,12 @@ function EditorWithoutContext() {
         </ReflexContainer>
       </ReflexElement>
       <ReflexSplitter propagate={true} />
-      <ReflexElement minSize={100} size={120} maxSize={200}>
+      <ReflexElement
+        minSize={100}
+        size={120}
+        maxSize={200}
+        style={{ overflow: "hidden" }}
+      >
         <TimeLineContainer />
       </ReflexElement>
       <ReflexSplitter propagate={true} />
@@ -319,7 +305,7 @@ function EditorWithoutContext() {
                   "00:00:00,000 --> 00:00:00,000",
                   []
                 );
-                setContents((prevContents) => [...prevContents, newItem]);
+                setContents([...contents, newItem]);
               }}
               colorScheme="blue"
               w="full"
@@ -336,7 +322,7 @@ function EditorWithoutContext() {
             <Button
               rightIcon={<MdDelete />}
               onClick={() => {
-                setContents(() => []);
+                setContents([]);
               }}
               colorScheme="red"
               w="full"
@@ -345,71 +331,7 @@ function EditorWithoutContext() {
             </Button>
             <ToggleTheme />
           </Stack>
-          <Stack
-            h="100%"
-            maxH="100%"
-            overflowY="scroll"
-            overflowX="hidden"
-            w="full"
-          >
-            {contents.map((value, index) => {
-              return (
-                <HStack key={value.uuid}>
-                  <Text>{index + 1}</Text>
-                  <Stack w="200px" minW="200px" ml="15px !important">
-                    <HStack>
-                      <Text>시작 시간</Text>
-                      <Spacer />
-                      <Editable
-                        defaultValue={miliToString(value.content.startTime!)}
-                        maxW="100px"
-                      >
-                        <EditablePreview />
-                        <EditableInput />
-                      </Editable>
-                      <MdTimer />
-                    </HStack>
-                    <HStack>
-                      <Text>끝 시간</Text>
-                      <Spacer />
-                      <Editable
-                        defaultValue={miliToString(value.content.endTime!)}
-                        maxW="100px"
-                      >
-                        <EditablePreview />
-                        <EditableInput />
-                      </Editable>
-                      <MdTimer />
-                    </HStack>
-                  </Stack>
-                  <Textarea
-                    noOfLines={2}
-                    value={value.content.textArray.reduce(
-                      (acc, cur) => `${acc} \r\n${cur}`,
-                      ""
-                    )}
-                    onChange={(event: any) => {
-                      contents[index].content.textArray =
-                        event.target.value.split("\n");
-                      setContents((prev: SRTContent[]): SRTContent[] => [
-                        ...prev,
-                      ]);
-                    }}
-                  />
-                  <IconButton
-                    aria-label="Delete subtitle"
-                    icon={<DeleteIcon />}
-                    onClick={() => {
-                      setContents((prevContents: any) => [
-                        ...prevContents.slice(0, index),
-                        ...prevContents.slice(index + 1),
-                      ]);
-                    }}
-                  />
-                </HStack>
-              );
-            })}
-          </Stack>
+          <EditArray />
         </HStack>
       </ReflexElement>
     </ReflexContainer>
