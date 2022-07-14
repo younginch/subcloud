@@ -18,28 +18,34 @@ import { AiOutlineHistory, AiTwotoneSetting } from "react-icons/ai";
 import { IoIosSend } from "react-icons/io";
 import MyMenuItem from "./myMenuItem";
 import { BsCashStack } from "react-icons/bs";
+import useTranslation from "next-translate/useTranslation";
 
 type UserLayoutProps = {
   children: React.ReactNode;
 };
 
 export default function UserLayout({ children }: UserLayoutProps) {
+  const { t } = useTranslation("privateProfile");
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [isPc] = useMediaQuery("(min-width: 850px)");
   const dashBoardItems = [
     {
       icon: <MdSpaceDashboard color="inherit" />,
       href: "/user/my",
-      text: "Dashboard",
+      text: t("dashboard"),
     },
-    { icon: <IoIosSend />, href: "/user/my/request", text: "My requests" },
-    { icon: <AiOutlineHistory />, href: "/user/my/history", text: "History" },
-    { icon: <MdSubtitles />, href: "/user/my/sub", text: "My Subtitles" },
-    { icon: <BiPurchaseTagAlt />, href: "/user/my/order", text: "Orders" },
+    { icon: <IoIosSend />, href: "/user/my/request", text: t("my_request") },
+    {
+      icon: <AiOutlineHistory />,
+      href: "/user/my/history",
+      text: t("history"),
+    },
+    { icon: <MdSubtitles />, href: "/user/my/sub", text: t("my_sub") },
+    { icon: <BiPurchaseTagAlt />, href: "/user/my/order", text: t("orders") },
     {
       icon: <BsCashStack />,
       href: "/user/my/withdraw",
-      text: "Withdraws",
+      text: t("withdraws"),
     },
   ];
 
@@ -76,7 +82,7 @@ export default function UserLayout({ children }: UserLayoutProps) {
             icon={<AiTwotoneSetting />}
             onClick={() => router.push("/user/my/settings")}
           >
-            Settings
+            {t("settings")}
           </MenuItem>
         </Menu>
         <SidebarFooter>
