@@ -1,7 +1,9 @@
 import { Box, useColorModeValue, Text, Icon, HStack } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import { GoChevronRight } from "react-icons/go";
 
 export default function EventNotice() {
+  const { t } = useTranslation("requestSub");
   return (
     <HStack
       p={1}
@@ -19,10 +21,10 @@ export default function EventNotice() {
         color="white"
         bgGradient="linear(to-l, #0ea5e9,#2563eb)"
       >
-        자막 업로드 이벤트
+        {t("event_front")}
       </Box>
       <HStack spacing={1} alignItems="center" justifyContent="center">
-        <Text lineHeight={1}>자막 업로드시 포인트 증정</Text>
+        <Text lineHeight={1}>{t("event_back")}</Text>
         <Icon as={GoChevronRight} w={4} h={4} />
       </HStack>
     </HStack>

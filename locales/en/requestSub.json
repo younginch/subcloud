@@ -1,8 +1,11 @@
 {
   "center_h1": "Request Subtitle",
+  "center_h1_up": "Upload Subtitle",
   "center_below_front": "Select video",
   "center_below_back": "Select language",
   "search_box": "Type the video link to request...",
+  "event_front": "subtitle upload event",
+  "event_back": "Award points when uploading subtitle",
   "explain_box_1": "Request subtitles for free with just a few clicks",
   "explain_box_2": "We will give you upload notification",
   "explain_box_3": "Point helps the subtitles to be created quickly",

@@ -37,7 +37,7 @@ export default function CreateHeader({ type, step }: Props) {
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage={step === 2}>
           <BreadcrumbLink href="#">
-            {type === "request" ? t("center_below_back") : "자막 업로드"}
+            {type === "request" ? t("center_below_back") : t("center_h1_up")}
           </BreadcrumbLink>
         </BreadcrumbItem>
       </Breadcrumb>
