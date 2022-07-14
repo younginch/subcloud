@@ -24,7 +24,7 @@ export default function CreateHeader({ type, step }: Props) {
         textAlign="center"
         color="white"
       >
-        {type === "request" ? t("center_h1") : "자막 제작"}
+        {type === "request" ? t("center_h1") : t("center_h1_up")}
       </Heading>
       <Breadcrumb
         spacing="8px"

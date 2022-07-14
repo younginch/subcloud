@@ -52,3 +52,6 @@ playwright-report/
 /public/s3
 /public/robots.txt
 /public/sitemap*
+
+# Visual Studio code
+.vscode/
