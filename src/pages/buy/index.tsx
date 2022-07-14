@@ -213,7 +213,7 @@ export default function Buy() {
           spacing={{ base: 4, lg: 10 }}
           py={10}
         >
-          <SubscribeItem price="2" title="Basic">
+          <SubscribeItem price="2" title="Basic" disabled>
             <ListItem>
               <ListIcon as={FaCheckCircle} color="green.500" />
               {t("remove_ads")}
