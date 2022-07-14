@@ -22,12 +22,14 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { FiUpload } from "react-icons/fi";
 import SwingProvider from "../../components/swingProvider";
 import EventNotice from "../../components/create/eventNotice";
+import useTranslation from "next-translate/useTranslation";
 
 type FormData = {
   url: string;
 };
 
 export default function VideoCreate() {
+  const { t } = useTranslation("requestSub");
   const bgColor = useColorModeValue("white", "#1F2733");
   const router = useRouter();
   const toast = useToast();
@@ -99,7 +101,7 @@ export default function VideoCreate() {
               <Input
                 id="url"
                 className="create-glassmorphism"
-                placeholder="이곳에 유튜브 링크 입력"
+                placeholder={t("search_box")}
                 _placeholder={{
                   color: useColorModeValue("gray.200", "gray.400"),
                 }}
@@ -174,16 +176,10 @@ export default function VideoCreate() {
             spacing="10px"
             maxW="85%"
           >
-            <ListItem>클릭 몇 번으로 무료 자막을 요청해 보세요</ListItem>
-            <ListItem>
-              요청하신 영상에 자막이 생기면 알림으로 알려드려요
-            </ListItem>
-            <ListItem>
-              포인트를 사용하면 자막이 빨리 만들어질 가능성이 높아집니다
-            </ListItem>
-            <ListItem>
-              자막이 만들어지기 전까지 포인트는 사용되지 않습니다
-            </ListItem>
+            <ListItem>{t("explain_box_1")}</ListItem>
+            <ListItem>{t("explain_box_2")}</ListItem>
+            <ListItem>{t("explain_box_3")}</ListItem>
+            <ListItem>{t("explain_box_4")}</ListItem>
           </UnorderedList>
         </Stack>
       </Box>
