@@ -39,7 +39,7 @@ export default function OrderProcess({
         { params: { id: orderId } }
       )
       .then((res) => {
-        // router.push(`/buy/order/success?id=${res.data.id}`);
+        router.push(`/buy/order/success?id=${res.data.id}`);
       })
       .catch((err) => {
         toast({
@@ -48,7 +48,7 @@ export default function OrderProcess({
           isClosable: true,
           description: err.message,
         });
-        // router.push(`/buy/order/fail`);
+        router.push(`/buy/order/fail`);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
