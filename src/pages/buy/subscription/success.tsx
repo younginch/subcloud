@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Link from "next/link";
 import { PageOptions } from "../../../utils/types";
+import useTranslation from "next-translate/useTranslation";
 
 type CardType = {
   company: string;
@@ -26,6 +27,7 @@ type CardType = {
 };
 
 export default function SubscriptionSuccess() {
+  const { t } = useTranslation("buyPage");
   const router = useRouter();
   const toast = useToast();
 
@@ -42,7 +44,7 @@ export default function SubscriptionSuccess() {
       })
       .catch(() => {
         toast({
-          title: "구독 정보를 불러오는데 실패했습니다.",
+          title: t("subscription_sucess_error"),
           status: "error",
           isClosable: true,
         });
@@ -67,17 +69,15 @@ export default function SubscriptionSuccess() {
             lineHeight={"110%"}
           >
             <Text as={"span"} color={"green.400"}>
-              구독 등록이 완료되었습니다
+              {t("subscribe_sucess")}
             </Text>
           </Heading>
           <Text color={"gray.500"}>
-            포인트를 사용하여 자막을 요청할 수 있습니다. 원하는 자막을 빠르게
-            얻어보세요.
+            {t("sucess_p1")}
             <br />
-            요청이 취소되면 포인트를 그대로 돌려받습니다.
+            {t("sucess_p2")}
             <br />
-            프리미엄 서비스를 구독하면 정기적으로 ____ 포인트를 얻을 수
-            있습니다.
+            {t("sucess_p3")}
           </Text>
           <Stack
             direction={"column"}
@@ -97,7 +97,7 @@ export default function SubscriptionSuccess() {
                     bg: "green.500",
                   }}
                 >
-                  프로필로 가기
+                  {t("profile_button")}
                 </Button>
               </Link>
               <Link href="/video/create?next=request" passHref>
@@ -110,23 +110,28 @@ export default function SubscriptionSuccess() {
                     bg: "green.500",
                   }}
                 >
-                  자막 요청하기
+                  {t("request_button")}
                 </Button>
               </Link>
             </HStack>
-            <Text>카드 정보 : {(subscription?.card as CardType)?.company}</Text>
+            <Text>
+              {t("subscription_sucess_card_info")} :{" "}
+              {(subscription?.card as CardType)?.company}
+            </Text>
             <Text>{(subscription?.card as CardType)?.number}</Text>
             <Text>{(subscription?.card as CardType)?.cardType}</Text>
             <Text>{(subscription?.card as CardType)?.ownerType}</Text>
             <Text>{subscription?.type}</Text>
             <HStack>
-              <Text>구독 id :{subscription?.id}</Text>
+              <Text>
+                {t("subscription_sucess_subcribe_id")} :{subscription?.id}
+              </Text>
               <CopyToClipboard
                 text={subscription?.id ? subscription.id : "error"}
                 onCopy={() => setIsCopied(true)}
               >
-                <Text as="u" color="blue">
-                  {isCopied ? "복사됨" : "복사하기"}
+                <Text as="u" color="blue" cursor="pointer">
+                  {isCopied ? t("copied") : t("copy")}
                 </Text>
               </CopyToClipboard>
             </HStack>
