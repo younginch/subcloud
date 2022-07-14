@@ -17,7 +17,15 @@ const shortcutsData = [
     keys: ["tab"],
   },
   {
-    action: "Skip back 2 seconds",
+    action: "skip 0.5 seconds",
+    keys: ["right arrow"],
+  },
+  {
+    action: "skip back 0.5 seconds",
+    keys: ["left arrow"],
+  },
+  {
+    action: "Skip back 5 seconds",
     keys: ["shift", "tab"],
   },
   {
