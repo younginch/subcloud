@@ -8,9 +8,18 @@ import {
   Heading,
   HStack,
   Input,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  Portal,
   Stack,
   useColorModeValue,
   useToast,
+  Text,
 } from "@chakra-ui/react";
 import {
   createContext,
@@ -330,16 +339,42 @@ function EditorWithoutContext() {
             >
               Save to SRT
             </Button>
-            <Button
-              rightIcon={<MdDelete />}
-              onClick={() => {
-                setContents([]);
-              }}
-              colorScheme="red"
-              w="full"
-            >
-              Delete all
-            </Button>
+            <Popover placement="right">
+              {({ onClose }) => (
+                <>
+                  <PopoverTrigger>
+                    <Button rightIcon={<MdDelete />} colorScheme="red" w="full">
+                      Delete all
+                    </Button>
+                  </PopoverTrigger>
+                  <Portal>
+                    <PopoverContent>
+                      <PopoverArrow />
+                      <PopoverHeader>Confirmation!</PopoverHeader>
+                      <PopoverCloseButton />
+                      <PopoverBody>
+                        <Stack>
+                          <Text>
+                            SRT파일로 저장하지 않으면 지금까지의 수정사항을 전부
+                            잃게 됩니다.
+                          </Text>
+                          <Button
+                            colorScheme="red"
+                            onClick={() => {
+                              setContents([]);
+                              onClose();
+                            }}
+                          >
+                            자막 전체 삭제
+                          </Button>
+                        </Stack>
+                      </PopoverBody>
+                    </PopoverContent>
+                  </Portal>
+                </>
+              )}
+            </Popover>
+
             <ToggleTheme />
           </Stack>
           <EditArray />
