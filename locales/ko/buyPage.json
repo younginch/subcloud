@@ -1,0 +1,18 @@
+{
+  "payment": "결제 금액",
+  "unit": "₩",
+  "copy": "복사하기",
+  "copied": "복사됨",
+  "profile_button": "프로필로 바로가기",
+  "request_button": "자막 요청하기",
+  "order_sucess_error": "주문 정보를 불러오는데 실패했습니다",
+  "order_sucess": "결제가 완료되었습니다",
+  "sucess_p1": "포인트를 사용하여 자막을 요청할 수 있습니다. 원하는 자막을 빠르게 얻어보세요",
+  "sucess_p2": "요청이 취소되면 포인트를 그대로 돌려받습니다",
+  "sucess_p3": "프리미엄 서비스를 구독하면 정기적으로 80 포인트를 얻을 수 있습니다",
+  "order_payment_id": "결제 ID",
+  "subscribe_sucess": "결제가 완료되었습니다",
+  "subscription_sucess_error": "구독정보를 불러오는데 실패했습니다",
+  "subscription_sucess_card_info": "카드 정보",
+  "subscription_sucess_subcribe_id": "구독 ID"
+}

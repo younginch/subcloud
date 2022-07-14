@@ -98,7 +98,7 @@ function EditorProvider({ children }: EditorProviderProps) {
         },
         contents,
         setContents: (newContents) => {
-          setContents(() => newContents);
+          setContents(newContents);
         },
         id,
         setId: (newId) => {
@@ -374,7 +374,6 @@ function EditorWithoutContext() {
                 </>
               )}
             </Popover>
-
             <ToggleTheme />
           </Stack>
           <EditArray />

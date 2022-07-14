@@ -32,7 +32,7 @@ function EditComponent({ index }: { index: number }) {
     <Textarea
       noOfLines={2}
       value={value}
-      onEnded={(event: ChangeEvent<HTMLTextAreaElement>) => {
+      onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
         setValue(event.target.value);
         const newContents = [...contents];
         newContents[index].textArray = event.target.value.split("\n");
@@ -113,9 +113,7 @@ export default function EditArray() {
         itemData={contents}
         itemCount={contents.length}
         itemKey={(index) =>
-          `${index}${contents[index].startTime}${
-            contents[index].endTime
-          }${contents[index].toText()}`
+          `${index}${contents[index].startTime}${contents[index].endTime}`
         }
         itemSize={90}
         width="100%"

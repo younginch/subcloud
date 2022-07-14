@@ -34,7 +34,7 @@ export default function OrderFail() {
             </Text>
           </Heading>
           <Text color={"gray.500"}>
-            모종의 이유로 결제 과정에서 오류가 발생했습니다.
+            포인트 구매 과정에서 오류가 발생했습니다.
           </Text>
           <Stack
             direction={"column"}
