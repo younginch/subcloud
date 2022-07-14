@@ -4,6 +4,7 @@ import TimeLine from "./timeLine";
 import { Box, Text } from "@chakra-ui/react";
 import TimeLineBoxes from "./timeLineBoxes";
 import Draggable from "react-draggable";
+import TimeLineMarker from "./timeLineMarker";
 
 export default function TimeLineContainer() {
   const { leftTime, rightTime, changeLRTime } = useContext(EditorContext);
@@ -50,6 +51,7 @@ export default function TimeLineContainer() {
       >
         <TimeLine />
         <TimeLineBoxes />
+        <TimeLineMarker />
       </Box>
     </Draggable>
   );
