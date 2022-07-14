@@ -1,5 +1,25 @@
 {
+  "public_profile": "My public profile",
   "dashboard_head_request": "Total subtitle requests",
   "dashboard_head_views": "Total post views",
-  "dashboard_head_points": "Total points"
+  "dashboard_head_points": "Total points",
+  "activityHeader_view": "View all",
+  "activityHeader_charge": "Charge points",
+  "stat_sub": "Subtitle production statistics",
+  "total_sub": "Total subtitles",
+  "recent_review": "Recent subtitles",
+  "no_review": "No recent review",
+  "membership": "Membership",
+  "upgrade": "Upgrade",
+  "sub_view": "Subtitle reviews",
+  "day": "By day",
+  "week": "By week",
+  "month": "By month",
+  "recent_views_ko": "Views in the last ",
+  "recent_views_en": " days",
+  "sub_review": "Subtitle review status",
+  "vid": "video",
+  "language": "language",
+  "status": "status",
+  "task": "task"
 }

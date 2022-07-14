@@ -1,5 +1,25 @@
 {
+  "public_profile": "내 퍼플릭 프로필",
   "dashboard_head_request": "전체 요청 수",
   "dashboard_head_views": "누적 자막 조회수",
-  "dashboard_head_points": "보유 포인트"
+  "dashboard_head_points": "보유 포인트",
+  "activityHeader_view": " 보기",
+  "activityHeader_charge": "충전하기",
+  "stat_sub": "자막 제작 통계",
+  "total_sub": "총 자막 수",
+  "recent_review": "최근 리뷰",
+  "no_review": "최근 리뷰가 없습니다",
+  "membership": "멤버십",
+  "upgrade": "업그레이드",
+  "sub_view": "자막 조회수",
+  "day": "일별",
+  "week": "주별",
+  "month": "월별",
+  "recent_views_ko": "최근 ",
+  "recent_views_en": "일 동안의 조회수",
+  "sub_review": "자막 검토 현황",
+  "vid": "영상",
+  "language": "언어",
+  "status": "상태",
+  "task": "작업"
 }

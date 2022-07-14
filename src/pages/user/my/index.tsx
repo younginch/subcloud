@@ -29,8 +29,10 @@ import DetailViewGraph from "../../../components/user/my/detailViewGraph";
 import SubStatusPreview from "../../../components/user/my/subStatusPreview";
 import ActivityHeader from "../../../components/user/my/activityHeader";
 import SwingProvider from "../../../components/swingProvider";
+import useTranslation from "next-translate/useTranslation";
 
 export default function UserMyIndex() {
+  const { t } = useTranslation("privateProfile");
   const session = useSession();
 
   const { data } = useSWR<User>(`/api/user?id=${session.data?.user.id}`);
@@ -92,7 +94,7 @@ export default function UserMyIndex() {
               boxShadow: "lg",
             }}
           >
-            내 퍼블릭 프로필
+            {t("public_profile")}
           </Button>
         </Link>
       </HStack>
@@ -115,12 +117,12 @@ export default function UserMyIndex() {
               borderWidth={useColorModeValue("1px", "none")}
             >
               <Text fontSize="lg" fontWeight="bold" mb="4px">
-                자막 제작 통계
+                {t("stat_sub")}
               </Text>
               <HStack>
                 <Spacer />
                 <Text fontSize="md" fontWeight="medium" color="gray.500">
-                  총 자막 수 : {subs?.length ?? 0}
+                  {t("total_sub")} : {subs?.length ?? 0}
                 </Text>
               </HStack>
               <CalendarChart
@@ -142,7 +144,7 @@ export default function UserMyIndex() {
               borderWidth={useColorModeValue("1px", "none")}
             >
               <Text fontSize="lg" fontWeight="bold">
-                최근 리뷰
+                {t("recent_review")}
               </Text>
               <RecentReviews />
             </Box>
@@ -158,7 +160,7 @@ export default function UserMyIndex() {
               borderWidth={useColorModeValue("1px", "none")}
             >
               <Text fontSize="lg" fontWeight="bold" mb="4px">
-                멤버십
+                {t("membership")}
               </Text>
               <Center>
                 <SwingProvider>
@@ -181,7 +183,7 @@ export default function UserMyIndex() {
                   _hover={{ textDecoration: "underline" }}
                   mt="10px"
                 >
-                  업그레이드
+                  {t("upgrade")}
                 </Text>
               </Link>
             </Box>
@@ -197,7 +199,7 @@ export default function UserMyIndex() {
               borderWidth={useColorModeValue("1px", "none")}
             >
               <Text fontSize="lg" fontWeight="bold" mb="4px">
-                자막 조회수
+                {t("sub_view")}
               </Text>
               <DetailViewGraph subId={undefined} />
             </Box>
@@ -214,7 +216,7 @@ export default function UserMyIndex() {
               borderWidth={useColorModeValue("1px", "none")}
             >
               <Text fontSize="lg" fontWeight="bold" mb="4px">
-                자막 검토 현황
+                {t("sub_review")}
               </Text>
               <Box maxH="300px" overflowY="scroll">
                 <SubStatusPreview />
