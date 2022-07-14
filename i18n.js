@@ -3,7 +3,9 @@ module.exports = {
   defaultLocale: "en",
   pages: {
     "*": [
-      "buyPage",
+      "buyPageSuccess",
+      "buyPageFail",
+      "buyPageProcess",
       "common",
       "landing",
       "goods",

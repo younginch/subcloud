@@ -20,7 +20,7 @@ import { PageOptions } from "../../../utils/types";
 import useTranslation from "next-translate/useTranslation";
 
 export default function OrderSuccess() {
-  const { t } = useTranslation("buyPage");
+  const { t } = useTranslation("buyPageSuccess");
   const router = useRouter();
   const toast = useToast();
 
@@ -70,7 +70,7 @@ export default function OrderSuccess() {
             <br />
             {t("sucess_p2")}
             <br />
-            {t("order_sucess_p3")}
+            {t("sucess_p3")}
           </Text>
           <Stack
             direction={"column"}
