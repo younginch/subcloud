@@ -27,7 +27,7 @@ type CardType = {
 };
 
 export default function SubscriptionSuccess() {
-  const { t } = useTranslation("buyPage");
+  const { t } = useTranslation("buyPageSuccess");
   const router = useRouter();
   const toast = useToast();
 

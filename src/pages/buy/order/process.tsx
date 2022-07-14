@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { GetServerSideProps } from "next";
+import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { PageOptions } from "../../../utils/types";
@@ -26,6 +27,7 @@ export default function OrderProcess({
   paymentKey,
   amount,
 }: OrderProcessProps) {
+  const { t } = useTranslation("buyPageProcess");
   const router = useRouter();
   const toast = useToast();
   const textColor = useColorModeValue("gray.700", "gray.300");
@@ -37,16 +39,16 @@ export default function OrderProcess({
         { params: { id: orderId } }
       )
       .then((res) => {
-        router.push(`/buy/order/success?id=${res.data.id}`);
+        // router.push(`/buy/order/success?id=${res.data.id}`);
       })
       .catch((err) => {
         toast({
-          title: "주문 정보를 불러오는데 실패했습니다.",
+          title: t("order_process_error"),
           status: "error",
           isClosable: true,
           description: err.message,
         });
-        router.push(`/buy/order/fail`);
+        // router.push(`/buy/order/fail`);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -69,7 +71,7 @@ export default function OrderProcess({
             lineHeight={"110%"}
           >
             <Text as={"span"} color={textColor}>
-              결제 진행 중
+              {t("order_process_paying")}
             </Text>
           </Heading>
         </Stack>

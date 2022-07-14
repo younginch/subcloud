@@ -9,9 +9,11 @@ import {
   Center,
   HStack,
 } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { PageOptions } from "../../../utils/types";
 export default function SubscriptionFail() {
+  const { t } = useTranslation("buyPageFail");
   return (
     <>
       <Container maxW={"3xl"}>
