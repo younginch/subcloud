@@ -1,5 +1,5 @@
 {
-  "subcloud_aim":"SubCloud aims to overcome language barriers on the web through subtitles",
+  "subcloud_aim": "SubCloud aims to overcome language barriers on the web through subtitles",
   "watch_sub_free": "Watch Subtitles free",
   "in_sub": "in SubCloud",
   "search_vid": "Searching Videos",
@@ -18,7 +18,7 @@
   "simple_view": "Simple Subtitle Viewing",
   "without_moving_front": "Subtitles on video you watch without moving website",
   "without_moving_back": "Subtitles can be loaded with a few clicks",
-  "landing_features" : "Features",
+  "landing_features": "Features",
   "landing_features_first": "Customized subtitle environment",
   "landing_features_first_ex": "Adjust the subtitle size, background and border color to your preference",
   "landing_features_second": "Provide free subtitle production tool",

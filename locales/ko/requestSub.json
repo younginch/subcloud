@@ -1,10 +1,10 @@
 {
-    "center_h1" : "자막 요청",
-    "center_below_front" : "영상 선택",
-    "center_below_back" : "자막 언어 선택",
-    "search_box" : "이곳에 요청하실 영상 링크 입력...",
-    "explain_box_1" : "클릭 몇 번으로 무료 자막을 요청해보세요",
-    "explain_box_2" : "요청하신영상에 자막이 생기면 알림으로 알려드려요",
-    "explain_box_3" : "포인트를 사용하면 자막이 빨리 만들어질 가능성이 높아집니다",
-    "explain_box_4" : "자막이 만들어지기 전까지 포인트는 사용되지 않습니다"
+  "center_h1": "자막 요청",
+  "center_below_front": "영상 선택",
+  "center_below_back": "자막 언어 선택",
+  "search_box": "이곳에 요청하실 영상 링크 입력...",
+  "explain_box_1": "클릭 몇 번으로 무료 자막을 요청해보세요",
+  "explain_box_2": "요청하신영상에 자막이 생기면 알림으로 알려드려요",
+  "explain_box_3": "포인트를 사용하면 자막이 빨리 만들어질 가능성이 높아집니다",
+  "explain_box_4": "자막이 만들어지기 전까지 포인트는 사용되지 않습니다"
 }

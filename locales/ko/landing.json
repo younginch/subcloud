@@ -1,5 +1,5 @@
 {
-  "subcloud_aim":"SubCloud는 자막을 통해 웹 상의 언어 장벽을 극복하는 것을 목표로 합니다",
+  "subcloud_aim": "SubCloud는 자막을 통해 웹 상의 언어 장벽을 극복하는 것을 목표로 합니다",
   "watch_sub_free": "무료 자막은",
   "in_sub": "SubCloud에서",
   "search_vid": "영상 검색하기",
@@ -18,7 +18,7 @@
   "simple_view": "간단한 자막 보기",
   "without_moving_front": "웹사이트 이동 없이 보던 영상에서 그대로",
   "without_moving_back": "클릭 몇 번이면 자막을 불러올 수 있어요",
-  "landing_features" : "다양한 기능을 만나보세요",
+  "landing_features": "다양한 기능을 만나보세요",
   "landing_features_first": "유저맞춤 자막 환경",
   "landing_features_first_ex": "자막 크기, 배경과 테두리 색상을 자신의 기호에 맞춰 조정 가능합니다",
   "landing_features_second": "SubCloud 전용 자막제작툴",

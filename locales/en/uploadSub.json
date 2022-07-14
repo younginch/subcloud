@@ -1,10 +1,10 @@
 {
-    "center_h1_up" : "Upload Subtitle",
-    "center_below_front" : "Select video",
-    "center_below_back" : "Select language",
-    "search_box" : "Type the video link to request...",
-    "explain_box_1" : "Request subtitles for free with just a few clicks",
-    "explain_box_2" : "We will give you upload notification",
-    "explain_box_3" : "Point helps the subtitles to be created quickly",
-    "explain_box_4" : "Point will not be deducted until subtitles are created"
+  "center_h1_up": "Upload Subtitle",
+  "center_below_front": "Select video",
+  "center_below_back": "Select language",
+  "search_box": "Type the video link to request...",
+  "explain_box_1": "Request subtitles for free with just a few clicks",
+  "explain_box_2": "We will give you upload notification",
+  "explain_box_3": "Point helps the subtitles to be created quickly",
+  "explain_box_4": "Point will not be deducted until subtitles are created"
 }
