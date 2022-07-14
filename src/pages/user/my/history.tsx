@@ -12,12 +12,14 @@ import {
 import { Role, SubHistory } from "@prisma/client";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import useTranslation from "next-translate/useTranslation";
 import useSWR from "swr";
 import AvatarWithName from "../../../components/badges/avatarWithName";
 import { YoutubeIcon } from "../../../components/icons/customIcons";
 import { PageOptions, ResHistory } from "../../../utils/types";
 
 export default function UserMyHistory() {
+  const { t } = useTranslation("privateProfile");
   const session = useSession();
   const { data } = useSWR<ResHistory>(
     `/api/user/history?userId=${session.data?.user.id}`
@@ -28,10 +30,10 @@ export default function UserMyHistory() {
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th>비디오</Th>
-            <Th>채널</Th>
-            <Th>시청 언어</Th>
-            <Th>viewAt</Th>
+            <Th>{t("vid")}</Th>
+            <Th>{t("channel")}</Th>
+            <Th>{t("language")}</Th>
+            <Th>{t("history_view")}</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -43,7 +45,7 @@ export default function UserMyHistory() {
                     <YoutubeIcon size="36px" />
                     <Text maxW={480} noOfLines={1}>
                       {subHistory.sub.video?.youtubeVideo?.title ??
-                        "비디오 정보없음"}
+                        "Invalid video"}
                     </Text>
                   </HStack>
                 </Td>
@@ -66,4 +68,8 @@ export default function UserMyHistory() {
   );
 }
 
-UserMyHistory.options = { role: Role.User, hideTitle: true } as PageOptions;
+UserMyHistory.options = {
+  role: Role.User,
+  hideTitle: true,
+  hideFooter: true,
+} as PageOptions;

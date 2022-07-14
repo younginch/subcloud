@@ -1,15 +1,15 @@
 {
-    "title" : "title",
-    "language" : "Language",
-    "views" : "Views",
-    "madeby" : "Madeby",
-    "uploaded" : "Uploaded",
-    "name" : "Name",
-    "total views" : "Total Views",
-    "total subs" : "Total Subs",
-    "fulfilled" : "Fufilled",
-    "rating" : "Rating",
-    "duration" : "Duration",
-    "requests" : "Requests",
-    "points" : "Points"
+  "title": "title",
+  "language": "Language",
+  "views": "Views",
+  "madeby": "Madeby",
+  "uploaded": "Uploaded",
+  "name": "Name",
+  "total views": "Total Views",
+  "total subs": "Total Subs",
+  "fulfilled": "Fufilled",
+  "rating": "Rating",
+  "duration": "Duration",
+  "requests": "Requests",
+  "points": "Points"
 }

@@ -20,8 +20,10 @@ import ReviewStatusBadge from "../../../components/badges/reviewStatusBadge";
 import { ResSubSearch } from "../../../utils/types";
 import { SubStatus } from "@prisma/client";
 import { useSession } from "next-auth/react";
+import useTranslation from "next-translate/useTranslation";
 
 export default function SubStatusPreview() {
+  const { t } = useTranslation("privateProfile");
   const session = useSession();
   const toast = useToast();
   const [subs, setSubs] = useState<ResSubSearch>();
@@ -49,10 +51,10 @@ export default function SubStatusPreview() {
     <Table variant="simple" size="sm">
       <Thead>
         <Tr>
-          <Th>영상</Th>
-          <Th minW="70px">언어</Th>
-          <Th textAlign="center">상태</Th>
-          <Th textAlign="center">작업</Th>
+          <Th>{t("vid")}</Th>
+          <Th minW="70px">{t("language")}</Th>
+          <Th textAlign="center">{t("status")}</Th>
+          <Th textAlign="center">{t("task")}</Th>
         </Tr>
       </Thead>
       <Tbody overflowY="scroll">

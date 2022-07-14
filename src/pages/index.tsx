@@ -146,7 +146,6 @@ export default function Home() {
                 "rgba( 255, 255, 255, 0.4 )",
                 "rgba( 85, 85, 85, 0.2 )"
               )}
-              className="landing-glassmorphism"
               borderRadius="24px"
               border={useColorModeValue(
                 "2px solid rgba( 255, 255, 255, 0.5 )",
@@ -183,7 +182,6 @@ export default function Home() {
                 "rgba( 255, 255, 255, 0.4 )",
                 "rgba( 85, 85, 85, 0.2 )"
               )}
-              className="landing-glassmorphism"
               borderRadius="24px"
               border={useColorModeValue(
                 "2px solid rgba( 255, 255, 255, 0.5 )",
@@ -263,7 +261,6 @@ export default function Home() {
                 "0 0 24px 0 rgba( 31, 38, 135, 0.37 )",
                 "0 8px 32px 0 rgba( 31, 38, 135, 0.37 )"
               )}
-              className="landing-glassmorphism"
               borderRadius="15px"
               border={useColorModeValue(
                 "2px solid rgba( 255, 255, 255, 0.5 )",
@@ -325,7 +322,6 @@ export default function Home() {
             "0 8px 32px 0 rgba( 31, 38, 135, 0.37 )",
             "0 8px 52px 0 rgba( 31, 38, 135, 0.47 )"
           )}
-          className="landing-glassmorphism"
           borderRadius="15px"
           border={useColorModeValue(
             "2px solid rgba( 255, 255, 255, 0.5 )",

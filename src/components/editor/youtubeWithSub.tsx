@@ -81,10 +81,10 @@ export default function YoutubeWithSub({ id }: { id: string }) {
 
     for (let i = 0; i < contents.length; i++) {
       if (
-        contents[i].content.startTime <= currentTime &&
-        currentTime <= contents[i].content.endTime
+        contents[i].startTime <= currentTime &&
+        currentTime <= contents[i].endTime
       ) {
-        setTextArray(contents[i].content.textArray);
+        setTextArray(contents[i].textArray);
         return;
       }
     }
@@ -113,7 +113,9 @@ export default function YoutubeWithSub({ id }: { id: string }) {
         maxH="100%"
         maxW="100%"
         ref={boxRef}
-        style={{ aspectRatio: "16/9" }}
+        style={{ aspectRatio: "2" }}
+        display="flex"
+        alignItems="center"
       >
         <SubtitleComponent element={boxRef.current} textArray={textArray} />
         <YouTube

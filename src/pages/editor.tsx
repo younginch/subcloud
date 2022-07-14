@@ -4,58 +4,44 @@ import "react-reflex/styles.css";
 import {
   Box,
   Button,
-  Editable,
-  EditableInput,
-  EditablePreview,
   FormControl,
   Heading,
   HStack,
-  IconButton,
   Input,
-  Spacer,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  Portal,
   Stack,
-  Text,
-  Textarea,
   useColorModeValue,
   useToast,
+  Text,
 } from "@chakra-ui/react";
 import {
   createContext,
   FormEvent,
   useCallback,
   useContext,
+  useRef,
   useState,
 } from "react";
-import dayjs from "dayjs";
-import duration from "dayjs/plugin/duration";
 import { SRTContent, SRTFile } from "@younginch/subtitle";
 import { useDropzone } from "react-dropzone";
-import { DeleteIcon } from "@chakra-ui/icons";
-import { v4 as uuidv4 } from "uuid";
 import Shortcuts from "../components/editor/shortcuts";
 import YoutubeWithSub from "../components/editor/youtubeWithSub";
 import { useHotkeys } from "react-hotkeys-hook";
-import { useRouter } from "next/router";
 import TimeLineContainer from "../components/editor/timeLineContainer";
 import { YouTubePlayer } from "react-youtube";
 import ToggleTheme from "../components/editor/toggleTheme";
-import { MdDelete, MdTimer } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { FaPlus, FaSave } from "react-icons/fa";
 import NoVideo from "../components/editor/noVideo";
-
-dayjs.extend(duration);
-
-function miliToString(second: number): string {
-  return dayjs
-    .duration(second * 1000)
-    .format("HH:mm:ss,SSS")
-    .substring(0, 12);
-}
-
-export type contentArray = {
-  uuid: string;
-  content: SRTContent;
-};
+import axios from "axios";
+import EditArray from "../components/editor/editArray";
 
 type EditorContextProps = {
   /// The left time in milliseconds
@@ -63,19 +49,19 @@ type EditorContextProps = {
   /// The right time in milliseconds
   rightTime: number;
   changeLRTime: (left: number, right: number) => void;
-  contents: contentArray[];
-  setContents: (
-    newContentsFromPrev: (prevContents: SRTContent[]) => SRTContent[]
-  ) => void;
+  contents: SRTContent[];
+  setContents: (newContents: SRTContent[]) => void;
   id: string;
   setId: (id: string) => void;
   setPlayer: (player: YouTubePlayer) => void;
   getPlayerTime: () => number;
   setPlayerTime: (time: number) => void;
-  getVideoFraction: () => number;
+  aspectRatio: number;
 };
 
 export const EditorContext = createContext<EditorContextProps>({
+  /* The left time in milliseconds
+   */
   leftTime: 0,
   rightTime: 100 * 1000,
   changeLRTime: (_, __) => {},
@@ -86,7 +72,7 @@ export const EditorContext = createContext<EditorContextProps>({
   setPlayer: () => {},
   getPlayerTime: () => 0,
   setPlayerTime: (_) => {},
-  getVideoFraction: () => 0,
+  aspectRatio: 0,
 });
 
 type EditorProviderProps = {
@@ -95,10 +81,11 @@ type EditorProviderProps = {
 
 function EditorProvider({ children }: EditorProviderProps) {
   const [leftTime, setLeftTime] = useState<number>(0);
-  const [rightTime, setRightTime] = useState<number>(1000 * 10);
-  const [contents, setContents] = useState<contentArray[]>([]);
+  const [rightTime, setRightTime] = useState<number>(1000 * 100);
+  const [contents, setContents] = useState<SRTContent[]>([]);
   const [id, setId] = useState<string>("");
   const [player, setPlayer] = useState<YouTubePlayer>();
+  const [videoFraction, setVideoFraction] = useState<number>(0);
 
   return (
     <EditorContext.Provider
@@ -111,11 +98,7 @@ function EditorProvider({ children }: EditorProviderProps) {
         },
         contents,
         setContents: (newContents) => {
-          return setContents(
-            newContents(contents.map((content) => content.content)).map(
-              (content: any) => ({ uuid: uuidv4(), content })
-            )
-          );
+          setContents(() => newContents);
         },
         id,
         setId: (newId) => {
@@ -123,6 +106,13 @@ function EditorProvider({ children }: EditorProviderProps) {
         },
         setPlayer: (newPlayer) => {
           setPlayer(newPlayer);
+          axios
+            .get(
+              `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`
+            )
+            .then((res) => {
+              setVideoFraction(res.data.width / res.data.height);
+            });
         },
         getPlayerTime: () => {
           return player?.getDuration();
@@ -130,9 +120,7 @@ function EditorProvider({ children }: EditorProviderProps) {
         setPlayerTime: (time) => {
           player?.seekTo(time);
         },
-        getVideoFraction: () => {
-          return player?.getVideoLoadedFraction();
-        },
+        aspectRatio: videoFraction,
       }}
     >
       {children}
@@ -141,9 +129,9 @@ function EditorProvider({ children }: EditorProviderProps) {
 }
 
 function EditorWithoutContext() {
-  const router = useRouter();
   const toast = useToast();
   const [urlInput, setUrlInput] = useState("");
+  const urlField = useRef<HTMLInputElement>(null);
 
   const { contents, setContents, id, setId } = useContext(EditorContext);
 
@@ -151,7 +139,7 @@ function EditorWithoutContext() {
     (acceptedFiles: File[]) => {
       acceptedFiles[0].text().then((text) => {
         const srtFile = SRTFile.fromText(text);
-        setContents(() => srtFile.array);
+        setContents(srtFile.array);
       });
     },
     [setContents]
@@ -165,7 +153,7 @@ function EditorWithoutContext() {
 
   function downloadSRT() {
     const srtFile = new SRTFile();
-    srtFile.array = contents.map((item) => item.content);
+    srtFile.array = contents;
     const url = window.URL.createObjectURL(new Blob([srtFile.toText()]));
     const link = document.createElement("a");
     link.href = url;
@@ -264,6 +252,7 @@ function EditorWithoutContext() {
                       placeholder={
                         id.length === 0 ? "동영상 url 입력" : "변경할 url 입력"
                       }
+                      ref={urlField}
                     />
                   </FormControl>
                   <Button type="submit" colorScheme="blue" w="80px">
@@ -279,7 +268,11 @@ function EditorWithoutContext() {
             style={{ overflow: "hidden" }}
             size={1000}
           >
-            {id.length === 0 ? <NoVideo /> : <YoutubeWithSub id={id} />}
+            {id.length === 0 ? (
+              <NoVideo urlRef={urlField} />
+            ) : (
+              <YoutubeWithSub id={id} />
+            )}
           </ReflexElement>
           <ReflexSplitter propagate={true} />
           <ReflexElement minSize={300}>
@@ -308,7 +301,12 @@ function EditorWithoutContext() {
       >
         <TimeLineContainer />
       </ReflexElement>
-      <ReflexSplitter propagate={true} />
+      <ReflexSplitter
+        propagate={true}
+        style={{
+          height: "3px",
+        }}
+      />
       <ReflexElement className="right-pane" size={400}>
         <HStack maxH="100%" h="100%" overflowY="hidden">
           <Stack
@@ -327,7 +325,7 @@ function EditorWithoutContext() {
                   "00:00:00,000 --> 00:00:00,000",
                   []
                 );
-                setContents((prevContents) => [...prevContents, newItem]);
+                setContents([...contents, newItem]);
               }}
               colorScheme="blue"
               w="full"
@@ -341,83 +339,45 @@ function EditorWithoutContext() {
             >
               Save to SRT
             </Button>
-            <Button
-              rightIcon={<MdDelete />}
-              onClick={() => {
-                setContents(() => []);
-              }}
-              colorScheme="red"
-              w="full"
-            >
-              Delete all
-            </Button>
+            <Popover placement="right">
+              {({ onClose }) => (
+                <>
+                  <PopoverTrigger>
+                    <Button rightIcon={<MdDelete />} colorScheme="red" w="full">
+                      Delete all
+                    </Button>
+                  </PopoverTrigger>
+                  <Portal>
+                    <PopoverContent>
+                      <PopoverArrow />
+                      <PopoverHeader>Confirmation!</PopoverHeader>
+                      <PopoverCloseButton />
+                      <PopoverBody>
+                        <Stack>
+                          <Text>
+                            SRT파일로 저장하지 않으면 지금까지의 수정사항을 전부
+                            잃게 됩니다.
+                          </Text>
+                          <Button
+                            colorScheme="red"
+                            onClick={() => {
+                              setContents([]);
+                              onClose();
+                            }}
+                          >
+                            자막 전체 삭제
+                          </Button>
+                        </Stack>
+                      </PopoverBody>
+                    </PopoverContent>
+                  </Portal>
+                </>
+              )}
+            </Popover>
+
             <ToggleTheme />
           </Stack>
-          <Stack
-            h="100%"
-            maxH="100%"
-            overflowY="scroll"
-            overflowX="hidden"
-            w="full"
-          >
-            {contents.map((value, index) => {
-              return (
-                <HStack key={value.uuid}>
-                  <Text>{index + 1}</Text>
-                  <Stack w="200px" minW="200px" ml="15px !important">
-                    <HStack>
-                      <Text>시작 시간</Text>
-                      <Spacer />
-                      <Editable
-                        defaultValue={miliToString(value.content.startTime!)}
-                        maxW="100px"
-                      >
-                        <EditablePreview />
-                        <EditableInput />
-                      </Editable>
-                      <MdTimer />
-                    </HStack>
-                    <HStack>
-                      <Text>끝 시간</Text>
-                      <Spacer />
-                      <Editable
-                        defaultValue={miliToString(value.content.endTime!)}
-                        maxW="100px"
-                      >
-                        <EditablePreview />
-                        <EditableInput />
-                      </Editable>
-                      <MdTimer />
-                    </HStack>
-                  </Stack>
-                  <Textarea
-                    noOfLines={2}
-                    value={value.content.textArray.reduce(
-                      (acc, cur) => `${acc} \r\n${cur}`,
-                      ""
-                    )}
-                    onChange={(event: any) => {
-                      contents[index].content.textArray =
-                        event.target.value.split("\n");
-                      setContents((prev: SRTContent[]): SRTContent[] => [
-                        ...prev,
-                      ]);
-                    }}
-                  />
-                  <IconButton
-                    aria-label="Delete subtitle"
-                    icon={<DeleteIcon />}
-                    onClick={() => {
-                      setContents((prevContents: any) => [
-                        ...prevContents.slice(0, index),
-                        ...prevContents.slice(index + 1),
-                      ]);
-                    }}
-                  />
-                </HStack>
-              );
-            })}
-          </Stack>
+          <EditArray />
         </HStack>
       </ReflexElement>
     </ReflexContainer>

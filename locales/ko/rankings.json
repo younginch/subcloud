@@ -1,15 +1,15 @@
 {
-    "title" : "제목",
-    "language" : "언어",
-    "views" : "조회수",
-    "madeby" : "제작자",
-    "uploaded" : "업로드 날짜",
-    "name" : "이름",
-    "total views" : "총 조회수",
-    "total subs" : "총 자막수",
-    "fulfilled" : "요청충족수",
-    "rating" : "평가",
-    "duration" : "영상길이",
-    "requests" : "요청 수",
-    "points" : "포인트"
+  "title": "제목",
+  "language": "언어",
+  "views": "조회수",
+  "madeby": "제작자",
+  "uploaded": "업로드 날짜",
+  "name": "이름",
+  "total views": "총 조회수",
+  "total subs": "총 자막수",
+  "fulfilled": "요청충족수",
+  "rating": "평가",
+  "duration": "영상길이",
+  "requests": "요청 수",
+  "points": "포인트"
 }

@@ -18,7 +18,7 @@
   "/video/[serviceId]/[videoId]": "영상 정보",
   "/video/create": "영상 선택",
   "/video/create?next=request": "자막 요청",
-  "/video/create?next=sub": "자막 제작",
+  "/video/create?next=sub": "자막 업로드",
   "/404": "페이지를 찾을 수 없음",
   "/500": "서버 오류",
   "/": "홈",

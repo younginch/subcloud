@@ -8,12 +8,14 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import useTranslation from "next-translate/useTranslation";
 import { AiFillStar } from "react-icons/ai";
 import { FiBox } from "react-icons/fi";
 import useSWR from "swr";
 import { ResRatingSearch } from "../../../utils/types";
 
 export default function RecentReviews() {
+  const { t } = useTranslation("privateProfile");
   const session = useSession();
   const textColor = useColorModeValue("gray.700", "gray.400");
   const count = 5;
@@ -25,7 +27,7 @@ export default function RecentReviews() {
     return (
       <Stack alignItems="center" spacing={5} pt={5} pb={10}>
         <FiBox size={50} />
-        <Text fontSize="20px">최근 리뷰가 없습니다</Text>
+        <Text fontSize="20px">{t("dash_no_review")}</Text>
       </Stack>
     );
   }

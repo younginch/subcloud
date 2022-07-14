@@ -41,6 +41,7 @@ import { TbDiamond, TbDiamonds } from "react-icons/tb";
 import { BiRocket } from "react-icons/bi";
 import { BsLightningCharge } from "react-icons/bs";
 import { HiOutlineFire } from "react-icons/hi";
+import useTranslation from "next-translate/useTranslation";
 
 type FormData = {
   serviceId: string;
@@ -56,8 +57,9 @@ type PointElement = {
 };
 
 export default function RequestCreate() {
+  const { t } = useTranslation("videoRequest");
   const textColor = useColorModeValue("gray.700", "gray.300");
-  const [summaryToggle] = useMediaQuery("(min-width: 1450px)");
+  const [summaryToggle] = useMediaQuery("(min-width: 1350px)");
   const router = useRouter();
   const serviceId = router.query.serviceId as string;
   const videoId = router.query.videoId as string;
@@ -189,13 +191,14 @@ export default function RequestCreate() {
   }, [setValue]);
 
   const pointBg = useColorModeValue("gray.100", "gray.800");
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack ms={{ base: "20px", xl: "calc(15vw - 150px)" }} spacing={5}>
         <Card w="850px" mt={5} maxW="calc(100vw - 40px)">
           <CardHeader mb="10px">
             <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
-              요청 영상
+              {t("req_vid")}
             </Text>
           </CardHeader>
           <VideoInfo video={video} />
@@ -203,14 +206,16 @@ export default function RequestCreate() {
         <Card w="850px" mt={5} zIndex={2} maxW="calc(100vw - 40px)">
           <CardHeader mb="24px">
             <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
-              언어 선택
+              {t("select_lang")}
             </Text>
           </CardHeader>
           <Menu>
             <FormControl as="fieldset">
               <MenuOptionGroup>
                 <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                  {watch().lang ? ISO6391.getName(watch().lang) : "언어 선택"}
+                  {watch().lang
+                    ? ISO6391.getName(watch().lang)
+                    : t("select_lang")}
                 </MenuButton>
                 <MenuList>
                   {codeList.map((code) => {
@@ -233,13 +238,13 @@ export default function RequestCreate() {
             </FormControl>
           </Menu>
           <Checkbox mt={5} size="lg" defaultChecked>
-            기본 요청 언어로 저장
+            {t("basic_lang")}
           </Checkbox>
         </Card>
         <Card w="850px" mt={5} maxW="calc(100vw - 40px)">
           <CardHeader mb="24px">
             <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
-              포인트
+              {t("point")}
             </Text>
           </CardHeader>
           <Wrap p={5} justify="space-evenly">
@@ -293,43 +298,43 @@ export default function RequestCreate() {
               </FormErrorMessage>
             </FormControl>
             <Button colorScheme="blue" onClick={() => setValue("point", 0)}>
-              리셋
+              {t("point_reset")}
             </Button>
           </HStack>
         </Card>
         <Card
-          w="500px"
+          w="400px"
           className={summaryToggle ? "requestFixed" : "requestBottom"}
           zIndex={3}
           maxW="calc(100vw - 40px)"
         >
           <CardHeader mb="24px">
             <Text color={textColor} fontSize="20px" fontWeight="bold" mb="4px">
-              요청 요약
+              {t("req_summary")}
             </Text>
           </CardHeader>
-          <Text fontSize="18px">영상 제목</Text>
+          <Text fontSize="18px">{t("vid_title")}</Text>
           <Text fontWeight="bold" fontSize="20px">
             {video?.youtubeVideo?.title ?? "unknown"}
           </Text>
           <Text fontSize="18px" mt="20px">
-            영상 길이
+            {t("vid_length")}
           </Text>
           <Text fontWeight="bold" fontSize="20px">
             {video?.youtubeVideo
-              ? `${Math.floor(video?.youtubeVideo.duration / 60)}분 ${
+              ? `${Math.floor(video?.youtubeVideo.duration / 60)}${t("min")} ${
                   video?.youtubeVideo.duration % 60
-                }초`
+                }${t("sec")}`
               : "unknown"}
           </Text>
           <Text fontSize="18px" mt="20px">
-            요청 언어
+            {t("req_lang")}
           </Text>
           <Text fontWeight="bold" fontSize="20px">
             {ISO6391.getName(watch().lang)}
           </Text>
           <HStack mt="20px !important">
-            <Text fontSize="18px">제공 포인트</Text>
+            <Text fontSize="18px">{t("point")}</Text>
             {getLevel(watch().point) >= 0 && (
               <Box
                 as="div"
@@ -372,7 +377,7 @@ export default function RequestCreate() {
             isLoading={isSubmitting}
             type="submit"
           >
-            요청 올리기
+            {t("upload_req")}
           </Button>
         </Card>
       </Stack>

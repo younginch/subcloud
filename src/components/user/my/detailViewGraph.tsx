@@ -9,11 +9,13 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import useTranslation from "next-translate/useTranslation";
 import { useState } from "react";
 import useSWR from "swr";
 import LineChart from "../graphs/lineChart";
 
 export default function DetailViewGraph({ subId }: { subId?: string }) {
+  const { t } = useTranslation("privateProfile");
   const viewRange = 10;
 
   const [value, setValue] = useState("day");
@@ -33,14 +35,15 @@ export default function DetailViewGraph({ subId }: { subId?: string }) {
       <HStack>
         <RadioGroup onChange={setValue} value={value}>
           <Stack direction="row">
-            <Radio value="day">일별</Radio>
-            <Radio value="week">주별</Radio>
-            <Radio value="month">월별</Radio>
+            <Radio value="day">{t("day")}</Radio>
+            <Radio value="week">{t("week")}</Radio>
+            <Radio value="month">{t("month")}</Radio>
           </Stack>
         </RadioGroup>
         <Spacer />
         <Text fontSize="md" fontWeight="medium" color="gray.500" mt={3}>
-          최근 {viewRange}일 동안의 조회수 :{" "}
+          {t("dash_recent_views_ko")} {viewRange}
+          {t("dash_recent_views_en")} :{" "}
           {data
             ? data.reduce((prev: number, curr: number) => prev + curr, 0)
             : 0}

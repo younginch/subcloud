@@ -9,6 +9,7 @@ import {
   Flex,
   useMediaQuery,
 } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import { ResVideo } from "../../utils/types";
 
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
 };
 
 export default function VideoInfo({ video }: Props) {
+  const { t } = useTranslation("videoRequest");
   const [isLargerThan900] = useMediaQuery("(min-width: 900px)");
 
   return (
@@ -31,9 +33,19 @@ export default function VideoInfo({ video }: Props) {
       />
       {video?.youtubeVideo ? (
         <Box padding="12px">
-          <Heading size="md">{video?.youtubeVideo.title}</Heading>
+          <Heading
+            size="md"
+            overflow="hidden"
+            maxW="75%"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+          >
+            {video?.youtubeVideo.title}
+          </Heading>
           <Text marginY="10px">
-            {`조회수 ${video?.youtubeVideo.viewCount}회 | ${video?.youtubeVideo.publishedAt}`}
+            {`${t("view_ko")} ${video?.youtubeVideo.viewCount}${t(
+              "view_en"
+            )} | ${video?.youtubeVideo.publishedAt}`}
           </Text>
           <HStack>
             <Avatar
@@ -43,7 +55,9 @@ export default function VideoInfo({ video }: Props) {
             <Stack>
               <Heading size="sm">{video?.youtubeVideo.channel.title}</Heading>
               <Text>
-                구독자 {video?.youtubeVideo.channel.subscriberCount}명
+                {t("subscriber_ko")}{" "}
+                {video?.youtubeVideo.channel.subscriberCount}
+                {t("subscriber_en")}
               </Text>
             </Stack>
           </HStack>
