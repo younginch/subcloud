@@ -3,6 +3,7 @@ module.exports = {
   defaultLocale: "en",
   pages: {
     "*": [
+      "buyPage",
       "common",
       "landing",
       "goods",
