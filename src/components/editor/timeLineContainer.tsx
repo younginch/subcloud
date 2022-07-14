@@ -1,7 +1,7 @@
 import { useContext, WheelEvent } from "react";
 import { EditorContext } from "../../pages/editor";
 import TimeLine from "./timeLine";
-import { Box, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import TimeLineBoxes from "./timeLineBoxes";
 import Draggable from "react-draggable";
 import TimeLineMarker from "./timeLineMarker";
