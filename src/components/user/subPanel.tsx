@@ -48,7 +48,7 @@ export default function SubPanel(props: SubPanelProps) {
   const session = useSession();
   const toast = useToast();
   const [subs, setSubs] = useState<ResSubSearch>(props.subs);
-  const [subStatus, setSubStatus] = useState<SubStatus | "all">("all");
+  const [subStatus, setSubStatus] = useState<SubStatus | "All">("All");
   const ref = useRef<any>();
   const [width, setWidth] = useState<number>(0);
 
@@ -88,7 +88,7 @@ export default function SubPanel(props: SubPanelProps) {
               title={t("my_sub_progress")}
               type="radio"
               onChange={(value) => {
-                setSubStatus(value as SubStatus | "all");
+                setSubStatus(value as SubStatus | "All");
               }}
             >
               <MenuItemOption value="all">

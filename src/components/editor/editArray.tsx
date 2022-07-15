@@ -25,13 +25,16 @@ function miliToString(second: number): string {
 }
 
 function EditComponent({ index }: { index: number }) {
-  const { contents, setContents } = useContext(EditorContext);
+  const { contents, setContents, setFocusedIndex } = useContext(EditorContext);
   const [value, setValue] = useState<string>(contents[index].toText());
 
   return (
     <Textarea
       noOfLines={2}
       value={value}
+      onFocus={() => {
+        setFocusedIndex(index);
+      }}
       onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
         setValue(event.target.value);
         const newContents = [...contents];
@@ -40,6 +43,13 @@ function EditComponent({ index }: { index: number }) {
       }}
     />
   );
+}
+
+function parseTime(sTime: string): number {
+  const m = Number(sTime.substring(0, 2));
+  const s = Number(sTime.substring(3, 5));
+  const ms = Number(sTime.substring(6, 9));
+  return m * 60 * 1000 + s * 1000 + ms;
 }
 
 const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
@@ -67,6 +77,11 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
           <Editable
             defaultValue={miliToString(data[index].startTime!)}
             maxW="80px"
+            onSubmit={(newValue) => {
+              const newContents = [...contents];
+              newContents[index].startTime = parseTime(newValue);
+              setContents(newContents);
+            }}
           >
             <EditablePreview />
             <EditableInput />
@@ -78,11 +93,25 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
           <Editable
             defaultValue={miliToString(data[index].endTime!)}
             maxW="80px"
+            onSubmit={(newValue) => {
+              const newTime = parseTime(newValue);
+              if (index > 0 && newTime < data[index - 1].endTime) {
+                return false;
+              } else if (
+                index < data.length - 1 &&
+                newTime > data[index + 1].startTime
+              ) {
+                return false;
+              }
+              const newContents = [...contents];
+              newContents[index].endTime = parseTime(newValue);
+              setContents(newContents);
+            }}
           >
             <EditablePreview />
             <EditableInput />
           </Editable>
-          <MdTimer />
+          <MdTimer onClick={() => {}} />
         </HStack>
       </Stack>
       <EditComponent index={index} />
