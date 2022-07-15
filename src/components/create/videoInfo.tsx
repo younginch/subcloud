@@ -63,7 +63,7 @@ export default function VideoInfo({ video }: Props) {
           </HStack>
         </Box>
       ) : (
-        <Text>정보 없음</Text>
+        <Text>{t("no_info")}</Text>
       )}
     </Flex>
   );
