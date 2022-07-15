@@ -6,6 +6,7 @@ import {
   Stack,
   Box,
 } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { AiFillHeart } from "react-icons/ai";
@@ -24,6 +25,7 @@ export default function UserRatingComponent({
   rating,
   percentage,
 }: Props) {
+  const { t } = useTranslation("publicProfile");
   const textColor = useColorModeValue("gray.700", "gray.300");
   const subTextColor = useColorModeValue("gray.600", "gray.400");
   return (
@@ -31,10 +33,10 @@ export default function UserRatingComponent({
       <CardHeader mb="24px">
         <Flex direction="column">
           <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
-            유저 평점
+            {t("userRatingComponent_rate")}
           </Text>
           <Text color={subTextColor} fontSize="sm">
-            From all users
+            {t("userRatingComponent_user")}
           </Text>
         </Flex>
       </CardHeader>
