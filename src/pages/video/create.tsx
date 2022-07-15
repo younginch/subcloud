@@ -76,7 +76,7 @@ export default function VideoCreate() {
         pt="8em"
         backgroundImage={useColorModeValue(
           "url(https://user-images.githubusercontent.com/107977965/178267312-053bea1c-0db1-40ee-95b0-e5bdd771a079.jpg)",
-          "url(https://user-images.githubusercontent.com/107977965/178267320-0b4beb75-9198-401e-af60-b5c032b20f01.jpg)"
+          "url(https://user-images.githubusercontent.com/107977965/179161789-14159ea6-7434-41fa-a9c7-80fc1e3d25bf.jpg)"
         )}
         backgroundSize="cover"
       >
