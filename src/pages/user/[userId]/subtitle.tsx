@@ -8,19 +8,21 @@ import axios from "axios";
 import GeneralTable from "../../../components/ranking/generalTable";
 import ProfileSubtitleRow from "../../../components/user/profileSubtitleRow";
 import router from "next/router";
+import useTranslation from "next-translate/useTranslation";
 
 type UserReadProps = {
   subs: ResSubSearch;
 };
 
 export default function UserSubtitle({ subs }: UserReadProps) {
+  const { t } = useTranslation("publicProfile");
   const captions = [
     { caption: "#" },
-    { caption: "Title" },
-    { caption: "Language" },
-    { caption: "Views" },
-    { caption: "MadeBy" },
-    { caption: "Uploaded" },
+    { caption: t("subtitleDashboard_title") },
+    { caption: t("userId_madeby") },
+    { caption: t("subtitleDashboard_language") },
+    { caption: t("subtitleDashboard_views") },
+    { caption: t("subtitleDashboard_uploaded") },
   ];
   return (
     <PublicProfileLayout currentTab={PublicProfileTab.Subtitle}>
