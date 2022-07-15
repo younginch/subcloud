@@ -145,7 +145,11 @@ export function Card({ data }: { data: StatData }) {
           bg={useColorModeValue("gray.100", "gray.600")}
         >
           <Link href={data.href}>
-            <Text fontSize="md" _hover={{ textDecoration: "underline" }}>
+            <Text
+              fontSize="md"
+              _hover={{ textDecoration: "underline" }}
+              cursor="pointer"
+            >
               {data.detail}
             </Text>
           </Link>
