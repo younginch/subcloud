@@ -11,22 +11,25 @@ import { ResSubSearch, ResUserSearch } from "../../utils/types";
 import ProfileSubtitleRow from "./profileSubtitleRow";
 import UserActivity from "./graphs/userActivity";
 import CalendarChart from "./graphs/calanderChart";
+import useTranslation from "next-translate/useTranslation";
+import { TbCircle9 } from "react-icons/tb";
 
 type Props = {
   user: ResUserSearch;
   subs: ResSubSearch;
 };
 export default function SubtitleDashboard({ user, subs }: Props) {
+  const { t } = useTranslation("publicProfile");
   const textColor = useColorModeValue("gray.700", "gray.300");
   const subTextColor = useColorModeValue("gray.600", "gray.400");
   const bgColor = useColorModeValue("white", "#1F2733");
   const captions = [
     { caption: "#" },
-    { caption: "Title" },
-    { caption: "Channel" },
-    { caption: "Language" },
-    { caption: "Views" },
-    { caption: "Uploaded" },
+    { caption: t("subtitleDashboard_title") },
+    { caption: t("subtitleDashboard_channel") },
+    { caption: t("subtitleDashboard_language") },
+    { caption: t("subtitleDashboard_views") },
+    { caption: t("subtitleDashboard_uploaded") },
   ];
 
   return (
@@ -61,10 +64,10 @@ export default function SubtitleDashboard({ user, subs }: Props) {
                   fontWeight="bold"
                   mb="4px"
                 >
-                  자막 언어
+                  {t("subtitleDashboard_lang")}
                 </Text>
                 <Text color={subTextColor} fontSize="sm">
-                  Top 3 language
+                  Top 3 Language
                 </Text>
               </Flex>
             </CardHeader>
@@ -90,13 +93,13 @@ export default function SubtitleDashboard({ user, subs }: Props) {
           mb={{ lg: "26px" }}
         >
           <UserActivity
-            title="하이라이트"
+            title={t("subtitleDashboard_highlight")}
             chart={<CalendarChart range={200} type={"day"} userId={user.id} />}
             subs={user._count.subs}
             views={user._count.views}
           />
           <SalesOverview
-            title="Activity Overview"
+            title={t("subtitleDashboard_activity_overview")}
             percentage={5}
             chart={
               <LineChart
@@ -110,7 +113,7 @@ export default function SubtitleDashboard({ user, subs }: Props) {
         </Grid>
         <Box mt={10} pb="20px" bg={bgColor} borderRadius="20px">
           <Text p="22px" fontSize="lg" color={textColor} fontWeight="bold">
-            인기 자막
+            {t("subtitleDashboard_popular_sub")}
           </Text>
           <Box overflow={{ base: "scroll", lg: "hidden" }}>
             <GeneralTable captions={captions}>

@@ -6,6 +6,7 @@ import {
   Box,
   Button,
 } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { IoEllipsisHorizontal } from "react-icons/io5";
@@ -20,6 +21,7 @@ export default function FulfilledGraph({
   fulfilledRequest,
   percentage,
 }: Props) {
+  const { t } = useTranslation("publicProfile");
   const textColor = useColorModeValue("gray.700", "gray.300");
   const subTextColor = useColorModeValue("gray.600", "gray.400");
   const size =
@@ -29,7 +31,7 @@ export default function FulfilledGraph({
       <Flex direction="column">
         <Flex justify="space-between" align="center" mb="40px">
           <Text color="inherit" fontSize="lg" fontWeight="bold">
-            기여 통계
+            {t("fufilledGraph_contribution")}
           </Text>
           <Button borderRadius="12px" w="38px" h="38px" bg="transparent">
             <Icon as={IoEllipsisHorizontal} color="#7551FF" />
@@ -51,7 +53,7 @@ export default function FulfilledGraph({
               mb="20px"
             >
               <Text color="gray.400" fontSize="sm" mb="4px">
-                요청 충족 수
+                {t("fufilledGraph_request")}
               </Text>
               <Text color="#fff" fontSize="lg" fontWeight="bold">
                 {fulfilledRequest} 명
@@ -66,7 +68,7 @@ export default function FulfilledGraph({
               borderRadius="20px"
             >
               <Text color="gray.400" fontSize="sm" mb="4px">
-                오류 제보
+                {t("fufilledGraph_errReport")}
               </Text>
               <Text color="#fff" fontSize="lg" fontWeight="bold">
                 0 회
@@ -77,7 +79,7 @@ export default function FulfilledGraph({
             <CircularProgressbarWithChildren value={percentage}>
               <Flex direction="column" justify="center" align="center">
                 <Text color="gray.400" fontSize="sm" mb="4px">
-                  상위
+                  {t("fufilledGraph_top")}
                 </Text>
                 <Text
                   color="inherit"
@@ -88,7 +90,7 @@ export default function FulfilledGraph({
                   {Math.round(percentage * 10) / 10}%
                 </Text>
                 <Text color="gray.400" fontSize="sm">
-                  기여도
+                  {t("fufilledGraph_contribution")}
                 </Text>
               </Flex>
             </CircularProgressbarWithChildren>
