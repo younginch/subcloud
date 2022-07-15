@@ -19,11 +19,13 @@ import {
 import { Order, Role } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import useTranslation from "next-translate/useTranslation";
 import React, { useRef } from "react";
 import useSWR, { KeyedMutator, mutate } from "swr";
 import { PageOptions } from "../../../utils/types";
 
 export default function UserMyOrder() {
+  const { t } = useTranslation("privateProfile");
   const session = useSession();
   const { data, mutate } = useSWR<Order[]>(
     `/api/user/order/search?userId=${session.data?.user.id}`
@@ -34,10 +36,10 @@ export default function UserMyOrder() {
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th>Type</Th>
-            <Th isNumeric>Amount</Th>
-            <Th>Status</Th>
-            <Th>작업</Th>
+            <Th>{t("orders_type")}</Th>
+            <Th isNumeric>{t("orders_amount")}</Th>
+            <Th>{t("status")}</Th>
+            <Th>{t("task")}</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -65,6 +67,7 @@ type DeleteOrderButtonProps = {
 };
 
 function DeleteOrderButton({ id, mutate }: DeleteOrderButtonProps) {
+  const { t } = useTranslation("privateProfile");
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
@@ -74,14 +77,14 @@ function DeleteOrderButton({ id, mutate }: DeleteOrderButtonProps) {
       .delete(`/api/user/order?id=${id}`)
       .then(() => {
         toast({
-          title: "주문이 취소되었습니다.",
+          title: t("orders_refund_com"),
           status: "success",
         });
         onClose();
       })
       .catch((err) => {
         toast({
-          title: "주문 취소 실패",
+          title: t("orders_refund_fail"),
           description: err.message,
           status: "error",
           isClosable: true,
@@ -96,7 +99,7 @@ function DeleteOrderButton({ id, mutate }: DeleteOrderButtonProps) {
   return (
     <>
       <Button colorScheme="red" onClick={onOpen}>
-        Refund order
+        {t("orders_refund")}
       </Button>
 
       <AlertDialog
@@ -107,16 +110,14 @@ function DeleteOrderButton({ id, mutate }: DeleteOrderButtonProps) {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Refund order
+              {t("orders_refund")}
             </AlertDialogHeader>
 
-            <AlertDialogBody>
-              Are you sure? You can&apos;t undo this action afterwards.
-            </AlertDialogBody>
+            <AlertDialogBody>{t("orders_sure")}</AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
-                Cancel
+                {t("cancel")}
               </Button>
               <Button
                 colorScheme="red"
@@ -125,7 +126,7 @@ function DeleteOrderButton({ id, mutate }: DeleteOrderButtonProps) {
                 }}
                 ml={3}
               >
-                Refund
+                {t("orders_refund")}
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

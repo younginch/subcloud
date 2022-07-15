@@ -6,6 +6,7 @@
   "status": "status",
   "task": "task",
   "point": "point",
+  "cancel": "Cancel",
   "dashboard": "Dashboard",
   "dash_public_profile": "My public profile",
   "dashboard_head_request": "Total subtitle requests",
@@ -43,5 +44,11 @@
   "my_sub_download": "Download subtitle file",
   "orders": "Orders",
   "withdraws": "Withdraws",
-  "settings": "Settings"
+  "settings": "Settings",
+  "orders_type": "Type",
+  "orders_amount": "Amount",
+  "orders_refund": "Refund",
+  "orders_refund_com": "Refund Complete",
+  "orders_refund_fail": "Refund Fail",
+  "orders_sure": "Are you sure? You can't undo this action afterwards."
 }

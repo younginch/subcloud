@@ -6,6 +6,7 @@
   "status": "상태",
   "task": "작업",
   "point": "포인트",
+  "cancel": "취소",
   "dashboard": "대시보드",
   "dash_public_profile": "내 퍼플릭 프로필",
   "dashboard_head_request": "전체 요청 수",
@@ -43,5 +44,11 @@
   "my_sub_download": "자막 파일 다운로드",
   "orders": "결제 내역",
   "withdraws": "출금",
-  "settings": "설정"
+  "settings": "설정",
+  "orders_type": "종류",
+  "orders_amount": "금액",
+  "orders_refund": "환불",
+  "orders_refund_com": "주문이 취소되었습니다",
+  "orders_refund_fail": "주문 취소 실패",
+  "orders_sure": "정말로 환불하시겠습니까? 이 작업은 나중에 취소할 수 없습니다."
 }
