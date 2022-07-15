@@ -42,6 +42,7 @@ import { FaPlus, FaSave } from "react-icons/fa";
 import NoVideo from "../components/editor/noVideo";
 import axios from "axios";
 import EditArray from "../components/editor/editArray";
+import Property from "../components/editor/property";
 
 type EditorContextProps = {
   /// The left time in milliseconds
@@ -51,6 +52,8 @@ type EditorContextProps = {
   changeLRTime: (left: number, right: number) => void;
   contents: SRTContent[];
   setContents: (newContents: SRTContent[]) => void;
+  focusedIndex: number;
+  setFocusedIndex: (index: number) => void;
   id: string;
   setId: (id: string) => void;
   setPlayer: (player: YouTubePlayer) => void;
@@ -67,6 +70,8 @@ export const EditorContext = createContext<EditorContextProps>({
   changeLRTime: (_, __) => {},
   contents: [],
   setContents: (_) => {},
+  focusedIndex: 0,
+  setFocusedIndex: (_) => {},
   id: "",
   setId: (_) => {},
   setPlayer: () => {},
@@ -83,6 +88,7 @@ function EditorProvider({ children }: EditorProviderProps) {
   const [leftTime, setLeftTime] = useState<number>(0);
   const [rightTime, setRightTime] = useState<number>(1000 * 100);
   const [contents, setContents] = useState<SRTContent[]>([]);
+  const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const [id, setId] = useState<string>("");
   const [player, setPlayer] = useState<YouTubePlayer>();
   const [videoFraction, setVideoFraction] = useState<number>(0);
@@ -99,6 +105,10 @@ function EditorProvider({ children }: EditorProviderProps) {
         contents,
         setContents: (newContents) => {
           setContents(newContents);
+        },
+        focusedIndex,
+        setFocusedIndex: (index) => {
+          setFocusedIndex(index);
         },
         id,
         setId: (newId) => {
@@ -133,13 +143,15 @@ function EditorWithoutContext() {
   const [urlInput, setUrlInput] = useState("");
   const urlField = useRef<HTMLInputElement>(null);
 
-  const { contents, setContents, id, setId } = useContext(EditorContext);
+  const { contents, setContents, setFocusedIndex, id, setId } =
+    useContext(EditorContext);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       acceptedFiles[0].text().then((text) => {
         const srtFile = SRTFile.fromText(text);
         setContents(srtFile.array);
+        setFocusedIndex(0);
       });
     },
     [setContents]
@@ -307,77 +319,89 @@ function EditorWithoutContext() {
           height: "3px",
         }}
       />
-      <ReflexElement className="right-pane" size={400}>
-        <HStack maxH="100%" h="100%" overflowY="hidden">
-          <Stack
-            h="100%"
-            w="180px"
-            bg={useColorModeValue("gray.100", "#18161d")}
-            p="20px"
-            alignItems="center"
-            spacing="20px"
-          >
-            <Button
-              rightIcon={<FaPlus />}
-              onClick={() => {
-                const newItem = new SRTContent(
-                  contents.length.toString(),
-                  "00:00:00,000 --> 00:00:00,000",
-                  []
-                );
-                setContents([...contents, newItem]);
-              }}
-              colorScheme="blue"
-              w="full"
-            >
-              자막 추가
-            </Button>
-            <Button
-              rightIcon={<FaSave />}
-              onClick={downloadSRT}
-              colorScheme="blue"
-            >
-              Save to SRT
-            </Button>
-            <Popover placement="right">
-              {({ onClose }) => (
-                <>
-                  <PopoverTrigger>
-                    <Button rightIcon={<MdDelete />} colorScheme="red" w="full">
-                      Delete all
-                    </Button>
-                  </PopoverTrigger>
-                  <Portal>
-                    <PopoverContent>
-                      <PopoverArrow />
-                      <PopoverHeader>Confirmation!</PopoverHeader>
-                      <PopoverCloseButton />
-                      <PopoverBody>
-                        <Stack>
-                          <Text>
-                            SRT파일로 저장하지 않으면 지금까지의 수정사항을 전부
-                            잃게 됩니다.
-                          </Text>
-                          <Button
-                            colorScheme="red"
-                            onClick={() => {
-                              setContents([]);
-                              onClose();
-                            }}
-                          >
-                            자막 전체 삭제
-                          </Button>
-                        </Stack>
-                      </PopoverBody>
-                    </PopoverContent>
-                  </Portal>
-                </>
-              )}
-            </Popover>
-            <ToggleTheme />
-          </Stack>
-          <EditArray />
-        </HStack>
+      <ReflexElement size={400}>
+        <ReflexContainer orientation="vertical">
+          <ReflexElement>
+            <HStack maxH="100%" h="100%" overflowY="hidden">
+              <Stack
+                h="100%"
+                w="180px"
+                bg={useColorModeValue("gray.100", "#18161d")}
+                p="20px"
+                alignItems="center"
+                spacing="20px"
+              >
+                <Button
+                  rightIcon={<FaPlus />}
+                  onClick={() => {
+                    const newItem = new SRTContent(
+                      contents.length.toString(),
+                      "00:00:00,000 --> 00:00:00,000",
+                      []
+                    );
+                    setContents([...contents, newItem]);
+                  }}
+                  colorScheme="blue"
+                  w="full"
+                >
+                  자막 추가
+                </Button>
+                <Button
+                  rightIcon={<FaSave />}
+                  onClick={downloadSRT}
+                  colorScheme="blue"
+                >
+                  Save to SRT
+                </Button>
+                <Popover placement="right">
+                  {({ onClose }) => (
+                    <>
+                      <PopoverTrigger>
+                        <Button
+                          rightIcon={<MdDelete />}
+                          colorScheme="red"
+                          w="full"
+                        >
+                          Delete all
+                        </Button>
+                      </PopoverTrigger>
+                      <Portal>
+                        <PopoverContent>
+                          <PopoverArrow />
+                          <PopoverHeader>Confirmation!</PopoverHeader>
+                          <PopoverCloseButton />
+                          <PopoverBody>
+                            <Stack>
+                              <Text>
+                                SRT파일로 저장하지 않으면 지금까지의 수정사항을
+                                전부 잃게 됩니다.
+                              </Text>
+                              <Button
+                                colorScheme="red"
+                                onClick={() => {
+                                  setContents([]);
+                                  onClose();
+                                }}
+                              >
+                                자막 전체 삭제
+                              </Button>
+                            </Stack>
+                          </PopoverBody>
+                        </PopoverContent>
+                      </Portal>
+                    </>
+                  )}
+                </Popover>
+                <ToggleTheme />
+              </Stack>
+              <EditArray />
+            </HStack>
+          </ReflexElement>
+          <ReflexSplitter propagate={true} />
+          <ReflexElement maxSize={300} minSize={100}>
+            <Property />
+          </ReflexElement>
+        </ReflexContainer>
       </ReflexElement>
     </ReflexContainer>
   );
