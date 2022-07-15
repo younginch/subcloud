@@ -15,5 +15,6 @@
   "min": "분",
   "sec": "초",
   "req_lang": "요청 언어",
-  "upload_req": "요청 올리기"
+  "upload_req": "요청 올리기",
+  "no_info": "정보없음"
 }

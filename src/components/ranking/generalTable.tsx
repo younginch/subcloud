@@ -18,6 +18,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { sortByTreeOrder } from "framer-motion/types/render/utils/animation";
+import useTranslation from "next-translate/useTranslation";
 import { ReactElement } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -49,6 +50,7 @@ export default function GeneralTable({
   children,
   btnComponent,
 }: Props) {
+  const { t } = useTranslation("rankings");
   const selectList = ["All Lang", "en", "ko", "jp", "cn"];
   const textColor = useColorModeValue("gray.700", "white");
 
@@ -83,7 +85,7 @@ export default function GeneralTable({
               <FormControl>
                 <HStack>
                   <Input
-                    placeholder="Search..."
+                    placeholder={t("search")}
                     w="300px"
                     id="keyword"
                     type="keyword"

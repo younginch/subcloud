@@ -24,8 +24,9 @@ export default function EventNotice() {
         {t("event_front")}
       </Box>
       <HStack spacing={1} alignItems="center" justifyContent="center">
-        <Text lineHeight={1}>{t("event_back")}</Text>
-        <Icon as={GoChevronRight} w={4} h={4} />
+        <Text marginEnd="6px" lineHeight={1}>
+          {t("event_back")}
+        </Text>
       </HStack>
     </HStack>
   );
