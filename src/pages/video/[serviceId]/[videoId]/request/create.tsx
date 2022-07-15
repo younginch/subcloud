@@ -188,6 +188,9 @@ export default function RequestCreate() {
   }, [serviceId, videoId]);
   useEffect(() => {
     setValue("point", 0);
+    axios.get("/api/user/lang").then(({ data }) => {
+      setValue("lang", data.baseLangs);
+    });
   }, [setValue]);
 
   const pointBg = useColorModeValue("gray.100", "gray.800");
@@ -210,7 +213,7 @@ export default function RequestCreate() {
             </Text>
           </CardHeader>
           <Menu>
-            <FormControl as="fieldset">
+            <FormControl isInvalid={errors.lang !== undefined} as="fieldset">
               <MenuOptionGroup>
                 <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                   {watch().lang
@@ -232,8 +235,13 @@ export default function RequestCreate() {
                   })}
                 </MenuList>
               </MenuOptionGroup>
-              <FormErrorMessage>
-                {errors.lang && errors.lang.message}
+              <FormErrorMessage
+                w="fit-content"
+                justifyContent="center"
+                fontSize="14px"
+                color="red.300"
+              >
+                {errors.lang && t("CheckSubtitle_langRequired")}
               </FormErrorMessage>
             </FormControl>
           </Menu>
@@ -410,5 +418,6 @@ export default function RequestCreate() {
 RequestCreate.options = {
   role: Role.User,
   hideTitle: true,
+  hideFooter: true,
   bgColorLight: "#F7FAFC",
 } as PageOptions;
