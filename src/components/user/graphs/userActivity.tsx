@@ -10,9 +10,8 @@ import React, { ReactElement } from "react";
 import ChartStatistics from "./chartStatistics";
 import PurityCard from "../card/purityCard";
 import CardHeader from "../card/cardHeader";
-import { IoTime, IoWallet } from "react-icons/io5";
+import { IoWallet } from "react-icons/io5";
 import { AiFillEye } from "react-icons/ai";
-import { FaUser } from "react-icons/fa";
 import useTranslation from "next-translate/useTranslation";
 
 type Props = {
@@ -43,7 +42,7 @@ export default function UserActivity({ title, chart, subs, views }: Props) {
               {title}
             </Text>
           </Flex>
-          <SimpleGrid gap={{ sm: "12px" }} columns={4}>
+          <SimpleGrid gap={{ sm: "12px" }} columns={2}>
             <ChartStatistics
               title={t("userActivity_sub")}
               amount={subs.toString()}
@@ -55,18 +54,6 @@ export default function UserActivity({ title, chart, subs, views }: Props) {
               amount={views.toString()}
               percentage={80}
               icon={<AiFillEye size={15} color={iconBoxInside} />}
-            />
-            <ChartStatistics
-              title={t("userActivity_length")}
-              amount={"2,400$"}
-              percentage={30}
-              icon={<IoTime size={15} color={iconBoxInside} />}
-            />
-            <ChartStatistics
-              title={t("userActivity_subscriber")}
-              amount={"320"}
-              percentage={40}
-              icon={<FaUser size={15} color={iconBoxInside} />}
             />
           </SimpleGrid>
         </Flex>
