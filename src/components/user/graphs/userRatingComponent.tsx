@@ -69,23 +69,33 @@ export default function UserRatingComponent({
           maxW={{ sm: "270px", md: "300px", lg: "100%" }}
           mx={{ sm: "auto", md: "0px" }}
           p="18px 22px"
-          bg="linear-gradient(126.97deg, rgb(6, 11, 40) 28.26%, rgba(10, 14, 35) 91.2%)"
+          bg={useColorModeValue(
+            "blue.50",
+            "linear-gradient(126.97deg, #060C29 28.26%, rgba(4, 12, 48, 0.5) 91.2%)"
+          )}
           borderRadius="20px"
           position="absolute"
           bottom="0%"
         >
-          <Text fontSize="xs" color="gray.400">
+          <Text fontSize="xs" color={useColorModeValue("gray.700", "gray.400")}>
             0%
           </Text>
           <Flex direction="column" align="center" minW="80px">
-            <Text color="#fff" fontSize="28px" fontWeight="bold">
+            <Text
+              color={useColorModeValue("gray.900", "gray.100")}
+              fontSize="28px"
+              fontWeight="bold"
+            >
               {Math.round(rating * 10) / 10}
             </Text>
-            <Text fontSize="xs" color="gray.400">
+            <Text
+              fontSize="xs"
+              color={useColorModeValue("gray.800", "gray.400")}
+            >
               top {Math.round(percentage * 10) / 10}%
             </Text>
           </Flex>
-          <Text fontSize="xs" color="gray.400">
+          <Text fontSize="xs" color={useColorModeValue("gray.700", "gray.400")}>
             100%
           </Text>
         </Stack>

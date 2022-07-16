@@ -1,8 +1,8 @@
 {
   "dashboard_middle": "유저가 업로드한 자막이 없습니다",
-  "dashboard_header_overview": "오버뷰",
-  "dashboard_header_subtitle": "제작 자막",
-  "dashboard_header_request": "자막 요청",
+  "dashboard_header_overview": "대시보드",
+  "dashboard_header_subtitle": "제작한 자막",
+  "dashboard_header_request": "자막 의뢰",
   "subtitleDashboard_lang": "자막 언어",
   "subtitleDashboard_highlight": "하이라이트",
   "subtitleDashboard_activity_overview": "활동 오버뷰",
