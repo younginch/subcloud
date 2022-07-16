@@ -15,6 +15,6 @@
   "sec": "s",
   "req_lang": "Request language",
   "upload_req": "Upload request",
-  "checkSubtitle_langRequired": "Please select subtitle language",
+  "check_subtitle_lang_required": "Please select subtitle language",
   "no_info": "No information"
 }

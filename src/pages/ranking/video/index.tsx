@@ -22,7 +22,7 @@ export default function VideoRankingPage() {
     { caption: t("requests"), sortBy: "request" },
     { caption: t("points"), sortBy: "point" },
   ];
-  const [lang, setLang] = useState<string | undefined>();
+  const [lang, setLang] = useState<string>();
   const [sortBy, setSortBy] = useState({ by: "request", order: true });
   const pageSize = 5;
   const fetcher = async (url: string) => {

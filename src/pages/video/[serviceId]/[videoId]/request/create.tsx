@@ -241,7 +241,7 @@ export default function RequestCreate() {
                 fontSize="14px"
                 color="red.300"
               >
-                {errors.lang && t("CheckSubtitle_langRequired")}
+                {errors.lang && t("check_subtitle_lang_required")}
               </FormErrorMessage>
             </FormControl>
           </Menu>
