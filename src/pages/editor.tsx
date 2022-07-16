@@ -175,6 +175,8 @@ function EditorWithoutContext() {
     link.parentNode?.removeChild(link);
   }
 
+  const headerBg = useColorModeValue("gray.100", "#18161d");
+
   return (
     <ReflexContainer
       style={{ width: "100vw", height: "calc(100vh - 54px)" }}
@@ -186,7 +188,7 @@ function EditorWithoutContext() {
             <Stack>
               <Heading
                 fontSize="lg"
-                bg={useColorModeValue("gray.100", "#18161d")}
+                bg={headerBg}
                 w="100%"
                 borderBottomWidth="2px"
                 p="5px"
@@ -220,7 +222,7 @@ function EditorWithoutContext() {
               </Stack>
               <Heading
                 fontSize="lg"
-                bg={useColorModeValue("gray.100", "#18161d")}
+                bg={headerBg}
                 w="100%"
                 borderBottomWidth="2px"
                 borderTopWidth="2px"
@@ -291,7 +293,7 @@ function EditorWithoutContext() {
             <Stack>
               <Heading
                 fontSize="lg"
-                bg={useColorModeValue("gray.100", "#18161d")}
+                bg={headerBg}
                 w="100%"
                 borderBottomWidth="2px"
                 p="5px"
@@ -326,7 +328,7 @@ function EditorWithoutContext() {
               <Stack
                 h="100%"
                 w="180px"
-                bg={useColorModeValue("gray.100", "#18161d")}
+                bg={headerBg}
                 p="20px"
                 alignItems="center"
                 spacing="20px"

@@ -6,8 +6,6 @@ type Props = {
 };
 
 export default function SubtitleComponent({ boxRef }: Props) {
-  console.log(boxRef.current?.offsetWidth, boxRef.current?.offsetHeight);
-
   const fontSizeSetting = 60; // default size
   const fontSize = boxRef.current
     ? (boxRef.current?.offsetWidth / 3000) * fontSizeSetting
