@@ -74,12 +74,12 @@ export default function SelectTheme({ isLarge }: Props): JSX.Element {
           title={t("theme")}
           type="radio"
         >
-          <MenuItemOption value={Theme.SYNC}>시스템과 동일</MenuItemOption>
+          <MenuItemOption value={Theme.SYNC}>{t("sync")}</MenuItemOption>
           <MenuItemOption value={Theme.LIGHT} icon={<SunIcon />}>
-            밝게
+            {t("light")}
           </MenuItemOption>
           <MenuItemOption value={Theme.DARK} icon={<MoonIcon />}>
-            어둡게
+            {t("dark")}
           </MenuItemOption>
         </MenuOptionGroup>
       </MenuList>
