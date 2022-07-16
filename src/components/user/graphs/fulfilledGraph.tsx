@@ -48,14 +48,25 @@ export default function FulfilledGraph({
               p="22px"
               pe={{ sm: "22e", md: "8px", lg: "22px" }}
               minW={{ sm: "220px", md: "140px", lg: "220px" }}
-              bg="linear-gradient(126.97deg, #060C29 28.26%, rgba(4, 12, 48, 0.5) 91.2%)"
+              bg={useColorModeValue(
+                "blue.50",
+                "linear-gradient(126.97deg, #060C29 28.26%, rgba(4, 12, 48, 0.5) 91.2%)"
+              )}
               borderRadius="20px"
               mb="20px"
             >
-              <Text color="gray.400" fontSize="sm" mb="4px">
+              <Text
+                color={useColorModeValue("gray.700", "gray.400")}
+                fontSize="sm"
+                mb="4px"
+              >
                 {t("fufilledGraph_request")}
               </Text>
-              <Text color="#fff" fontSize="lg" fontWeight="bold">
+              <Text
+                color={useColorModeValue("black", "white")}
+                fontSize="lg"
+                fontWeight="bold"
+              >
                 {fulfilledRequest} 명
               </Text>
             </Flex>
@@ -64,13 +75,24 @@ export default function FulfilledGraph({
               p="22px"
               pe={{ sm: "22px", md: "8px", lg: "22px" }}
               minW={{ sm: "170px", md: "140px", lg: "170px" }}
-              bg="linear-gradient(126.97deg, #060C29 28.26%, rgba(4, 12, 48, 0.5) 91.2%)"
+              bg={useColorModeValue(
+                "blue.50",
+                "linear-gradient(126.97deg, #060C29 28.26%, rgba(4, 12, 48, 0.5) 91.2%)"
+              )}
               borderRadius="20px"
             >
-              <Text color="gray.400" fontSize="sm" mb="4px">
+              <Text
+                color={useColorModeValue("gray.700", "gray.400")}
+                fontSize="sm"
+                mb="4px"
+              >
                 {t("fufilledGraph_errReport")}
               </Text>
-              <Text color="#fff" fontSize="lg" fontWeight="bold">
+              <Text
+                color={useColorModeValue("black", "white")}
+                fontSize="lg"
+                fontWeight="bold"
+              >
                 0 회
               </Text>
             </Flex>
