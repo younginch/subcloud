@@ -42,8 +42,8 @@ export default function DetailViewGraph({ subId }: { subId?: string }) {
         </RadioGroup>
         <Spacer />
         <Text fontSize="md" fontWeight="medium" color="gray.500" mt={3}>
-          {t("dash_recent_views_ko")} {viewRange}
-          {t("dash_recent_views_en")} :{" "}
+          {t("dash_recent_views")} {viewRange}
+          {t(`dash_recent_views_${value}`)} :{" "}
           {data
             ? data.reduce((prev: number, curr: number) => prev + curr, 0)
             : 0}

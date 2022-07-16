@@ -16,6 +16,6 @@
   "sec": "초",
   "req_lang": "요청 언어",
   "upload_req": "요청 올리기",
-  "CheckSubtitle_langRequired": "자막 언어를 선택해 주세요",
+  "checkSubtitle_langRequired": "자막 언어를 선택해 주세요",
   "no_info": "정보없음"
 }
