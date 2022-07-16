@@ -16,6 +16,7 @@ module.exports = {
       "qna",
       "rankings",
       "requestSub",
+      "terms",
       "videoRequest",
     ],
     "/": ["common"],
