@@ -36,6 +36,7 @@ export async function UserSearch({
     .filter((user) => user.subs.length > 0)
     .map((user) => {
       const subs = user.subs.filter((sub) => sub.status === "Approved");
+      const ratedSubs = subs.filter((sub) => sub.ratings.length > 0);
       return {
         id: user.id,
         name: user.name,
@@ -64,20 +65,17 @@ export async function UserSearch({
             0
           ),
           ratings:
-            subs.length > 0
-              ? subs
-                  .filter((sub) => sub.ratings.length > 0)
-                  .reduce(
-                    (prevSub, currSub) =>
-                      prevSub +
-                      currSub.ratings.reduce(
-                        (prevRating, currRating) =>
-                          prevRating + currRating.score,
-                        0
-                      ) /
-                        currSub.ratings.length,
-                    0
-                  ) / subs.length
+            ratedSubs.length > 0
+              ? ratedSubs.reduce(
+                  (prevSub, currSub) =>
+                    prevSub +
+                    currSub.ratings.reduce(
+                      (prevRating, currRating) => prevRating + currRating.score,
+                      0
+                    ) /
+                      currSub.ratings.length,
+                  0
+                ) / ratedSubs.length
               : 0,
         },
       };

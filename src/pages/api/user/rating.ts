@@ -33,12 +33,10 @@ async function CreateRating({
       .json({ error: SubErrorType.FormValidation, message: "No sub" });
   }
   if (sub.userId === session?.user.id) {
-    return res
-      .status(400)
-      .json({
-        error: SubErrorType.FormValidation,
-        message: "Cannot rate own sub",
-      });
+    return res.status(400).json({
+      error: SubErrorType.FormValidation,
+      message: "Cannot rate own sub",
+    });
   }
   const rating = await prisma.rating.findUnique({
     where: {
@@ -86,8 +84,10 @@ async function UpdateRating({ req, res, prisma }: RouteParams<Rating>) {
   const rating = await prisma.rating.findUnique({
     where: { id: value.id as string },
   });
-  if (rating) {
-    return res.status(409).json(rating);
+  if (!rating) {
+    return res
+      .status(400)
+      .json({ error: SubErrorType.FormValidation, message: "No rating" });
   }
   const updatedRating = await prisma.rating.update({
     where: { id: value.id as string },

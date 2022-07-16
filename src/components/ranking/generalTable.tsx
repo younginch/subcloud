@@ -17,12 +17,12 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { sortByTreeOrder } from "framer-motion/types/render/utils/animation";
 import useTranslation from "next-translate/useTranslation";
 import { ReactElement } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineSearch } from "react-icons/ai";
 import { RankQueryData } from "../../utils/types";
+import ISO6391, { LanguageCode } from "iso-639-1";
 
 type Props = {
   captions: Array<{
@@ -30,7 +30,7 @@ type Props = {
     sortBy?: undefined | string;
   }>;
   lang?: string;
-  setLang?: (language: string) => void;
+  setLang?: (language: string | undefined) => void;
   sortBy?: { by: string; order: boolean };
   setSortBy?: (sortBy: { by: string; order: boolean }) => void;
   onSubmit?: SubmitHandler<RankQueryData>;
@@ -51,7 +51,18 @@ export default function GeneralTable({
   btnComponent,
 }: Props) {
   const { t } = useTranslation("rankings");
-  const selectList = ["All Lang", "en", "ko", "jp", "cn"];
+  const codeList: LanguageCode[] = [
+    "en",
+    "fr",
+    "de",
+    "it",
+    "es",
+    "pt",
+    "ru",
+    "ja",
+    "zh",
+    "ko",
+  ];
   const textColor = useColorModeValue("gray.700", "white");
 
   const {
@@ -64,17 +75,26 @@ export default function GeneralTable({
     <>
       {title}
       <HStack>
-        {lang && setLang && (
+        {setLang && (
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              Lang : {lang}
+              {lang && lang !== "All Lang"
+                ? ISO6391.getName(lang)
+                : t("all lang")}
             </MenuButton>
             <MenuList>
-              {selectList.map((item) => (
-                <MenuItem key={item} onClick={() => setLang(item)}>
-                  Lang : {item}
-                </MenuItem>
-              ))}
+              <MenuItem key={t("all lang")} onClick={() => setLang("All Lang")}>
+                {t("all lang")}
+              </MenuItem>
+              {codeList.map((code) => {
+                return (
+                  <MenuItem key={code} onClick={() => setLang(code)}>
+                    {`${ISO6391.getName(code)} (${ISO6391.getNativeName(
+                      code
+                    )})`}
+                  </MenuItem>
+                );
+              })}
             </MenuList>
           </Menu>
         )}

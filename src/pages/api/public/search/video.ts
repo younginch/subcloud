@@ -2,10 +2,15 @@ import { handleRoute, RouteParams } from "../../../../utils/types";
 
 async function VideoSearchGet({ req, res, prisma }: RouteParams<any>) {
   let where: any = {};
+  const { serviceId, videoId } = req.query;
   if (req.query.q) {
     where.body = {
       search: req.query.q,
     };
+  }
+  if (serviceId && videoId) {
+    where.serviceId = serviceId;
+    where.videoId = videoId;
   }
   const videos = await prisma.video.findMany({
     where,

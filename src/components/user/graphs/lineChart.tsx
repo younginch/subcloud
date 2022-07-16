@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs, { ManipulateType } from "dayjs";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
@@ -23,7 +23,7 @@ export default function LineChart({ range, type, subId, userId }: Props) {
     )}&type=${type}${subQuery}`
   );
   const dateArray = Array.from({ length: range }, (_, i) =>
-    currentDate.subtract(i, "day").format("MM/DD")
+    currentDate.subtract(i, type as ManipulateType).format("MM/DD")
   ).reverse();
   const lineChartData = [
     {
