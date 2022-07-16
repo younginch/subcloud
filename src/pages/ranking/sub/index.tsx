@@ -23,7 +23,7 @@ export default function SubRankingPage() {
     { caption: t("madeby") },
     { caption: t("uploaded") },
   ];
-  const [lang, setLang] = useState("All Lang");
+  const [lang, setLang] = useState<string>();
   const [sortBy, setSortBy] = useState({ by: "view", order: true });
   const pageSize = 5;
   const fetcher = async (url: string) => {

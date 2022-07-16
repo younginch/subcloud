@@ -134,14 +134,14 @@ describe("/api/rating", () => {
     "PATCH should return 200",
     testRes(ratingRoute, "PATCH", 200, (req) => {
       req.body = { id: "1", score: "1" };
-      jest.spyOn(prisma.rating, "findUnique").mockResolvedValueOnce(null);
     })
   );
 
   it(
-    "PATCH should return 409",
-    testRes(ratingRoute, "PATCH", 409, (req) => {
+    "PATCH should return 400",
+    testRes(ratingRoute, "PATCH", 400, (req) => {
       req.body = { id: "1", score: "1" };
+      jest.spyOn(prisma.rating, "findUnique").mockResolvedValueOnce(null);
     })
   );
 
