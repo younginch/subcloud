@@ -7,6 +7,7 @@ import TimeLine from "../components/editor/timeLine";
 import Links from "../components/header/links";
 import Search from "../components/header/search";
 import Layout from "../components/layout";
+import Result from "../components/result";
 import SelectLanguage from "../components/selectLanguage";
 import UserLayout from "../components/user/my/userLayout";
 import RequestPanel from "../components/user/requestPanel";
@@ -38,6 +39,14 @@ describe("Components", () => {
       >
         a
       </Layout>
+    );
+  });
+
+  it("renders a Result", () => {
+    render(
+      <Result>
+        <></>
+      </Result>
     );
   });
 
