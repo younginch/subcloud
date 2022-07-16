@@ -4,7 +4,7 @@ import useTranslation from "next-translate/useTranslation";
 import { PageOptions } from "../../utils/types";
 
 export default function Callback() {
-  const { t } = useTranslation("callback");
+  const { t } = useTranslation("auth");
   return (
     <Stack alignItems="center">
       <CheckCircleIcon w={20} h={20} color="green.400" mt="20vh" />
