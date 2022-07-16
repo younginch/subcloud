@@ -7,6 +7,7 @@ module.exports = {
       "buyPageFail",
       "buyPageProcess",
       "common",
+      "callback",
       "landing",
       "goods",
       "routes",
