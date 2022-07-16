@@ -68,8 +68,8 @@ export default function SubPanel(props: SubPanelProps) {
       })
       .catch(() => {
         toast({
-          title: "오류",
-          description: "자막 목록을 불러오는데 실패했습니다.",
+          title: t("my_sub_error"),
+          description: t("my_sub_error_description"),
           status: "error",
         });
       });
@@ -95,16 +95,19 @@ export default function SubPanel(props: SubPanelProps) {
                 {t("my_sub_progress_all")}
               </MenuItemOption>
               <MenuItemOption value={SubStatus.Pending}>
-                {t("my_sub_progress_wait")}
+                {t("my_sub_progress_pending")}
+              </MenuItemOption>
+              <MenuItemOption value={SubStatus.InReview}>
+                {t("my_sub_progress_inreview")}
               </MenuItemOption>
               <MenuItemOption value={SubStatus.Approved}>
-                {t("my_sub_progress_approve")}
+                {t("my_sub_progress_approved")}
               </MenuItemOption>
               <MenuItemOption value={SubStatus.Rejected}>
-                {t("my_sub_progress_denial")}
+                {t("my_sub_progress_rejected")}
               </MenuItemOption>
               <MenuItemOption value={SubStatus.Reported}>
-                {t("my_sub_progress_report")}
+                {t("my_sub_progress_reported")}
               </MenuItemOption>
             </MenuOptionGroup>
           </MenuList>
