@@ -1,8 +1,10 @@
 import { SubStatus } from "@prisma/client";
 import { render } from "@testing-library/react";
+import { RefObject } from "react";
 import AdminLayout from "../components/adminLayout";
 import ReviewStatusBadge from "../components/badges/reviewStatusBadge";
 import EventNotice from "../components/create/eventNotice";
+import SubtitleComponent from "../components/editor/SubtitleComponent";
 import TimeLine from "../components/editor/timeLine";
 import Links from "../components/header/links";
 import Search from "../components/header/search";
@@ -83,5 +85,17 @@ describe("Components", () => {
 
   it("renders timeLine", () => {
     render(<TimeLine />);
+  });
+
+  it("renders SubtitleComponent", () => {
+    render(
+      <SubtitleComponent
+        boxRef={
+          {
+            current: { offsetWidth: 0, offsetHeight: 0 },
+          } as unknown as RefObject<HTMLDivElement>
+        }
+      />
+    );
   });
 });

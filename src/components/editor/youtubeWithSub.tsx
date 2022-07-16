@@ -1,8 +1,9 @@
 import { useInterval, Box, useToast, Stack } from "@chakra-ui/react";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import YouTube, { YouTubeEvent, YouTubeProps } from "react-youtube";
 import { v4 as uuidv4 } from "uuid";
 import { EditorContext } from "../../pages/editor";
+import SubtitleComponent from "./SubtitleComponent";
 
 function calculateLayout(sliderValue: number): [number, number] | undefined {
   const outerVideo = document.querySelector(".youtubeContainer") as HTMLElement;
@@ -17,12 +18,15 @@ function calculateLayout(sliderValue: number): [number, number] | undefined {
   return [fontSize, subtitleMt];
 }
 
-type SubtitleComponentProps = {
+type SubtitleComponentDeprecatedProps = {
   element: HTMLDivElement | null;
   textArray: string[];
 };
 
-function SubtitleComponent({ element, textArray }: SubtitleComponentProps) {
+function SubtitleComponentDeprecated({
+  element,
+  textArray,
+}: SubtitleComponentDeprecatedProps) {
   const [fontSize, setFontSize] = useState<number>(12);
   const [subtitleMt, setSubtitleMt] = useState<number>(300);
 
@@ -112,19 +116,24 @@ export default function YoutubeWithSub({ id }: { id: string }) {
         h="100%"
         maxH="100%"
         maxW="100%"
-        ref={boxRef}
         style={{ aspectRatio: "2" }}
         display="flex"
         alignItems="center"
       >
-        <SubtitleComponent element={boxRef.current} textArray={textArray} />
-        <YouTube
-          videoId={id}
-          opts={opts}
-          className="youtubeContainer"
-          onReady={(event) => setPlayer(event.target)}
-          onError={onPlayerError}
-        />
+        <Box w="100%" position="relative" ref={boxRef}>
+          <SubtitleComponentDeprecated
+            element={boxRef.current}
+            textArray={textArray}
+          />
+          <SubtitleComponent boxRef={boxRef} />
+          <YouTube
+            videoId={id}
+            opts={opts}
+            className="youtubeContainer"
+            onReady={(event) => setPlayer(event.target)}
+            onError={onPlayerError}
+          />
+        </Box>
       </Box>
     </Stack>
   );
