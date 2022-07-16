@@ -6,6 +6,7 @@ import {
   Box,
   Button,
 } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { IoEllipsisHorizontal } from "react-icons/io5";
@@ -20,6 +21,7 @@ export default function FulfilledGraph({
   fulfilledRequest,
   percentage,
 }: Props) {
+  const { t } = useTranslation("publicProfile");
   const textColor = useColorModeValue("gray.700", "gray.300");
   const subTextColor = useColorModeValue("gray.600", "gray.400");
   const size =
@@ -29,7 +31,7 @@ export default function FulfilledGraph({
       <Flex direction="column">
         <Flex justify="space-between" align="center" mb="40px">
           <Text color="inherit" fontSize="lg" fontWeight="bold">
-            기여 통계
+            {t("fufilledGraph_contribution")}
           </Text>
           <Button borderRadius="12px" w="38px" h="38px" bg="transparent">
             <Icon as={IoEllipsisHorizontal} color="#7551FF" />
@@ -46,14 +48,25 @@ export default function FulfilledGraph({
               p="22px"
               pe={{ sm: "22e", md: "8px", lg: "22px" }}
               minW={{ sm: "220px", md: "140px", lg: "220px" }}
-              bg="linear-gradient(126.97deg, #060C29 28.26%, rgba(4, 12, 48, 0.5) 91.2%)"
+              bg={useColorModeValue(
+                "blue.50",
+                "linear-gradient(126.97deg, #060C29 28.26%, rgba(4, 12, 48, 0.5) 91.2%)"
+              )}
               borderRadius="20px"
               mb="20px"
             >
-              <Text color="gray.400" fontSize="sm" mb="4px">
-                요청 충족 수
+              <Text
+                color={useColorModeValue("gray.700", "gray.400")}
+                fontSize="sm"
+                mb="4px"
+              >
+                {t("fufilledGraph_request")}
               </Text>
-              <Text color="#fff" fontSize="lg" fontWeight="bold">
+              <Text
+                color={useColorModeValue("black", "white")}
+                fontSize="lg"
+                fontWeight="bold"
+              >
                 {fulfilledRequest} 명
               </Text>
             </Flex>
@@ -62,13 +75,24 @@ export default function FulfilledGraph({
               p="22px"
               pe={{ sm: "22px", md: "8px", lg: "22px" }}
               minW={{ sm: "170px", md: "140px", lg: "170px" }}
-              bg="linear-gradient(126.97deg, #060C29 28.26%, rgba(4, 12, 48, 0.5) 91.2%)"
+              bg={useColorModeValue(
+                "blue.50",
+                "linear-gradient(126.97deg, #060C29 28.26%, rgba(4, 12, 48, 0.5) 91.2%)"
+              )}
               borderRadius="20px"
             >
-              <Text color="gray.400" fontSize="sm" mb="4px">
-                오류 제보
+              <Text
+                color={useColorModeValue("gray.700", "gray.400")}
+                fontSize="sm"
+                mb="4px"
+              >
+                {t("fufilledGraph_errReport")}
               </Text>
-              <Text color="#fff" fontSize="lg" fontWeight="bold">
+              <Text
+                color={useColorModeValue("black", "white")}
+                fontSize="lg"
+                fontWeight="bold"
+              >
                 0 회
               </Text>
             </Flex>
@@ -77,7 +101,7 @@ export default function FulfilledGraph({
             <CircularProgressbarWithChildren value={percentage}>
               <Flex direction="column" justify="center" align="center">
                 <Text color="gray.400" fontSize="sm" mb="4px">
-                  상위
+                  {t("fufilledGraph_top")}
                 </Text>
                 <Text
                   color="inherit"
@@ -88,7 +112,7 @@ export default function FulfilledGraph({
                   {Math.round(percentage * 10) / 10}%
                 </Text>
                 <Text color="gray.400" fontSize="sm">
-                  기여도
+                  {t("fufilledGraph_contribution")}
                 </Text>
               </Flex>
             </CircularProgressbarWithChildren>
