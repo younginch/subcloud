@@ -8,9 +8,9 @@ export default function Callback() {
   return (
     <Stack alignItems="center">
       <CheckCircleIcon w={20} h={20} color="green.400" mt="20vh" />
-      <Heading mt="5vh !important">{t("loginCallback_title")}</Heading>
+      <Heading mt="5vh !important">{t("login_callback_title")}</Heading>
       <Text mt="2vh !important" fontSize="20px">
-        {t("loginCallback_message")}
+        {t("login_callback_message")}
       </Text>
     </Stack>
   );
