@@ -9,7 +9,11 @@ export default function TimeLineBoxes() {
   return (
     <Box w="100%" position="absolute" mt="45px" zIndex={10} h="100%">
       {contents.map((item) => {
-        if (item.endTime <= leftTime || item.startTime >= rightTime) {
+        if (
+          item.endTime <= leftTime ||
+          item.startTime >= rightTime ||
+          item.endTime > item.startTime
+        ) {
           return;
         }
         return (
