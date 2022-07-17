@@ -9,6 +9,21 @@ import {
   IconButton,
   Text,
   Box,
+  Button,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  FormControl,
+  FormLabel,
+  InputGroup,
+  InputRightAddon,
+  Input,
+  PopoverFooter,
+  Portal,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
@@ -50,6 +65,76 @@ function parseTime(sTime: string): number {
   const s = Number(sTime.substring(3, 5));
   const ms = Number(sTime.substring(6, 9));
   return m * 60 * 1000 + s * 1000 + ms;
+}
+
+function Timestamp({
+  index,
+  startOrEnd,
+}: {
+  index: number;
+  startOrEnd: "startTime" | "endTime";
+}) {
+  const { contents, setContents } = useContext(EditorContext);
+
+  return (
+    <HStack justifyContent="space-between">
+      <Popover>
+        <PopoverTrigger>
+          <Button
+            maxW="80px"
+            onSubmit={(newValue) => {
+              const newTime = parseTime("00:00,000");
+              if (index > 0 && newTime < contents[index - 1].endTime) {
+                return false;
+              } else if (
+                index < contents.length - 1 &&
+                newTime > contents[index + 1].startTime
+              ) {
+                return false;
+              }
+              const newContents = [...contents];
+              newContents[index][startOrEnd] = parseTime("00:00,000");
+              setContents(newContents);
+            }}
+          >
+            {miliToString(contents[index].endTime!)}
+          </Button>
+        </PopoverTrigger>
+        <Portal>
+          <Box zIndex={"popover"}>
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverCloseButton />
+              <PopoverHeader>{startOrEnd} 조절</PopoverHeader>
+              <PopoverBody>
+                <HStack>
+                  <Button>+1.0초</Button>
+                  <Button>+1.5초</Button>
+                  <Button>+2.0초</Button>
+                  <Button>다음 자막 전까지</Button>
+                </HStack>
+                <FormControl>
+                  <FormLabel>자막 길이 설정</FormLabel>
+                  <InputGroup>
+                    <Input />
+                    <InputRightAddon>초</InputRightAddon>
+                  </InputGroup>
+                </FormControl>
+                <FormControl>
+                  <FormLabel>자막 종료 시간</FormLabel>
+                  <InputGroup>
+                    <Input />
+                  </InputGroup>
+                </FormControl>
+              </PopoverBody>
+              <PopoverFooter>예상 적정 시간 : 3초</PopoverFooter>
+            </PopoverContent>
+          </Box>
+        </Portal>
+      </Popover>
+      <MdTimer onClick={() => {}} />
+    </HStack>
+  );
 }
 
 const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {

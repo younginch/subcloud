@@ -14,7 +14,7 @@ export default function SubtitleComponent({ boxRef }: Props) {
   const paddingUnit = fontSize / 5;
 
   const [textArray, setTextArray] = useState<string[]>([]);
-  const { contents, getPlayerTime } = useContext(EditorContext);
+  const { contents, getPlayerTime, state } = useContext(EditorContext);
 
   const intervalSub = () => {
     const currentTime = getPlayerTime();
