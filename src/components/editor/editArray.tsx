@@ -24,6 +24,7 @@ import {
   Input,
   PopoverFooter,
   Portal,
+  useDisclosure,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
@@ -75,13 +76,17 @@ function Timestamp({
   startOrEnd: "startTime" | "endTime";
 }) {
   const { contents, setContents } = useContext(EditorContext);
+  const { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
     <HStack justifyContent="space-between">
-      <Popover>
+      <Popover isOpen={isOpen} onClose={onClose}>
         <PopoverTrigger>
           <Button
-            maxW="80px"
+            maxW="100px"
+            h={8}
+            variant="outline"
+            onClick={onToggle}
             onSubmit={(newValue) => {
               const newTime = parseTime("00:00,000");
               if (index > 0 && newTime < contents[index - 1].endTime) {
@@ -101,35 +106,39 @@ function Timestamp({
           </Button>
         </PopoverTrigger>
         <Portal>
-          <Box zIndex={"popover"}>
-            <PopoverContent>
-              <PopoverArrow />
-              <PopoverCloseButton />
-              <PopoverHeader>{startOrEnd} 조절</PopoverHeader>
-              <PopoverBody>
-                <HStack>
-                  <Button>+1.0초</Button>
-                  <Button>+1.5초</Button>
-                  <Button>+2.0초</Button>
-                  <Button>다음 자막 전까지</Button>
-                </HStack>
-                <FormControl>
-                  <FormLabel>자막 길이 설정</FormLabel>
-                  <InputGroup>
-                    <Input />
-                    <InputRightAddon>초</InputRightAddon>
-                  </InputGroup>
-                </FormControl>
-                <FormControl>
-                  <FormLabel>자막 종료 시간</FormLabel>
-                  <InputGroup>
-                    <Input />
-                  </InputGroup>
-                </FormControl>
-              </PopoverBody>
-              <PopoverFooter>예상 적정 시간 : 3초</PopoverFooter>
-            </PopoverContent>
-          </Box>
+          <PopoverContent w="400px">
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverHeader>{startOrEnd} 조절</PopoverHeader>
+            <PopoverBody>
+              <HStack>
+                <Button
+                  onClick={() => {
+                    onClose();
+                  }}
+                >
+                  +1.0초
+                </Button>
+                <Button>+1.5초</Button>
+                <Button>+2.0초</Button>
+                <Button>다음 자막 전까지</Button>
+              </HStack>
+              <FormControl>
+                <FormLabel>자막 길이 설정</FormLabel>
+                <InputGroup>
+                  <Input />
+                  <InputRightAddon>초</InputRightAddon>
+                </InputGroup>
+              </FormControl>
+              <FormControl>
+                <FormLabel>자막 종료 시간</FormLabel>
+                <InputGroup>
+                  <Input />
+                </InputGroup>
+              </FormControl>
+            </PopoverBody>
+            <PopoverFooter>예상 적정 시간 : 3초</PopoverFooter>
+          </PopoverContent>
         </Portal>
       </Popover>
       <MdTimer onClick={() => {}} />
@@ -160,18 +169,7 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
       </Box>
       <Stack w="110px" minW="110px" ml="0px !important" spacing="-8px">
         <HStack justifyContent="space-between">
-          <Editable
-            defaultValue={miliToString(data[index].startTime!)}
-            maxW="80px"
-            onSubmit={(newValue: string) => {
-              const newContents = [...contents];
-              newContents[index].startTime = parseTime(newValue);
-              setContents(newContents);
-            }}
-          >
-            <EditablePreview />
-            <EditableInput />
-          </Editable>
+          <Timestamp index={index} startOrEnd={"startTime"} />
           <MdTimer
             onClick={() => {
               const newContents = [...contents];
@@ -183,27 +181,7 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
         </HStack>
         <Text pl="30px">~</Text>
         <HStack justifyContent="space-between">
-          <Editable
-            defaultValue={miliToString(data[index].endTime!)}
-            maxW="80px"
-            onSubmit={(newValue: string) => {
-              const newTime = parseTime(newValue);
-              if (index > 0 && newTime < data[index - 1].endTime) {
-                return false;
-              } else if (
-                index < data.length - 1 &&
-                newTime > data[index + 1].startTime
-              ) {
-                return false;
-              }
-              const newContents = [...contents];
-              newContents[index].endTime = parseTime(newValue);
-              setContents(newContents);
-            }}
-          >
-            <EditablePreview />
-            <EditableInput />
-          </Editable>
+          <Timestamp index={index} startOrEnd={"endTime"} />
           <MdTimer
             onClick={() => {
               const newContents = [...contents];
