@@ -10,7 +10,6 @@ export default function TimeLineContainer() {
   const { leftTime, rightTime, changeLRTime } = useContext(EditorContext);
 
   const handleScroll = (e: WheelEvent<HTMLDivElement>) => {
-    e.preventDefault();
     const mouseRatio = e.screenX / window.screen.width;
     let zoom = 1;
     zoom = 1 + e.deltaY / 1000;

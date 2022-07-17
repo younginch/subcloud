@@ -1,6 +1,6 @@
-import { Box, createIcon } from "@chakra-ui/react";
-import { useContext } from "react";
-import { EditorContext } from "../../pages/editor";
+import { Box, createIcon, keyframes } from "@chakra-ui/react";
+import { useContext, useEffect } from "react";
+import { EditorContext, PlayerState } from "../../pages/editor";
 
 export const TimeLineMarkerSVG = createIcon({
   displayName: "SubCloud Logo ",
@@ -30,11 +30,29 @@ export const TimeLineMarkerSVG = createIcon({
 });
 
 export default function TimeLineMarker() {
-  const { leftTime, rightTime, getPlayerTime } = useContext(EditorContext);
-  const left = ((getPlayerTime() - leftTime) / (rightTime - leftTime)) * 6000;
+  const { leftTime, rightTime, getPlayerTime, state } =
+    useContext(EditorContext);
+
+  const initialLeft =
+    ((getPlayerTime() - leftTime) / (rightTime - leftTime)) * 6000;
+  const changeLeft = keyframes`
+  0% {
+    left: ${initialLeft}px;
+  }
+  100% {
+    left: ${state == PlayerState.PLAYING ? 6000 : initialLeft}px;
+  }
+  `;
 
   return (
-    <Box left={`${left}px`} top="26px" position="absolute" zIndex={11}>
+    <Box
+      top="26px"
+      position="absolute"
+      zIndex={11}
+      animation={`${
+        (rightTime - getPlayerTime()) / 1000
+      }s ${changeLeft} linear`}
+    >
       <TimeLineMarkerSVG h="200px" cursor="grab" />
     </Box>
   );

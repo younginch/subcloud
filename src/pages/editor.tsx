@@ -65,7 +65,7 @@ type EditorContextProps = {
   aspectRatio: number;
 };
 
-enum PlayerState {
+export enum PlayerState {
   UNSTARTED = -1,
   ENDED = 0,
   PLAYING = 1,
@@ -176,6 +176,8 @@ function EditorWithoutContext() {
     setId,
     getPlayerTime,
     setPlayerTime,
+    state,
+    setState,
   } = useContext(EditorContext);
 
   const onDrop = useCallback(
@@ -194,7 +196,14 @@ function EditorWithoutContext() {
     filterPreventDefault: true,
     enableOnContentEditable: true,
   };
-  useHotkeys("tab", () => console.log("sex"), hotkeyOptions);
+  useHotkeys(
+    "tab",
+    () => {
+      if (state === PlayerState.PAUSED) setState(PlayerState.PLAYING);
+      else if (state === PlayerState.PLAYING) setState(PlayerState.PAUSED);
+    },
+    hotkeyOptions
+  );
 
   useHotkeys(
     "right",
