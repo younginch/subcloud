@@ -78,7 +78,7 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
           <Editable
             defaultValue={miliToString(data[index].startTime!)}
             maxW="80px"
-            onSubmit={(newValue) => {
+            onSubmit={(newValue: string) => {
               const newContents = [...contents];
               newContents[index].startTime = parseTime(newValue);
               setContents(newContents);
@@ -101,7 +101,7 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
           <Editable
             defaultValue={miliToString(data[index].endTime!)}
             maxW="80px"
-            onSubmit={(newValue) => {
+            onSubmit={(newValue: string) => {
               const newTime = parseTime(newValue);
               if (index > 0 && newTime < data[index - 1].endTime) {
                 return false;
