@@ -21,7 +21,6 @@ export default function SubtitleComponent({ boxRef }: Props) {
     if (!currentTime) {
       return;
     }
-    console.log(currentTime);
 
     for (let i = 0; i < contents.length; i++) {
       if (

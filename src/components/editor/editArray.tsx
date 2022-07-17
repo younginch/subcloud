@@ -53,7 +53,8 @@ function parseTime(sTime: string): number {
 }
 
 const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
-  const { contents, setContents } = useContext(EditorContext);
+  const { contents, setContents, getPlayerTime } = useContext(EditorContext);
+
   return (
     <HStack position="relative" style={style}>
       <Box position="relative" h="100%" w="70px">
@@ -86,7 +87,14 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
             <EditablePreview />
             <EditableInput />
           </Editable>
-          <MdTimer />
+          <MdTimer
+            onClick={() => {
+              const newContents = [...contents];
+              newContents[index].startTime = getPlayerTime();
+              setContents(newContents);
+            }}
+            cursor="pointer"
+          />
         </HStack>
         <Text pl="30px">~</Text>
         <HStack justifyContent="space-between">
@@ -111,7 +119,14 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
             <EditablePreview />
             <EditableInput />
           </Editable>
-          <MdTimer onClick={() => {}} />
+          <MdTimer
+            onClick={() => {
+              const newContents = [...contents];
+              newContents[index].endTime = getPlayerTime();
+              setContents(newContents);
+            }}
+            cursor="pointer"
+          />
         </HStack>
       </Stack>
       <EditComponent index={index} />

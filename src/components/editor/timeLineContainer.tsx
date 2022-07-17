@@ -40,7 +40,6 @@ export default function TimeLineContainer() {
   };
 
   const handleStop = (e: any, data: DraggableData) => {
-    console.log(data.lastX);
     const mouseRatio = -data.lastX / 6000;
     changeLRTime(
       leftTime + (rightTime - leftTime) * mouseRatio,
