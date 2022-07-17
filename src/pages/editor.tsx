@@ -35,7 +35,7 @@ import Shortcuts from "../components/editor/shortcuts";
 import YoutubePlayer from "../components/editor/youtubePlayer";
 import { useHotkeys } from "react-hotkeys-hook";
 import TimeLineContainer from "../components/editor/timeLineContainer";
-import { YouTubePlayer } from "react-youtube";
+import YouTube, { YouTubePlayer } from "react-youtube";
 import ToggleTheme from "../components/editor/toggleTheme";
 import { MdDelete } from "react-icons/md";
 import { FaPlus, FaSave } from "react-icons/fa";
@@ -59,9 +59,20 @@ type EditorContextProps = {
   setPlayer: (player: YouTubePlayer) => void;
   getPlayerTime: () => number;
   setPlayerTime: (time: number) => void;
+  state: PlayerState;
+  setState: (state: PlayerState) => void;
   duration: number;
   aspectRatio: number;
 };
+
+enum PlayerState {
+  UNSTARTED = -1,
+  ENDED = 0,
+  PLAYING = 1,
+  PAUSED = 2,
+  BUFFERING = 3,
+  CUED = 5,
+}
 
 export const EditorContext = createContext<EditorContextProps>({
   /* The left time in milliseconds
@@ -78,6 +89,8 @@ export const EditorContext = createContext<EditorContextProps>({
   setPlayer: () => {},
   getPlayerTime: () => 0,
   setPlayerTime: (_) => {},
+  state: PlayerState.UNSTARTED,
+  setState: (_) => {},
   duration: 0,
   aspectRatio: 0,
 });
@@ -95,6 +108,9 @@ function EditorProvider({ children }: EditorProviderProps) {
   const [player, setPlayer] = useState<YouTubePlayer>();
   const [duration, setDuration] = useState<number>(0);
   const [videoFraction, setVideoFraction] = useState<number>(0);
+  const [playerState, setPlayerState] = useState<PlayerState>(
+    PlayerState.UNSTARTED
+  );
 
   return (
     <EditorContext.Provider
@@ -119,7 +135,7 @@ function EditorProvider({ children }: EditorProviderProps) {
         },
         setPlayer: (newPlayer) => {
           setPlayer(newPlayer);
-          setDuration(newPlayer.getDuration());
+          setDuration(newPlayer.getDuration() * 1000);
           axios
             .get(
               `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`
@@ -136,6 +152,10 @@ function EditorProvider({ children }: EditorProviderProps) {
         },
         duration,
         aspectRatio: videoFraction,
+        state: playerState,
+        setState: (newState) => {
+          setPlayerState(newState);
+        },
       }}
     >
       {children}
@@ -223,7 +243,7 @@ function EditorWithoutContext() {
                 p="5px"
                 textAlign="center"
               >
-                자막 업로드{duration}
+                자막 업로드
               </Heading>
               <Stack p="10px" mt="0px !important" spacing="10px">
                 <Box

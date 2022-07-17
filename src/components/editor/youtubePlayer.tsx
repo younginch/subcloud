@@ -10,7 +10,7 @@ export default function YoutubePlayer({ id }: { id: string }) {
   const boxRef = useRef<HTMLDivElement>(null);
   const [textArray, setTextArray] = useState<string[]>([]);
 
-  const { contents } = useContext(EditorContext);
+  const { contents, setState } = useContext(EditorContext);
 
   const intervalSub = () => {
     const currentTime = getPlayerTime();
@@ -62,6 +62,9 @@ export default function YoutubePlayer({ id }: { id: string }) {
             opts={opts}
             className="youtubeContainer"
             onReady={(event) => setPlayer(event.target)}
+            onStateChange={(event) => {
+              setState(event.data);
+            }}
             onError={onPlayerError}
           />
         </Box>
