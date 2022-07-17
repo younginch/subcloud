@@ -2,9 +2,6 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import {
   Stack,
   HStack,
-  Editable,
-  EditablePreview,
-  EditableInput,
   Textarea,
   IconButton,
   Text,
@@ -68,13 +65,55 @@ function parseTime(sTime: string): number {
   return m * 60 * 1000 + s * 1000 + ms;
 }
 
-function Timestamp({
-  index,
-  startOrEnd,
-}: {
+type PMButtonProps = {
   index: number;
-  startOrEnd: "startTime" | "endTime";
-}) {
+  onClose: () => void;
+  amount: number;
+};
+
+function PlusButton({ index, onClose, amount }: PMButtonProps) {
+  const { contents, setContents } = useContext(EditorContext);
+
+  return (
+    <Button
+      isDisabled={
+        index < contents.length - 1 &&
+        contents[index].startTime + amount > contents[index + 1].startTime
+      }
+      onClick={() => {
+        const newContents = [...contents];
+        newContents[index].endTime = newContents[index].startTime + amount;
+        setContents(newContents);
+        onClose();
+      }}
+    >
+      +{(amount / 1000).toFixed(1)}초
+    </Button>
+  );
+}
+
+function MinusButton({ index, onClose, amount }: PMButtonProps) {
+  const { contents, setContents } = useContext(EditorContext);
+
+  return (
+    <Button
+      isDisabled={
+        index > 0 &&
+        contents[index].endTime - amount < contents[index - 1].endTime
+      }
+      onClick={() => {
+        const newContents = [...contents];
+        newContents[index].startTime = newContents[index].endTime - amount;
+        setContents(newContents);
+        onClose();
+      }}
+    >
+      -{(amount / 1000).toFixed(1)}초
+    </Button>
+  );
+}
+
+function StartTimestamp({ index }: { index: number }) {
   const { contents, setContents } = useContext(EditorContext);
   const { isOpen, onToggle, onClose } = useDisclosure();
 
@@ -82,26 +121,54 @@ function Timestamp({
     <HStack justifyContent="space-between">
       <Popover isOpen={isOpen} onClose={onClose}>
         <PopoverTrigger>
-          <Button
-            maxW="100px"
-            h={8}
-            variant="outline"
-            onClick={onToggle}
-            onSubmit={(newValue) => {
-              const newTime = parseTime("00:00,000");
-              if (index > 0 && newTime < contents[index - 1].endTime) {
-                return false;
-              } else if (
-                index < contents.length - 1 &&
-                newTime > contents[index + 1].startTime
-              ) {
-                return false;
-              }
-              const newContents = [...contents];
-              newContents[index][startOrEnd] = parseTime("00:00,000");
-              setContents(newContents);
-            }}
-          >
+          <Button maxW="100px" h={8} variant="outline" onClick={onToggle}>
+            {miliToString(contents[index].startTime!)}
+          </Button>
+        </PopoverTrigger>
+        <Portal>
+          <PopoverContent w="400px">
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverHeader>시작 시간 조절</PopoverHeader>
+            <PopoverBody>
+              <FormControl>
+                <FormLabel>종료 시간으로부터</FormLabel>
+                <HStack>
+                  <MinusButton index={index} onClose={onClose} amount={1000} />
+                  <MinusButton index={index} onClose={onClose} amount={1500} />
+                  <MinusButton index={index} onClose={onClose} amount={2000} />
+                  <Button>이전 자막 직후</Button>
+                </HStack>
+                <InputGroup mt={2}>
+                  <Input isDisabled />
+                  <InputRightAddon>초</InputRightAddon>
+                </InputGroup>
+              </FormControl>
+            </PopoverBody>
+            <PopoverFooter>
+              <FormControl>
+                <FormLabel>자막 시작 시간</FormLabel>
+                <InputGroup>
+                  <Input isDisabled />
+                </InputGroup>
+              </FormControl>
+            </PopoverFooter>
+          </PopoverContent>
+        </Portal>
+      </Popover>
+    </HStack>
+  );
+}
+
+function EndTimestamp({ index }: { index: number }) {
+  const { contents, setContents } = useContext(EditorContext);
+  const { isOpen, onToggle, onClose } = useDisclosure();
+
+  return (
+    <HStack justifyContent="space-between">
+      <Popover isOpen={isOpen} onClose={onClose}>
+        <PopoverTrigger>
+          <Button maxW="100px" h={8} variant="outline" onClick={onToggle}>
             {miliToString(contents[index].endTime!)}
           </Button>
         </PopoverTrigger>
@@ -109,39 +176,33 @@ function Timestamp({
           <PopoverContent w="400px">
             <PopoverArrow />
             <PopoverCloseButton />
-            <PopoverHeader>{startOrEnd} 조절</PopoverHeader>
+            <PopoverHeader>종료 시간 조절</PopoverHeader>
             <PopoverBody>
-              <HStack>
-                <Button
-                  onClick={() => {
-                    onClose();
-                  }}
-                >
-                  +1.0초
-                </Button>
-                <Button>+1.5초</Button>
-                <Button>+2.0초</Button>
-                <Button>다음 자막 전까지</Button>
-              </HStack>
               <FormControl>
-                <FormLabel>자막 길이 설정</FormLabel>
-                <InputGroup>
-                  <Input />
+                <FormLabel>시작 시간으로부터</FormLabel>
+                <HStack>
+                  <PlusButton index={index} onClose={onClose} amount={1000} />
+                  <PlusButton index={index} onClose={onClose} amount={1500} />
+                  <PlusButton index={index} onClose={onClose} amount={2000} />
+                  <Button>다음 자막 전까지</Button>
+                </HStack>
+                <InputGroup mt={2}>
+                  <Input isDisabled />
                   <InputRightAddon>초</InputRightAddon>
                 </InputGroup>
               </FormControl>
+            </PopoverBody>
+            <PopoverFooter>
               <FormControl>
                 <FormLabel>자막 종료 시간</FormLabel>
                 <InputGroup>
-                  <Input />
+                  <Input isDisabled />
                 </InputGroup>
               </FormControl>
-            </PopoverBody>
-            <PopoverFooter>예상 적정 시간 : 3초</PopoverFooter>
+            </PopoverFooter>
           </PopoverContent>
         </Portal>
       </Popover>
-      <MdTimer onClick={() => {}} />
     </HStack>
   );
 }
@@ -169,7 +230,7 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
       </Box>
       <Stack w="110px" minW="110px" ml="0px !important" spacing="-8px">
         <HStack justifyContent="space-between">
-          <Timestamp index={index} startOrEnd={"startTime"} />
+          <StartTimestamp index={index} />
           <MdTimer
             onClick={() => {
               const newContents = [...contents];
@@ -181,7 +242,7 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
         </HStack>
         <Text pl="30px">~</Text>
         <HStack justifyContent="space-between">
-          <Timestamp index={index} startOrEnd={"endTime"} />
+          <EndTimestamp index={index} />
           <MdTimer
             onClick={() => {
               const newContents = [...contents];
