@@ -35,7 +35,7 @@ export default function Property() {
 
   const errors = [];
   const durationTooShort = duration < 0.7;
-  const readingRateSoFast = wordCount / duration > 3;
+  const readingRateSoFast = wordCount / duration > 5;
   if (durationTooShort) {
     errors.push("Duration is too short.");
   }
