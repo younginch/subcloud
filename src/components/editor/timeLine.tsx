@@ -171,7 +171,6 @@ export default function TimeLine() {
       height={`${canvasHeight}px`}
       width={`${canvasWidth}px`}
       style={{
-        position: "absolute",
         transformOrigin: "left top",
         transform: "scale(0.5)",
         cursor: "grab",

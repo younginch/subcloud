@@ -1,13 +1,14 @@
 import { useContext, WheelEvent } from "react";
 import { EditorContext } from "../../pages/editor";
 import TimeLine from "./timeLine";
-import { Box } from "@chakra-ui/react";
+import { Box, Stack } from "@chakra-ui/react";
 import TimeLineBoxes from "./timeLineBoxes";
 import Draggable, { DraggableData } from "react-draggable";
 import TimeLineMarker from "./timeLineMarker";
 
 export default function TimeLineContainer() {
-  const { leftTime, rightTime, changeLRTime } = useContext(EditorContext);
+  const { leftTime, rightTime, changeLRTime, duration } =
+    useContext(EditorContext);
 
   const handleScroll = (e: WheelEvent<HTMLDivElement>) => {
     const mouseRatio = e.screenX / window.screen.width;
@@ -50,12 +51,17 @@ export default function TimeLineContainer() {
     (-leftTime * 6000) / (rightTime - leftTime) - 2000,
     0
   );
+  const rightBound = Math.min(
+    (6000 * (duration - leftTime)) / (rightTime - leftTime) -
+      2000 -
+      window.innerWidth
+  );
 
   return (
     <Draggable
       axis="x"
       onStop={handleStop}
-      bounds={{ left: -2000, right: -leftBound }}
+      bounds={{ left: -rightBound, right: -leftBound }}
       position={{ x: 0, y: 0 }}
     >
       <Box
