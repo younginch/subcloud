@@ -12,7 +12,7 @@ export default function TimeLineBoxes() {
         if (
           item.endTime <= leftTime ||
           item.startTime >= rightTime ||
-          item.endTime > item.startTime
+          item.endTime < item.startTime
         ) {
           return;
         }

@@ -1,5 +1,5 @@
 import { Text, Stack, useInterval } from "@chakra-ui/react";
-import { RefObject, useContext, useState } from "react";
+import { RefObject, useContext, useEffect, useState } from "react";
 import { EditorContext } from "../../pages/editor";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 export default function SubtitleComponent({ boxRef }: Props) {
   const fontSizeSetting = 60; // default size
   const fontSize = boxRef.current
-    ? (boxRef.current?.offsetWidth / 3000) * fontSizeSetting
+    ? (boxRef.current?.offsetWidth / 2500) * fontSizeSetting
     : 15;
   const paddingUnit = fontSize / 5;
 
@@ -34,7 +34,7 @@ export default function SubtitleComponent({ boxRef }: Props) {
     setTextArray([]);
   };
 
-  useInterval(intervalSub, 200);
+  useInterval(intervalSub, 50);
 
   return (
     <Stack
