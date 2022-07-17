@@ -47,11 +47,16 @@ export default function TimeLineContainer() {
     );
   };
 
+  const leftBound = Math.min(
+    (-leftTime * 6000) / (rightTime - leftTime) - 2000,
+    0
+  );
+
   return (
     <Draggable
       axis="x"
       onStop={handleStop}
-      bounds={{ left: -2000, right: 2000 }}
+      bounds={{ left: -2000, right: -leftBound }}
       position={{ x: 0, y: 0 }}
     >
       <Box

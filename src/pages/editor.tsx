@@ -143,8 +143,15 @@ function EditorWithoutContext() {
   const [urlInput, setUrlInput] = useState("");
   const urlField = useRef<HTMLInputElement>(null);
 
-  const { contents, setContents, setFocusedIndex, id, setId } =
-    useContext(EditorContext);
+  const {
+    contents,
+    setContents,
+    setFocusedIndex,
+    id,
+    setId,
+    getPlayerTime,
+    setPlayerTime,
+  } = useContext(EditorContext);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -158,10 +165,27 @@ function EditorWithoutContext() {
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  useHotkeys("tab", () => console.log("sex"), {
+  const hotkeyOptions = {
     filterPreventDefault: true,
     enableOnContentEditable: true,
-  });
+  };
+  useHotkeys("tab", () => console.log("sex"), hotkeyOptions);
+
+  useHotkeys(
+    "right",
+    () => {
+      setPlayerTime(getPlayerTime() + 500);
+    },
+    hotkeyOptions
+  );
+
+  useHotkeys(
+    "left",
+    () => {
+      setPlayerTime(getPlayerTime() - 500 >= 0 ? getPlayerTime() - 500 : 0);
+    },
+    hotkeyOptions
+  );
 
   function downloadSRT() {
     const srtFile = new SRTFile();
