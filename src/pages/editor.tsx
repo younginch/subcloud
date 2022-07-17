@@ -32,7 +32,7 @@ import {
 import { SRTContent, SRTFile } from "@younginch/subtitle";
 import { useDropzone } from "react-dropzone";
 import Shortcuts from "../components/editor/shortcuts";
-import YoutubeWithSub from "../components/editor/youtubeWithSub";
+import YoutubePlayer from "../components/editor/youtubePlayer";
 import { useHotkeys } from "react-hotkeys-hook";
 import TimeLineContainer from "../components/editor/timeLineContainer";
 import { YouTubePlayer } from "react-youtube";
@@ -125,7 +125,7 @@ function EditorProvider({ children }: EditorProviderProps) {
             });
         },
         getPlayerTime: () => {
-          return player?.getDuration();
+          return player?.getCurrentTime() * 1000;
         },
         setPlayerTime: (time) => {
           player?.seekTo(time);
@@ -285,7 +285,7 @@ function EditorWithoutContext() {
             {id.length === 0 ? (
               <NoVideo urlRef={urlField} />
             ) : (
-              <YoutubeWithSub id={id} />
+              <YoutubePlayer id={id} />
             )}
           </ReflexElement>
           <ReflexSplitter propagate={true} />

@@ -1,75 +1,10 @@
 import { useInterval, Box, useToast, Stack } from "@chakra-ui/react";
 import { useContext, useRef, useState } from "react";
 import YouTube, { YouTubeEvent, YouTubeProps } from "react-youtube";
-import { v4 as uuidv4 } from "uuid";
 import { EditorContext } from "../../pages/editor";
 import SubtitleComponent from "./SubtitleComponent";
 
-function calculateLayout(sliderValue: number): [number, number] | undefined {
-  const outerVideo = document.querySelector(".youtubeContainer") as HTMLElement;
-  const outerHeight = outerVideo?.offsetHeight;
-
-  const innerWidth = outerVideo.offsetWidth;
-  const innerHeight = outerVideo.offsetHeight;
-  const fontSize = (innerWidth / 2500.0) * sliderValue;
-  const subtitleMt =
-    (outerHeight - innerHeight) / 2 + innerHeight * 0.87 - fontSize / 2;
-
-  return [fontSize, subtitleMt];
-}
-
-type SubtitleComponentDeprecatedProps = {
-  element: HTMLDivElement | null;
-  textArray: string[];
-};
-
-function SubtitleComponentDeprecated({
-  element,
-  textArray,
-}: SubtitleComponentDeprecatedProps) {
-  const [fontSize, setFontSize] = useState<number>(12);
-  const [subtitleMt, setSubtitleMt] = useState<number>(300);
-
-  function layoutUpdater() {
-    const res = calculateLayout(60);
-    if (res) {
-      setFontSize(res[0]);
-      setSubtitleMt(res[1]);
-    }
-  }
-
-  useInterval(layoutUpdater, 20);
-
-  return (
-    <Box
-      position="absolute"
-      zIndex={1}
-      top={element?.clientTop}
-      left={element?.clientLeft}
-      width={element?.clientWidth}
-      height={element?.clientHeight}
-    >
-      <Box textAlign="center">
-        {textArray
-          ? textArray.map((text, index) => (
-              <Box
-                key={uuidv4()}
-                w="max-content"
-                margin="auto"
-                style={{
-                  fontSize: `${fontSize}px`,
-                }}
-              >
-                {text}
-              </Box>
-            ))
-          : ""}
-      </Box>
-    </Box>
-  );
-}
-
-export default function YoutubeWithSub({ id }: { id: string }) {
+export default function YoutubePlayer({ id }: { id: string }) {
   const { setPlayer, getPlayerTime } = useContext(EditorContext);
   const toast = useToast();
   const boxRef = useRef<HTMLDivElement>(null);
@@ -121,10 +56,6 @@ export default function YoutubeWithSub({ id }: { id: string }) {
         alignItems="center"
       >
         <Box w="100%" position="relative" ref={boxRef}>
-          <SubtitleComponentDeprecated
-            element={boxRef.current}
-            textArray={textArray}
-          />
           <SubtitleComponent boxRef={boxRef} />
           <YouTube
             videoId={id}
