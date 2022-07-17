@@ -1,4 +1,4 @@
-import { Box, createIcon, useInterval } from "@chakra-ui/react";
+import { Box, createIcon, keyframes, useInterval } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import { EditorContext } from "../../pages/editor";
 
@@ -31,14 +31,26 @@ export const TimeLineMarkerSVG = createIcon({
 
 export default function TimeLineMarker() {
   const { leftTime, rightTime, getPlayerTime } = useContext(EditorContext);
-  const [left, setLeft] = useState<number>(0);
 
-  useInterval(() => {
-    setLeft(((getPlayerTime() - leftTime) / (rightTime - leftTime)) * 6000);
-  }, 30);
+  const changeLeft = keyframes`
+  0% {
+    left: ${((getPlayerTime() - leftTime) / (rightTime - leftTime)) * 6000}px;
+  }
+  100% {
+    left:6000px;
+  }
+  `;
 
   return (
-    <Box left={`${left}px`} top="26px" position="absolute" zIndex={11}>
+    <Box
+      left={`${2500}px`}
+      top="26px"
+      position="absolute"
+      zIndex={11}
+      animation={`${
+        (rightTime - getPlayerTime()) / 1000
+      }s ${changeLeft} linear`}
+    >
       <TimeLineMarkerSVG h="200px" cursor="grab" />
     </Box>
   );
