@@ -39,7 +39,7 @@ export default function TimeLineContainer() {
     */
   };
 
-  const handleStop = (e: Event, data: DraggableData) => {
+  const handleStop = (e: any, data: DraggableData) => {
     console.log(data.lastX);
     const mouseRatio = -data.lastX / 6000;
     changeLRTime(
@@ -53,6 +53,7 @@ export default function TimeLineContainer() {
       axis="x"
       onStop={handleStop}
       bounds={{ left: -2000, right: 2000 }}
+      position={{ x: 0, y: 0 }}
     >
       <Box
         h="100%"

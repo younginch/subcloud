@@ -11,7 +11,7 @@ export default function SubtitleComponent({ boxRef }: Props) {
   const fontSize = boxRef.current
     ? (boxRef.current?.offsetWidth / 3000) * fontSizeSetting
     : 15;
-  const paddingUnit = fontSize / 10;
+  const paddingUnit = fontSize / 5;
 
   const [textArray, setTextArray] = useState<string[]>([]);
   const { contents, getPlayerTime } = useContext(EditorContext);
@@ -54,9 +54,8 @@ export default function SubtitleComponent({ boxRef }: Props) {
           key={index}
           bg="black"
           w="fit-content"
-          p={`${paddingUnit}px ${paddingUnit * 2}px ${paddingUnit}px ${
-            paddingUnit * 2
-          }px`}
+          p={`0px ${paddingUnit * 2}px 0px ${paddingUnit * 2}px`}
+          whiteSpace="nowrap"
         >
           {text}
         </Text>
