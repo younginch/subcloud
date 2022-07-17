@@ -29,7 +29,7 @@ export const TimeLineMarkerSVG = createIcon({
 
 export default function TimeLineMarker() {
   return (
-    <Box left="2500px" top="26px" position="absolute">
+    <Box left="2500px" top="26px" position="absolute" zIndex={11}>
       <TimeLineMarkerSVG h="200px" cursor="grab" />
     </Box>
   );

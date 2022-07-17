@@ -3,7 +3,7 @@ import { EditorContext } from "../../pages/editor";
 import TimeLine from "./timeLine";
 import { Box } from "@chakra-ui/react";
 import TimeLineBoxes from "./timeLineBoxes";
-import Draggable from "react-draggable";
+import Draggable, { DraggableData } from "react-draggable";
 import TimeLineMarker from "./timeLineMarker";
 
 export default function TimeLineContainer() {
@@ -39,8 +39,21 @@ export default function TimeLineContainer() {
     */
   };
 
+  const handleStop = (e: any, data: DraggableData) => {
+    const mouseRatio = -data.lastX / 6000;
+    changeLRTime(
+      leftTime + (rightTime - leftTime) * mouseRatio,
+      rightTime + (rightTime - leftTime) * mouseRatio
+    );
+  };
+
   return (
-    <Draggable axis="x">
+    <Draggable
+      axis="x"
+      onStop={handleStop}
+      bounds={{ left: -2000, right: 2000 }}
+      position={{ x: 0, y: 0 }}
+    >
       <Box
         h="100%"
         w="6000px"
