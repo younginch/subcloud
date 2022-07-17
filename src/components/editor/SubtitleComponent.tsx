@@ -1,5 +1,6 @@
-import { Text, Stack } from "@chakra-ui/react";
-import { RefObject } from "react";
+import { Text, Stack, useInterval } from "@chakra-ui/react";
+import { RefObject, useContext, useState } from "react";
+import { EditorContext } from "../../pages/editor";
 
 type Props = {
   boxRef: RefObject<HTMLDivElement>;
@@ -11,6 +12,30 @@ export default function SubtitleComponent({ boxRef }: Props) {
     ? (boxRef.current?.offsetWidth / 3000) * fontSizeSetting
     : 15;
   const paddingUnit = fontSize / 10;
+
+  const [textArray, setTextArray] = useState<string[]>([]);
+  const { contents, getPlayerTime } = useContext(EditorContext);
+
+  const intervalSub = () => {
+    const currentTime = getPlayerTime();
+    if (!currentTime) {
+      return;
+    }
+    console.log(currentTime);
+
+    for (let i = 0; i < contents.length; i++) {
+      if (
+        contents[i].startTime <= currentTime &&
+        currentTime <= contents[i].endTime
+      ) {
+        setTextArray(contents[i].textArray);
+        return;
+      }
+    }
+    setTextArray([]);
+  };
+
+  useInterval(intervalSub, 200);
 
   return (
     <Stack
@@ -24,24 +49,18 @@ export default function SubtitleComponent({ boxRef }: Props) {
       spacing={0}
       fontSize={fontSize}
     >
-      <Text
-        bg="black"
-        w="fit-content"
-        p={`${paddingUnit}px ${paddingUnit * 2}px ${paddingUnit}px ${
-          paddingUnit * 2
-        }px`}
-      >
-        안녕하세요
-      </Text>
-      <Text
-        bg="black"
-        w="fit-content"
-        p={`${paddingUnit}px ${paddingUnit * 2}px ${paddingUnit}px ${
-          paddingUnit * 2
-        }px`}
-      >
-        SubCloud 자막입니다
-      </Text>
+      {textArray.map((text, index) => (
+        <Text
+          key={index}
+          bg="black"
+          w="fit-content"
+          p={`${paddingUnit}px ${paddingUnit * 2}px ${paddingUnit}px ${
+            paddingUnit * 2
+          }px`}
+        >
+          {text}
+        </Text>
+      ))}
     </Stack>
   );
 }
