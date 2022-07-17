@@ -1,5 +1,5 @@
 import { Text, Stack, useInterval } from "@chakra-ui/react";
-import { RefObject, useContext, useState } from "react";
+import { RefObject, useContext, useEffect, useState } from "react";
 import { EditorContext } from "../../pages/editor";
 
 type Props = {
@@ -9,9 +9,9 @@ type Props = {
 export default function SubtitleComponent({ boxRef }: Props) {
   const fontSizeSetting = 60; // default size
   const fontSize = boxRef.current
-    ? (boxRef.current?.offsetWidth / 3000) * fontSizeSetting
+    ? (boxRef.current?.offsetWidth / 2500) * fontSizeSetting
     : 15;
-  const paddingUnit = fontSize / 10;
+  const paddingUnit = fontSize / 5;
 
   const [textArray, setTextArray] = useState<string[]>([]);
   const { contents, getPlayerTime } = useContext(EditorContext);
@@ -21,7 +21,6 @@ export default function SubtitleComponent({ boxRef }: Props) {
     if (!currentTime) {
       return;
     }
-    console.log(currentTime);
 
     for (let i = 0; i < contents.length; i++) {
       if (
@@ -35,7 +34,7 @@ export default function SubtitleComponent({ boxRef }: Props) {
     setTextArray([]);
   };
 
-  useInterval(intervalSub, 200);
+  useInterval(intervalSub, 50);
 
   return (
     <Stack
@@ -54,9 +53,8 @@ export default function SubtitleComponent({ boxRef }: Props) {
           key={index}
           bg="black"
           w="fit-content"
-          p={`${paddingUnit}px ${paddingUnit * 2}px ${paddingUnit}px ${
-            paddingUnit * 2
-          }px`}
+          p={`0px ${paddingUnit * 2}px 0px ${paddingUnit * 2}px`}
+          whiteSpace="nowrap"
         >
           {text}
         </Text>

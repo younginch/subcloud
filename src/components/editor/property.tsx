@@ -26,16 +26,21 @@ export default function Property() {
 
   const duration =
     (contents[focusedIndex].endTime - contents[focusedIndex].startTime) / 1000;
-  const wordCount = contents[focusedIndex].toText().length;
+  const wordCount = contents[focusedIndex]
+    .toText()
+    .split(" ")
+    .filter(function (str: string) {
+      return str != "";
+    }).length;
 
   const errors = [];
   const durationTooShort = duration < 0.7;
-  const readingRateSoFast = wordCount / duration > 20;
+  const readingRateSoFast = wordCount / duration > 5;
   if (durationTooShort) {
     errors.push("Duration is too short.");
   }
   if (readingRateSoFast) {
-    errors.push("Reading rate shouldn't exceed 21 characters / sec.");
+    errors.push("Reading rate shouldn't exceed 5 words / sec.");
   }
   if (contents[focusedIndex].toText().trim() === "") {
     errors.push("Text is empty.");
@@ -61,9 +66,9 @@ export default function Property() {
           <Text>{`지속 시간: ${duration}초`}</Text>
           {durationTooShort && <WarningIcon color="red.500" />}
         </HStack>
-        <Text>{`글자 수: ${wordCount}자`}</Text>
+        <Text>{`단어 수: ${wordCount}자`}</Text>
         <HStack>
-          <Text>{`글자수/초: ${(wordCount / duration).toFixed(3)}`}</Text>
+          <Text>{`단어수/초: ${(wordCount / duration).toFixed(3)}`}</Text>
           {readingRateSoFast && <WarningIcon color="red.500" />}
         </HStack>
         <Stack>

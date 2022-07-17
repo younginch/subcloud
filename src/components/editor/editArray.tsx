@@ -138,7 +138,8 @@ function Timestamp({
 }
 
 const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
-  const { contents, setContents } = useContext(EditorContext);
+  const { contents, setContents, getPlayerTime } = useContext(EditorContext);
+
   return (
     <HStack position="relative" style={style}>
       <Box position="relative" h="100%" w="70px">
@@ -162,7 +163,7 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
           <Editable
             defaultValue={miliToString(data[index].startTime!)}
             maxW="80px"
-            onSubmit={(newValue) => {
+            onSubmit={(newValue: string) => {
               const newContents = [...contents];
               newContents[index].startTime = parseTime(newValue);
               setContents(newContents);
@@ -171,14 +172,21 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
             <EditablePreview />
             <EditableInput />
           </Editable>
-          <MdTimer />
+          <MdTimer
+            onClick={() => {
+              const newContents = [...contents];
+              newContents[index].startTime = getPlayerTime();
+              setContents(newContents);
+            }}
+            cursor="pointer"
+          />
         </HStack>
         <Text pl="30px">~</Text>
         <HStack justifyContent="space-between">
           <Editable
             defaultValue={miliToString(data[index].endTime!)}
             maxW="80px"
-            onSubmit={(newValue) => {
+            onSubmit={(newValue: string) => {
               const newTime = parseTime(newValue);
               if (index > 0 && newTime < data[index - 1].endTime) {
                 return false;
@@ -196,7 +204,14 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
             <EditablePreview />
             <EditableInput />
           </Editable>
-          <MdTimer onClick={() => {}} />
+          <MdTimer
+            onClick={() => {
+              const newContents = [...contents];
+              newContents[index].endTime = getPlayerTime();
+              setContents(newContents);
+            }}
+            cursor="pointer"
+          />
         </HStack>
       </Stack>
       <EditComponent index={index} />
