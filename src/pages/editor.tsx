@@ -35,7 +35,7 @@ import Shortcuts from "../components/editor/shortcuts";
 import YoutubePlayer from "../components/editor/youtubePlayer";
 import { useHotkeys } from "react-hotkeys-hook";
 import TimeLineContainer from "../components/editor/timeLineContainer";
-import YouTube, { YouTubePlayer } from "react-youtube";
+import { YouTubePlayer } from "react-youtube";
 import ToggleTheme from "../components/editor/toggleTheme";
 import { MdDelete } from "react-icons/md";
 import { FaPlus, FaSave } from "react-icons/fa";
