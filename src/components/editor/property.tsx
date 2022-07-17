@@ -37,6 +37,12 @@ export default function Property() {
   if (readingRateSoFast) {
     errors.push("Reading rate shouldn't exceed 21 characters / sec.");
   }
+  if (contents[focusedIndex].toText().trim() === "") {
+    errors.push("Text is empty.");
+  }
+  if (contents[focusedIndex].textArray.length > 3) {
+    errors.push("Text should be less than 4 lines.");
+  }
 
   return (
     <Stack>

@@ -59,6 +59,7 @@ type EditorContextProps = {
   setPlayer: (player: YouTubePlayer) => void;
   getPlayerTime: () => number;
   setPlayerTime: (time: number) => void;
+  duration: number;
   aspectRatio: number;
 };
 
@@ -77,6 +78,7 @@ export const EditorContext = createContext<EditorContextProps>({
   setPlayer: () => {},
   getPlayerTime: () => 0,
   setPlayerTime: (_) => {},
+  duration: 0,
   aspectRatio: 0,
 });
 
@@ -91,6 +93,7 @@ function EditorProvider({ children }: EditorProviderProps) {
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const [id, setId] = useState<string>("");
   const [player, setPlayer] = useState<YouTubePlayer>();
+  const [duration, setDuration] = useState<number>(0);
   const [videoFraction, setVideoFraction] = useState<number>(0);
 
   return (
@@ -116,6 +119,7 @@ function EditorProvider({ children }: EditorProviderProps) {
         },
         setPlayer: (newPlayer) => {
           setPlayer(newPlayer);
+          setDuration(newPlayer.getDuration());
           axios
             .get(
               `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`
@@ -128,8 +132,9 @@ function EditorProvider({ children }: EditorProviderProps) {
           return player?.getCurrentTime() * 1000;
         },
         setPlayerTime: (time) => {
-          player?.seekTo(time);
+          player?.seekTo(time / 1000);
         },
+        duration,
         aspectRatio: videoFraction,
       }}
     >
@@ -143,7 +148,7 @@ function EditorWithoutContext() {
   const [urlInput, setUrlInput] = useState("");
   const urlField = useRef<HTMLInputElement>(null);
 
-  const { contents, setContents, setFocusedIndex, id, setId } =
+  const { contents, setContents, setFocusedIndex, id, setId, duration } =
     useContext(EditorContext);
 
   const onDrop = useCallback(
@@ -194,7 +199,7 @@ function EditorWithoutContext() {
                 p="5px"
                 textAlign="center"
               >
-                자막 업로드
+                자막 업로드{duration}
               </Heading>
               <Stack p="10px" mt="0px !important" spacing="10px">
                 <Box
