@@ -214,8 +214,6 @@ export default function RequestCreate() {
 
   const pointBg = useColorModeValue("gray.100", "gray.800");
 
-  console.log("debug", watch().lang);
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack
