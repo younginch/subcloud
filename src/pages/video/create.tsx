@@ -151,7 +151,7 @@ export default function VideoCreate() {
             </Box>
             <Box alignItems="center" fontSize="20px">
               <FormErrorMessage m="auto" fontSize="15px">
-                {errors.url && errors.url.message}
+                {errors.url && t("url_error")}
               </FormErrorMessage>
             </Box>
           </FormControl>

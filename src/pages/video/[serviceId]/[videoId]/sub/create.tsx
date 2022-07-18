@@ -293,7 +293,7 @@ export default function SubCreate() {
                 </MenuList>
               </MenuOptionGroup>
               <FormErrorMessage>
-                {errors.lang && errors.lang.message}
+                {errors.lang && t("check_subtitle_lang_required")}
               </FormErrorMessage>
             </FormControl>
           </Menu>

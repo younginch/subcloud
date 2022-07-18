@@ -15,5 +15,6 @@
   "sub_lang": "요청 언어",
   "upload_req": "요청 올리기",
   "fulfilled": "요청 충족수",
-  "fulfilled_ex": "검토를 통과한 시점에 업데이트됩니다"
+  "fulfilled_ex": "검토를 통과한 시점에 업데이트됩니다",
+  "check_subtitle_lang_required": "자막 언어를 선택해 주세요"
 }

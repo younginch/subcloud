@@ -65,6 +65,7 @@ export default function RequestCreate() {
   const videoId = router.query.videoId as string;
   const toast = useToast();
   const { data } = useSession();
+  const [check, setCheck] = useState(false);
   const {
     handleSubmit,
     register,
@@ -150,6 +151,24 @@ export default function RequestCreate() {
     }
     return -1;
   };
+
+  const changeLang = async () => {
+    if (watch().lang && !check) {
+      setCheck(!check);
+      await axios
+        .patch("/api/user/lang", {
+          requestLang: watch().lang,
+        })
+        .catch((err) => {
+          toast({
+            title: "Error",
+            description: "Request Lang not changed",
+            status: "error",
+          });
+        });
+    }
+  };
+
   function onSubmit(values: FormData) {
     return new Promise<void>((resolve, reject) => {
       axios
@@ -189,13 +208,11 @@ export default function RequestCreate() {
   useEffect(() => {
     setValue("point", 0);
     axios.get("/api/user/lang").then(({ data }) => {
-      setValue("lang", data.baseLangs);
+      setValue("lang", data.requestLangs[0]);
     });
   }, [setValue]);
 
   const pointBg = useColorModeValue("gray.100", "gray.800");
-
-  console.log("debug", watch().lang);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -252,7 +269,12 @@ export default function RequestCreate() {
               </FormErrorMessage>
             </FormControl>
           </Menu>
-          <Checkbox mt={5} size="lg" defaultChecked>
+          <Checkbox
+            mt={5}
+            size="lg"
+            defaultChecked={check}
+            onChange={changeLang}
+          >
             {t("basic_lang")}
           </Checkbox>
         </Card>

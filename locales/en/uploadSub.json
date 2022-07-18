@@ -15,5 +15,6 @@
   "sub_lang": "Subtitle language",
   "upload_req": "Upload request",
   "fulfilled": "Fulfilled",
-  "fulfilled_ex": "It will be updated as it passes the review."
+  "fulfilled_ex": "It will be updated as it passes the review.",
+  "check_subtitle_lang_required": "Please select subtitle language"
 }
