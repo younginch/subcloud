@@ -102,8 +102,8 @@ type EditorProviderProps = {
 };
 
 function EditorProvider({ children }: EditorProviderProps) {
-  const [leftTime, setLeftTime] = useState<number>(-35 * 1000);
-  const [rightTime, setRightTime] = useState<number>(35 * 2000);
+  const [leftTime, setLeftTime] = useState<number>(-15 * 1000);
+  const [rightTime, setRightTime] = useState<number>(30 * 1000);
   const [contents, setContents] = useState<SRTContent[]>([]);
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const [id, setId] = useState<string>("");
@@ -138,7 +138,7 @@ function EditorProvider({ children }: EditorProviderProps) {
         setPlayer: (newPlayer) => {
           setPlayer(newPlayer);
           setDuration(newPlayer.getDuration() * 1000);
-          const initialTime = Math.min(newPlayer.getDuration() * 1000, 35000);
+          const initialTime = Math.min(newPlayer.getDuration() * 1000, 15000);
           setLeftTime(-initialTime);
           setRightTime(initialTime * 2);
           axios
@@ -183,6 +183,7 @@ function EditorWithoutContext() {
     setPlayerTime,
     state,
     setState,
+    duration,
   } = useContext(EditorContext);
 
   const onDrop = useCallback(
@@ -404,6 +405,16 @@ function EditorWithoutContext() {
                       "00:00:00,000 --> 00:00:00,000",
                       []
                     );
+                    if (contents.length === 0) {
+                      newItem.startTime = 0;
+                      newItem.endTime = 1000;
+                    } else {
+                      newItem.startTime = contents[contents.length - 1].endTime;
+                      newItem.endTime = Math.min(
+                        duration,
+                        newItem.startTime + 1000
+                      );
+                    }
                     setContents([...contents, newItem]);
                   }}
                   colorScheme="blue"
