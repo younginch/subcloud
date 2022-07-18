@@ -13,5 +13,6 @@
   "explain_box_request_4": "자막이 만들어지기 전까지 포인트는 사용되지 않습니다",
   "explain_box_upload_1": "자막을 업로드하여 모든 사람들에게 자막을 제공하세요",
   "explain_box_upload_2": "업로드한 자막은 승인 후 공개됩니다",
-  "explain_box_upload_3": "유저들의 반응을 알림으로 받아보세요"
+  "explain_box_upload_3": "유저들의 반응을 알림으로 받아보세요",
+  "url_error": "URL 링크는 http 또는 https를 포함하여야 합니다"
 }
