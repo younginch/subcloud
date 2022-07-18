@@ -1,0 +1,17 @@
+{
+  "center_h1": "자막 요청",
+  "center_h1_up": "자막 업로드",
+  "center_below_front": "영상 선택",
+  "center_below_back": "자막 언어 선택",
+  "search_box_request": "이곳에 요청하실 영상 링크 입력...",
+  "search_box_sub": "자막을 업로드할 영상 링크 입력...",
+  "event_front": "자막 업로드 이벤트",
+  "event_back": "자막 업로드시 포인트 증정",
+  "explain_box_request_1": "클릭 몇 번으로 무료 자막을 요청해보세요",
+  "explain_box_request_2": "요청하신 영상에 자막이 생기면 알림으로 알려드려요",
+  "explain_box_request_3": "포인트를 사용하면 자막이 빨리 만들어질 가능성이 높아집니다",
+  "explain_box_request_4": "자막이 만들어지기 전까지 포인트는 사용되지 않습니다",
+  "explain_box_upload_1": "자막을 업로드하여 모든 사람들에게 자막을 제공하세요",
+  "explain_box_upload_2": "업로드한 자막은 승인 후 공개됩니다",
+  "explain_box_upload_3": "유저들의 반응을 알림으로 받아보세요"
+}

@@ -136,6 +136,9 @@ function EditorProvider({ children }: EditorProviderProps) {
         setPlayer: (newPlayer) => {
           setPlayer(newPlayer);
           setDuration(newPlayer.getDuration() * 1000);
+          const initialTime = Math.min(newPlayer.getDuration() * 1000, 35000);
+          setLeftTime(-initialTime);
+          setRightTime(initialTime * 2);
           axios
             .get(
               `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`

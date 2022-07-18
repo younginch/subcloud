@@ -3,7 +3,7 @@ import useTranslation from "next-translate/useTranslation";
 import { GoChevronRight } from "react-icons/go";
 
 export default function EventNotice() {
-  const { t } = useTranslation("requestSub");
+  const { t } = useTranslation("create");
   return (
     <HStack
       p={1}

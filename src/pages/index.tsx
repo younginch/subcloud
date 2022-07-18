@@ -62,6 +62,7 @@ export default function Home() {
             lineHeight="1.375"
             fontWeight="400"
             color="gray.500"
+            wordBreak="keep-all"
           >
             {t("subcloud_aim")}
           </Text>
@@ -136,10 +137,13 @@ export default function Home() {
                 fontSize={{ base: "3xl", md: "4xl" }}
                 fontWeight="bold"
                 maxW="500px"
+                wordBreak="keep-all"
               >
                 {t("free_request_ex_front")}
               </Text>
-              <Text fontSize="2xl">{t("free_request_ex_back")}</Text>
+              <Text fontSize={{ base: "xl", md: "2xl" }} wordBreak="keep-all">
+                {t("free_request_ex_back")}
+              </Text>
             </Stack>
             <Box
               bg={useColorModeValue(
@@ -222,10 +226,11 @@ export default function Home() {
                 fontSize={{ base: "3xl", md: "4xl" }}
                 fontWeight="bold"
                 maxW="500px"
+                wordBreak="keep-all"
               >
                 {t("unconstrained_sub_production_ex_front")}
               </Text>
-              <Text fontSize={{ base: "xl", md: "2xl" }}>
+              <Text fontSize={{ base: "xl", md: "2xl" }} wordBreak="keep-all">
                 {t("unconstrained_sub_production_ex_back")}
               </Text>
             </Stack>
@@ -245,10 +250,11 @@ export default function Home() {
                 fontSize={{ base: "3xl", md: "4xl" }}
                 fontWeight="bold"
                 maxW="500px"
+                wordBreak="keep-all"
               >
                 {t("without_moving_front")}
               </Text>
-              <Text fontSize={{ base: "xl", md: "2xl" }}>
+              <Text fontSize={{ base: "xl", md: "2xl" }} wordBreak="keep-all">
                 {t("without_moving_back")}
               </Text>
             </Stack>
