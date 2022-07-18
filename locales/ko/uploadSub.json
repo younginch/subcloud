@@ -1,0 +1,19 @@
+{
+  "preview": "유튜브에서 자막 미리보기",
+  "upload_vid": "자막 업로드 영상",
+  "select_lang": "언어 선택",
+  "select_lang_ex": "자막의 내용과 다른 언어를 선택할시 심사가 거절될 수 있습니다.",
+  "upload_sub": "자막 업로드",
+  "edit": "SubCloud에서 편집",
+  "file_drop": "파일을 여기에 놓으세요",
+  "click_drag": "클릭하거나 여기에 파일을 끌어당겨서 자막을 업로드 하세요",
+  "point": "획득 포인트",
+  "point_ex": "포인트는 검토를 통과한 시점에 지급됩니다.",
+  "upload_summary": "업로드 요약",
+  "vid_title": "영상 제목",
+  "sub_file": "자막 파일명",
+  "sub_lang": "요청 언어",
+  "upload_req": "요청 올리기",
+  "fulfilled": "요청 충족수",
+  "fulfilled_ex": "검토를 통과한 시점에 업데이트됩니다"
+}
