@@ -130,7 +130,7 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
       }}
     >
       <HStack w="100%" h="100%" cursor="move">
-        <Box w="7px" h="100%" bg="red.400" m="0px !important" />
+        <Box w="7px" h="100%" bg="green.400" m="0px !important" />
         <Text m="0px !important" w="calc(100% - 14px)" textAlign="center">
           {item.toText()}
         </Text>

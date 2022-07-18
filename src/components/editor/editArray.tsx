@@ -178,7 +178,8 @@ function EndTimestamp({ index }: { index: number }) {
 }
 
 const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
-  const { contents, setContents, getPlayerTime } = useContext(EditorContext);
+  const { contents, setContents, getPlayerTime, duration } =
+    useContext(EditorContext);
 
   return (
     <>
@@ -249,6 +250,12 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
             "00:00:00,000 --> 00:00:00,000",
             []
           );
+          newItem.startTime = contents[index].endTime;
+          if (index + 1 < contents.length)
+            newItem.endTime = contents[index + 1].startTime;
+          else {
+            newItem.endTime = Math.min(duration, newItem.startTime + 1000);
+          }
           setContents([
             ...contents.slice(0, index + 1),
             newItem,
