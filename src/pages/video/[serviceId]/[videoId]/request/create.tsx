@@ -189,7 +189,7 @@ export default function RequestCreate() {
   useEffect(() => {
     setValue("point", 0);
     axios.get("/api/user/lang").then(({ data }) => {
-      setValue("lang", data.baseLangs);
+      setValue("lang", String(data.baseLangs));
     });
   }, [setValue]);
 
