@@ -42,6 +42,7 @@ import ISO6391, { LanguageCode } from "iso-639-1";
 import { AiOutlineInfoCircle, AiOutlineUser } from "react-icons/ai";
 import { YoutubeIcon } from "../../../../../components/icons/customIcons";
 import Link from "next/link";
+import useTranslation from "next-translate/useTranslation";
 
 type FormData = {
   lang: string;
@@ -49,6 +50,7 @@ type FormData = {
 };
 
 export default function SubCreate() {
+  const { t } = useTranslation("uploadSub");
   const router = useRouter();
   const serviceId = router.query.serviceId as string;
   const videoId = router.query.videoId as string;
@@ -154,7 +156,7 @@ export default function SubCreate() {
           colorScheme="red"
           variant="outline"
         >
-          유튜브에서 자막 미리보기
+          {t("preview")}
         </Button>
       </Link>
     </>
@@ -198,7 +200,7 @@ export default function SubCreate() {
         <Card w="850px" mt={5} maxW="calc(100vw - 40px)">
           <CardHeader mb="10px">
             <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
-              자막 업로드 영상
+              {t("upload_vid")}
             </Text>
           </CardHeader>
           <VideoInfo video={video} />
@@ -207,7 +209,7 @@ export default function SubCreate() {
           <CardHeader mb="24px">
             <HStack w="full" spacing="15px">
               <Text color={textColor} fontSize="lg" fontWeight="bold">
-                자막 파일 업로드
+                {t("upload_sub")}
               </Text>
               <Link href={`/editor/?youtubeId=${video?.videoId}`} passHref>
                 <Button
@@ -215,7 +217,7 @@ export default function SubCreate() {
                   colorScheme="teal"
                   variant="solid"
                 >
-                  Edit on SubCloud
+                  {t("edit")}
                 </Button>
               </Link>
             </HStack>
@@ -238,9 +240,9 @@ export default function SubCreate() {
             >
               <input {...getInputProps()} />
               {isDragActive ? (
-                <p>파일을 여기에 놓으세요</p>
+                <p>{t("file_drop")}</p>
               ) : (
-                <p>클릭하거나 드래그 앤 드롭으로 자막을 업로드 하세요</p>
+                <p>{t("click_drag")}</p>
               )}
             </Box>
             <HStack mt="15px">{acceptedFileItems}</HStack>
@@ -253,9 +255,9 @@ export default function SubCreate() {
           <CardHeader mb="24px">
             <HStack>
               <Text color={textColor} fontSize="lg" fontWeight="bold">
-                자막 언어 선택
+                {t("select_lang")}
               </Text>
-              <Tooltip label="자막의 내용과 다른 언어를 선택할시 심사가 거절될 수 있습니다.">
+              <Tooltip label={t("select_lang_ex")}>
                 <Box>
                   <AiOutlineInfoCircle size="20px" />
                 </Box>
@@ -266,7 +268,9 @@ export default function SubCreate() {
             <FormControl as="fieldset">
               <MenuOptionGroup>
                 <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                  {watch().lang ? ISO6391.getName(watch().lang) : "언어 선택"}
+                  {watch().lang
+                    ? ISO6391.getName(watch().lang)
+                    : t("select_lang")}
                 </MenuButton>
                 <MenuList>
                   {codeList.map((code) => {
@@ -297,10 +301,10 @@ export default function SubCreate() {
         >
           <CardHeader mb="24px">
             <Text color={textColor} fontSize="20px" fontWeight="bold" mb="4px">
-              업로드 요약
+              {t("upload_summary")}
             </Text>
           </CardHeader>
-          <Text fontSize="18px">영상 제목</Text>
+          <Text fontSize="18px">{t("vid_title")}</Text>
           <Text
             fontWeight="bold"
             fontSize="20px"
@@ -312,7 +316,7 @@ export default function SubCreate() {
             {video?.youtubeVideo?.title ?? "unknown"}
           </Text>
           <Text fontSize="18px" mt="20px">
-            자막 파일명
+            {t("sub_file")}
           </Text>
           <Text
             fontWeight="bold"
@@ -325,14 +329,14 @@ export default function SubCreate() {
             {acceptedFileName}
           </Text>
           <Text fontSize="18px" mt="20px">
-            자막 언어
+            {t("sub_lang")}
           </Text>
           <Text fontWeight="bold" fontSize="20px">
             {ISO6391.getName(watch().lang)}
           </Text>
           <HStack mt="20px !important">
-            <Text fontSize="18px">획득 포인트</Text>
-            <Tooltip label="포인트는 검토를 통과한 시점에 지급됩니다.">
+            <Text fontSize="18px">{t("point")}</Text>
+            <Tooltip label={t("point_ex")}>
               <Box>
                 <AiOutlineInfoCircle size="20px" />
               </Box>
@@ -343,8 +347,8 @@ export default function SubCreate() {
           </Text>
 
           <HStack mt="20px !important">
-            <Text fontSize="18px">요청 충족 수</Text>
-            <Tooltip label="검토를 통과한 시점에 업데이트됩니다.">
+            <Text fontSize="18px">{t("fulfilled")}</Text>
+            <Tooltip label={t("fulfilled_ex")}>
               <Box>
                 <AiOutlineInfoCircle size="20px" />
               </Box>
@@ -362,7 +366,7 @@ export default function SubCreate() {
             isLoading={isSubmitting}
             type="submit"
           >
-            자막 업로드
+            {t("upload_sub")}
           </Button>
         </Card>
       </Stack>
