@@ -20,6 +20,7 @@ import {
   useColorModeValue,
   useToast,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import {
   createContext,
@@ -43,6 +44,7 @@ import NoVideo from "../components/editor/noVideo";
 import axios from "axios";
 import EditArray from "../components/editor/editArray";
 import Property from "../components/editor/property";
+import { BiHelpCircle } from "react-icons/bi";
 
 type EditorContextProps = {
   /// The left time in milliseconds
@@ -100,8 +102,8 @@ type EditorProviderProps = {
 };
 
 function EditorProvider({ children }: EditorProviderProps) {
-  const [leftTime, setLeftTime] = useState<number>(0);
-  const [rightTime, setRightTime] = useState<number>(1000 * 100);
+  const [leftTime, setLeftTime] = useState<number>(-35 * 1000);
+  const [rightTime, setRightTime] = useState<number>(35 * 2000);
   const [contents, setContents] = useState<SRTContent[]>([]);
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const [id, setId] = useState<string>("");
@@ -416,6 +418,15 @@ function EditorWithoutContext() {
                 >
                   Save to SRT
                 </Button>
+                <Tooltip label="Comming soon!">
+                  <Button
+                    rightIcon={<BiHelpCircle />}
+                    colorScheme="blue"
+                    isDisabled
+                  >
+                    How to use
+                  </Button>
+                </Tooltip>
                 <Popover placement="right">
                   {({ onClose }) => (
                     <>
