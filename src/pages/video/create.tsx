@@ -23,14 +23,14 @@ import { FiUpload } from "react-icons/fi";
 import SwingProvider from "../../components/swingProvider";
 import EventNotice from "../../components/create/eventNotice";
 import useTranslation from "next-translate/useTranslation";
+import ExplainBox from "../../components/create/ExplainBox";
 
 type FormData = {
   url: string;
 };
 
 export default function VideoCreate() {
-  const { t } = useTranslation("requestSub");
-  const bgColor = useColorModeValue("white", "#1F2733");
+  const { t } = useTranslation("create");
   const router = useRouter();
   const toast = useToast();
   const {
@@ -101,9 +101,9 @@ export default function VideoCreate() {
               <Input
                 id="url"
                 className="create-glassmorphism"
-                placeholder={t("search_box")}
+                placeholder={t(`search_box_${router.query.next}`)}
                 _placeholder={{
-                  color: useColorModeValue("gray.200", "gray.400"),
+                  color: useColorModeValue("gray.800", "gray.400"),
                 }}
                 w={{
                   base: "90vw",
@@ -126,7 +126,6 @@ export default function VideoCreate() {
                   required: "This is required",
                 })}
                 textAlign="center"
-                color="white"
               />
               <Button
                 colorScheme="blue"
@@ -157,30 +156,22 @@ export default function VideoCreate() {
             </Box>
           </FormControl>
           {router.query.next === "sub" && <EventNotice />}
-          <UnorderedList
-            color="white"
-            bg={useColorModeValue(
-              "rgba( 205, 205, 255, 0.2 )",
-              "rgba( 85, 85, 85, 0.2 )"
+          <ExplainBox>
+            {router.query.next === "request" ? (
+              <>
+                <ListItem>{t("explain_box_request_1")}</ListItem>
+                <ListItem>{t("explain_box_request_2")}</ListItem>
+                <ListItem>{t("explain_box_request_3")}</ListItem>
+                <ListItem>{t("explain_box_request_4")}</ListItem>
+              </>
+            ) : (
+              <>
+                <ListItem>{t("explain_box_upload_1")}</ListItem>
+                <ListItem>{t("explain_box_upload_2")}</ListItem>
+                <ListItem>{t("explain_box_upload_3")}</ListItem>
+              </>
             )}
-            border={useColorModeValue(
-              "2px solid rgba( 255, 255, 255, 0.4 )",
-              "2px solid rgba( 105, 105, 105, 0.5 )"
-            )}
-            className="create-glassmorphism"
-            mt="12vh !important"
-            p={{ base: "20px 10px 20px 40px", md: "20px 20px 20px 50px" }}
-            borderRadius="15px"
-            boxShadow="2xl"
-            fontSize={{ base: "14px", md: "18px" }}
-            spacing="10px"
-            maxW="85%"
-          >
-            <ListItem>{t("explain_box_1")}</ListItem>
-            <ListItem>{t("explain_box_2")}</ListItem>
-            <ListItem>{t("explain_box_3")}</ListItem>
-            <ListItem>{t("explain_box_4")}</ListItem>
-          </UnorderedList>
+          </ExplainBox>
         </Stack>
       </Box>
     </form>

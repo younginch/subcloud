@@ -4,6 +4,7 @@ import { RefObject } from "react";
 import AdminLayout from "../components/adminLayout";
 import ReviewStatusBadge from "../components/badges/reviewStatusBadge";
 import EventNotice from "../components/create/eventNotice";
+import ExplainBox from "../components/create/ExplainBox";
 import SubtitleComponent from "../components/editor/SubtitleComponent";
 import TimeLine from "../components/editor/timeLine";
 import Links from "../components/header/links";
@@ -77,6 +78,14 @@ describe("Components", () => {
 
   it("renders EventNotice", () => {
     renderWithThemeAndSession(<EventNotice />);
+  });
+
+  it("renders ExplainBox", () => {
+    renderWithThemeAndSession(
+      <ExplainBox>
+        <></>
+      </ExplainBox>
+    );
   });
 
   it("renders userLayout", () => {
