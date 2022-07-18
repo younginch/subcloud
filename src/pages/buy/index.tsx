@@ -198,7 +198,56 @@ export default function Buy() {
   return (
     <>
       <Box py={12} mt={15}>
-        <VStack spacing={2} textAlign="center">
+        <Box py={12} pl={3} pr={3}>
+          <VStack spacing={2}>
+            <Heading as="h1" fontSize="4xl">
+              {t("buy_point_subtitle")}
+            </Heading>
+            <Flex direction={isMedium ? "row" : "column"}>
+              <HStack>
+                <Text fontSize={{ base: "15px", md: "20px" }}>
+                  {t("buy_point")}&nbsp;
+                </Text>
+              </HStack>
+              <HStack
+                alignItems="center"
+                fontSize={{ base: "15px", md: "20px" }}
+              >
+                <Text>{t("buy_point_front")}</Text>
+                <Link href="/qna" passHref>
+                  <Button
+                    rightIcon={<ArrowForwardIcon />}
+                    colorScheme="teal"
+                    variant="outline"
+                    width={{ base: "60px", md: "80px" }}
+                    height={{ base: "25px", md: "30px" }}
+                    fontSize={{ base: "13px", md: "17px" }}
+                  >
+                    QNA
+                  </Button>
+                </Link>
+                <Text>{t("buy_point_back")}</Text>
+              </HStack>
+            </Flex>
+          </VStack>
+          <Flex justifyContent="center" py={6}>
+            <Wrap justifyContent="center" spacing={4} className="buyWrap">
+              {Products.map((product, index) => (
+                <WrapItem key={index}>
+                  <PointCard
+                    title={product.title}
+                    discountRate={discountRate[index]}
+                    point={product.point}
+                    add={addList[index]}
+                    price={product.price}
+                    src={imageList[index]}
+                  />
+                </WrapItem>
+              ))}
+            </Wrap>
+          </Flex>
+        </Box>
+        <VStack spacing={2} textAlign="center" mt="100px">
           <Heading as="h1" fontSize="4xl">
             {t("membership")}
           </Heading>
@@ -266,55 +315,6 @@ export default function Buy() {
             </ListItem>
           </SubscribeItem>
         </Stack>
-        <Box py={12} pl={3} pr={3}>
-          <VStack spacing={2}>
-            <Heading as="h1" fontSize="4xl">
-              {t("buy_point_subtitle")}
-            </Heading>
-            <Flex direction={isMedium ? "row" : "column"}>
-              <HStack>
-                <Text fontSize={{ base: "15px", md: "20px" }}>
-                  {t("buy_point")}&nbsp;
-                </Text>
-              </HStack>
-              <HStack
-                alignItems="center"
-                fontSize={{ base: "15px", md: "20px" }}
-              >
-                <Text>{t("buy_point_front")}</Text>
-                <Link href="/qna" passHref>
-                  <Button
-                    rightIcon={<ArrowForwardIcon />}
-                    colorScheme="teal"
-                    variant="outline"
-                    width={{ base: "60px", md: "80px" }}
-                    height={{ base: "25px", md: "30px" }}
-                    fontSize={{ base: "13px", md: "17px" }}
-                  >
-                    QNA
-                  </Button>
-                </Link>
-                <Text>{t("buy_point_back")}</Text>
-              </HStack>
-            </Flex>
-          </VStack>
-          <Flex justifyContent="center" py={6}>
-            <Wrap justifyContent="center" spacing={4} className="buyWrap">
-              {Products.map((product, index) => (
-                <WrapItem key={index}>
-                  <PointCard
-                    title={product.title}
-                    discountRate={discountRate[index]}
-                    point={product.point}
-                    add={addList[index]}
-                    price={product.price}
-                    src={imageList[index]}
-                  />
-                </WrapItem>
-              ))}
-            </Wrap>
-          </Flex>
-        </Box>
       </Box>
     </>
   );
