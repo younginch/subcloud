@@ -106,7 +106,7 @@ function EditorProvider({ children }: EditorProviderProps) {
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const [id, setId] = useState<string>("");
   const [player, setPlayer] = useState<YouTubePlayer>();
-  const [duration, setDuration] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(10 * 60 * 1000);
   const [videoFraction, setVideoFraction] = useState<number>(0);
   const [playerState, setPlayerState] = useState<PlayerState>(
     PlayerState.UNSTARTED
