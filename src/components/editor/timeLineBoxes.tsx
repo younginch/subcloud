@@ -1,52 +1,96 @@
 import { Box, HStack, Text } from "@chakra-ui/react";
 import { useContext } from "react";
+import { DraggableData, Rnd } from "react-rnd";
 import { uuid } from "uuidv4";
 import { EditorContext } from "../../pages/editor";
 
 export default function TimeLineBoxes() {
-  const { contents, leftTime, rightTime } = useContext(EditorContext);
+  const { contents, setContents, leftTime, rightTime } =
+    useContext(EditorContext);
 
   return (
-    <Box w="100%" position="absolute" mt="45px" zIndex={10} h="100%">
-      {contents.map((item) => {
-        if (item.endTime <= leftTime || item.startTime >= rightTime) {
+    <Box
+      w="100%"
+      h="calc(100% - 45px)"
+      zIndex={10}
+      position="relative"
+      mt="-38px"
+    >
+      {contents.map((item, index) => {
+        if (
+          item.endTime <= leftTime ||
+          item.startTime >= rightTime ||
+          item.endTime < item.startTime
+        ) {
           return;
         }
         return (
-          <Box
+          <Rnd
             key={uuid()}
-            position="absolute"
-            left={`${
-              ((item.startTime - leftTime) / (rightTime - leftTime)) * 6000
-            }px`}
-            w={`${
-              ((item.endTime - item.startTime) / (rightTime - leftTime)) * 6000
-            }px`}
-            h="calc(100% - 50px)"
-            borderWidth="1px"
-            borderRadius="6px"
-            overflow="hidden"
+            style={{
+              position: "absolute",
+              borderWidth: "1px",
+              borderRadius: "6px",
+              overflow: "hidden",
+            }}
+            default={{
+              x: ((item.startTime - leftTime) / (rightTime - leftTime)) * 6000,
+              y: 0,
+              width:
+                ((item.endTime - item.startTime) / (rightTime - leftTime)) *
+                6000,
+              height: "100%",
+            }}
+            enableResizing={{
+              top: false,
+              right: true,
+              bottom: false,
+              left: true,
+              topRight: false,
+              bottomRight: false,
+              bottomLeft: false,
+              topLeft: false,
+            }}
+            dragAxis="x"
+            onResizeStop={(e, direction, ref, delta, position) => {
+              if (direction === "left") {
+                const newContents = [...contents];
+                newContents[index].startTime -=
+                  (delta.width * (rightTime - leftTime)) / 6000;
+                setContents(newContents);
+              } else if (direction === "right") {
+                const newContents = [...contents];
+                newContents[index].endTime +=
+                  (delta.width * (rightTime - leftTime)) / 6000;
+                setContents(newContents);
+              }
+            }}
+            onDragStart={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onDragStop={(e, data: DraggableData) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const newContents = [...contents];
+              const deltaX =
+                data.x -
+                ((item.startTime - leftTime) / (rightTime - leftTime)) * 6000;
+              newContents[index].endTime +=
+                (deltaX * (rightTime - leftTime)) / 6000;
+              newContents[index].startTime +=
+                (deltaX * (rightTime - leftTime)) / 6000;
+              setContents(newContents);
+            }}
           >
             <HStack w="100%" h="100%" cursor="move">
-              <Box
-                w="7px"
-                h="100%"
-                bg="red.400"
-                m="0px !important"
-                cursor="ew-resize"
-              />
-              <Text m="0px !important" w="calc(100% - 14px)">
+              <Box w="7px" h="100%" bg="red.400" m="0px !important" />
+              <Text m="0px !important" w="calc(100% - 14px)" textAlign="center">
                 {item.toText()}
               </Text>
-              <Box
-                w="7px"
-                h="100%"
-                bg="green.400"
-                m="0px !important"
-                cursor="ew-resize"
-              />
+              <Box w="7px" h="100%" bg="green.400" m="0px !important" />
             </HStack>
-          </Box>
+          </Rnd>
         );
       })}
     </Box>

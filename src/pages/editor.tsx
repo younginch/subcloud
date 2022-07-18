@@ -32,7 +32,7 @@ import {
 import { SRTContent, SRTFile } from "@younginch/subtitle";
 import { useDropzone } from "react-dropzone";
 import Shortcuts from "../components/editor/shortcuts";
-import YoutubeWithSub from "../components/editor/youtubeWithSub";
+import YoutubePlayer from "../components/editor/youtubePlayer";
 import { useHotkeys } from "react-hotkeys-hook";
 import TimeLineContainer from "../components/editor/timeLineContainer";
 import { YouTubePlayer } from "react-youtube";
@@ -59,8 +59,20 @@ type EditorContextProps = {
   setPlayer: (player: YouTubePlayer) => void;
   getPlayerTime: () => number;
   setPlayerTime: (time: number) => void;
+  state: PlayerState;
+  setState: (state: PlayerState) => void;
+  duration: number;
   aspectRatio: number;
 };
+
+export enum PlayerState {
+  UNSTARTED = -1,
+  ENDED = 0,
+  PLAYING = 1,
+  PAUSED = 2,
+  BUFFERING = 3,
+  CUED = 5,
+}
 
 export const EditorContext = createContext<EditorContextProps>({
   /* The left time in milliseconds
@@ -77,6 +89,9 @@ export const EditorContext = createContext<EditorContextProps>({
   setPlayer: () => {},
   getPlayerTime: () => 0,
   setPlayerTime: (_) => {},
+  state: PlayerState.UNSTARTED,
+  setState: (_) => {},
+  duration: 0,
   aspectRatio: 0,
 });
 
@@ -91,7 +106,11 @@ function EditorProvider({ children }: EditorProviderProps) {
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const [id, setId] = useState<string>("");
   const [player, setPlayer] = useState<YouTubePlayer>();
+  const [duration, setDuration] = useState<number>(0);
   const [videoFraction, setVideoFraction] = useState<number>(0);
+  const [playerState, setPlayerState] = useState<PlayerState>(
+    PlayerState.UNSTARTED
+  );
 
   return (
     <EditorContext.Provider
@@ -116,6 +135,7 @@ function EditorProvider({ children }: EditorProviderProps) {
         },
         setPlayer: (newPlayer) => {
           setPlayer(newPlayer);
+          setDuration(newPlayer.getDuration() * 1000);
           axios
             .get(
               `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`
@@ -125,12 +145,17 @@ function EditorProvider({ children }: EditorProviderProps) {
             });
         },
         getPlayerTime: () => {
-          return player?.getDuration();
+          return player?.getCurrentTime() * 1000;
         },
         setPlayerTime: (time) => {
-          player?.seekTo(time);
+          player?.seekTo(time / 1000);
         },
+        duration,
         aspectRatio: videoFraction,
+        state: playerState,
+        setState: (newState) => {
+          setPlayerState(newState);
+        },
       }}
     >
       {children}
@@ -143,8 +168,17 @@ function EditorWithoutContext() {
   const [urlInput, setUrlInput] = useState("");
   const urlField = useRef<HTMLInputElement>(null);
 
-  const { contents, setContents, setFocusedIndex, id, setId } =
-    useContext(EditorContext);
+  const {
+    contents,
+    setContents,
+    setFocusedIndex,
+    id,
+    setId,
+    getPlayerTime,
+    setPlayerTime,
+    state,
+    setState,
+  } = useContext(EditorContext);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -158,10 +192,34 @@ function EditorWithoutContext() {
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  useHotkeys("tab", () => console.log("sex"), {
+  const hotkeyOptions = {
     filterPreventDefault: true,
     enableOnContentEditable: true,
-  });
+  };
+  useHotkeys(
+    "tab",
+    () => {
+      if (state === PlayerState.PAUSED) setState(PlayerState.PLAYING);
+      else if (state === PlayerState.PLAYING) setState(PlayerState.PAUSED);
+    },
+    hotkeyOptions
+  );
+
+  useHotkeys(
+    "right",
+    () => {
+      setPlayerTime(getPlayerTime() + 500);
+    },
+    hotkeyOptions
+  );
+
+  useHotkeys(
+    "left",
+    () => {
+      setPlayerTime(getPlayerTime() - 500 >= 0 ? getPlayerTime() - 500 : 0);
+    },
+    hotkeyOptions
+  );
 
   function downloadSRT() {
     const srtFile = new SRTFile();
@@ -175,6 +233,8 @@ function EditorWithoutContext() {
     link.parentNode?.removeChild(link);
   }
 
+  const headerBg = useColorModeValue("gray.100", "#18161d");
+
   return (
     <ReflexContainer
       style={{ width: "100vw", height: "calc(100vh - 54px)" }}
@@ -186,7 +246,7 @@ function EditorWithoutContext() {
             <Stack>
               <Heading
                 fontSize="lg"
-                bg={useColorModeValue("gray.100", "#18161d")}
+                bg={headerBg}
                 w="100%"
                 borderBottomWidth="2px"
                 p="5px"
@@ -220,7 +280,7 @@ function EditorWithoutContext() {
               </Stack>
               <Heading
                 fontSize="lg"
-                bg={useColorModeValue("gray.100", "#18161d")}
+                bg={headerBg}
                 w="100%"
                 borderBottomWidth="2px"
                 borderTopWidth="2px"
@@ -283,7 +343,7 @@ function EditorWithoutContext() {
             {id.length === 0 ? (
               <NoVideo urlRef={urlField} />
             ) : (
-              <YoutubeWithSub id={id} />
+              <YoutubePlayer id={id} />
             )}
           </ReflexElement>
           <ReflexSplitter propagate={true} />
@@ -291,7 +351,7 @@ function EditorWithoutContext() {
             <Stack>
               <Heading
                 fontSize="lg"
-                bg={useColorModeValue("gray.100", "#18161d")}
+                bg={headerBg}
                 w="100%"
                 borderBottomWidth="2px"
                 p="5px"
@@ -326,7 +386,7 @@ function EditorWithoutContext() {
               <Stack
                 h="100%"
                 w="180px"
-                bg={useColorModeValue("gray.100", "#18161d")}
+                bg={headerBg}
                 p="20px"
                 alignItems="center"
                 spacing="20px"

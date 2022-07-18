@@ -1,13 +1,10 @@
 import {
   FormControl,
-  FormLabel,
   FormErrorMessage,
   Button,
   Text,
   Box,
   useToast,
-  Wrap,
-  WrapItem,
   ListItem,
   ListIcon,
   UnorderedList,
@@ -39,7 +36,6 @@ import {
 } from "@chakra-ui/icons";
 import { PageOptions, ResVideo } from "../../../../../utils/types";
 import { Role } from "@prisma/client";
-import SelectLanguage from "../../../../../components/selectLanguage";
 import Card from "../../../../../components/user/card/card";
 import CardHeader from "../../../../../components/user/card/cardHeader";
 import ISO6391, { LanguageCode } from "iso-639-1";
@@ -61,6 +57,8 @@ export default function SubCreate() {
   const {
     handleSubmit,
     register,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormData>();
   const [file, setFile] = useState<string | Blob>();
@@ -118,15 +116,30 @@ export default function SubCreate() {
     maxSize: 5 * 1024 * 1024, // 5 MB
   });
 
-  const [video, setVideo] = useState<ResVideo>();
+  const [video, setVideo] = useState<
+    ResVideo & {
+      _count: {
+        requests: number;
+        subs: number;
+        points: number;
+      };
+    }
+  >();
   useEffect(() => {
     axios
-      .get<ResVideo>(`/api/user/video`, { params: { serviceId, videoId } })
+      .get<
+        (ResVideo & {
+          _count: {
+            requests: number;
+            subs: number;
+            points: number;
+          };
+        })[]
+      >(`/api/public/search/video`, { params: { serviceId, videoId } })
       .then(({ data }) => {
-        setVideo(data);
+        setVideo(data[0]);
       });
   }, [serviceId, videoId]);
-  console.log(video);
 
   const acceptedFileItems = acceptedFiles.map((file) => (
     <>
@@ -160,6 +173,9 @@ export default function SubCreate() {
       </UnorderedList>
     </ListItem>
   ));
+
+  const acceptedFileName =
+    acceptedFiles.length > 0 ? acceptedFiles[0].name : "";
 
   const textColor = useColorModeValue("gray.700", "gray.300");
   const codeList: LanguageCode[] = [
@@ -250,12 +266,15 @@ export default function SubCreate() {
             <FormControl as="fieldset">
               <MenuOptionGroup>
                 <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                  언어 선택
+                  {watch().lang ? ISO6391.getName(watch().lang) : "언어 선택"}
                 </MenuButton>
                 <MenuList>
                   {codeList.map((code) => {
                     return (
-                      <MenuItem key={code}>
+                      <MenuItem
+                        key={code}
+                        onClick={() => setValue("lang", code)}
+                      >
                         {`${ISO6391.getName(code)} (${ISO6391.getNativeName(
                           code
                         )})`}
@@ -303,13 +322,13 @@ export default function SubCreate() {
             textOverflow="ellipsis"
             whiteSpace="nowrap"
           >
-            널 지워야해 en.kr
+            {acceptedFileName}
           </Text>
           <Text fontSize="18px" mt="20px">
-            요청 언어
+            자막 언어
           </Text>
           <Text fontWeight="bold" fontSize="20px">
-            한국어
+            {ISO6391.getName(watch().lang)}
           </Text>
           <HStack mt="20px !important">
             <Text fontSize="18px">획득 포인트</Text>
@@ -320,7 +339,7 @@ export default function SubCreate() {
             </Tooltip>
           </HStack>
           <Text fontWeight="bold" fontSize="20px">
-            {100}
+            {video?._count.points}
           </Text>
 
           <HStack mt="20px !important">
@@ -333,7 +352,7 @@ export default function SubCreate() {
           </HStack>
           <HStack>
             <Text fontWeight="bold" fontSize="20px">
-              +{100}
+              +{video?._count.requests}
             </Text>
             <AiOutlineUser color={textColor} stroke="2px" />
           </HStack>
@@ -347,25 +366,6 @@ export default function SubCreate() {
           </Button>
         </Card>
       </Stack>
-      <Wrap>
-        <WrapItem paddingX="36px">
-          <FormControl as="fieldset">
-            <FormLabel as="legend">자막 언어</FormLabel>
-            <SelectLanguage register={register("lang")} />
-            <FormErrorMessage>
-              {errors.lang && errors.lang.message}
-            </FormErrorMessage>
-          </FormControl>
-          <Button
-            mt={4}
-            colorScheme="teal"
-            isLoading={isSubmitting}
-            type="submit"
-          >
-            업로드
-          </Button>
-        </WrapItem>
-      </Wrap>
     </form>
   );
 }
@@ -373,5 +373,6 @@ export default function SubCreate() {
 SubCreate.options = {
   role: Role.User,
   hideTitle: true,
+  hideFooter: true,
   bgColorLight: "#F7FAFC",
 } as PageOptions;

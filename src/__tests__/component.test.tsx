@@ -1,12 +1,15 @@
 import { SubStatus } from "@prisma/client";
 import { render } from "@testing-library/react";
+import { RefObject } from "react";
 import AdminLayout from "../components/adminLayout";
 import ReviewStatusBadge from "../components/badges/reviewStatusBadge";
 import EventNotice from "../components/create/eventNotice";
+import SubtitleComponent from "../components/editor/SubtitleComponent";
 import TimeLine from "../components/editor/timeLine";
 import Links from "../components/header/links";
 import Search from "../components/header/search";
 import Layout from "../components/layout";
+import Result from "../components/result";
 import SelectLanguage from "../components/selectLanguage";
 import UserLayout from "../components/user/my/userLayout";
 import RequestPanel from "../components/user/requestPanel";
@@ -38,6 +41,14 @@ describe("Components", () => {
       >
         a
       </Layout>
+    );
+  });
+
+  it("renders a Result", () => {
+    render(
+      <Result>
+        <></>
+      </Result>
     );
   });
 
@@ -74,5 +85,17 @@ describe("Components", () => {
 
   it("renders timeLine", () => {
     render(<TimeLine />);
+  });
+
+  it("renders SubtitleComponent", () => {
+    render(
+      <SubtitleComponent
+        boxRef={
+          {
+            current: { offsetWidth: 0, offsetHeight: 0 },
+          } as unknown as RefObject<HTMLDivElement>
+        }
+      />
+    );
   });
 });

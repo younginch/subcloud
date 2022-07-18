@@ -70,7 +70,7 @@ export default function MyApp({
       }}
     >
       <SessionProvider session={session}>
-        <ChakraProvider>
+        <ChakraProvider portalZIndex={200}>
           {isClient ? (
             <Layout options={options}>
               <CustomLayout>
