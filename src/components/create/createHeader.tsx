@@ -15,22 +15,20 @@ type Props = {
 };
 
 export default function CreateHeader({ type, step }: Props) {
-  const { t } = useTranslation("requestSub");
+  const { t } = useTranslation("create");
   return (
     <Stack marginBottom="24px" alignItems="center">
       <Heading
         marginTop="18px"
         fontSize={{ base: "4xl", md: "5xl", lg: "6xl" }}
         textAlign="center"
-        color="white"
       >
         {type === "request" ? t("center_h1") : t("center_h1_up")}
       </Heading>
       <Breadcrumb
         spacing="8px"
-        separator={<ChevronRightIcon color="white" />}
+        separator={<ChevronRightIcon />}
         fontSize={{ base: "16px", md: "20px" }}
-        color="white"
       >
         <BreadcrumbItem isCurrentPage={step === 1}>
           <BreadcrumbLink href="#">{t("center_below_front")}</BreadcrumbLink>
