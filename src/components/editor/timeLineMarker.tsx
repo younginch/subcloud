@@ -52,6 +52,7 @@ export default function TimeLineMarker() {
       animation={`${
         (rightTime - getPlayerTime()) / 1000
       }s ${changeLeft} linear`}
+      transform="translateX(-50%)"
     >
       <TimeLineMarkerSVG h="200px" cursor="grab" />
     </Box>
