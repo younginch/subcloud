@@ -22,5 +22,21 @@
   "amendment_h2": "When the “company” revises the Terms and Conditions, the date of application and the reason for the revision shall be specified, and the current Terms and Conditions shall be announced on the initial screen of the service for a considerable period from 7 days before the effective date to the effective date, and the revised Terms and Conditions will be sent to existing members by e-mail. We ship to your address.",
   "amendment_h3": "When the “Company” revises the Terms and Conditions, after the notice of the revised Terms and Conditions, the “user” agrees to the application of the revised Terms and Conditions is checked. If the “user” does not agree to the application of the revised terms, the “company” or “user” may terminate the content use contract. In this case, the “Company” compensates the “User” for damages caused by the termination of the contract.",
   "interpretation": "Interpretation of Terms",
-  "interpretation_h1": "Regarding matters not stipulated in these Terms and Conditions and the interpretation of these Terms and Conditions, please refer to the Online Digital Content Industry Development Act, the Consumer Protection Act in Electronic Commerce, etc., the Act on the Regulation of Terms and Conditions, the Digital Content User Protection Guidelines set by the Minister of Culture, Sports and Tourism, etc. In accordance with relevant laws or commercial practices."
+  "interpretation_h1": "Regarding matters not stipulated in these Terms and Conditions and the interpretation of these Terms and Conditions, please refer to the Online Digital Content Industry Development Act, the Consumer Protection Act in Electronic Commerce, etc., the Act on the Regulation of Terms and Conditions, the Digital Content User Protection Guidelines set by the Minister of Culture, Sports and Tourism, etc. In accordance with relevant laws or commercial practices.",
+  "signUp": "Sign Up",
+  "signUp_h1": "Membership registration is concluded when the “user” agrees to the terms and conditions, applies for membership, and the “company” approves such application.",
+  "signUp_h2": "The following must be entered in the membership application form. Items 1 to 3 are mandatory, and other items are optional.",
+  "signUp_p1": "Name and resident registration number of “member” or personal identification number on the Internet",
+  "signUp_p2": "“ID” and “Password”",
+  "signUp_p3": "E-mail address",
+  "signUp_p4": "The type of “content” you want to use",
+  "signUp_p5": "Other matters deemed necessary by the “company”",
+  "signUp_h3": "In principle, the “Company” approves the membership registration in response to the application of the “User”. However, the “Company” may not approve the applications falling under each of the following subparagraphs.",
+  "signUp_p6": "In case the applicant for membership has previously lost his/her membership status under these terms and conditions",
+  "signUp_p7": "In case it is not your real name or you use someone else's name",
+  "signUp_p8": "In case false information is entered or the company does not provide information",
+  "signUp_p9": "In case approval is not possible due to reasons attributable to the user or if the application is made in violation of all other stipulated matters",
+  "signUp_h4": "The “Company” may withhold approval if there is no room for service-related facilities or there is a technical or business problem.",
+  "signUp_h5": "In the event of not accepting or withholding the application for membership in accordance with paragraphs 3 and 4, the “Company” must notify the applicant. Exceptions are made when it is impossible to notify the applicant without a reason attributable to the “Company”.",
+  "signUp_h6": "The time of establishment of the membership contract is the time when the approval of the “company” reaches the “user”."
 }
