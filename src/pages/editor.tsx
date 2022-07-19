@@ -107,8 +107,8 @@ type EditorProviderProps = {
 };
 
 function EditorProvider({ children }: EditorProviderProps) {
-  const [leftTime, setLeftTime] = useState<number>(-15 * 1000);
-  const [rightTime, setRightTime] = useState<number>(30 * 1000);
+  const [leftTime, setLeftTime] = useState<number>(-20 * 1000);
+  const [rightTime, setRightTime] = useState<number>(40 * 1000);
   const [contents, setContents] = useState<SRTContent[]>([]);
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const [id, setId] = useState<string>("");
@@ -143,7 +143,7 @@ function EditorProvider({ children }: EditorProviderProps) {
         setPlayer: (newPlayer) => {
           setPlayer(newPlayer);
           setDuration(newPlayer.getDuration() * 1000);
-          const initialTime = Math.min(newPlayer.getDuration() * 1000, 15000);
+          const initialTime = Math.min(newPlayer.getDuration() * 1000, 20000);
           setLeftTime(-initialTime);
           setRightTime(initialTime * 2);
           axios
@@ -239,6 +239,8 @@ function EditorWithoutContext() {
     SPLIT_SUBTITLE: ["\\", "/"],
     LEFT_0_5: ["left"],
     RIGHT_0_5: ["right"],
+    LEFT_5: ["shift+left"],
+    RIGHT_5: ["shift+right"],
     DELETE_ALL: ["command", "backspace"],
   };
 
@@ -298,10 +300,16 @@ function EditorWithoutContext() {
       ]);
     },
     LEFT_0_5: () => {
-      setPlayerTime(getPlayerTime() - 500 >= 0 ? getPlayerTime() - 500 : 0);
+      setPlayerTime(Math.max(getPlayerTime() - 500, 0));
     },
     RIGHT_0_5: () => {
-      setPlayerTime(getPlayerTime() + 500);
+      setPlayerTime(Math.min(getPlayerTime() + 500, duration));
+    },
+    LEFT_5: () => {
+      setPlayerTime(Math.max(getPlayerTime() - 5000, 0));
+    },
+    RIGHT_5: () => {
+      setPlayerTime(Math.min(getPlayerTime() + 5000, duration));
     },
     DELETE_ALL: () => {
       setContents([]);
