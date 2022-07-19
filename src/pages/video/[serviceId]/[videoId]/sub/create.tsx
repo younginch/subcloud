@@ -127,6 +127,7 @@ export default function SubCreate() {
       };
     }
   >();
+  const [lang, setLang] = useState<LanguageCode>();
   useEffect(() => {
     axios
       .get<
@@ -137,11 +138,11 @@ export default function SubCreate() {
             points: number;
           };
         })[]
-      >(`/api/public/search/video`, { params: { serviceId, videoId } })
+      >(`/api/public/search/video`, { params: { serviceId, videoId, lang } })
       .then(({ data }) => {
         setVideo(data[0]);
       });
-  }, [serviceId, videoId]);
+  }, [serviceId, videoId, lang]);
 
   const acceptedFileItems = acceptedFiles.map((file) => (
     <>
@@ -282,7 +283,10 @@ export default function SubCreate() {
                     return (
                       <MenuItem
                         key={code}
-                        onClick={() => setValue("lang", code)}
+                        onClick={() => {
+                          setValue("lang", code);
+                          setLang(code);
+                        }}
                       >
                         {`${ISO6391.getName(code)} (${ISO6391.getNativeName(
                           code
