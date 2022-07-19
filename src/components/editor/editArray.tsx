@@ -58,13 +58,6 @@ function EditComponent({ index }: { index: number }) {
   );
 }
 
-function parseTime(sTime: string): number {
-  const m = Number(sTime.substring(0, 2));
-  const s = Number(sTime.substring(3, 5));
-  const ms = Number(sTime.substring(6, 9));
-  return m * 60 * 1000 + s * 1000 + ms;
-}
-
 type PMButtonProps = {
   index: number;
   onClose: () => void;

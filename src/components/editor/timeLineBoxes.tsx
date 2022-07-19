@@ -5,7 +5,7 @@ import { uuid } from "uuidv4";
 import { EditorContext } from "../../pages/editor";
 
 export default function TimeLineBoxes() {
-  const { contents, setContents, leftTime, rightTime } =
+  const { contents, setContents, leftTime, rightTime, focusedIndex } =
     useContext(EditorContext);
 
   return (
@@ -83,9 +83,15 @@ export default function TimeLineBoxes() {
               setContents(newContents);
             }}
           >
-            <HStack w="100%" h="100%" cursor="move">
+            <HStack
+              w="100%"
+              h="100%"
+              cursor="move"
+              color={focusedIndex === index ? "white" : undefined}
+            >
               <Box w="7px" h="100%" bg="red.400" m="0px !important" />
               <Text m="0px !important" w="calc(100% - 14px)" textAlign="center">
+                {focusedIndex === index ? "Focused" : index + 1}
                 {item.toText()}
               </Text>
               <Box w="7px" h="100%" bg="green.400" m="0px !important" />
