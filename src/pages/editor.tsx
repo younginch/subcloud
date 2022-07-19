@@ -47,6 +47,7 @@ import Property from "../components/editor/property";
 import { GlobalHotKeys } from "react-hotkeys";
 import { BiHelpCircle } from "react-icons/bi";
 import { useRouter } from "next/router";
+import { checkOccupation, findPosition } from "../utils/editorCore";
 
 type EditorContextProps = {
   /// The left time in milliseconds
@@ -154,7 +155,7 @@ function EditorProvider({ children }: EditorProviderProps) {
             });
         },
         getPlayerTime: () => {
-          return player?.getDuration() * 1000;
+          return player?.getCurrentTime() * 1000;
         },
         setPlayerTime: (time) => {
           player?.seekTo(time / 1000);
@@ -233,6 +234,9 @@ function EditorWithoutContext() {
 
   const keyMap = {
     PLAY_PAUSE: ["space"],
+    NEW_SUBTITLE: ["["],
+    CUT_SUBTITLE: ["]"],
+    SPLIT_SUBTITLE: ["\\"],
     LEFT_0_5: ["left"],
     RIGHT_0_5: ["right"],
     DELETE_ALL: ["command", "backspace"],
@@ -241,6 +245,57 @@ function EditorWithoutContext() {
   const handlers = {
     PLAY_PAUSE: () => {
       playOrPause();
+    },
+    NEW_SUBTITLE: () => {
+      if (checkOccupation(contents, getPlayerTime()) !== -1) return;
+
+      const newItem = new SRTContent(
+        contents.length.toString(),
+        "00:00:00,000 --> 00:00:00,000",
+        []
+      );
+      let newIndex = findPosition(contents, getPlayerTime());
+      if (newIndex === -1) return;
+
+      const endTime =
+        newIndex === contents.length ? duration : contents[newIndex].startTime;
+      newItem.startTime = getPlayerTime();
+      newItem.endTime = Math.min(newItem.startTime + 5 * 1000, endTime); // default 5 seconds
+
+      setContents([
+        ...contents.slice(0, newIndex),
+        newItem,
+        ...contents.slice(newIndex),
+      ]);
+    },
+    CUT_SUBTITLE: () => {
+      const index = checkOccupation(contents, getPlayerTime());
+      if (index === -1) return;
+
+      const newContents = [...contents];
+      newContents[index].endTime = getPlayerTime();
+      setContents(newContents);
+    },
+    SPLIT_SUBTITLE: () => {
+      const index = checkOccupation(contents, getPlayerTime());
+      if (index === -1) return;
+
+      const newItem = new SRTContent(
+        contents.length.toString(),
+        "00:00:00,000 --> 00:00:00,000",
+        []
+      );
+      newItem.startTime = getPlayerTime();
+      newItem.endTime = contents[index].endTime;
+      newItem.textArray = contents[index].textArray;
+
+      const newContents = [...contents];
+      newContents[index].endTime = getPlayerTime();
+      setContents([
+        ...newContents.slice(0, index + 1),
+        newItem,
+        ...newContents.slice(index + 1),
+      ]);
     },
     LEFT_0_5: () => {
       setPlayerTime(getPlayerTime() - 500 >= 0 ? getPlayerTime() - 500 : 0);
