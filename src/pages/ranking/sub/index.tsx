@@ -40,7 +40,9 @@ export default function SubRankingPage() {
     (index) =>
       `/api/public/ranking/sub/${sortBy.by}?start=${pageSize * index}&end=${
         pageSize * (index + 1)
-      }&lang=${lang}&order=${sortBy.order === true ? "desc" : "asc"}`,
+      }&lang=${lang ?? "All Lang"}&order=${
+        sortBy.order === true ? "desc" : "asc"
+      }`,
     fetcher
   );
 
