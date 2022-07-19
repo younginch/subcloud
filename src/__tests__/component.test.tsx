@@ -54,16 +54,7 @@ describe("Components", () => {
   });
 
   it("renders a SelectLanguage", () => {
-    render(
-      <SelectLanguage
-        register={{
-          onChange: jest.fn(),
-          onBlur: jest.fn(),
-          ref: jest.fn(),
-          name: "",
-        }}
-      />
-    );
+    render(<SelectLanguage lang="en" error={undefined} setLang={jest.fn()} />);
   });
 
   it("renders ReviewStatusBadge", () => {

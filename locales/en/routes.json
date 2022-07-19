@@ -3,7 +3,7 @@
   "/auth/callback": "Sign in success",
   "/auth/signin": "Sign in",
   "/buy/fail": "Order failed",
-  "/buy": "Order products",
+  "/buy": "Products",
   "/buy/success": "Order success",
   "/info/privacy": "Privacy",
   "/info/terms": "Terms of use",
