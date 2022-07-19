@@ -27,6 +27,7 @@ import {
   FormEvent,
   useCallback,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from "react";
@@ -45,6 +46,7 @@ import EditArray from "../components/editor/editArray";
 import Property from "../components/editor/property";
 import { GlobalHotKeys } from "react-hotkeys";
 import { BiHelpCircle } from "react-icons/bi";
+import { useRouter } from "next/router";
 
 type EditorContextProps = {
   /// The left time in milliseconds
@@ -63,6 +65,7 @@ type EditorContextProps = {
   setPlayerTime: (time: number) => void;
   state: PlayerState;
   setState: (state: PlayerState) => void;
+  playOrPause: () => void;
   duration: number;
   aspectRatio: number;
 };
@@ -93,6 +96,7 @@ export const EditorContext = createContext<EditorContextProps>({
   setPlayerTime: (_) => {},
   state: PlayerState.UNSTARTED,
   setState: (_) => {},
+  playOrPause: () => {},
   duration: 0,
   aspectRatio: 0,
 });
@@ -153,7 +157,6 @@ function EditorProvider({ children }: EditorProviderProps) {
           return player?.getDuration() * 1000;
         },
         setPlayerTime: (time) => {
-          console.log("setPlayerTime", time);
           player?.seekTo(time / 1000);
         },
         duration,
@@ -161,6 +164,13 @@ function EditorProvider({ children }: EditorProviderProps) {
         state: playerState,
         setState: (newState) => {
           setPlayerState(newState);
+        },
+        playOrPause: () => {
+          if (playerState === PlayerState.PLAYING) {
+            player?.pauseVideo();
+          } else if (playerState === PlayerState.PAUSED) {
+            player?.playVideo();
+          }
         },
       }}
     >
@@ -173,6 +183,13 @@ function EditorWithoutContext() {
   const toast = useToast();
   const [urlInput, setUrlInput] = useState("");
   const urlField = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.query.youtubeId) {
+      setId(router.query.youtubeId as string);
+    }
+  }, []);
 
   const {
     contents,
@@ -182,8 +199,7 @@ function EditorWithoutContext() {
     setId,
     getPlayerTime,
     setPlayerTime,
-    state,
-    setState,
+    playOrPause,
     duration,
   } = useContext(EditorContext);
 
@@ -216,7 +232,7 @@ function EditorWithoutContext() {
   const headerBg = useColorModeValue("gray.100", "#18161d");
 
   const keyMap = {
-    PLAY_PAUSE: ["command", "space"],
+    PLAY_PAUSE: ["space"],
     LEFT_0_5: ["left"],
     RIGHT_0_5: ["right"],
     DELETE_ALL: ["command", "backspace"],
@@ -224,9 +240,7 @@ function EditorWithoutContext() {
 
   const handlers = {
     PLAY_PAUSE: () => {
-      console.log("asdf");
-      if (state === PlayerState.PAUSED) setState(PlayerState.PLAYING);
-      else if (state === PlayerState.PLAYING) setState(PlayerState.PAUSED);
+      playOrPause();
     },
     LEFT_0_5: () => {
       setPlayerTime(getPlayerTime() - 500 >= 0 ? getPlayerTime() - 500 : 0);
@@ -284,85 +298,38 @@ function EditorWithoutContext() {
                     )}
                   </Box>
                 </Stack>
-              </form>
-            </Stack>
-          </ReflexElement>
-          <ReflexSplitter propagate={true} />
-          <ReflexElement
-            minSize={600}
-            style={{ overflow: "hidden" }}
-            size={1000}
-          >
-            {id.length === 0 ? (
-              <NoVideo urlRef={urlField} />
-            ) : (
-              <YoutubePlayer id={id} />
-            )}
-          </ReflexElement>
-          <ReflexSplitter propagate={true} />
-          <ReflexElement minSize={300}>
-            <Stack>
-              <Heading
-                fontSize="lg"
-                bg={headerBg}
-                w="100%"
-                borderBottomWidth="2px"
-                p="5px"
-                textAlign="center"
-              >
-                단축키
-              </Heading>
-              <Shortcuts />
-            </Stack>
-          </ReflexElement>
-        </ReflexContainer>
-      </ReflexElement>
-      <ReflexSplitter propagate={true} />
-      <ReflexElement
-        minSize={100}
-        size={120}
-        maxSize={200}
-        style={{ overflow: "hidden" }}
-      >
-        <TimeLineContainer />
-      </ReflexElement>
-      <ReflexSplitter
-        propagate={true}
-        style={{
-          height: "3px",
-        }}
-      />
-      <ReflexElement size={400}>
-        <ReflexContainer orientation="vertical">
-          <ReflexElement>
-            <HStack maxH="100%" h="100%" overflowY="hidden">
-              <Stack
-                h="100%"
-                w="180px"
-                bg={headerBg}
-                p="20px"
-                alignItems="center"
-                spacing="20px"
-              >
-                <Button
-                  rightIcon={<FaPlus />}
-                  onClick={() => {
-                    const newItem = new SRTContent(
-                      contents.length.toString(),
-                      "00:00:00,000 --> 00:00:00,000",
-                      []
-                    );
-                    if (contents.length === 0) {
-                      newItem.startTime = 0;
-                      newItem.endTime = 1000;
-                    } else {
-                      newItem.startTime = contents[contents.length - 1].endTime;
-                      newItem.endTime = Math.min(
-                        duration,
-                        newItem.startTime + 1000
-                      );
+                <Heading
+                  fontSize="lg"
+                  bg={headerBg}
+                  w="100%"
+                  borderBottomWidth="2px"
+                  borderTopWidth="2px"
+                  p="5px"
+                  textAlign="center"
+                >
+                  {id.length === 0 ? "동영상 선택" : "동영상 변경"}
+                </Heading>
+                <form
+                  onSubmit={(event: FormEvent) => {
+                    event.preventDefault();
+                    try {
+                      const id = new URL(urlInput).searchParams.get("v");
+                      if (!id) {
+                        throw new Error("");
+                      }
+                      setId(id);
+                      toast({
+                        title: "동영상 변경 완료",
+                        description: "동영상이 변경되었습니다",
+                        status: "success",
+                      });
+                    } catch {
+                      toast({
+                        title: "Error (URL)",
+                        description: "Invalid URL",
+                        status: "error",
+                      });
                     }
-                    setContents([...contents, newItem]);
                   }}
                 >
                   <Stack p="10px" spacing="10px" alignItems="center">
@@ -412,57 +379,9 @@ function EditorWithoutContext() {
                   p="5px"
                   textAlign="center"
                 >
-                  Save to SRT
-                </Button>
-                <Tooltip label="Comming soon!">
-                  <Button
-                    rightIcon={<BiHelpCircle />}
-                    colorScheme="blue"
-                    isDisabled
-                  >
-                    How to use
-                  </Button>
-                </Tooltip>
-                <Popover placement="right">
-                  {({ onClose }) => (
-                    <>
-                      <PopoverTrigger>
-                        <Button
-                          rightIcon={<MdDelete />}
-                          colorScheme="red"
-                          w="full"
-                        >
-                          Delete all
-                        </Button>
-                      </PopoverTrigger>
-                      <Portal>
-                        <PopoverContent>
-                          <PopoverArrow />
-                          <PopoverHeader>Confirmation!</PopoverHeader>
-                          <PopoverCloseButton />
-                          <PopoverBody>
-                            <Stack>
-                              <Text>
-                                SRT파일로 저장하지 않으면 지금까지의 수정사항을
-                                전부 잃게 됩니다.
-                              </Text>
-                              <Button
-                                colorScheme="red"
-                                onClick={() => {
-                                  setContents([]);
-                                  onClose();
-                                }}
-                              >
-                                자막 전체 삭제
-                              </Button>
-                            </Stack>
-                          </PopoverBody>
-                        </PopoverContent>
-                      </Portal>
-                    </>
-                  )}
-                </Popover>
-                <ToggleTheme />
+                  단축키
+                </Heading>
+                <Shortcuts />
               </Stack>
             </ReflexElement>
           </ReflexContainer>
@@ -502,6 +421,17 @@ function EditorWithoutContext() {
                         "00:00:00,000 --> 00:00:00,000",
                         []
                       );
+                      if (contents.length === 0) {
+                        newItem.startTime = 0;
+                        newItem.endTime = 1000;
+                      } else {
+                        newItem.startTime =
+                          contents[contents.length - 1].endTime;
+                        newItem.endTime = Math.min(
+                          duration,
+                          newItem.startTime + 1000
+                        );
+                      }
                       setContents([...contents, newItem]);
                     }}
                     colorScheme="blue"
@@ -516,6 +446,15 @@ function EditorWithoutContext() {
                   >
                     Save to SRT
                   </Button>
+                  <Tooltip label="Comming soon!">
+                    <Button
+                      rightIcon={<BiHelpCircle />}
+                      colorScheme="blue"
+                      isDisabled
+                    >
+                      How to use
+                    </Button>
+                  </Tooltip>
                   <Popover placement="right">
                     {({ onClose }) => (
                       <>

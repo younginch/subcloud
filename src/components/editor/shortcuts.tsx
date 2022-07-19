@@ -12,7 +12,7 @@ import {
 const shortcutsData = [
   {
     action: "Play / Pause video",
-    keys: ["tab"],
+    keys: ["space"],
   },
   {
     action: "create subtitle",
