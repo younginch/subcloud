@@ -16,6 +16,13 @@ export const RequestCreateSchema = joi.object({
   point: joi.number().integer().required(),
 });
 
+export const UploadCreateSchema = joi
+  .object({
+    file: joi.required(),
+    lang: joi.string().required(),
+  })
+  .required();
+
 export const SubCreateSchema = joi
   .object({
     serviceId: joi.string().required(),
