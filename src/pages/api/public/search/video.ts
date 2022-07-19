@@ -2,7 +2,7 @@ import { handleRoute, RouteParams } from "../../../../utils/types";
 
 async function VideoSearchGet({ req, res, prisma }: RouteParams<any>) {
   let where: any = {};
-  const { serviceId, videoId } = req.query;
+  const { serviceId, videoId, lang } = req.query;
   if (req.query.q) {
     where.body = {
       search: req.query.q,
@@ -16,11 +16,16 @@ async function VideoSearchGet({ req, res, prisma }: RouteParams<any>) {
     where,
     include: {
       youtubeVideo: { include: { channel: true } },
-      _count: { select: { requests: true, subs: true } },
+      subs: true,
       requests: true,
     },
   });
   const newVideos = videos.map((video) => {
+    const filterSubs = video.subs.filter((sub) => sub.lang === lang);
+    const filterRequests = video.requests.filter(
+      (request) => request.lang === lang
+    );
+
     return {
       url: video.url,
       serviceId: video.serviceId,
@@ -28,9 +33,9 @@ async function VideoSearchGet({ req, res, prisma }: RouteParams<any>) {
       youtubeVideoId: video.youtubeVideoId,
       youtubeVideo: video.youtubeVideo,
       _count: {
-        requests: video._count.requests,
-        subs: video._count.subs,
-        points: video.requests.reduce((prev, curr) => prev + curr.point, 0),
+        requests: filterRequests.length,
+        subs: filterSubs.length,
+        points: filterRequests.reduce((prev, curr) => prev + curr.point, 0),
       },
     };
   });
