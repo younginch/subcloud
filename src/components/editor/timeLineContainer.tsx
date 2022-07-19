@@ -14,29 +14,28 @@ export default function TimeLineContainer() {
     const mouseRatio = e.screenX / window.screen.width;
     let zoom = 1;
     zoom = 1 + e.deltaY / 1000;
-    const left =
+    let left =
       ((mouseRatio - mouseRatio * zoom - zoom) * (rightTime - leftTime) +
         (rightTime + 2 * leftTime)) /
       3;
-    const right =
+    let right =
       ((mouseRatio - mouseRatio * zoom + 2 * zoom) * (rightTime - leftTime) +
         (rightTime + 2 * leftTime)) /
       3;
-    changeLRTime(left, right);
-    /*
-    const fixedPos = e.screenX + 2000;
-    const fixedTime = (fixedPos / 6000) * (rightTime - leftTime) + leftTime;
-    let newInterval;
-    if (e.deltaY > 0) newInterval = (rightTime - leftTime) * 1.1;
-    else newInterval = (rightTime - leftTime) * 0.9;
-    if (newInterval > 3600000) return;
-    if (newInterval < 3600) return;
+    const timeRange = right - left;
 
-    const newLeft = fixedTime - (newInterval * fixedPos) / 6000;
-    const newRight = fixedTime + (newInterval * (6000 - fixedPos)) / 6000;
-    if (newLeft < 0) changeLRTime(0, newInterval);
-    else changeLRTime(newLeft, newRight);
-    */
+    if (timeRange >= duration * 3) {
+      left = -duration;
+      right = duration * 2;
+    } else if (left + timeRange / 3 < 0) {
+      left = -timeRange / 3;
+      right = (timeRange * 2) / 3;
+    } else if (right - timeRange / 3 > duration) {
+      right = duration + timeRange / 3;
+      left = duration - (timeRange * 2) / 3;
+    }
+
+    changeLRTime(left, right);
   };
 
   const handleStop = (e: any, data: DraggableData) => {

@@ -20,6 +20,7 @@ import {
   useColorModeValue,
   useToast,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import {
   createContext,
@@ -43,6 +44,7 @@ import axios from "axios";
 import EditArray from "../components/editor/editArray";
 import Property from "../components/editor/property";
 import { GlobalHotKeys } from "react-hotkeys";
+import { BiHelpCircle } from "react-icons/bi";
 
 type EditorContextProps = {
   /// The left time in milliseconds
@@ -100,13 +102,13 @@ type EditorProviderProps = {
 };
 
 function EditorProvider({ children }: EditorProviderProps) {
-  const [leftTime, setLeftTime] = useState<number>(0);
-  const [rightTime, setRightTime] = useState<number>(1000 * 100);
+  const [leftTime, setLeftTime] = useState<number>(-15 * 1000);
+  const [rightTime, setRightTime] = useState<number>(30 * 1000);
   const [contents, setContents] = useState<SRTContent[]>([]);
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const [id, setId] = useState<string>("");
   const [player, setPlayer] = useState<YouTubePlayer>();
-  const [duration, setDuration] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(10 * 60 * 1000);
   const [videoFraction, setVideoFraction] = useState<number>(0);
   const [playerState, setPlayerState] = useState<PlayerState>(
     PlayerState.UNSTARTED
@@ -136,6 +138,9 @@ function EditorProvider({ children }: EditorProviderProps) {
         setPlayer: (newPlayer) => {
           setPlayer(newPlayer);
           setDuration(newPlayer.getDuration() * 1000);
+          const initialTime = Math.min(newPlayer.getDuration() * 1000, 15000);
+          setLeftTime(-initialTime);
+          setRightTime(initialTime * 2);
           axios
             .get(
               `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`
@@ -179,6 +184,7 @@ function EditorWithoutContext() {
     setPlayerTime,
     state,
     setState,
+    duration,
   } = useContext(EditorContext);
 
   const onDrop = useCallback(
@@ -278,38 +284,85 @@ function EditorWithoutContext() {
                     )}
                   </Box>
                 </Stack>
-                <Heading
-                  fontSize="lg"
-                  bg={headerBg}
-                  w="100%"
-                  borderBottomWidth="2px"
-                  borderTopWidth="2px"
-                  p="5px"
-                  textAlign="center"
-                >
-                  {id.length === 0 ? "동영상 선택" : "동영상 변경"}
-                </Heading>
-                <form
-                  onSubmit={(event: FormEvent) => {
-                    event.preventDefault();
-                    try {
-                      const id = new URL(urlInput).searchParams.get("v");
-                      if (!id) {
-                        throw new Error("");
-                      }
-                      setId(id);
-                      toast({
-                        title: "동영상 변경 완료",
-                        description: "동영상이 변경되었습니다",
-                        status: "success",
-                      });
-                    } catch {
-                      toast({
-                        title: "Error (URL)",
-                        description: "Invalid URL",
-                        status: "error",
-                      });
+              </form>
+            </Stack>
+          </ReflexElement>
+          <ReflexSplitter propagate={true} />
+          <ReflexElement
+            minSize={600}
+            style={{ overflow: "hidden" }}
+            size={1000}
+          >
+            {id.length === 0 ? (
+              <NoVideo urlRef={urlField} />
+            ) : (
+              <YoutubePlayer id={id} />
+            )}
+          </ReflexElement>
+          <ReflexSplitter propagate={true} />
+          <ReflexElement minSize={300}>
+            <Stack>
+              <Heading
+                fontSize="lg"
+                bg={headerBg}
+                w="100%"
+                borderBottomWidth="2px"
+                p="5px"
+                textAlign="center"
+              >
+                단축키
+              </Heading>
+              <Shortcuts />
+            </Stack>
+          </ReflexElement>
+        </ReflexContainer>
+      </ReflexElement>
+      <ReflexSplitter propagate={true} />
+      <ReflexElement
+        minSize={100}
+        size={120}
+        maxSize={200}
+        style={{ overflow: "hidden" }}
+      >
+        <TimeLineContainer />
+      </ReflexElement>
+      <ReflexSplitter
+        propagate={true}
+        style={{
+          height: "3px",
+        }}
+      />
+      <ReflexElement size={400}>
+        <ReflexContainer orientation="vertical">
+          <ReflexElement>
+            <HStack maxH="100%" h="100%" overflowY="hidden">
+              <Stack
+                h="100%"
+                w="180px"
+                bg={headerBg}
+                p="20px"
+                alignItems="center"
+                spacing="20px"
+              >
+                <Button
+                  rightIcon={<FaPlus />}
+                  onClick={() => {
+                    const newItem = new SRTContent(
+                      contents.length.toString(),
+                      "00:00:00,000 --> 00:00:00,000",
+                      []
+                    );
+                    if (contents.length === 0) {
+                      newItem.startTime = 0;
+                      newItem.endTime = 1000;
+                    } else {
+                      newItem.startTime = contents[contents.length - 1].endTime;
+                      newItem.endTime = Math.min(
+                        duration,
+                        newItem.startTime + 1000
+                      );
                     }
+                    setContents([...contents, newItem]);
                   }}
                 >
                   <Stack p="10px" spacing="10px" alignItems="center">
@@ -359,9 +412,57 @@ function EditorWithoutContext() {
                   p="5px"
                   textAlign="center"
                 >
-                  단축키
-                </Heading>
-                <Shortcuts />
+                  Save to SRT
+                </Button>
+                <Tooltip label="Comming soon!">
+                  <Button
+                    rightIcon={<BiHelpCircle />}
+                    colorScheme="blue"
+                    isDisabled
+                  >
+                    How to use
+                  </Button>
+                </Tooltip>
+                <Popover placement="right">
+                  {({ onClose }) => (
+                    <>
+                      <PopoverTrigger>
+                        <Button
+                          rightIcon={<MdDelete />}
+                          colorScheme="red"
+                          w="full"
+                        >
+                          Delete all
+                        </Button>
+                      </PopoverTrigger>
+                      <Portal>
+                        <PopoverContent>
+                          <PopoverArrow />
+                          <PopoverHeader>Confirmation!</PopoverHeader>
+                          <PopoverCloseButton />
+                          <PopoverBody>
+                            <Stack>
+                              <Text>
+                                SRT파일로 저장하지 않으면 지금까지의 수정사항을
+                                전부 잃게 됩니다.
+                              </Text>
+                              <Button
+                                colorScheme="red"
+                                onClick={() => {
+                                  setContents([]);
+                                  onClose();
+                                }}
+                              >
+                                자막 전체 삭제
+                              </Button>
+                            </Stack>
+                          </PopoverBody>
+                        </PopoverContent>
+                      </Portal>
+                    </>
+                  )}
+                </Popover>
+                <ToggleTheme />
               </Stack>
             </ReflexElement>
           </ReflexContainer>

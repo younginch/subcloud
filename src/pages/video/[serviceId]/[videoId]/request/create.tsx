@@ -65,6 +65,7 @@ export default function RequestCreate() {
   const videoId = router.query.videoId as string;
   const toast = useToast();
   const { data } = useSession();
+  const [check, setCheck] = useState(false);
   const {
     handleSubmit,
     register,
@@ -150,6 +151,24 @@ export default function RequestCreate() {
     }
     return -1;
   };
+
+  const changeLang = async () => {
+    if (watch().lang && !check) {
+      setCheck(!check);
+      await axios
+        .patch("/api/user/lang", {
+          requestLang: watch().lang,
+        })
+        .catch((err) => {
+          toast({
+            title: "Error",
+            description: "Request Lang not changed",
+            status: "error",
+          });
+        });
+    }
+  };
+
   function onSubmit(values: FormData) {
     return new Promise<void>((resolve, reject) => {
       axios
@@ -189,7 +208,7 @@ export default function RequestCreate() {
   useEffect(() => {
     setValue("point", 0);
     axios.get("/api/user/lang").then(({ data }) => {
-      setValue("lang", data.baseLangs);
+      setValue("lang", data.requestLangs[0]);
     });
   }, [setValue]);
 
@@ -197,7 +216,12 @@ export default function RequestCreate() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack ms={{ base: "20px", xl: "calc(15vw - 150px)" }} spacing={5}>
+      <Stack
+        ms={{ base: "20px", xl: "calc(15vw - 150px)" }}
+        spacing={5}
+        h="fit-content"
+        minH="100vh"
+      >
         <Card w="850px" mt={5} maxW="calc(100vw - 40px)">
           <CardHeader mb="10px">
             <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
@@ -245,7 +269,12 @@ export default function RequestCreate() {
               </FormErrorMessage>
             </FormControl>
           </Menu>
-          <Checkbox mt={5} size="lg" defaultChecked>
+          <Checkbox
+            mt={5}
+            size="lg"
+            defaultChecked={check}
+            onChange={changeLang}
+          >
             {t("basic_lang")}
           </Checkbox>
         </Card>

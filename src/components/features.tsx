@@ -68,7 +68,9 @@ export default function Features() {
             <Heading fontWeight="semibold" fontSize="2xl">
               {feature.heading}
             </Heading>
-            <Text fontSize="md">{feature.content}</Text>
+            <Text fontSize="md" wordBreak="keep-all">
+              {feature.content}
+            </Text>
           </Box>
         ))}
       </SimpleGrid>

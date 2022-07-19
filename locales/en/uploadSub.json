@@ -1,0 +1,20 @@
+{
+  "preview": "Preview",
+  "upload_vid": "Upload video",
+  "select_lang": "Select language",
+  "select_lang_ex": "If you select a language different from the content of the subtitles, the review may be rejected",
+  "upload_sub": "Upload subtitle",
+  "edit": "Edit on SubCloud",
+  "file_drop": "Put your file here",
+  "click_drag": "Upload subtitles by clicking or Drag and Drop",
+  "point": "Earned Point",
+  "point_ex": "Points are awarded upon passing the review.",
+  "upload_summary": "Upload Summary",
+  "vid_title": "Video title",
+  "sub_file": "Subtitle file name",
+  "sub_lang": "Subtitle language",
+  "upload_req": "Upload request",
+  "fulfilled": "Fulfilled",
+  "fulfilled_ex": "It will be updated as it passes the review.",
+  "check_subtitle_lang_required": "Please select subtitle language"
+}
