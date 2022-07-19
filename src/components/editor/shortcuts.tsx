@@ -1,13 +1,11 @@
 import {
   TableContainer,
   Table,
-  TableCaption,
   Thead,
   Tr,
   Th,
   Tbody,
   Td,
-  Tfoot,
   Kbd,
 } from "@chakra-ui/react";
 
@@ -15,6 +13,18 @@ const shortcutsData = [
   {
     action: "Play / Pause video",
     keys: ["tab"],
+  },
+  {
+    action: "create subtitle",
+    keys: ["["],
+  },
+  {
+    action: "cut subtitle",
+    keys: ["]"],
+  },
+  {
+    action: "split subtitle",
+    keys: ["\\ or /"],
   },
   {
     action: "skip 0.5 seconds",
@@ -38,7 +48,6 @@ export default function Shortcuts() {
   return (
     <TableContainer h="full" overflowX="hidden">
       <Table variant="simple">
-        <TableCaption>Imperial to metric conversion factors</TableCaption>
         <Thead>
           <Tr>
             <Th p="8px 10px 8px 10px">Action</Th>

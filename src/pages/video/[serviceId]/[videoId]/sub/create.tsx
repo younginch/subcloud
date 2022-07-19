@@ -196,7 +196,12 @@ export default function SubCreate() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack ms={{ base: "20px", xl: "calc(15vw - 150px)" }} spacing={5}>
+      <Stack
+        ms={{ base: "20px", xl: "calc(15vw - 150px)" }}
+        spacing={5}
+        h="fit-content"
+        minH="100vh"
+      >
         <Card w="850px" mt={5} maxW="calc(100vw - 40px)">
           <CardHeader mb="10px">
             <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
@@ -288,7 +293,7 @@ export default function SubCreate() {
                 </MenuList>
               </MenuOptionGroup>
               <FormErrorMessage>
-                {errors.lang && errors.lang.message}
+                {errors.lang && t("check_subtitle_lang_required")}
               </FormErrorMessage>
             </FormControl>
           </Menu>

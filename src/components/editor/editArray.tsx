@@ -1,4 +1,4 @@
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, SmallAddIcon } from "@chakra-ui/icons";
 import {
   Stack,
   HStack,
@@ -22,6 +22,10 @@ import {
   PopoverFooter,
   Portal,
   useDisclosure,
+  Divider,
+  Center,
+  useColorMode,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
@@ -119,43 +123,9 @@ function StartTimestamp({ index }: { index: number }) {
 
   return (
     <HStack justifyContent="space-between">
-      <Popover isOpen={isOpen} onClose={onClose}>
-        <PopoverTrigger>
-          <Button maxW="100px" h={8} variant="outline" onClick={onToggle}>
-            {miliToString(contents[index].startTime!)}
-          </Button>
-        </PopoverTrigger>
-        <Portal>
-          <PopoverContent w="400px">
-            <PopoverArrow />
-            <PopoverCloseButton />
-            <PopoverHeader>시작 시간 조절</PopoverHeader>
-            <PopoverBody>
-              <FormControl>
-                <FormLabel>종료 시간으로부터</FormLabel>
-                <HStack>
-                  <MinusButton index={index} onClose={onClose} amount={1000} />
-                  <MinusButton index={index} onClose={onClose} amount={1500} />
-                  <MinusButton index={index} onClose={onClose} amount={2000} />
-                  <Button>이전 자막 직후</Button>
-                </HStack>
-                <InputGroup mt={2}>
-                  <Input isDisabled />
-                  <InputRightAddon>초</InputRightAddon>
-                </InputGroup>
-              </FormControl>
-            </PopoverBody>
-            <PopoverFooter>
-              <FormControl>
-                <FormLabel>자막 시작 시간</FormLabel>
-                <InputGroup>
-                  <Input isDisabled />
-                </InputGroup>
-              </FormControl>
-            </PopoverFooter>
-          </PopoverContent>
-        </Portal>
-      </Popover>
+      <Button maxW="100px" h={8} variant="outline" onClick={onToggle}>
+        {miliToString(contents[index].startTime!)}
+      </Button>
     </HStack>
   );
 }
@@ -208,65 +178,100 @@ function EndTimestamp({ index }: { index: number }) {
 }
 
 const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
-  const { contents, setContents, getPlayerTime } = useContext(EditorContext);
+  const { contents, setContents, getPlayerTime, duration } =
+    useContext(EditorContext);
 
   return (
-    <HStack position="relative" style={style}>
-      <Box position="relative" h="100%" w="70px">
-        <div
-          style={{
-            borderStyle: "solid",
-            borderColor: "#3197ee transparent transparent transparent",
-            borderWidth: "20px 20px 0 0",
-            display: "inline-block",
-            height: "0px",
-            width: "0px",
-            position: "absolute",
-          }}
-        />
-        <Stack alignItems="center" w="100%" h="100%" justifyContent="center">
+    <>
+      <HStack position="relative" style={style}>
+        <Stack alignItems="center" w="70px" h="100%" justifyContent="center">
           <Text>{index + 1}</Text>
         </Stack>
-      </Box>
-      <Stack w="110px" minW="110px" ml="0px !important" spacing="-8px">
-        <HStack justifyContent="space-between">
-          <StartTimestamp index={index} />
-          <MdTimer
-            onClick={() => {
-              const newContents = [...contents];
-              newContents[index].startTime = getPlayerTime();
-              setContents(newContents);
-            }}
-            cursor="pointer"
-          />
-        </HStack>
-        <Text pl="30px">~</Text>
-        <HStack justifyContent="space-between">
-          <EndTimestamp index={index} />
-          <MdTimer
-            onClick={() => {
-              const newContents = [...contents];
-              newContents[index].endTime = getPlayerTime();
-              setContents(newContents);
-            }}
-            cursor="pointer"
-          />
-        </HStack>
-      </Stack>
-      <EditComponent index={index} />
-      <IconButton
-        aria-label="Delete subtitle"
-        icon={<DeleteIcon />}
-        onClick={() => {
-          const newContents = [
-            ...contents.slice(0, index),
-            ...contents.slice(index + 1),
-          ];
-          setContents(newContents);
+        <Stack w="125px" minW="125px" ml="0px !important" spacing="-5px">
+          <HStack justifyContent="space-between">
+            <StartTimestamp index={index} />
+            <Box w="16px" minW="16px" m="0px !important">
+              <MdTimer
+                onClick={() => {
+                  const newContents = [...contents];
+                  newContents[index].startTime = getPlayerTime();
+                  setContents(newContents);
+                }}
+                cursor="pointer"
+                size="16px"
+              />
+            </Box>
+          </HStack>
+          <Text pl="45px">~</Text>
+          <HStack justifyContent="space-between">
+            <EndTimestamp index={index} />
+            <Box w="16px" minW="16px" m="0px !important">
+              <MdTimer
+                onClick={() => {
+                  const newContents = [...contents];
+                  newContents[index].endTime = getPlayerTime();
+                  setContents(newContents);
+                }}
+                cursor="pointer"
+              />
+            </Box>
+          </HStack>
+        </Stack>
+        <EditComponent index={index} />
+        <IconButton
+          aria-label="Delete subtitle"
+          icon={<DeleteIcon />}
+          onClick={() => {
+            const newContents = [
+              ...contents.slice(0, index),
+              ...contents.slice(index + 1),
+            ];
+            setContents(newContents);
+          }}
+          colorScheme="red"
+        />
+      </HStack>
+      <Button
+        position="absolute"
+        top={`${90 * index + 75}px`}
+        left="50%"
+        transform="translateX(-50%)"
+        h="30px"
+        zIndex={2}
+        colorScheme="green"
+        opacity={0}
+        _hover={{
+          opacity: 1,
         }}
-        colorScheme="red"
-      />
-    </HStack>
+        pr="5px"
+        onClick={() => {
+          const newItem = new SRTContent(
+            contents.length.toString(),
+            "00:00:00,000 --> 00:00:00,000",
+            []
+          );
+          newItem.startTime = contents[index].endTime;
+          if (index + 1 < contents.length)
+            newItem.endTime = contents[index + 1].startTime;
+          else {
+            newItem.endTime = Math.min(duration, newItem.startTime + 1000);
+          }
+          setContents([
+            ...contents.slice(0, index + 1),
+            newItem,
+            ...contents.slice(index + 1),
+          ]);
+        }}
+      >
+        <Text>Add</Text>
+        <Divider
+          orientation="vertical"
+          ml="13px"
+          borderColor={useColorModeValue("white", "gray.800")}
+        />
+        <SmallAddIcon ml="5px" />
+      </Button>
+    </>
   );
 };
 

@@ -8,7 +8,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useContext } from "react";
-import { uuid } from "uuidv4";
+import { v4 as uuid } from "uuid";
 import { EditorContext } from "../../pages/editor";
 
 export default function Property() {
