@@ -236,7 +236,7 @@ function EditorWithoutContext() {
     PLAY_PAUSE: ["space"],
     NEW_SUBTITLE: ["["],
     CUT_SUBTITLE: ["]"],
-    SPLIT_SUBTITLE: ["\\"],
+    SPLIT_SUBTITLE: ["\\", "/"],
     LEFT_0_5: ["left"],
     RIGHT_0_5: ["right"],
     DELETE_ALL: ["command", "backspace"],
