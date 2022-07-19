@@ -11,7 +11,7 @@ type TimeLineBoxProps = {
 };
 
 function TimeLineBox({ item, index }: TimeLineBoxProps) {
-  const { contents, setContents, leftTime, rightTime } =
+  const { contents, setContents, leftTime, rightTime, focusedIndex } =
     useContext(EditorContext);
   const normalColor = useColorModeValue("#ffffff", "#333333");
   const resizePositiveColor = useColorModeValue("#ccffcc", "#113311");

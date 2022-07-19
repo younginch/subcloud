@@ -28,7 +28,7 @@ import { PageOptions, ResVideo } from "../../../../../utils/types";
 import { Role } from "@prisma/client";
 import Card from "../../../../../components/user/card/card";
 import CardHeader from "../../../../../components/user/card/cardHeader";
-import ISO6391 from "iso-639-1";
+import ISO6391, { LanguageCode } from "iso-639-1";
 import { AiOutlineInfoCircle, AiOutlineUser } from "react-icons/ai";
 import { YoutubeIcon } from "../../../../../components/icons/customIcons";
 import Link from "next/link";
@@ -119,7 +119,9 @@ export default function SubCreate() {
       };
     }
   >();
+
   useEffect(() => {
+    const lang = watch().lang;
     axios
       .get<
         (ResVideo & {
@@ -129,17 +131,15 @@ export default function SubCreate() {
             points: number;
           };
         })[]
-      >(`/api/public/search/video`, { params: { serviceId, videoId } })
+      >(`/api/public/search/video`, { params: { serviceId, videoId, lang } })
       .then(({ data }) => {
         setVideo(data[0]);
       });
-  }, [serviceId, videoId]);
+  }, [serviceId, videoId, watch()]);
 
   useEffect(() => {
     setValue("file", file as File);
   }, [file]);
-
-  console.log(file);
 
   const acceptedFileItems = acceptedFiles.map((file) => (
     <HStack key={file.name} w="100%">
@@ -189,7 +189,6 @@ export default function SubCreate() {
 
   const [uploadToggle] = useMediaQuery("(min-width: 1350px)");
 
-  console.log("ehif ", errors.file, errors.lang);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack
