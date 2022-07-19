@@ -200,7 +200,8 @@ export default function SubCreate() {
       <Stack
         ms={{ base: "20px", xl: "calc(15vw - 150px)" }}
         spacing={5}
-        h="100vh"
+        h="fit-content"
+        minH="100vh"
       >
         <Card w="850px" mt={5} maxW="calc(100vw - 40px)">
           <CardHeader mb="10px">
