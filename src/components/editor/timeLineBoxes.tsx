@@ -141,8 +141,7 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
 }
 
 export default function TimeLineBoxes() {
-  const { contents, leftTime, rightTime, forceRerender } =
-    useContext(EditorContext);
+  const { contents, leftTime, rightTime } = useContext(EditorContext);
 
   return (
     <Box
