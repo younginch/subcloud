@@ -15,7 +15,7 @@ async function SubSearch({ req, res, prisma }: RouteParams<ResSubSearch>) {
     where.videoId = videoId;
   }
   if (status) {
-    if (status !== "all") {
+    if (status !== "All") {
       where.status = status;
     }
   }
