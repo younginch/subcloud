@@ -1,14 +1,14 @@
+import { Role } from "@prisma/client";
+import dayjs, { OpUnitType } from "dayjs";
 import {
   handleRoute,
   RouteParams,
   SubErrorType,
 } from "../../../../utils/types";
-import { Role } from "@prisma/client";
-import dayjs, { OpUnitType } from "dayjs";
 
 async function ViewStatsRead({ req, res, prisma }: RouteParams<Array<number>>) {
   const { userId, subId, cnt, date, type } = req.query;
-  let where: any = { userId: userId as string };
+  const where: any = { userId: userId as string };
   if (subId) {
     where.id = subId as string;
   }
@@ -16,7 +16,7 @@ async function ViewStatsRead({ req, res, prisma }: RouteParams<Array<number>>) {
     where,
     include: { subHistories: true },
   });
-  const count = parseInt(cnt as string);
+  const count = parseInt(cnt as string, 10);
   if (subs === []) {
     return res
       .status(404)

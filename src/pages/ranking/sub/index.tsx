@@ -1,16 +1,16 @@
 import axios from "axios";
+import { Box } from "@chakra-ui/react";
+import useSWRInfinite from "swr/infinite";
+import { useState } from "react";
+import useTranslation from "next-translate/useTranslation";
 import {
   PageOptions,
   RankQueryData,
   ResRankingSub,
 } from "../../../utils/types";
-import { Box } from "@chakra-ui/react";
 import SubRankTableRow from "../../../components/ranking/subRankTableRow";
-import useSWRInfinite from "swr/infinite";
-import { useState } from "react";
 import GeneralTable from "../../../components/ranking/generalTable";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
-import useTranslation from "next-translate/useTranslation";
 
 export default function SubRankingPage() {
   const { t } = useTranslation("rankings");
@@ -32,11 +32,12 @@ export default function SubRankingPage() {
   };
 
   function onSubmit(values: RankQueryData) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { keyword } = values;
-    //Todo: search keyword
+    // Todo: search keyword
   }
 
-  const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
+  const { data, error, size, setSize, isValidating } = useSWRInfinite(
     (index) =>
       `/api/public/ranking/sub/${sortBy.by}?start=${pageSize * index}&end=${
         pageSize * (index + 1)
@@ -47,9 +48,10 @@ export default function SubRankingPage() {
   );
 
   const subs = data
-    ? data.reduce((accumulator, currentValue) => {
-        return accumulator.concat(currentValue);
-      }, [])
+    ? data.reduce(
+        (accumulator, currentValue) => accumulator.concat(currentValue),
+        []
+      )
     : [];
   const isLoadingInitialData = !data && !error;
   const isLoadingMore =
@@ -58,6 +60,7 @@ export default function SubRankingPage() {
   const isEmpty = data?.[0]?.length === 0;
   const isReachingEnd =
     isEmpty || (data && data[data.length - 1]?.length < pageSize);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isRefreshing = isValidating && data && data.length === size;
 
   const loadMoreBtn = (
@@ -67,45 +70,38 @@ export default function SubRankingPage() {
     />
   );
   return (
-    <>
-      <Box
-        pl={{ base: "10px", lg: "30px", xl: "70px" }}
-        pr={{ base: "10px", lg: "30px", xl: "70px" }}
-        overflowX={{ sm: "scroll", xl: "hidden" }}
+    <Box
+      pl={{ base: "10px", lg: "30px", xl: "70px" }}
+      pr={{ base: "10px", lg: "30px", xl: "70px" }}
+      overflowX={{ sm: "scroll", xl: "hidden" }}
+    >
+      <GeneralTable
+        captions={captions}
+        btnComponent={loadMoreBtn}
+        lang={lang}
+        setLang={setLang}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        onSubmit={onSubmit}
       >
-        <GeneralTable
-          captions={captions}
-          btnComponent={loadMoreBtn}
-          lang={lang}
-          setLang={setLang}
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          onSubmit={onSubmit}
-        >
-          {subs.map((sub, index) => {
-            return (
-              <SubRankTableRow
-                rank={index + 1}
-                key={sub.id}
-                userId={sub.user.id}
-                videoName={
-                  sub.video.youtubeVideo
-                    ? sub.video.youtubeVideo.title
-                    : "no title"
-                }
-                videoUrl={sub.video.url}
-                platform={sub.serviceId}
-                viewCount={sub.views}
-                userName={sub.user.name ? sub.user.name : "Annonymous"}
-                userImageUrl={sub.user.image ? sub.user.image : ""}
-                lang={sub.lang}
-                uploadDate={sub.createdAt}
-              />
-            );
-          })}
-        </GeneralTable>
-      </Box>
-    </>
+        {subs.map((sub, index) => (
+          <SubRankTableRow
+            rank={index + 1}
+            key={sub.id}
+            userId={sub.user.id}
+            videoName={
+              sub.video.youtubeVideo ? sub.video.youtubeVideo.title : "no title"
+            }
+            videoUrl={sub.video.url}
+            viewCount={sub.views}
+            userName={sub.user.name ? sub.user.name : "Annonymous"}
+            userImageUrl={sub.user.image ? sub.user.image : ""}
+            lang={sub.lang}
+            uploadDate={sub.createdAt}
+          />
+        ))}
+      </GeneralTable>
+    </Box>
   );
 }
 

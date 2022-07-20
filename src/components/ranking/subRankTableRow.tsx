@@ -17,7 +17,6 @@ type Props = {
   userId: string;
   videoName: string;
   videoUrl: string;
-  platform: string;
   viewCount: number;
   userName: string;
   userImageUrl: string;
@@ -29,7 +28,6 @@ export default function SubRankTableRow({
   rank,
   videoUrl,
   videoName,
-  platform,
   viewCount,
   userId,
   userName,

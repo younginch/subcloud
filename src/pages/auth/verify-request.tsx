@@ -1,23 +1,13 @@
-import { CheckCircleIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Button,
-  Center,
-  Container,
-  Heading,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import Link from "next/link";
-import { PageOptions } from "../../utils/types";
+import { Box, Center, Container, Heading, Stack, Text } from "@chakra-ui/react";
 import { SiMinutemailer } from "react-icons/si";
+import { PageOptions } from "../../utils/types";
 
 export default function VerifyRequest() {
   return (
-    <Container maxW={"3xl"}>
+    <Container maxW="3xl">
       <Stack
         as={Box}
-        textAlign={"center"}
+        textAlign="center"
         spacing={{ base: 8, md: 14 }}
         py={{ base: 20, md: 36 }}
       >
@@ -29,16 +19,13 @@ export default function VerifyRequest() {
         <Heading
           fontWeight={600}
           fontSize={{ base: "2xl", sm: "4xl", md: "6xl" }}
-          lineHeight={"110%"}
+          lineHeight="110%"
         >
-          <Text as={"span"} color={"blue.400"}>
+          <Text as="span" color="blue.400">
             Verify your email
           </Text>
         </Heading>
-        <Text
-          color={"gray.500"}
-          fontSize={{ base: "lg", sm: "1xl", md: "2xl" }}
-        >
+        <Text color="gray.500" fontSize={{ base: "lg", sm: "1xl", md: "2xl" }}>
           We&apos;ve sent an email to verify your email address and activate
           your account. The link in the email will expire in 24 hours.
         </Text>

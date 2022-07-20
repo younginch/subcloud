@@ -1,13 +1,12 @@
 import { Avatar, HStack, Text } from "@chakra-ui/react";
 
 type Props = {
-  size: string;
+  size?: string;
   name?: string;
   imageUrl?: string;
-  href?: string;
 };
 
-export default function AvatarWithName({ size, name, imageUrl, href }: Props) {
+export default function AvatarWithName({ size, name, imageUrl }: Props) {
   return (
     <HStack>
       <Avatar
@@ -21,7 +20,3 @@ export default function AvatarWithName({ size, name, imageUrl, href }: Props) {
     </HStack>
   );
 }
-
-AvatarWithName.defaultProps = {
-  size: "sm",
-};

@@ -26,7 +26,6 @@ export default function NavBar(): JSX.Element {
   const { colorMode } = useColorMode();
   const { t } = useTranslation("common");
   const [isLarge] = useMediaQuery("(min-width: 840px)");
-  const [isMedium] = useMediaQuery("(min-width: 1024px)");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -80,7 +79,7 @@ export default function NavBar(): JSX.Element {
           <Search />
           <Spacer />
         </Flex>
-        {!isLarge && <ToolBar isLarge={isMedium} />}
+        {!isLarge && <ToolBar />}
         {isLarge ? (
           <Links />
         ) : (
@@ -96,7 +95,7 @@ export default function NavBar(): JSX.Element {
             </DrawerOverlay>
           </Drawer>
         )}
-        {isLarge && <ToolBar isLarge={true} />}
+        {isLarge && <ToolBar />}
       </HStack>
     </Box>
   );

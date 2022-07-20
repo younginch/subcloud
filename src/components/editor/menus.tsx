@@ -45,7 +45,10 @@ export default function Menus() {
           편집(E)
         </MenuButton>
         <MenuList zIndex={200}>
-          <MenuItem icon={<AddIcon />} command="[">
+          <MenuItem
+            icon={<AddIcon />}
+            command={commandKeys.NEW_SUBTITLE.toString()}
+          >
             현재 시간에서 새 자막
           </MenuItem>
           <MenuItem icon={<EditIcon />} command="]">

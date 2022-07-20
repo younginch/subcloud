@@ -164,19 +164,17 @@ export default function UserMyWithdraw() {
             </Tr>
           </Thead>
           <Tbody>
-            {data?.map((withdraw) => {
-              return (
-                <Tr key={withdraw.id}>
-                  <Td>{withdraw.point}</Td>
-                  <Td>
-                    {withdraw.bankName} {withdraw.accountNumber}
-                  </Td>
-                  <Td>{withdraw.createdAt.toString()}</Td>
-                  <Td>{withdraw.isCompleted}</Td>
-                  <Td>{withdraw.updatedAt.toString()}</Td>
-                </Tr>
-              );
-            })}
+            {data?.map((withdraw) => (
+              <Tr key={withdraw.id}>
+                <Td>{withdraw.point}</Td>
+                <Td>
+                  {withdraw.bankName} {withdraw.accountNumber}
+                </Td>
+                <Td>{withdraw.createdAt.toString()}</Td>
+                <Td>{withdraw.isCompleted}</Td>
+                <Td>{withdraw.updatedAt.toString()}</Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
       </TableContainer>

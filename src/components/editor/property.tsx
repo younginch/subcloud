@@ -29,9 +29,7 @@ export default function Property() {
   const wordCount = contents[focusedIndex]
     .toText()
     .split(" ")
-    .filter(function (str: string) {
-      return str != "";
-    }).length;
+    .filter((str: string) => str !== "").length;
 
   const errors = [];
   const durationTooShort = duration < 0.7;
@@ -72,13 +70,11 @@ export default function Property() {
           {readingRateSoFast && <WarningIcon color="red.500" />}
         </HStack>
         <Stack>
-          {errors.map((error) => {
-            return (
-              <Text color="red" key={uuid()}>
-                {error}
-              </Text>
-            );
-          })}
+          {errors.map((error) => (
+            <Text color="red" key={uuid()}>
+              {error}
+            </Text>
+          ))}
         </Stack>
         <Button>자막 위치로 이동</Button>
       </Stack>

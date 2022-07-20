@@ -6,7 +6,8 @@ import { KeyMap } from "react-hotkeys";
 import { YouTubePlayer } from "react-youtube";
 
 export function checkOccupation(contents: SRTContent[], time: number): number {
-  if (isNaN(time)) return -1;
+  if (Number.isNaN(time)) return -1;
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < contents.length; i++) {
     if (contents[i].startTime <= time && contents[i].endTime >= time) return i;
   }
@@ -15,11 +16,12 @@ export function checkOccupation(contents: SRTContent[], time: number): number {
 }
 
 export function findPosition(contents: SRTContent[], time: number): number {
-  if (isNaN(time)) return -1;
+  if (Number.isNaN(time)) return -1;
 
   if (contents.length === 0) return 0;
   if (time < contents[0].startTime) return 0;
   if (time > contents[contents.length - 1].endTime) return contents.length;
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < contents.length - 1; i++) {
     if (contents[i].endTime < time && contents[i + 1].startTime > time)
       return i + 1;
@@ -94,18 +96,18 @@ export const EditorContext = createContext<EditorContextProps>({
    */
   leftTime: 0,
   rightTime: 100 * 1000,
-  changeLRTime: (_, __) => {},
+  changeLRTime: () => {},
   contents: [],
-  setContents: (_) => {},
+  setContents: () => {},
   focusedIndex: 0,
-  setFocusedIndex: (_) => {},
+  setFocusedIndex: () => {},
   id: "",
-  setId: (_) => {},
+  setId: () => {},
   setPlayer: () => {},
   getPlayerTime: () => 0,
-  setPlayerTime: (_) => {},
+  setPlayerTime: () => {},
   state: PlayerState.UNSTARTED,
-  setState: (_) => {},
+  setState: () => {},
   playOrPause: () => {},
   duration: 0,
   aspectRatio: 0,
@@ -133,7 +135,7 @@ export function EditorProvider({ children }: EditorProviderProps) {
   const [forceRerender, setForceRerender] = useState<boolean>(true);
 
   function getPlayerTime() {
-    return player?.getCurrentTime() * 1000;
+    return (player?.getCurrentTime() ?? 0) * 1000;
   }
 
   function playOrPause() {
@@ -160,7 +162,7 @@ export function EditorProvider({ children }: EditorProviderProps) {
         "00:00:00,000 --> 00:00:00,000",
         []
       );
-      let newIndex = findPosition(contents, getPlayerTime());
+      const newIndex = findPosition(contents, getPlayerTime());
       if (newIndex === -1) return;
 
       const endTime =
@@ -230,6 +232,7 @@ export function EditorProvider({ children }: EditorProviderProps) {
 
   return (
     <EditorContext.Provider
+      // eslint-disable-next-line react/jsx-no-constructed-context-values
       value={{
         leftTime,
         rightTime,

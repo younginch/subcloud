@@ -1,3 +1,6 @@
+import { Session } from "next-auth";
+import { NextApiResponse } from "next";
+import { Request, Role } from "@prisma/client";
 import {
   handleRoute,
   ResRequest,
@@ -5,10 +8,7 @@ import {
   SubErrorType,
 } from "../../../utils/types";
 import { RequestCreateSchema } from "../../../utils/schema";
-import { Session } from "next-auth";
-import { NextApiResponse } from "next";
 import prisma from "../../../utils/prisma";
-import { Request, Role } from "@prisma/client";
 
 async function RequestRead({ req, res, prisma }: RouteParams<ResRequest>) {
   if (!req.query.id) {
@@ -25,6 +25,31 @@ async function RequestRead({ req, res, prisma }: RouteParams<ResRequest>) {
       .json({ error: SubErrorType.NotFound, message: "Request" });
   }
   return res.status(200).json(request);
+}
+
+async function updatePointAndResponse(
+  session: Session | undefined,
+  res: NextApiResponse,
+  request: Request,
+  requestedPoint: number = 0
+): Promise<void> {
+  if (requestedPoint !== 0) {
+    await prisma.user.update({
+      where: { id: session?.user.id },
+      data: { point: session?.user.point ?? 0 - requestedPoint },
+    });
+    await prisma.request.update({
+      where: { id: request.id },
+      data: { point: request.point + requestedPoint },
+    });
+    await prisma.requestPoint.create({
+      data: {
+        userId: session?.user.id!,
+        requestId: request.id,
+        point: requestedPoint,
+      },
+    });
+  }
 }
 
 async function RequestCreate({
@@ -70,7 +95,7 @@ async function RequestCreate({
         },
       },
     });
-    updatePointAndResponse(point, session, res, updatedRequest);
+    updatePointAndResponse(session, res, updatedRequest, point);
     const finalRequest = await prisma.request.findUnique({
       where: { id: updatedRequest.id },
     });
@@ -79,40 +104,15 @@ async function RequestCreate({
   const createdRequest = await prisma.request.create({
     data: {
       video: { connect: { serviceId_videoId: { serviceId, videoId } } },
-      lang: lang,
+      lang,
       users: { connect: { id: session?.user?.id } },
     },
   });
-  updatePointAndResponse(point, session, res, createdRequest);
+  updatePointAndResponse(session, res, createdRequest, point);
   const finalRequest = await prisma.request.findUnique({
     where: { id: createdRequest.id },
   });
   return res.status(201).json(finalRequest!);
-}
-
-async function updatePointAndResponse(
-  requestedPoint: number = 0,
-  session: Session | undefined,
-  res: NextApiResponse,
-  request: Request
-): Promise<void> {
-  if (requestedPoint !== 0) {
-    await prisma.user.update({
-      where: { id: session?.user.id },
-      data: { point: session?.user.point! - requestedPoint },
-    });
-    await prisma.request.update({
-      where: { id: request.id },
-      data: { point: request.point + requestedPoint },
-    });
-    await prisma.requestPoint.create({
-      data: {
-        userId: session?.user.id!,
-        requestId: request.id,
-        point: requestedPoint,
-      },
-    });
-  }
 }
 
 async function RequestDelete({

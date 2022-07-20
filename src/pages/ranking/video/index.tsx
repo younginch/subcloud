@@ -1,16 +1,16 @@
-import { Box, Button, Center } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import axios from "axios";
+import useSWRInfinite from "swr/infinite";
+import { useState } from "react";
+import useTranslation from "next-translate/useTranslation";
 import {
   PageOptions,
   RankQueryData,
   ResRankingVideo,
 } from "../../../utils/types";
 import VideoTableRow from "../../../components/ranking/videoRankTableRow";
-import useSWRInfinite from "swr/infinite";
-import { useState } from "react";
 import GeneralTable from "../../../components/ranking/generalTable";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
-import useTranslation from "next-translate/useTranslation";
 
 export default function VideoRankingPage() {
   const { t } = useTranslation("rankings");
@@ -31,11 +31,12 @@ export default function VideoRankingPage() {
   };
 
   function onSubmit(values: RankQueryData) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { keyword } = values;
-    //Todo: search keyword
+    // Todo: search keyword
   }
 
-  const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
+  const { data, error, size, setSize } = useSWRInfinite(
     (index) =>
       `/api/public/ranking/video/${sortBy.by}?start=${pageSize * index}&end=${
         pageSize * (index + 1)
@@ -46,9 +47,10 @@ export default function VideoRankingPage() {
   );
 
   const videos = data
-    ? data.reduce((accumulator, currentValue) => {
-        return accumulator.concat(currentValue);
-      }, [])
+    ? data.reduce(
+        (accumulator, currentValue) => accumulator.concat(currentValue),
+        []
+      )
     : [];
   const isLoadingInitialData = !data && !error;
   const isLoadingMore =
@@ -57,7 +59,6 @@ export default function VideoRankingPage() {
   const isEmpty = data?.[0]?.length === 0;
   const isReachingEnd =
     isEmpty || (data && data[data.length - 1]?.length < pageSize);
-  const isRefreshing = isValidating && data && data.length === size;
 
   const loadMoreBtn = (
     <LoadMoreBtn
@@ -67,42 +68,35 @@ export default function VideoRankingPage() {
   );
 
   return (
-    <>
-      <Box
-        pt={10}
-        pl={{ base: "10px", lg: "30px", xl: "70px" }}
-        pr={{ base: "10px", lg: "30px", xl: "70px" }}
-        overflowX={{ sm: "scroll", xl: "hidden" }}
+    <Box
+      pt={10}
+      pl={{ base: "10px", lg: "30px", xl: "70px" }}
+      pr={{ base: "10px", lg: "30px", xl: "70px" }}
+      overflowX={{ sm: "scroll", xl: "hidden" }}
+    >
+      <GeneralTable
+        captions={captions}
+        lang={lang}
+        setLang={setLang}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        onSubmit={onSubmit}
+        btnComponent={loadMoreBtn}
       >
-        <GeneralTable
-          captions={captions}
-          lang={lang}
-          setLang={setLang}
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          onSubmit={onSubmit}
-          btnComponent={loadMoreBtn}
-        >
-          {videos.map((video, index) => {
-            return (
-              <VideoTableRow
-                key={video.videoId}
-                rank={index + 1}
-                name={
-                  video.youtubeVideo ? video.youtubeVideo.title : "no title"
-                }
-                duration={video.youtubeVideo ? video.youtubeVideo.duration : 0}
-                platform={video.serviceId}
-                requests={video._count.requests}
-                points={video._count.points}
-                url={video.url}
-                langs={video.langs}
-              />
-            );
-          })}
-        </GeneralTable>
-      </Box>
-    </>
+        {videos.map((video, index) => (
+          <VideoTableRow
+            key={video.videoId}
+            rank={index + 1}
+            name={video.youtubeVideo ? video.youtubeVideo.title : "no title"}
+            duration={video.youtubeVideo ? video.youtubeVideo.duration : 0}
+            requests={video._count.requests}
+            points={video._count.points}
+            url={video.url}
+            langs={video.langs}
+          />
+        ))}
+      </GeneralTable>
+    </Box>
   );
 }
 

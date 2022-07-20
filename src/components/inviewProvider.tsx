@@ -2,8 +2,8 @@ import { ScaleFade } from "@chakra-ui/react";
 import { useInView } from "react-hook-inview";
 
 type Props = {
-  initialScale: number;
-  whileHover: number;
+  initialScale?: number;
+  whileHover?: number;
   children: React.ReactNode;
 };
 

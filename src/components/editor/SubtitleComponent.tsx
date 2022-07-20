@@ -9,7 +9,7 @@ type Props = {
 export default function SubtitleComponent({ boxRef }: Props) {
   const fontSizeSetting = 60; // default size
   const fontSize = boxRef.current
-    ? (boxRef.current?.offsetWidth / 2500) * fontSizeSetting
+    ? (boxRef.current!.offsetWidth / 2500) * fontSizeSetting
     : 15;
   const paddingUnit = fontSize / 5;
 
@@ -22,6 +22,7 @@ export default function SubtitleComponent({ boxRef }: Props) {
       return;
     }
 
+    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < contents.length; i++) {
       if (
         contents[i].startTime <= currentTime &&
@@ -48,9 +49,9 @@ export default function SubtitleComponent({ boxRef }: Props) {
       spacing={0}
       fontSize={fontSize}
     >
-      {textArray.map((text, index) => (
+      {textArray.map((text) => (
         <Text
-          key={index}
+          key={text}
           bg="black"
           w="fit-content"
           p={`0px ${paddingUnit * 2}px 0px ${paddingUnit * 2}px`}

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import { List } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import { HoList, HangList, Jang, Jo } from "../../components/list";

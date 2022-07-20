@@ -19,7 +19,7 @@ type PasswordFieldProps = {
   errorMessage: string | undefined;
 };
 
-export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
+const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
   (props, ref) => {
     const { isOpen, onToggle } = useDisclosure();
     const inputRef = useRef<HTMLInputElement>(null);
@@ -61,3 +61,4 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
 );
 
 PasswordField.displayName = "PasswordField";
+export default PasswordField;

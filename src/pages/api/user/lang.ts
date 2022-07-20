@@ -1,4 +1,4 @@
-import { Role, User } from "@prisma/client";
+import { Role } from "@prisma/client";
 import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 
 type Langs = {
@@ -33,7 +33,7 @@ async function updateLangs({ req, res, prisma, session }: RouteParams<Langs>) {
       .status(404)
       .json({ error: SubErrorType.NotFound, message: "User not found" });
   }
-  let data: any = {};
+  const data: any = {};
   if (baseLang) {
     data.baseLangs = [baseLang];
   }

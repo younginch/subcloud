@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { Box, HStack, Text, useColorModeValue } from "@chakra-ui/react";
 import { SRTContent } from "@younginch/subtitle";
 import { useContext } from "react";
@@ -11,7 +12,7 @@ type TimeLineBoxProps = {
 };
 
 function TimeLineBox({ item, index }: TimeLineBoxProps) {
-  const { contents, setContents, leftTime, rightTime, focusedIndex } =
+  const { contents, setContents, leftTime, rightTime } =
     useContext(EditorContext);
   const normalColor = useColorModeValue("#ffffff", "#333333");
   const resizePositiveColor = useColorModeValue("#ccffcc", "#113311");
@@ -46,7 +47,7 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
         topLeft: false,
       }}
       dragAxis="x"
-      onResize={(e, direction, ref, delta) => {
+      onResize={(_e, direction, ref, delta) => {
         if (delta.width > 0) ref.style.backgroundColor = resizePositiveColor;
         else if (delta.width < 0)
           ref.style.backgroundColor = resizeNegativeColor;
@@ -76,7 +77,7 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
           }
         }
       }}
-      onResizeStop={(e, direction, ref, delta, position) => {
+      onResizeStop={(_e, direction, _ref, delta) => {
         if (direction === "left") {
           const newContents = [...contents];
           newContents[index].startTime -=
@@ -93,7 +94,7 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
         e.preventDefault();
         e.stopPropagation();
       }}
-      onDrag={(e, data: DraggableData) => {
+      onDrag={(_e, data: DraggableData) => {
         const deltaT =
           leftTime + (data.x * (rightTime - leftTime)) / 6000 - item.startTime;
         data.node.style.backgroundColor = moveColor;
@@ -159,6 +160,7 @@ export default function TimeLineBoxes() {
         ) {
           return;
         }
+        // eslint-disable-next-line consistent-return
         return <TimeLineBox key={uuid()} item={item} index={index} />;
       })}
     </Box>

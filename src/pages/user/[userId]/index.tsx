@@ -1,12 +1,12 @@
 import { Stack, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { GetServerSideProps } from "next";
-import { PageOptions, ResSubSearch, ResUserSearch } from "../../../utils/types";
 import { FiBox } from "react-icons/fi";
+import useTranslation from "next-translate/useTranslation";
+import { PageOptions, ResSubSearch, ResUserSearch } from "../../../utils/types";
 import SubtitleDashboard from "../../../components/user/subtitleDashboard";
 import PublicProfileLayout from "../../../components/user/publicProfileLayout";
 import { PublicProfileTab } from "../../../utils/tabs";
-import useTranslation from "next-translate/useTranslation";
 
 type UserReadProps = {
   user: ResUserSearch;

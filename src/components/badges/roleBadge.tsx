@@ -1,6 +1,5 @@
 import { Badge } from "@chakra-ui/react";
 import { Role } from "@prisma/client";
-import { UserTier } from "../../utils/tier";
 
 type Props = {
   role?: Role;
@@ -8,7 +7,7 @@ type Props = {
 
 export default function RoleBadge({ role }: Props) {
   let color = "gray";
-  let isBadge = false;
+  let isBadge;
   switch (role) {
     case Role.Admin:
       color = "gray";
@@ -18,19 +17,22 @@ export default function RoleBadge({ role }: Props) {
       color = "teal";
       isBadge = true;
       break;
+    default:
+      isBadge = false;
+      break;
+  }
+
+  if (!isBadge) {
+    return null;
   }
   return (
-    <>
-      {isBadge && (
-        <Badge
-          variant="subtle"
-          colorScheme={color}
-          fontSize={{ base: "sm", lg: "lg" }}
-          textTransform="none"
-        >
-          {role}
-        </Badge>
-      )}
-    </>
+    <Badge
+      variant="subtle"
+      colorScheme={color}
+      fontSize={{ base: "sm", lg: "lg" }}
+      textTransform="none"
+    >
+      {role}
+    </Badge>
   );
 }

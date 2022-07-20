@@ -53,10 +53,11 @@ function ProcessWithdrawButton({
     formState: { errors, isSubmitting },
   } = useForm<UpdateWithdrawForm>();
 
-  const onSubmit = async (data: UpdateWithdrawForm) => {
+  const onSubmit = async () => {
+    // TODO
     axios
       .post(``)
-      .then((res) => {
+      .then(() => {
         mutate();
         onClose();
         toast({
@@ -143,20 +144,18 @@ export default function AdminWithdraw() {
           </Tr>
         </Thead>
         <Tbody>
-          {data?.map((withdraw) => {
-            return (
-              <Tr key={withdraw.id}>
-                <Td>{withdraw.userId}</Td>
-                <Td>{withdraw.point}</Td>
-                <Td>{withdraw.bankName}</Td>
-                <Td>{withdraw.accountNumber}</Td>
-                <Td>{withdraw.isCompleted}</Td>
-                <Td>
-                  <ProcessWithdrawButton withdraw={withdraw} mutate={mutate} />
-                </Td>
-              </Tr>
-            );
-          })}
+          {data?.map((withdraw) => (
+            <Tr key={withdraw.id}>
+              <Td>{withdraw.userId}</Td>
+              <Td>{withdraw.point}</Td>
+              <Td>{withdraw.bankName}</Td>
+              <Td>{withdraw.accountNumber}</Td>
+              <Td>{withdraw.isCompleted}</Td>
+              <Td>
+                <ProcessWithdrawButton withdraw={withdraw} mutate={mutate} />
+              </Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>

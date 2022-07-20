@@ -1,8 +1,7 @@
 import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 // Custom components
-import Card from "../card/card";
-import CardBody from "../card/cardBody";
 import React, { ReactElement } from "react";
+import Card from "../card/card";
 import CardHeader from "../card/cardHeader";
 
 type Props = {

@@ -21,20 +21,19 @@ import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
-import VideoInfo from "../../../../../components/create/videoInfo";
 import { CheckCircleIcon, EditIcon, WarningIcon } from "@chakra-ui/icons";
-import { PageOptions, ResVideo } from "../../../../../utils/types";
 import { Role } from "@prisma/client";
-import Card from "../../../../../components/user/card/card";
-import CardHeader from "../../../../../components/user/card/cardHeader";
-import ISO6391, { LanguageCode } from "iso-639-1";
+import ISO6391 from "iso-639-1";
 import { AiOutlineInfoCircle, AiOutlineUser } from "react-icons/ai";
-import { YoutubeIcon } from "../../../../../components/icons/customIcons";
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
-import SelectLanguage from "../../../../../components/selectLanguage";
 import { joiResolver } from "@hookform/resolvers/joi";
+import SelectLanguage from "../../../../../components/selectLanguage";
+import { YoutubeIcon } from "../../../../../components/icons/customIcons";
+import CardHeader from "../../../../../components/user/card/cardHeader";
+import Card from "../../../../../components/user/card/card";
+import { PageOptions, ResVideo } from "../../../../../utils/types";
+import VideoInfo from "../../../../../components/create/videoInfo";
 import { UploadCreateSchema } from "../../../../../utils/schema";
 
 type FormData = {
@@ -48,7 +47,6 @@ export default function SubCreate() {
   const serviceId = router.query.serviceId as string;
   const videoId = router.query.videoId as string;
   const toast = useToast();
-  const { data } = useSession();
   const {
     handleSubmit,
     watch,
@@ -58,6 +56,7 @@ export default function SubCreate() {
   const [file, setFile] = useState<string | Blob>();
 
   function onSubmit(values: FormData) {
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise<void>(async (resolve, reject) => {
       const formData = new FormData();
       formData.append("file", file!);
@@ -67,7 +66,7 @@ export default function SubCreate() {
             "Content-Type": "multipart/form-data",
           },
         });
-        const newSub = await axios.post("/api/user/sub", {
+        await axios.post("/api/user/sub", {
           fileId: newFile.data.id,
           serviceId,
           videoId,
@@ -121,7 +120,7 @@ export default function SubCreate() {
   >();
 
   useEffect(() => {
-    const lang = watch().lang;
+    const { lang } = watch();
     axios
       .get<
         (ResVideo & {
@@ -135,11 +134,11 @@ export default function SubCreate() {
       .then(({ data }) => {
         setVideo(data[0]);
       });
-  }, [serviceId, videoId, watch()]);
+  }, [serviceId, videoId, watch]);
 
   useEffect(() => {
     setValue("file", file as File);
-  }, [file]);
+  }, [file, setValue]);
 
   const acceptedFileItems = acceptedFiles.map((file) => (
     <HStack key={file.name} w="100%">

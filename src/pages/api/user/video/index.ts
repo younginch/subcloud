@@ -10,6 +10,104 @@ import {
   SubErrorType,
 } from "../../../../utils/types";
 
+function getYoutubeVideo(url: URL): Video {
+  if (url.pathname !== "/watch") {
+    if (url.hostname === "youtu.be") {
+      const videoId = url.pathname.split("/")[1];
+      return {
+        serviceId: "youtube",
+        videoId,
+        url: `https://www.youtube.com/watch?v=${videoId}`,
+        youtubeVideoId: null,
+      };
+    }
+    throw new Error("Not a video url");
+  }
+  const videoId = url.searchParams.get("v");
+  if (!videoId) {
+    throw new Error("No video id");
+  }
+  return {
+    serviceId: "youtube",
+    videoId,
+    url: `https://www.youtube.com/watch?v=${videoId}`,
+    youtubeVideoId: null,
+  };
+}
+
+function getVideoFromUrl(urlString: string): Video {
+  const url = new URL(urlString);
+  if (url.hostname.includes("youtu")) {
+    return getYoutubeVideo(url);
+  }
+  return {
+    serviceId: url.hostname,
+    videoId: `${url.pathname}?${url.search}`,
+    url: urlString,
+    youtubeVideoId: null,
+  };
+}
+
+async function addYoutubeInfo(videoId: string): Promise<ResVideo> {
+  try {
+    const videoRes =
+      await axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${process.env.YOUTUBE_API_KEY}
+      &part=snippet,contentDetails,statistics`);
+    if (!videoRes.data.items) {
+      throw new Error("No video found");
+    }
+    const video = videoRes.data.items[0];
+    const { channelId } = video.snippet;
+    const channel = await prisma.youtubeChannel.findUnique({
+      where: { id: channelId },
+    });
+    if (!channel) {
+      const channelRes = await axios.get(
+        `https://www.googleapis.com/youtube/v3/channels?id=${channelId}&key=${process.env.YOUTUBE_API_KEY}&part=snippet,statistics`
+      );
+      if (!channelRes.data.items) {
+        throw new Error("No channel found");
+      }
+      const channelData = channelRes.data.items[0];
+      await prisma.youtubeChannel.create({
+        data: {
+          id: channelId,
+          title: channelData.snippet.title,
+          description: channelData.snippet.description,
+          thumbnailUrl: channelData.snippet.thumbnails.medium.url,
+          subscriberCount: Number.parseInt(
+            channelData.statistics.subscriberCount,
+            10
+          ),
+          channelUrl: `https://www.youtube.com/channel/${channelId}`,
+        },
+      });
+    }
+    await prisma.youtubeVideo.create({
+      data: {
+        id: videoId,
+        publishedAt: video.snippet.publishedAt,
+        channelId,
+        title: video.snippet.title,
+        description: video.snippet.description,
+        duration: youtubeDurationToSeconds(video.contentDetails.duration),
+        viewCount: Number.parseInt(video.statistics.viewCount, 10),
+        likeCount: Number.parseInt(video.statistics.likeCount, 10),
+      },
+    });
+    await prisma.video.update({
+      where: { serviceId_videoId: { serviceId: "youtube", videoId } },
+      data: { youtubeVideo: { connect: { id: videoId } } },
+    });
+  } finally {
+    // eslint-disable-next-line no-unsafe-finally
+    return prisma.video.findUnique({
+      where: { serviceId_videoId: { serviceId: "youtube", videoId } },
+      include: { youtubeVideo: { include: { channel: true } } },
+    }) as unknown as ResVideo;
+  }
+}
+
 async function VideoCreate({ req, res, prisma }: RouteParams<ResVideo>) {
   const { value, error } = VideoCreateSchema.validate(req.body);
   if (error) {
@@ -45,102 +143,6 @@ async function VideoCreate({ req, res, prisma }: RouteParams<ResVideo>) {
   }
 }
 
-function getYoutubeVideo(url: URL): Video {
-  if (url.pathname !== "/watch") {
-    if (url.hostname === "youtu.be") {
-      const videoId = url.pathname.split("/")[1];
-      return {
-        serviceId: "youtube",
-        videoId,
-        url: `https://www.youtube.com/watch?v=${videoId}`,
-        youtubeVideoId: null,
-      };
-    }
-    throw new Error("Not a video url");
-  }
-  const videoId = url.searchParams.get("v");
-  if (!videoId) {
-    throw new Error("No video id");
-  }
-  return {
-    serviceId: "youtube",
-    videoId: videoId,
-    url: `https://www.youtube.com/watch?v=${videoId}`,
-    youtubeVideoId: null,
-  };
-}
-
-function getVideoFromUrl(urlString: string): Video {
-  const url = new URL(urlString);
-  if (url.hostname.includes("youtu")) {
-    return getYoutubeVideo(url);
-  }
-  return {
-    serviceId: url.hostname,
-    videoId: `${url.pathname}?${url.search}`,
-    url: urlString,
-    youtubeVideoId: null,
-  };
-}
-
-async function addYoutubeInfo(videoId: string): Promise<ResVideo> {
-  try {
-    const videoRes =
-      await axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${process.env.YOUTUBE_API_KEY}
-      &part=snippet,contentDetails,statistics`);
-    if (!videoRes.data.items) {
-      throw new Error("No video found");
-    }
-    const video = videoRes.data.items[0];
-    const channelId = video.snippet.channelId;
-    const channel = await prisma.youtubeChannel.findUnique({
-      where: { id: channelId },
-    });
-    if (!channel) {
-      const channelRes = await axios.get(
-        `https://www.googleapis.com/youtube/v3/channels?id=${channelId}&key=${process.env.YOUTUBE_API_KEY}&part=snippet,statistics`
-      );
-      if (!channelRes.data.items) {
-        throw new Error("No channel found");
-      }
-      const channelData = channelRes.data.items[0];
-      await prisma.youtubeChannel.create({
-        data: {
-          id: channelId,
-          title: channelData.snippet.title,
-          description: channelData.snippet.description,
-          thumbnailUrl: channelData.snippet.thumbnails.medium.url,
-          subscriberCount: Number.parseInt(
-            channelData.statistics.subscriberCount
-          ),
-          channelUrl: `https://www.youtube.com/channel/${channelId}`,
-        },
-      });
-    }
-    await prisma.youtubeVideo.create({
-      data: {
-        id: videoId,
-        publishedAt: video.snippet.publishedAt,
-        channelId,
-        title: video.snippet.title,
-        description: video.snippet.description,
-        duration: youtubeDurationToSeconds(video.contentDetails.duration),
-        viewCount: Number.parseInt(video.statistics.viewCount),
-        likeCount: Number.parseInt(video.statistics.likeCount),
-      },
-    });
-    await prisma.video.update({
-      where: { serviceId_videoId: { serviceId: "youtube", videoId } },
-      data: { youtubeVideo: { connect: { id: videoId } } },
-    });
-  } finally {
-    return prisma.video.findUnique({
-      where: { serviceId_videoId: { serviceId: "youtube", videoId } },
-      include: { youtubeVideo: { include: { channel: true } } },
-    }) as unknown as ResVideo;
-  }
-}
-
 async function VideoRead({ req, res, prisma }: RouteParams<ResVideo>) {
   const serviceId = req.query.serviceId as string;
   const videoId = req.query.videoId as string;
@@ -149,7 +151,7 @@ async function VideoRead({ req, res, prisma }: RouteParams<ResVideo>) {
       .status(400)
       .json({ error: SubErrorType.Validation, message: "id" });
   }
-  let video = await prisma.video.findUnique({
+  const video = await prisma.video.findUnique({
     where: { serviceId_videoId: { serviceId, videoId } },
     include: { youtubeVideo: { include: { channel: true } } },
   });

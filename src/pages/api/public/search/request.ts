@@ -4,6 +4,7 @@ import {
   RouteParams,
 } from "../../../../utils/types";
 
+// eslint-disable-next-line consistent-return
 async function searchSubtitles({
   req,
   res,

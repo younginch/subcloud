@@ -16,13 +16,12 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { joiResolver } from "@hookform/resolvers/joi";
-import { SubcloudIcon } from "../components/icons/customIcons";
-import { UninstallFormSchema } from "../utils/schema";
-import { PageOptions } from "../utils/types";
 import axios from "axios";
-import { boolean } from "joi";
 import { useState } from "react";
 import { AiFillHeart } from "react-icons/ai";
+import { PageOptions } from "../utils/types";
+import { UninstallFormSchema } from "../utils/schema";
+import { SubcloudIcon } from "../components/icons/customIcons";
 
 type FormData = {
   // uninstall reason: entry.554264708
@@ -39,11 +38,11 @@ export default function Uninstall() {
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<FormData>({ resolver: joiResolver(UninstallFormSchema) });
 
   function onSubmit(values: FormData) {
-    let form = new FormData();
+    const form = new FormData();
     form.append("날짜", new Date().toString());
     form.append("삭제한 이유", values.reason);
     form.append("의견", values.opinion);

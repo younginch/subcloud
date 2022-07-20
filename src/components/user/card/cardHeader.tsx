@@ -17,6 +17,7 @@
 */
 
 import { Box, useStyleConfig } from "@chakra-ui/react";
+
 export default function CardHeader(props: any) {
   const { variant, children, ...rest } = props;
   const styles = useStyleConfig("CardHeader", { variant });

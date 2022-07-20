@@ -1,5 +1,4 @@
 import { ReflexContainer, ReflexElement, ReflexSplitter } from "react-reflex";
-import { PageOptions } from "../utils/types";
 import "react-reflex/styles.css";
 import {
   Box,
@@ -32,33 +31,24 @@ import {
 } from "react";
 import { SRTContent, SRTFile } from "@younginch/subtitle";
 import { useDropzone } from "react-dropzone";
-import Shortcuts from "../components/editor/shortcuts";
-import YoutubePlayer from "../components/editor/youtubePlayer";
-import TimeLineContainer from "../components/editor/timeLineContainer";
-import ToggleTheme from "../components/editor/toggleTheme";
 import { MdDelete } from "react-icons/md";
 import { FaPlus, FaSave } from "react-icons/fa";
-import NoVideo from "../components/editor/noVideo";
-import EditArray from "../components/editor/editArray";
-import Property from "../components/editor/property";
 import { GlobalHotKeys } from "react-hotkeys";
 import { BiHelpCircle } from "react-icons/bi";
 import { useRouter } from "next/router";
+import Property from "../components/editor/property";
+import EditArray from "../components/editor/editArray";
+import NoVideo from "../components/editor/noVideo";
+import ToggleTheme from "../components/editor/toggleTheme";
+import TimeLineContainer from "../components/editor/timeLineContainer";
+import YoutubePlayer from "../components/editor/youtubePlayer";
+import Shortcuts from "../components/editor/shortcuts";
 import { EditorContext, EditorProvider } from "../utils/editorCore";
 import Menus from "../components/editor/menus";
+import { PageOptions } from "../utils/types";
 
 function EditorWithoutContext() {
   const toast = useToast();
-  const [urlInput, setUrlInput] = useState("");
-  const urlField = useRef<HTMLInputElement>(null);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (router.query.youtubeId) {
-      setId(router.query.youtubeId as string);
-    }
-  }, []);
-
   const {
     contents,
     setContents,
@@ -69,6 +59,15 @@ function EditorWithoutContext() {
     commandKeys,
     commandHandlers,
   } = useContext(EditorContext);
+  const [urlInput, setUrlInput] = useState("");
+  const urlField = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.query.youtubeId) {
+      setId(router.query.youtubeId as string);
+    }
+  }, [router.query.youtubeId, setId]);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -80,7 +79,7 @@ function EditorWithoutContext() {
         setFocusedIndex(0);
       });
     },
-    [setContents]
+    [setContents, setFocusedIndex]
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
@@ -99,11 +98,7 @@ function EditorWithoutContext() {
   const headerBg = useColorModeValue("gray.100", "#18161d");
 
   return (
-    <GlobalHotKeys
-      keyMap={commandKeys}
-      handlers={commandHandlers}
-      allowChanges={true}
-    >
+    <GlobalHotKeys keyMap={commandKeys} handlers={commandHandlers} allowChanges>
       <Menus />
       <ReflexContainer
         style={{ width: "100vw", height: "calc(100vh - 54px)" }}
@@ -162,6 +157,7 @@ function EditorWithoutContext() {
                   onSubmit={(event: FormEvent) => {
                     event.preventDefault();
                     try {
+                      // eslint-disable-next-line @typescript-eslint/no-shadow
                       const id = new URL(urlInput).searchParams.get("v");
                       if (!id) {
                         throw new Error("");
@@ -205,7 +201,7 @@ function EditorWithoutContext() {
                 </form>
               </Stack>
             </ReflexElement>
-            <ReflexSplitter propagate={true} />
+            <ReflexSplitter propagate />
             <ReflexElement
               minSize={600}
               style={{ overflow: "hidden" }}
@@ -217,7 +213,7 @@ function EditorWithoutContext() {
                 <YoutubePlayer id={id} />
               )}
             </ReflexElement>
-            <ReflexSplitter propagate={true} />
+            <ReflexSplitter propagate />
             <ReflexElement minSize={300}>
               <Stack>
                 <Heading
@@ -235,7 +231,7 @@ function EditorWithoutContext() {
             </ReflexElement>
           </ReflexContainer>
         </ReflexElement>
-        <ReflexSplitter propagate={true} />
+        <ReflexSplitter propagate />
         <ReflexElement
           minSize={100}
           size={120}
@@ -245,7 +241,7 @@ function EditorWithoutContext() {
           <TimeLineContainer />
         </ReflexElement>
         <ReflexSplitter
-          propagate={true}
+          propagate
           style={{
             height: "3px",
           }}
@@ -348,7 +344,7 @@ function EditorWithoutContext() {
                 <EditArray />
               </HStack>
             </ReflexElement>
-            <ReflexSplitter propagate={true} />
+            <ReflexSplitter propagate />
             <ReflexElement maxSize={300} minSize={100}>
               <Property />
             </ReflexElement>

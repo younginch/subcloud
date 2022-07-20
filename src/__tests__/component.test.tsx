@@ -26,7 +26,7 @@ describe("Components", () => {
   });
 
   it("renders a RequestPanel", () => {
-    render(<RequestPanel requests={[]} />);
+    render(<RequestPanel initialRequests={[]} />);
   });
 
   it("renders a adminLayout", () => {
@@ -46,11 +46,7 @@ describe("Components", () => {
   });
 
   it("renders a Result", () => {
-    render(
-      <Result>
-        <></>
-      </Result>
-    );
+    render(<Result>test</Result>);
   });
 
   it("renders a SelectLanguage", () => {
@@ -72,11 +68,7 @@ describe("Components", () => {
   });
 
   it("renders ExplainBox", () => {
-    renderWithThemeAndSession(
-      <ExplainBox>
-        <></>
-      </ExplainBox>
-    );
+    renderWithThemeAndSession(<ExplainBox>test</ExplainBox>);
   });
 
   it("renders userLayout", () => {

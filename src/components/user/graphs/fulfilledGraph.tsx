@@ -23,7 +23,6 @@ export default function FulfilledGraph({
 }: Props) {
   const { t } = useTranslation("publicProfile");
   const textColor = useColorModeValue("gray.700", "gray.300");
-  const subTextColor = useColorModeValue("gray.600", "gray.400");
   const size =
     window.innerWidth >= 1024 ? 200 : window.innerWidth >= 768 ? 170 : 200;
   return (

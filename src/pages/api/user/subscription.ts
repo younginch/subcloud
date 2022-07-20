@@ -32,7 +32,6 @@ async function getSubscription({
 }
 
 async function createSubscription({
-  req,
   res,
   prisma,
   session,
@@ -85,8 +84,10 @@ async function completeSubscription({
         card: response.data.card,
       },
     });
-  } catch (e) {
-    console.log(e);
+  } catch (e: any) {
+    return res
+      .status(500)
+      .json({ error: SubErrorType.ServerError, message: e.toString() });
   }
   const updatedSubscription = await prisma.subscription.update({
     where: { customerKey },

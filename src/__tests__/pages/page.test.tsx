@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { render } from "@testing-library/react";
+import { Role } from "@prisma/client";
 import Home from "../../pages/index";
 import Page404 from "../../pages/404";
 import Page500 from "../../pages/500";
@@ -18,7 +20,6 @@ import VideoRankingPage from "../../pages/ranking/video";
 import ReviewDetail from "../../pages/review/[subId]";
 import Review from "../../pages/review";
 import UserIndex from "../../pages/user/[userId]";
-import { Role } from "@prisma/client";
 import UserRequest from "../../pages/user/[userId]/request";
 import UserSubtitle from "../../pages/user/[userId]/subtitle";
 import UserMyHistory from "../../pages/user/my/history";
@@ -95,7 +96,7 @@ describe("Pages (ranking)", () => {
 
 describe("Pages (review)", () => {
   it("renders ReviewDetail", () => {
-    //render(<ReviewDetail />);
+    // render(<ReviewDetail />);
   });
 
   it("renders Review", () => {
