@@ -1,7 +1,7 @@
 module.exports = {
   extends: ["airbnb", "airbnb-typescript", "next/core-web-vitals", "prettier"],
   parserOptions: {
-    project: "./tsconfig.json",
+    project: ["./tsconfig.json"],
   },
   rules: {
     "react/jsx-props-no-spreading": "off",
