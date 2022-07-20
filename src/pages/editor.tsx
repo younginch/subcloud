@@ -48,6 +48,7 @@ import { GlobalHotKeys } from "react-hotkeys";
 import { BiHelpCircle } from "react-icons/bi";
 import { useRouter } from "next/router";
 import { checkOccupation, findPosition } from "../utils/editorCore";
+import Menus from "../components/editor/menus";
 
 type EditorContextProps = {
   /// The left time in milliseconds
@@ -319,6 +320,7 @@ function EditorWithoutContext() {
 
   return (
     <GlobalHotKeys keyMap={keyMap} handlers={handlers} allowChanges={true}>
+      <Menus />
       <ReflexContainer
         style={{ width: "100vw", height: "calc(100vh - 54px)" }}
         orientation="horizontal"
@@ -585,4 +587,5 @@ Editor.options = {
   auth: false,
   hideTitle: true,
   hideFooter: true,
+  hideNavBar: true,
 } as PageOptions;
