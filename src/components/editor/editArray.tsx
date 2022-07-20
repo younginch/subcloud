@@ -58,15 +58,9 @@ function EditComponent({ index }: { index: number }) {
         newContents[index].textArray = event.target.value.split("\n");
         setContents(newContents);
       }}
+      resize="none"
     />
   );
-}
-
-function parseTime(sTime: string): number {
-  const m = Number(sTime.substring(0, 2));
-  const s = Number(sTime.substring(3, 5));
-  const ms = Number(sTime.substring(6, 9));
-  return m * 60 * 1000 + s * 1000 + ms;
 }
 
 type PMButtonProps = {
@@ -86,7 +80,7 @@ function PlusButton({ index, onClose, amount }: PMButtonProps) {
       }
       onClick={() => {
         const newContents = [...contents];
-        newContents[index].endTime = newContents[index].startTime + amount;
+        newContents[index].endTime = newContents[index].endTime + amount;
         setContents(newContents);
         onClose();
       }}
@@ -149,12 +143,23 @@ function EndTimestamp({ index }: { index: number }) {
             <PopoverHeader>종료 시간 조절</PopoverHeader>
             <PopoverBody>
               <FormControl>
-                <FormLabel>시작 시간으로부터</FormLabel>
+                <FormLabel>자막 길이 증가</FormLabel>
                 <HStack>
+                  <PlusButton index={index} onClose={onClose} amount={500} />
                   <PlusButton index={index} onClose={onClose} amount={1000} />
-                  <PlusButton index={index} onClose={onClose} amount={1500} />
                   <PlusButton index={index} onClose={onClose} amount={2000} />
-                  <Button>다음 자막 전까지</Button>
+                  <Button
+                    onClick={() => {
+                      const newContents = [...contents];
+                      newContents[index].endTime =
+                        newContents[index + 1].startTime;
+                      setContents(newContents);
+                      onClose();
+                    }}
+                    isDisabled={index >= contents.length - 1}
+                  >
+                    다음 자막 전까지
+                  </Button>
                 </HStack>
                 <InputGroup mt={2}>
                   <Input isDisabled />
@@ -280,7 +285,7 @@ export default function EditArray() {
   const ref = useRef<HTMLDivElement>(null);
 
   return (
-    <Box h="100%" maxH="100%" w="full" ref={ref} ml="0px !important">
+    <Box h="100%" maxH="100%" w="full" ref={ref} ml="0px !important" pr="8px">
       <FixedSizeList
         height={Number(ref.current?.clientHeight)}
         itemData={contents}

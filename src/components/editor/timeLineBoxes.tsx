@@ -11,7 +11,7 @@ type TimeLineBoxProps = {
 };
 
 function TimeLineBox({ item, index }: TimeLineBoxProps) {
-  const { contents, setContents, leftTime, rightTime } =
+  const { contents, setContents, leftTime, rightTime, focusedIndex } =
     useContext(EditorContext);
   const normalColor = useColorModeValue("#ffffff", "#333333");
   const resizePositiveColor = useColorModeValue("#ccffcc", "#113311");
@@ -57,7 +57,7 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
             ((item.startTime - contents[index - 1].endTime) /
               (rightTime - leftTime)) *
             6000;
-          if (delta.width >= leftLimit) {
+          if (delta.width > leftLimit) {
             const newContents = [...contents];
             newContents[index].startTime -=
               (leftLimit * (rightTime - leftTime)) / 6000;
@@ -68,7 +68,7 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
             ((contents[index + 1].startTime - item.endTime) /
               (rightTime - leftTime)) *
             6000;
-          if (delta.width >= rightLimit) {
+          if (delta.width > rightLimit) {
             const newContents = [...contents];
             newContents[index].endTime +=
               (rightLimit * (rightTime - leftTime)) / 6000;
@@ -99,7 +99,7 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
         data.node.style.backgroundColor = moveColor;
         if (index > 0) {
           const leftLimit = item.startTime - contents[index - 1].endTime;
-          if (-deltaT >= leftLimit) {
+          if (-deltaT > leftLimit) {
             const newContents = [...contents];
             newContents[index].startTime -= leftLimit;
             newContents[index].endTime -= leftLimit;
@@ -108,7 +108,7 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
         }
         if (index + 1 < contents.length) {
           const rightLimit = contents[index + 1].startTime - item.endTime;
-          if (deltaT >= rightLimit) {
+          if (deltaT > rightLimit) {
             const newContents = [...contents];
             newContents[index].startTime += rightLimit;
             newContents[index].endTime += rightLimit;

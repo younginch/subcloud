@@ -9,15 +9,10 @@ import {
   Stack,
   Text,
   useColorModeValue,
-  MenuButton,
-  Menu,
-  MenuList,
-  MenuItem,
   Wrap,
   HStack,
   useMediaQuery,
   Checkbox,
-  MenuOptionGroup,
   Box,
   keyframes,
 } from "@chakra-ui/react";
@@ -32,16 +27,16 @@ import VideoInfo from "../../../../../components/create/videoInfo";
 import { PageOptions, ResVideo } from "../../../../../utils/types";
 import Card from "../../../../../components/user/card/card";
 import CardHeader from "../../../../../components/user/card/cardHeader";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import InViewProvider from "../../../../../components/inviewProvider";
 import { useEffect, useState } from "react";
-import ISO6391, { LanguageCode } from "iso-639-1";
+import ISO6391 from "iso-639-1";
 import { CgShapeTriangle } from "react-icons/cg";
 import { TbDiamond, TbDiamonds } from "react-icons/tb";
 import { BiRocket } from "react-icons/bi";
 import { BsLightningCharge } from "react-icons/bs";
 import { HiOutlineFire } from "react-icons/hi";
 import useTranslation from "next-translate/useTranslation";
+import SelectLanguage from "../../../../../components/selectLanguage";
 
 type FormData = {
   serviceId: string;
@@ -65,6 +60,7 @@ export default function RequestCreate() {
   const videoId = router.query.videoId as string;
   const toast = useToast();
   const { data } = useSession();
+  const [check, setCheck] = useState(false);
   const {
     handleSubmit,
     register,
@@ -104,18 +100,6 @@ export default function RequestCreate() {
       icon: <BsLightningCharge size="100%" strokeWidth="0.2px" />,
     },
   ];
-  const codeList: LanguageCode[] = [
-    "en",
-    "fr",
-    "de",
-    "it",
-    "es",
-    "pt",
-    "ru",
-    "ja",
-    "zh",
-    "ko",
-  ];
 
   const pulseRing = keyframes`
 	0% {
@@ -150,6 +134,24 @@ export default function RequestCreate() {
     }
     return -1;
   };
+
+  const changeLang = async () => {
+    if (watch().lang && !check) {
+      setCheck(!check);
+      await axios
+        .patch("/api/user/lang", {
+          requestLang: watch().lang,
+        })
+        .catch((err) => {
+          toast({
+            title: "Error",
+            description: "Request Lang not changed",
+            status: "error",
+          });
+        });
+    }
+  };
+
   function onSubmit(values: FormData) {
     return new Promise<void>((resolve, reject) => {
       axios
@@ -189,13 +191,11 @@ export default function RequestCreate() {
   useEffect(() => {
     setValue("point", 0);
     axios.get("/api/user/lang").then(({ data }) => {
-      setValue("lang", data.baseLangs);
+      setValue("lang", data.requestLangs[0]);
     });
   }, [setValue]);
 
   const pointBg = useColorModeValue("gray.100", "gray.800");
-
-  console.log("debug", watch().lang);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -219,40 +219,17 @@ export default function RequestCreate() {
               {t("select_lang")}
             </Text>
           </CardHeader>
-          <Menu>
-            <FormControl isInvalid={errors.lang !== undefined} as="fieldset">
-              <MenuOptionGroup>
-                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                  {watch().lang
-                    ? ISO6391.getName(watch().lang)
-                    : t("select_lang")}
-                </MenuButton>
-                <MenuList>
-                  {codeList.map((code) => {
-                    return (
-                      <MenuItem
-                        key={code}
-                        onClick={() => setValue("lang", code)}
-                      >
-                        {`${ISO6391.getName(code)} (${ISO6391.getNativeName(
-                          code
-                        )})`}
-                      </MenuItem>
-                    );
-                  })}
-                </MenuList>
-              </MenuOptionGroup>
-              <FormErrorMessage
-                w="fit-content"
-                justifyContent="center"
-                fontSize="14px"
-                color="red.300"
-              >
-                {errors.lang && t("check_subtitle_lang_required")}
-              </FormErrorMessage>
-            </FormControl>
-          </Menu>
-          <Checkbox mt={5} size="lg" defaultChecked>
+          <SelectLanguage
+            lang={watch().lang}
+            error={errors.lang}
+            setLang={(lang: string) => setValue("lang", lang)}
+          />
+          <Checkbox
+            mt={5}
+            size="lg"
+            defaultChecked={check}
+            onChange={changeLang}
+          >
             {t("basic_lang")}
           </Checkbox>
         </Card>

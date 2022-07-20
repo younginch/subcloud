@@ -2,6 +2,7 @@
   "preview": "Preview",
   "upload_vid": "Upload video",
   "select_lang": "Select language",
+  "require_file": "Please upload the file",
   "select_lang_ex": "If you select a language different from the content of the subtitles, the review may be rejected",
   "upload_sub": "Upload subtitle",
   "edit": "Edit on SubCloud",
@@ -15,5 +16,6 @@
   "sub_lang": "Subtitle language",
   "upload_req": "Upload request",
   "fulfilled": "Fulfilled",
-  "fulfilled_ex": "It will be updated as it passes the review."
+  "fulfilled_ex": "It will be updated as it passes the review.",
+  "check_subtitle_lang_required": "Please select subtitle language"
 }
