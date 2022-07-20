@@ -100,7 +100,7 @@ export default function TimeLine() {
   const mainRulerColor = useColorModeValue("black", "white");
   const subRulerColor = useColorModeValue("black", "white");
 
-  const { leftTime, rightTime } = useContext(EditorContext);
+  const { leftTime, rightTime, forceRerender } = useContext(EditorContext);
 
   const currentBreakPoint = getBreakPoint(rightTime - leftTime);
   const config = breakPointConfig[currentBreakPoint];
@@ -162,7 +162,7 @@ export default function TimeLine() {
     if (ctx) render(ctx);
     window.addEventListener("resize", handleResize);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [colorMode, leftTime, rightTime]);
+  }, [colorMode, leftTime, rightTime, forceRerender]);
 
   return (
     <canvas
