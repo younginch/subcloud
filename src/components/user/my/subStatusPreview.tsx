@@ -27,7 +27,7 @@ export default function SubStatusPreview() {
   const session = useSession();
   const toast = useToast();
   const [subs, setSubs] = useState<ResSubSearch>();
-  const [subStatus, setSubStatus] = useState<SubStatus | "all">("all");
+  const [subStatus, setSubStatus] = useState<SubStatus | "All">("All");
   useEffect(getSubs, [session.data?.user.id, subStatus, toast]);
 
   function getSubs() {
