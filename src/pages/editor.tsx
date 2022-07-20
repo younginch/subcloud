@@ -47,6 +47,7 @@ import Property from "../components/editor/property";
 import { GlobalHotKeys } from "react-hotkeys";
 import { BiHelpCircle } from "react-icons/bi";
 import { useRouter } from "next/router";
+import { checkOccupation, findPosition } from "../utils/editorCore";
 
 type EditorContextProps = {
   /// The left time in milliseconds
@@ -106,8 +107,8 @@ type EditorProviderProps = {
 };
 
 function EditorProvider({ children }: EditorProviderProps) {
-  const [leftTime, setLeftTime] = useState<number>(-15 * 1000);
-  const [rightTime, setRightTime] = useState<number>(30 * 1000);
+  const [leftTime, setLeftTime] = useState<number>(-20 * 1000);
+  const [rightTime, setRightTime] = useState<number>(40 * 1000);
   const [contents, setContents] = useState<SRTContent[]>([]);
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
   const [id, setId] = useState<string>("");
@@ -142,7 +143,7 @@ function EditorProvider({ children }: EditorProviderProps) {
         setPlayer: (newPlayer) => {
           setPlayer(newPlayer);
           setDuration(newPlayer.getDuration() * 1000);
-          const initialTime = Math.min(newPlayer.getDuration() * 1000, 15000);
+          const initialTime = Math.min(newPlayer.getDuration() * 1000, 20000);
           setLeftTime(-initialTime);
           setRightTime(initialTime * 2);
           axios
@@ -154,7 +155,7 @@ function EditorProvider({ children }: EditorProviderProps) {
             });
         },
         getPlayerTime: () => {
-          return player?.getDuration() * 1000;
+          return player?.getCurrentTime() * 1000;
         },
         setPlayerTime: (time) => {
           player?.seekTo(time / 1000);
@@ -233,8 +234,13 @@ function EditorWithoutContext() {
 
   const keyMap = {
     PLAY_PAUSE: ["space"],
+    NEW_SUBTITLE: ["["],
+    CUT_SUBTITLE: ["]"],
+    SPLIT_SUBTITLE: ["\\", "/"],
     LEFT_0_5: ["left"],
     RIGHT_0_5: ["right"],
+    LEFT_5: ["shift+left"],
+    RIGHT_5: ["shift+right"],
     DELETE_ALL: ["command", "backspace"],
   };
 
@@ -242,11 +248,68 @@ function EditorWithoutContext() {
     PLAY_PAUSE: () => {
       playOrPause();
     },
+    NEW_SUBTITLE: () => {
+      if (checkOccupation(contents, getPlayerTime()) !== -1) return;
+
+      const newItem = new SRTContent(
+        contents.length.toString(),
+        "00:00:00,000 --> 00:00:00,000",
+        []
+      );
+      let newIndex = findPosition(contents, getPlayerTime());
+      if (newIndex === -1) return;
+
+      const endTime =
+        newIndex === contents.length ? duration : contents[newIndex].startTime;
+      newItem.startTime = getPlayerTime();
+      newItem.endTime = Math.min(newItem.startTime + 5 * 1000, endTime); // default 5 seconds
+
+      setContents([
+        ...contents.slice(0, newIndex),
+        newItem,
+        ...contents.slice(newIndex),
+      ]);
+    },
+    CUT_SUBTITLE: () => {
+      const index = checkOccupation(contents, getPlayerTime());
+      if (index === -1) return;
+
+      const newContents = [...contents];
+      newContents[index].endTime = getPlayerTime();
+      setContents(newContents);
+    },
+    SPLIT_SUBTITLE: () => {
+      const index = checkOccupation(contents, getPlayerTime());
+      if (index === -1) return;
+
+      const newItem = new SRTContent(
+        contents.length.toString(),
+        "00:00:00,000 --> 00:00:00,000",
+        []
+      );
+      newItem.startTime = getPlayerTime();
+      newItem.endTime = contents[index].endTime;
+      newItem.textArray = contents[index].textArray;
+
+      const newContents = [...contents];
+      newContents[index].endTime = getPlayerTime();
+      setContents([
+        ...newContents.slice(0, index + 1),
+        newItem,
+        ...newContents.slice(index + 1),
+      ]);
+    },
     LEFT_0_5: () => {
-      setPlayerTime(getPlayerTime() - 500 >= 0 ? getPlayerTime() - 500 : 0);
+      setPlayerTime(Math.max(getPlayerTime() - 500, 0));
     },
     RIGHT_0_5: () => {
-      setPlayerTime(getPlayerTime() + 500);
+      setPlayerTime(Math.min(getPlayerTime() + 500, duration));
+    },
+    LEFT_5: () => {
+      setPlayerTime(Math.max(getPlayerTime() - 5000, 0));
+    },
+    RIGHT_5: () => {
+      setPlayerTime(Math.min(getPlayerTime() + 5000, duration));
     },
     DELETE_ALL: () => {
       setContents([]);
