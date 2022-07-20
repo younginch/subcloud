@@ -11,11 +11,6 @@ import {
   List,
   Stack,
   useColorModeValue,
-  MenuList,
-  Menu,
-  MenuItem,
-  MenuOptionGroup,
-  MenuButton,
   HStack,
   Tooltip,
   useMediaQuery,
@@ -28,12 +23,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import VideoInfo from "../../../../../components/create/videoInfo";
-import {
-  CheckCircleIcon,
-  ChevronDownIcon,
-  EditIcon,
-  WarningIcon,
-} from "@chakra-ui/icons";
+import { CheckCircleIcon, EditIcon, WarningIcon } from "@chakra-ui/icons";
 import { PageOptions, ResVideo } from "../../../../../utils/types";
 import { Role } from "@prisma/client";
 import Card from "../../../../../components/user/card/card";
@@ -43,6 +33,9 @@ import { AiOutlineInfoCircle, AiOutlineUser } from "react-icons/ai";
 import { YoutubeIcon } from "../../../../../components/icons/customIcons";
 import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
+import SelectLanguage from "../../../../../components/selectLanguage";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { UploadCreateSchema } from "../../../../../utils/schema";
 
 type FormData = {
   lang: string;
@@ -58,11 +51,10 @@ export default function SubCreate() {
   const { data } = useSession();
   const {
     handleSubmit,
-    register,
     watch,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<FormData>();
+  } = useForm<FormData>({ resolver: joiResolver(UploadCreateSchema) });
   const [file, setFile] = useState<string | Blob>();
 
   function onSubmit(values: FormData) {
@@ -127,8 +119,9 @@ export default function SubCreate() {
       };
     }
   >();
-  const [lang, setLang] = useState<LanguageCode>();
+
   useEffect(() => {
+    const lang = watch().lang;
     axios
       .get<
         (ResVideo & {
@@ -142,12 +135,22 @@ export default function SubCreate() {
       .then(({ data }) => {
         setVideo(data[0]);
       });
-  }, [serviceId, videoId, lang]);
+  }, [serviceId, videoId, watch()]);
+
+  useEffect(() => {
+    setValue("file", file as File);
+  }, [file]);
 
   const acceptedFileItems = acceptedFiles.map((file) => (
-    <>
+    <HStack key={file.name} w="100%">
       <CheckCircleIcon color="green" w="20px" h="20px" />
-      <Text fontSize="20px">
+      <Text
+        fontSize="17px"
+        maxW="calc(100% - 200px)"
+        textOverflow="ellipsis"
+        overflow="hidden"
+        whiteSpace="nowrap"
+      >
         {file.name} - {file.size} bytes
       </Text>
       <Spacer />
@@ -156,11 +159,13 @@ export default function SubCreate() {
           leftIcon={<YoutubeIcon size="20px" />}
           colorScheme="red"
           variant="outline"
+          minW="130px"
+          w="130px"
         >
           {t("preview")}
         </Button>
       </Link>
-    </>
+    </HStack>
   ));
 
   const fileRejectionItems = fileRejections.map(({ file, errors }) => (
@@ -181,18 +186,7 @@ export default function SubCreate() {
     acceptedFiles.length > 0 ? acceptedFiles[0].name : "";
 
   const textColor = useColorModeValue("gray.700", "gray.300");
-  const codeList: LanguageCode[] = [
-    "en",
-    "fr",
-    "de",
-    "it",
-    "es",
-    "pt",
-    "ru",
-    "ja",
-    "zh",
-    "ko",
-  ];
+
   const [uploadToggle] = useMediaQuery("(min-width: 1350px)");
 
   return (
@@ -217,6 +211,7 @@ export default function SubCreate() {
               <Text color={textColor} fontSize="lg" fontWeight="bold">
                 {t("upload_sub")}
               </Text>
+              <Spacer />
               <Link href={`/editor/?youtubeId=${video?.videoId}`} passHref>
                 <Button
                   leftIcon={<EditIcon />}
@@ -228,7 +223,7 @@ export default function SubCreate() {
               </Link>
             </HStack>
           </CardHeader>
-          <FormControl isInvalid={errors.file !== undefined}>
+          <FormControl>
             <Box
               h="100px"
               borderWidth="1px"
@@ -252,6 +247,7 @@ export default function SubCreate() {
               )}
             </Box>
             <HStack mt="15px">{acceptedFileItems}</HStack>
+            {errors.file && <Text color="red.400">{t("require_file")}</Text>}
             <FormErrorMessage>
               <List>{fileRejectionItems}</List>
             </FormErrorMessage>
@@ -270,37 +266,11 @@ export default function SubCreate() {
               </Tooltip>
             </HStack>
           </CardHeader>
-          <Menu>
-            <FormControl as="fieldset">
-              <MenuOptionGroup>
-                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                  {watch().lang
-                    ? ISO6391.getName(watch().lang)
-                    : t("select_lang")}
-                </MenuButton>
-                <MenuList>
-                  {codeList.map((code) => {
-                    return (
-                      <MenuItem
-                        key={code}
-                        onClick={() => {
-                          setValue("lang", code);
-                          setLang(code);
-                        }}
-                      >
-                        {`${ISO6391.getName(code)} (${ISO6391.getNativeName(
-                          code
-                        )})`}
-                      </MenuItem>
-                    );
-                  })}
-                </MenuList>
-              </MenuOptionGroup>
-              <FormErrorMessage>
-                {errors.lang && t("check_subtitle_lang_required")}
-              </FormErrorMessage>
-            </FormControl>
-          </Menu>
+          <SelectLanguage
+            lang={watch().lang}
+            error={errors.lang}
+            setLang={(lang: string) => setValue("lang", lang)}
+          />
         </Card>
         <Card
           w="400px"
@@ -354,7 +324,6 @@ export default function SubCreate() {
           <Text fontWeight="bold" fontSize="20px">
             {video?._count.points}
           </Text>
-
           <HStack mt="20px !important">
             <Text fontSize="18px">{t("fulfilled")}</Text>
             <Tooltip label={t("fulfilled_ex")}>
