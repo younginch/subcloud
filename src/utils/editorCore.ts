@@ -1,3 +1,4 @@
+import { keyframes } from "@chakra-ui/react";
 import { SRTContent } from "@younginch/subtitle";
 
 export function checkOccupation(contents: SRTContent[], time: number): number {
@@ -20,4 +21,20 @@ export function findPosition(contents: SRTContent[], time: number): number {
       return i + 1;
   }
   return -1;
+}
+
+export function makeLeftAnimation(
+  left: number,
+  right: number,
+  time: number
+): string {
+  const changeLeft = keyframes`
+  0% {
+    left: ${left}px;
+  }
+  100% {
+    left: ${right}px;
+  }
+  `;
+  return `${time}s ${changeLeft} linear`;
 }
