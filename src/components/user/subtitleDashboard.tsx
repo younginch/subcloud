@@ -1,4 +1,5 @@
 import { Box, Flex, Grid, Text, useColorModeValue } from "@chakra-ui/react";
+import ISO6391 from "iso-639-1";
 import router from "next/router";
 import UserRatingComponent from "./graphs/userRatingComponent";
 import FulfilledGraph from "./graphs/fulfilledGraph";
@@ -12,7 +13,6 @@ import ProfileSubtitleRow from "./profileSubtitleRow";
 import UserActivity from "./graphs/userActivity";
 import CalendarChart from "./graphs/calanderChart";
 import useTranslation from "next-translate/useTranslation";
-import { TbCircle9 } from "react-icons/tb";
 
 type Props = {
   user: ResUserSearch;
@@ -31,6 +31,15 @@ export default function SubtitleDashboard({ user, subs }: Props) {
     { caption: t("subtitleDashboard_views") },
     { caption: t("subtitleDashboard_uploaded") },
   ];
+  const langsMap = new Map();
+  for (let i = 0; i < subs.length; i += 1) {
+    const { lang } = subs[i];
+    const num = langsMap.get(lang);
+    if (num) langsMap.set(lang, num + 1);
+    else langsMap.set(lang, 1);
+  }
+  const sortLangsMap = new Map([...langsMap].sort((a, b) => b[1] - a[1]));
+  const langs = [...sortLangsMap.keys()];
 
   return (
     <>
@@ -80,9 +89,14 @@ export default function SubtitleDashboard({ user, subs }: Props) {
               fontWeight="bold"
             >
               <Text fontSize="60px" mt={5}>
-                Korean
+                {langs[0] && ISO6391.getNativeName(langs[0])}
               </Text>
-              <Text fontSize="30px">English</Text>
+              <Text fontSize="30px">
+                {langs[1] && ISO6391.getNativeName(langs[1])}
+              </Text>
+              <Text fontSize="15px">
+                {langs[2] && ISO6391.getNativeName(langs[2])}
+              </Text>
             </Flex>
           </Card>
         </Grid>
