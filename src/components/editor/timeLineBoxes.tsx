@@ -3,7 +3,7 @@ import { SRTContent } from "@younginch/subtitle";
 import { useContext } from "react";
 import { DraggableData, Rnd } from "react-rnd";
 import { v4 as uuid } from "uuid";
-import { EditorContext } from "../../pages/editor";
+import { EditorContext } from "../../utils/editorCore";
 
 type TimeLineBoxProps = {
   item: SRTContent;

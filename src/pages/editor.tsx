@@ -23,7 +23,6 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import {
-  createContext,
   FormEvent,
   useCallback,
   useContext,
@@ -36,164 +35,17 @@ import { useDropzone } from "react-dropzone";
 import Shortcuts from "../components/editor/shortcuts";
 import YoutubePlayer from "../components/editor/youtubePlayer";
 import TimeLineContainer from "../components/editor/timeLineContainer";
-import { YouTubePlayer } from "react-youtube";
 import ToggleTheme from "../components/editor/toggleTheme";
 import { MdDelete } from "react-icons/md";
 import { FaPlus, FaSave } from "react-icons/fa";
 import NoVideo from "../components/editor/noVideo";
-import axios from "axios";
 import EditArray from "../components/editor/editArray";
 import Property from "../components/editor/property";
 import { GlobalHotKeys } from "react-hotkeys";
 import { BiHelpCircle } from "react-icons/bi";
 import { useRouter } from "next/router";
-import { checkOccupation, findPosition } from "../utils/editorCore";
+import { EditorContext, EditorProvider } from "../utils/editorCore";
 import Menus from "../components/editor/menus";
-
-type EditorContextProps = {
-  /// The left time in milliseconds
-  leftTime: number;
-  /// The right time in milliseconds
-  rightTime: number;
-  changeLRTime: (left: number, right: number) => void;
-  contents: SRTContent[];
-  setContents: (newContents: SRTContent[]) => void;
-  focusedIndex: number;
-  setFocusedIndex: (index: number) => void;
-  id: string;
-  setId: (id: string) => void;
-  setPlayer: (player: YouTubePlayer) => void;
-  getPlayerTime: () => number;
-  setPlayerTime: (time: number) => void;
-  state: PlayerState;
-  setState: (state: PlayerState) => void;
-  playOrPause: () => void;
-  duration: number;
-  aspectRatio: number;
-  forceRerender: boolean;
-  setForceRerender: () => void;
-};
-
-export enum PlayerState {
-  UNSTARTED = -1,
-  ENDED = 0,
-  PLAYING = 1,
-  PAUSED = 2,
-  BUFFERING = 3,
-  CUED = 5,
-}
-
-export const EditorContext = createContext<EditorContextProps>({
-  /* The left time in milliseconds
-   */
-  leftTime: 0,
-  rightTime: 100 * 1000,
-  changeLRTime: (_, __) => {},
-  contents: [],
-  setContents: (_) => {},
-  focusedIndex: 0,
-  setFocusedIndex: (_) => {},
-  id: "",
-  setId: (_) => {},
-  setPlayer: () => {},
-  getPlayerTime: () => 0,
-  setPlayerTime: (_) => {},
-  state: PlayerState.UNSTARTED,
-  setState: (_) => {},
-  playOrPause: () => {},
-  duration: 0,
-  aspectRatio: 0,
-  forceRerender: true,
-  setForceRerender: () => {},
-});
-
-type EditorProviderProps = {
-  children: React.ReactNode;
-};
-
-function EditorProvider({ children }: EditorProviderProps) {
-  const [leftTime, setLeftTime] = useState<number>(-20 * 1000);
-  const [rightTime, setRightTime] = useState<number>(40 * 1000);
-  const [contents, setContents] = useState<SRTContent[]>([]);
-  const [focusedIndex, setFocusedIndex] = useState<number>(0);
-  const [id, setId] = useState<string>("");
-  const [player, setPlayer] = useState<YouTubePlayer>();
-  const [duration, setDuration] = useState<number>(10 * 60 * 1000);
-  const [videoFraction, setVideoFraction] = useState<number>(0);
-  const [playerState, setPlayerState] = useState<PlayerState>(
-    PlayerState.UNSTARTED
-  );
-  const [forceRerender, setForceRerender] = useState<boolean>(true);
-
-  return (
-    <EditorContext.Provider
-      value={{
-        leftTime,
-        rightTime,
-        changeLRTime: (left, right) => {
-          setLeftTime(left);
-          setRightTime(right);
-        },
-        contents,
-        setContents: (newContents) => {
-          setContents(newContents);
-        },
-        focusedIndex,
-        setFocusedIndex: (index) => {
-          setFocusedIndex(index);
-        },
-        id,
-        setId: (newId) => {
-          setId(newId);
-        },
-        setPlayer: (newPlayer) => {
-          setPlayer(newPlayer);
-          setDuration(newPlayer.getDuration() * 1000);
-          const initialTime = Math.min(newPlayer.getDuration() * 1000, 20000);
-          setLeftTime(-initialTime);
-          setRightTime(initialTime * 2);
-          axios
-            .get(
-              `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`
-            )
-            .then((res) => {
-              setVideoFraction(res.data.width / res.data.height);
-            });
-        },
-        getPlayerTime: () => {
-          return player?.getCurrentTime() * 1000;
-        },
-        setPlayerTime: (time) => {
-          player?.seekTo(time / 1000);
-        },
-        duration,
-        aspectRatio: videoFraction,
-        state: playerState,
-        setState: (newState) => {
-          setPlayerState(newState);
-          if (newState === PlayerState.PLAYING) {
-            player?.playVideo();
-          } else if (newState === PlayerState.PAUSED) {
-            player?.pauseVideo();
-          }
-        },
-        playOrPause: () => {
-          if (playerState === PlayerState.PLAYING) {
-            player?.pauseVideo();
-          } else if (playerState === PlayerState.PAUSED) {
-            player?.playVideo();
-          }
-        },
-        forceRerender,
-        setForceRerender: () => {
-          setForceRerender(!forceRerender);
-        },
-      }}
-    >
-      {children}
-    </EditorContext.Provider>
-  );
-}
 
 function EditorWithoutContext() {
   const toast = useToast();
@@ -213,12 +65,9 @@ function EditorWithoutContext() {
     setFocusedIndex,
     id,
     setId,
-    getPlayerTime,
-    setPlayerTime,
-    playOrPause,
     duration,
-    forceRerender,
-    setForceRerender,
+    commandKeys,
+    commandHandlers,
   } = useContext(EditorContext);
 
   const onDrop = useCallback(
@@ -249,100 +98,12 @@ function EditorWithoutContext() {
 
   const headerBg = useColorModeValue("gray.100", "#18161d");
 
-  const keyMap = {
-    PLAY_PAUSE: ["space"],
-    NEW_SUBTITLE: ["["],
-    CUT_SUBTITLE: ["]"],
-    SPLIT_SUBTITLE: ["\\", "/"],
-    LEFT_0_5: ["left"],
-    RIGHT_0_5: ["right"],
-    LEFT_5: ["shift+left"],
-    RIGHT_5: ["shift+right"],
-    DELETE_ALL: ["command", "backspace"],
-  };
-
-  const handlers = {
-    PLAY_PAUSE: () => {
-      playOrPause();
-    },
-    NEW_SUBTITLE: () => {
-      if (checkOccupation(contents, getPlayerTime()) !== -1) return;
-
-      const newItem = new SRTContent(
-        contents.length.toString(),
-        "00:00:00,000 --> 00:00:00,000",
-        []
-      );
-      let newIndex = findPosition(contents, getPlayerTime());
-      if (newIndex === -1) return;
-
-      const endTime =
-        newIndex === contents.length ? duration : contents[newIndex].startTime;
-      newItem.startTime = getPlayerTime();
-      newItem.endTime = Math.min(newItem.startTime + 5 * 1000, endTime); // default 5 seconds
-
-      setContents([
-        ...contents.slice(0, newIndex),
-        newItem,
-        ...contents.slice(newIndex),
-      ]);
-      setForceRerender();
-    },
-    CUT_SUBTITLE: () => {
-      const index = checkOccupation(contents, getPlayerTime());
-      if (index === -1) return;
-
-      const newContents = [...contents];
-      newContents[index].endTime = getPlayerTime();
-      setContents(newContents);
-      setForceRerender();
-    },
-    SPLIT_SUBTITLE: () => {
-      const index = checkOccupation(contents, getPlayerTime());
-      if (index === -1) return;
-
-      const newItem = new SRTContent(
-        contents.length.toString(),
-        "00:00:00,000 --> 00:00:00,000",
-        []
-      );
-      newItem.startTime = getPlayerTime();
-      newItem.endTime = contents[index].endTime;
-      newItem.textArray = contents[index].textArray;
-
-      const newContents = [...contents];
-      newContents[index].endTime = getPlayerTime();
-      setContents([
-        ...newContents.slice(0, index + 1),
-        newItem,
-        ...newContents.slice(index + 1),
-      ]);
-      setForceRerender();
-    },
-    LEFT_0_5: () => {
-      setPlayerTime(Math.max(getPlayerTime() - 500, 0));
-      setForceRerender();
-    },
-    RIGHT_0_5: () => {
-      setPlayerTime(Math.min(getPlayerTime() + 500, duration));
-      setForceRerender();
-    },
-    LEFT_5: () => {
-      setPlayerTime(Math.max(getPlayerTime() - 5000, 0));
-      setForceRerender();
-    },
-    RIGHT_5: () => {
-      setPlayerTime(Math.min(getPlayerTime() + 5000, duration));
-      setForceRerender();
-    },
-    DELETE_ALL: () => {
-      setContents([]);
-      setFocusedIndex(-1);
-    },
-  };
-
   return (
-    <GlobalHotKeys keyMap={keyMap} handlers={handlers} allowChanges={true}>
+    <GlobalHotKeys
+      keyMap={commandKeys}
+      handlers={commandHandlers}
+      allowChanges={true}
+    >
       <Menus />
       <ReflexContainer
         style={{ width: "100vw", height: "calc(100vh - 54px)" }}

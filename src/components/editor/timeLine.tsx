@@ -1,7 +1,7 @@
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useContext, useEffect, useRef } from "react";
-import { EditorContext } from "../../pages/editor";
+import { EditorContext } from "../../utils/editorCore";
 
 const breakPointConfig = [
   {

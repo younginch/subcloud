@@ -23,15 +23,13 @@ import {
   Portal,
   useDisclosure,
   Divider,
-  Center,
-  useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { ChangeEvent, useContext, useRef, useState } from "react";
 import { MdTimer } from "react-icons/md";
-import { EditorContext } from "../../pages/editor";
+import { EditorContext } from "../../utils/editorCore";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 import { SRTContent } from "@younginch/subtitle";
 

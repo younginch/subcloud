@@ -1,6 +1,6 @@
 import { Text, Stack, useInterval } from "@chakra-ui/react";
-import { RefObject, useContext, useEffect, useState } from "react";
-import { EditorContext } from "../../pages/editor";
+import { RefObject, useContext, useState } from "react";
+import { EditorContext } from "../../utils/editorCore";
 
 type Props = {
   boxRef: RefObject<HTMLDivElement>;
@@ -14,7 +14,7 @@ export default function SubtitleComponent({ boxRef }: Props) {
   const paddingUnit = fontSize / 5;
 
   const [textArray, setTextArray] = useState<string[]>([]);
-  const { contents, getPlayerTime, state } = useContext(EditorContext);
+  const { contents, getPlayerTime } = useContext(EditorContext);
 
   const intervalSub = () => {
     const currentTime = getPlayerTime();

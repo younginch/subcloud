@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { v4 as uuid } from "uuid";
-import { EditorContext } from "../../pages/editor";
+import { EditorContext } from "../../utils/editorCore";
 
 export default function Property() {
   const { contents, focusedIndex } = useContext(EditorContext);

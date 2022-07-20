@@ -1,7 +1,7 @@
 import { Box, createIcon } from "@chakra-ui/react";
 import { useContext, useEffect, useRef } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
-import { EditorContext, PlayerState } from "../../pages/editor";
+import { EditorContext, PlayerState } from "../../utils/editorCore";
 import { makeLeftAnimation } from "../../utils/editorCore";
 
 export const TimeLineMarkerSVG = createIcon({
