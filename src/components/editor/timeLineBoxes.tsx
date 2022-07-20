@@ -1,6 +1,6 @@
 import { Box, HStack, Text, useColorModeValue } from "@chakra-ui/react";
 import { SRTContent } from "@younginch/subtitle";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { DraggableData, Rnd } from "react-rnd";
 import { v4 as uuid } from "uuid";
 import { EditorContext } from "../../pages/editor";

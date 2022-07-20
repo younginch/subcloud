@@ -70,6 +70,8 @@ type EditorContextProps = {
   playOrPause: () => void;
   duration: number;
   aspectRatio: number;
+  forceRerender: boolean;
+  setForceRerender: () => void;
 };
 
 export enum PlayerState {
@@ -101,6 +103,8 @@ export const EditorContext = createContext<EditorContextProps>({
   playOrPause: () => {},
   duration: 0,
   aspectRatio: 0,
+  forceRerender: true,
+  setForceRerender: () => {},
 });
 
 type EditorProviderProps = {
@@ -119,6 +123,7 @@ function EditorProvider({ children }: EditorProviderProps) {
   const [playerState, setPlayerState] = useState<PlayerState>(
     PlayerState.UNSTARTED
   );
+  const [forceRerender, setForceRerender] = useState<boolean>(true);
 
   return (
     <EditorContext.Provider
@@ -166,6 +171,11 @@ function EditorProvider({ children }: EditorProviderProps) {
         state: playerState,
         setState: (newState) => {
           setPlayerState(newState);
+          if (newState === PlayerState.PLAYING) {
+            player?.playVideo();
+          } else if (newState === PlayerState.PAUSED) {
+            player?.pauseVideo();
+          }
         },
         playOrPause: () => {
           if (playerState === PlayerState.PLAYING) {
@@ -173,6 +183,10 @@ function EditorProvider({ children }: EditorProviderProps) {
           } else if (playerState === PlayerState.PAUSED) {
             player?.playVideo();
           }
+        },
+        forceRerender,
+        setForceRerender: () => {
+          setForceRerender(!forceRerender);
         },
       }}
     >
@@ -203,6 +217,8 @@ function EditorWithoutContext() {
     setPlayerTime,
     playOrPause,
     duration,
+    forceRerender,
+    setForceRerender,
   } = useContext(EditorContext);
 
   const onDrop = useCallback(
@@ -270,6 +286,7 @@ function EditorWithoutContext() {
         newItem,
         ...contents.slice(newIndex),
       ]);
+      setForceRerender();
     },
     CUT_SUBTITLE: () => {
       const index = checkOccupation(contents, getPlayerTime());
@@ -278,6 +295,7 @@ function EditorWithoutContext() {
       const newContents = [...contents];
       newContents[index].endTime = getPlayerTime();
       setContents(newContents);
+      setForceRerender();
     },
     SPLIT_SUBTITLE: () => {
       const index = checkOccupation(contents, getPlayerTime());
@@ -299,18 +317,23 @@ function EditorWithoutContext() {
         newItem,
         ...newContents.slice(index + 1),
       ]);
+      setForceRerender();
     },
     LEFT_0_5: () => {
       setPlayerTime(Math.max(getPlayerTime() - 500, 0));
+      setForceRerender();
     },
     RIGHT_0_5: () => {
       setPlayerTime(Math.min(getPlayerTime() + 500, duration));
+      setForceRerender();
     },
     LEFT_5: () => {
       setPlayerTime(Math.max(getPlayerTime() - 5000, 0));
+      setForceRerender();
     },
     RIGHT_5: () => {
       setPlayerTime(Math.min(getPlayerTime() + 5000, duration));
+      setForceRerender();
     },
     DELETE_ALL: () => {
       setContents([]);
