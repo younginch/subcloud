@@ -73,14 +73,15 @@ function drawLine(
 
 function getBreakPoint(intervalSize: number) {
   let index = breakPointConfig.length - 1;
-  breakPointConfig.some((item, i) => {
-    const timeContain = (12000 / item.unitPx) * item.unitTime;
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < breakPointConfig.length; i++) {
+    const timeContain =
+      (12000 / breakPointConfig[i].unitPx) * breakPointConfig[i].unitTime;
     if (intervalSize > timeContain) {
       index = i - 1;
-      return false;
+      break;
     }
-    return true;
-  });
+  }
   return index < 0 ? 0 : index;
 }
 
