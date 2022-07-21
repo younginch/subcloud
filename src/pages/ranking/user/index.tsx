@@ -24,7 +24,7 @@ export default function UserRankingPage() {
     { caption: t("rating") },
   ];
   const [sortBy, setSortBy] = useState({ by: "view", order: true });
-  const pageSize = 5;
+  const pageSize = 15;
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingUser>(url);
     return res.data;

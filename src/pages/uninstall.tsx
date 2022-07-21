@@ -19,6 +19,7 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import axios from "axios";
 import { useState } from "react";
 import { AiFillHeart } from "react-icons/ai";
+import useTranslation from "next-translate/useTranslation";
 import { PageOptions } from "../utils/types";
 import { UninstallFormSchema } from "../utils/schema";
 import { SubcloudIcon } from "../components/icons/customIcons";
@@ -31,6 +32,7 @@ type FormData = {
 };
 
 export default function Uninstall() {
+  const { t } = useTranslation("uninstall");
   const [hasSubmit, setHasSubmit] = useState<boolean>(false);
   const toastColor = useColorModeValue("green.300", "green.700");
   const bgColor = useColorModeValue("white", "gray.700");
@@ -65,9 +67,9 @@ export default function Uninstall() {
         <Box fill="red.400" w="150px" h="150px">
           <AiFillHeart size="100%" fill="inherit" />
         </Box>
-        <Heading size="lg">설문에 응답해주셔서 감사합니다</Heading>
+        <Heading size="lg">{t("thanks")}</Heading>
         <Text textAlign="center" fontSize="20px">
-          더욱 좋은 서비스를 제공할 수 있도록 노력하겠습니다.
+          {t("objective")}
         </Text>
       </Stack>
     </Stack>
@@ -86,7 +88,7 @@ export default function Uninstall() {
             boxShadow="lg"
           >
             <Text fontSize="19px" color="white" fontWeight="bold">
-              SubCloud가 성공적으로 제거되었습니다
+              {t("successful_uninstall")}
             </Text>
             <Spacer />
             <CheckCircleIcon w="22px" h="22px" color="white" />
@@ -100,32 +102,37 @@ export default function Uninstall() {
             p="0px 25px 30px 25px"
           >
             <SubcloudIcon size={150} fill="gray.600" />
-            <Heading size="lg">SubCloud를 이용해주셔서 감사합니다</Heading>
-            <Text fontSize="20px" mt="15px !important">
-              사용하시는데 불편함이 있었다면
-              <br />
-              간단히 의견을 남겨주시면 감사하겠습니다
-              <br />
-              설문은 익명으로 기록됩니다.
+            <Heading size="lg">{t("thanks_for_use")}</Heading>
+            <Text
+              fontSize="20px"
+              mt="15px !important"
+              pl="45px"
+              pr="45px"
+              wordBreak="keep-all"
+            >
+              {t("uninstall_message")}
             </Text>
             <Stack w="80%">
               <Text fontSize="19px" fontWeight="bold" mt="30px">
-                어떤 점이 불편하셨나요?
+                {t("question_1")}
               </Text>
               <Select icon={<ChevronDownIcon />} {...register("reason")}>
-                <option>자막이 너무 부족함</option>
-                <option>자막 요청이 무시됨</option>
-                <option>서비스의 필요성을 느끼지 못함</option>
-                <option>편의성이 부족함</option>
-                <option>디자인 구림</option>
+                <option>{t("question_1")}</option>
+                <option>{t("question_2")}</option>
+                <option>{t("question_3")}</option>
+                <option>{t("question_4")}</option>
+                <option>{t("question_5")}</option>
               </Select>
               <FormErrorMessage m="auto" fontSize="15px">
                 {errors.reason && errors.reason.message}
               </FormErrorMessage>
               <Text fontSize="19px" fontWeight="bold" mt="50px !important">
-                의견을 말씀해주시면 적극 반영하겠습니다
+                {t("question_2")}
               </Text>
-              <Textarea placeholder="메세지" {...register("opinion")} />
+              <Textarea
+                placeholder={t("question_2_placeholder")}
+                {...register("opinion")}
+              />
               <Center>
                 <Button
                   w="200px"
@@ -134,7 +141,7 @@ export default function Uninstall() {
                   colorScheme="blue"
                   type="submit"
                 >
-                  응답 전송
+                  {t("send_message")}
                 </Button>
               </Center>
             </Stack>
