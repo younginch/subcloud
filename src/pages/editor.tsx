@@ -66,6 +66,7 @@ function EditorWithoutContext() {
     },
     [setContents, setFocusedIndex]
   );
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const headerBg = useColorModeValue("gray.100", "#18161d");
