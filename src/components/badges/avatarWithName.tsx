@@ -3,10 +3,11 @@ import { Avatar, HStack, Text } from "@chakra-ui/react";
 type Props = {
   size?: string;
   name?: string;
+  maxW?: string | number;
   imageUrl?: string;
 };
 
-export default function AvatarWithName({ size, name, imageUrl }: Props) {
+export default function AvatarWithName({ size, name, maxW, imageUrl }: Props) {
   return (
     <HStack>
       <Avatar
@@ -14,7 +15,7 @@ export default function AvatarWithName({ size, name, imageUrl }: Props) {
         src={imageUrl ?? undefined}
         size={size}
       />
-      <Text maxW={120} noOfLines={1}>
+      <Text maxW={maxW} noOfLines={1}>
         {name ?? "채널 정보없음"}
       </Text>
     </HStack>

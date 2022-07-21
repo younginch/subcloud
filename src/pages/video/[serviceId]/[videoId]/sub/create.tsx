@@ -15,6 +15,7 @@ import {
   Tooltip,
   useMediaQuery,
   Spacer,
+  LinkOverlay,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { SetStateAction, useCallback, useEffect, useState } from "react";
@@ -153,17 +154,17 @@ export default function SubCreate() {
         {file.name} - {file.size} bytes
       </Text>
       <Spacer />
-      <Link href={`https://www.youtube.com/watch?v=${video?.videoId}`} passHref>
-        <Button
-          leftIcon={<YoutubeIcon size="20px" />}
-          colorScheme="red"
-          variant="outline"
-          minW="130px"
-          w="130px"
-        >
-          {t("preview")}
-        </Button>
-      </Link>
+      <LinkOverlay href={`https://www.youtube.com/watch?v=${video?.videoId}`}>
+        <Tooltip label={t("preview_tooltip")}>
+          <Button
+            leftIcon={<YoutubeIcon size="20px" />}
+            colorScheme="red"
+            variant="outline"
+          >
+            {t("preview")}
+          </Button>
+        </Tooltip>
+      </LinkOverlay>
     </HStack>
   ));
 
