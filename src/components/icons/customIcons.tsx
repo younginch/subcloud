@@ -3,11 +3,12 @@ import { FaYoutube } from "react-icons/fa";
 
 type IconProps = {
   size: number | string;
+  cursor?: string;
 };
 
-export function YoutubeIcon({ size }: IconProps) {
+export function YoutubeIcon({ size, cursor = "default" }: IconProps) {
   return (
-    <Box minW={size} minH={size}>
+    <Box minW={size} minH={size} cursor={cursor}>
       <FaYoutube size={size} fill="#ff5b5b" />
     </Box>
   );

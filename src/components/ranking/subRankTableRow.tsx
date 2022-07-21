@@ -55,7 +55,7 @@ export default function SubRankTableRow({
       >
         <HStack w="inherit">
           <Link href={videoUrl}>
-            <YoutubeIcon size={30} />
+            <YoutubeIcon size={30} cursor="pointer" />
           </Link>
           <Link href={videoUrl}>
             <Text
@@ -64,6 +64,7 @@ export default function SubRankTableRow({
               textOverflow="ellipsis"
               whiteSpace="nowrap"
               overflow="hidden"
+              cursor="pointer"
             >
               {videoName}
             </Text>

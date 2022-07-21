@@ -148,7 +148,8 @@ export default function SubCreate() {
       .then(({ data }) => {
         setVideo(data[0]);
       });
-  }, [serviceId, videoId, watch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [serviceId, videoId, watch().lang]);
 
   useEffect(() => {
     setValue("file", file as File);
