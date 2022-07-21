@@ -32,6 +32,14 @@ export const SubCreateSchema = joi
   })
   .required();
 
+export const SubUpdateSchema = joi.object({
+  userId: joi.string(),
+  fileId: joi.string(),
+  serviceId: joi.string(),
+  videoId: joi.string(),
+  lang: joi.string(),
+});
+
 export const UserUpdateSchema = joi.object({
   role: joi.string(),
   point: joi.number().integer(),
