@@ -13,14 +13,48 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import { useContext } from "react";
+import { KeySequence } from "react-hotkeys";
 import { EditorContext } from "../../utils/editorCore";
+
+function keysToString(sequence: KeySequence) {
+  let array: string[] = [];
+  if (!Array.isArray(sequence)) {
+    array = [sequence as string];
+  } else {
+    array = sequence as string[];
+  }
+  return array
+    .map((key) => {
+      switch (key) {
+        case "command":
+          return "⌘";
+        case "option":
+          return "⌥";
+        case "shift":
+          return "⇧";
+        case "control":
+          return "⌃";
+        case "left":
+          return "←";
+        case "right":
+          return "→";
+        default:
+          return key;
+      }
+    })
+    .join("");
+}
 
 export default function Menus() {
   const { commandKeys } = useContext(EditorContext);
 
   return (
     <HStack>
+      <Link href="/" passHref>
+        <Button variant="ghost">SubCloud</Button>
+      </Link>
       <Menu>
         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
           파일(F)
@@ -29,7 +63,7 @@ export default function Menus() {
           <MenuItem icon={<AddIcon />} command="">
             새 창
           </MenuItem>
-          <MenuItem icon={<ExternalLinkIcon />} command="⌘N">
+          <MenuItem icon={<ExternalLinkIcon />} command="N">
             유튜브 동영상 열기...
           </MenuItem>
           <MenuItem icon={<EditIcon />} command="⌘O">
@@ -47,7 +81,7 @@ export default function Menus() {
         <MenuList zIndex={200}>
           <MenuItem
             icon={<AddIcon />}
-            command={commandKeys.NEW_SUBTITLE.toString()}
+            command={keysToString(commandKeys.NEW_SUBTITLE)}
           >
             현재 시간에서 새 자막
           </MenuItem>
