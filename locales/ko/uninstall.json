@@ -1,0 +1,16 @@
+{
+  "successful_uninstall": "SubCloud가 성공적으로 제거되었습니다",
+  "thanks_for_use": "SubCloud를 이용해주셔서 감사합니다",
+  "uninstall_message": "사용하시는데 불편함이 있었다면 간단히 의견을 남겨주시면 감사하겠습니다. 설문은 완전히 익명으로 기록됩니다.",
+  "question_1": "어떤 점이 불편하셨나요?",
+  "option_1": "자막이 너무 부족함",
+  "option_2": "자막 요청이 무시됨",
+  "option_3": "서비스의 필요성을 느끼지 못함",
+  "option_4": "편의성이 부족함",
+  "option_5": "잦은 버그 발생",
+  "question_2": "의견을 말씀해주시면 적극 반영하겠습니다",
+  "question_2_placeholder": "메세지",
+  "send_message": "응답 전송",
+  "thanks": "설문에 응답해주셔서 감사합니다",
+  "objective": "더욱 좋은 서비스를 제공할 수 있도록 노력하겠습니다."
+}
