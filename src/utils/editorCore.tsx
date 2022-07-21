@@ -62,7 +62,6 @@ type EditorContextProps = {
   setPlayerTime: (time: number) => void;
   state: PlayerState;
   setState: (state: PlayerState) => void;
-  playOrPause: () => void;
   duration: number;
   aspectRatio: number;
   forceRerender: boolean;
@@ -108,7 +107,6 @@ export const EditorContext = createContext<EditorContextProps>({
   setPlayerTime: () => {},
   state: PlayerState.UNSTARTED,
   setState: () => {},
-  playOrPause: () => {},
   duration: 0,
   aspectRatio: 0,
   forceRerender: true,
@@ -279,7 +277,6 @@ export function EditorProvider({ children }: EditorProviderProps) {
             player?.pauseVideo();
           }
         },
-        playOrPause,
         forceRerender,
         commandKeys,
         commandHandlers,
