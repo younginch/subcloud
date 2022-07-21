@@ -34,6 +34,7 @@ export default function Property() {
   const errors = [];
   const durationTooShort = duration < 0.7;
   const readingRateSoFast = wordCount / duration > 5;
+  const { textArray } = contents[focusedIndex];
   if (durationTooShort) {
     errors.push("Duration is too short.");
   }
@@ -43,8 +44,11 @@ export default function Property() {
   if (contents[focusedIndex].toText().trim() === "") {
     errors.push("Text is empty.");
   }
-  if (contents[focusedIndex].textArray.length > 3) {
+  if (textArray.length > 3) {
     errors.push("Text should be less than 4 lines.");
+  }
+  if (textArray.filter((line) => line.length > 70).length > 0) {
+    errors.push("Each line should not exceed 70 characters");
   }
 
   return (
