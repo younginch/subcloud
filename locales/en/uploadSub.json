@@ -1,5 +1,6 @@
 {
   "preview": "Preview",
+  "preview_tooltip": "If you upload using the extension, you can preview it on YouTube",
   "upload_vid": "Upload video",
   "select_lang": "Select language",
   "require_file": "Please upload the file",
