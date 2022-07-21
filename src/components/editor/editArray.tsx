@@ -27,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
-import { ChangeEvent, useContext, useRef, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { MdTimer } from "react-icons/md";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 import { SRTContent } from "@younginch/subtitle";
@@ -118,7 +118,7 @@ function StartTimestamp({ index }: { index: number }) {
       <Popover isOpen={isOpen} onClose={onClose}>
         <PopoverTrigger>
           <Button maxW="100px" h={8} variant="outline" onClick={onToggle}>
-            {miliToString(contents[index].endTime!)}
+            {miliToString(contents[index].startTime!)}
           </Button>
         </PopoverTrigger>
         <Portal>
@@ -327,8 +327,12 @@ export default function EditArray() {
   const { contents } = useContext(EditorContext);
   const ref = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    console.log("hello!");
+  }, [ref]);
+
   return (
-    <Box h="100%" maxH="100%" w="full" ref={ref} ml="0px !important" pr="8px">
+    <Box h="100%" maxH="100%" w="full" ref={ref} ml="0px !important">
       <FixedSizeList
         height={Number(ref.current?.clientHeight)}
         itemData={contents}
