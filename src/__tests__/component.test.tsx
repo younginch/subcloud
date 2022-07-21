@@ -5,6 +5,7 @@ import AdminLayout from "../components/adminLayout";
 import ReviewStatusBadge from "../components/badges/reviewStatusBadge";
 import EventNotice from "../components/create/eventNotice";
 import ExplainBox from "../components/create/ExplainBox";
+import EditLeftPanel from "../components/editor/editLeftPanel";
 import SubtitleComponent from "../components/editor/SubtitleComponent";
 import TimeLine from "../components/editor/timeLine";
 import Links from "../components/header/links";
@@ -73,6 +74,10 @@ describe("Components", () => {
 
   it("renders userLayout", () => {
     render(<UserLayout>a</UserLayout>);
+  });
+
+  it("renders editLeftPanel", () => {
+    render(<EditLeftPanel />);
   });
 
   it("renders timeLine", () => {
