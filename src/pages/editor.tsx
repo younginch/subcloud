@@ -7,19 +7,9 @@ import {
   Heading,
   HStack,
   Input,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
-  Portal,
   Stack,
   useColorModeValue,
   useToast,
-  Text,
-  Tooltip,
 } from "@chakra-ui/react";
 import {
   FormEvent,
@@ -29,33 +19,28 @@ import {
   useRef,
   useState,
 } from "react";
-import { SRTContent, SRTFile } from "@younginch/subtitle";
+import { SRTFile } from "@younginch/subtitle";
 import { useDropzone } from "react-dropzone";
-import { MdDelete } from "react-icons/md";
-import { FaPlus, FaSave } from "react-icons/fa";
 import { GlobalHotKeys } from "react-hotkeys";
-import { BiHelpCircle } from "react-icons/bi";
 import { useRouter } from "next/router";
 import Property from "../components/editor/property";
 import EditArray from "../components/editor/editArray";
 import NoVideo from "../components/editor/noVideo";
-import ToggleTheme from "../components/editor/toggleTheme";
 import TimeLineContainer from "../components/editor/timeLineContainer";
 import YoutubePlayer from "../components/editor/youtubePlayer";
 import Shortcuts from "../components/editor/shortcuts";
 import { EditorContext, EditorProvider } from "../utils/editorCore";
 import Menus from "../components/editor/menus";
 import { PageOptions } from "../utils/types";
+import EditLeftPanel from "../components/editor/editLeftPanel";
 
 function EditorWithoutContext() {
   const toast = useToast();
   const {
-    contents,
     setContents,
     setFocusedIndex,
     id,
     setId,
-    duration,
     commandKeys,
     commandHandlers,
   } = useContext(EditorContext);
@@ -83,25 +68,13 @@ function EditorWithoutContext() {
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  function downloadSRT() {
-    const srtFile = new SRTFile();
-    srtFile.array = contents;
-    const url = window.URL.createObjectURL(new Blob([srtFile.toText()]));
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", `file.srt`);
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode?.removeChild(link);
-  }
-
   const headerBg = useColorModeValue("gray.100", "#18161d");
 
   return (
     <GlobalHotKeys keyMap={commandKeys} handlers={commandHandlers} allowChanges>
       <Menus />
       <ReflexContainer
-        style={{ width: "100vw", height: "calc(100vh - 54px)" }}
+        style={{ width: "100vw", height: "calc(100vh - 40px)" }}
         orientation="horizontal"
       >
         <ReflexElement minSize={100}>
@@ -250,101 +223,11 @@ function EditorWithoutContext() {
           <ReflexContainer orientation="vertical">
             <ReflexElement>
               <HStack maxH="100%" h="100%" overflowY="hidden">
-                <Stack
-                  h="100%"
-                  w="180px"
-                  bg={headerBg}
-                  p="20px"
-                  alignItems="center"
-                  spacing="20px"
-                >
-                  <Button
-                    rightIcon={<FaPlus />}
-                    onClick={() => {
-                      const newItem = new SRTContent(
-                        contents.length.toString(),
-                        "00:00:00,000 --> 00:00:00,000",
-                        []
-                      );
-                      if (contents.length === 0) {
-                        newItem.startTime = 0;
-                        newItem.endTime = 1000;
-                      } else {
-                        newItem.startTime =
-                          contents[contents.length - 1].endTime;
-                        newItem.endTime = Math.min(
-                          duration,
-                          newItem.startTime + 1000
-                        );
-                      }
-                      setContents([...contents, newItem]);
-                    }}
-                    colorScheme="blue"
-                    w="full"
-                  >
-                    자막 추가
-                  </Button>
-                  <Button
-                    rightIcon={<FaSave />}
-                    onClick={downloadSRT}
-                    colorScheme="blue"
-                  >
-                    Save to SRT
-                  </Button>
-                  <Tooltip label="Comming soon!">
-                    <Button
-                      rightIcon={<BiHelpCircle />}
-                      colorScheme="blue"
-                      isDisabled
-                    >
-                      How to use
-                    </Button>
-                  </Tooltip>
-                  <Popover placement="right">
-                    {({ onClose }) => (
-                      <>
-                        <PopoverTrigger>
-                          <Button
-                            rightIcon={<MdDelete />}
-                            colorScheme="red"
-                            w="full"
-                          >
-                            Delete all
-                          </Button>
-                        </PopoverTrigger>
-                        <Portal>
-                          <PopoverContent>
-                            <PopoverArrow />
-                            <PopoverHeader>Confirmation!</PopoverHeader>
-                            <PopoverCloseButton />
-                            <PopoverBody>
-                              <Stack>
-                                <Text>
-                                  SRT파일로 저장하지 않으면 지금까지의
-                                  수정사항을 전부 잃게 됩니다.
-                                </Text>
-                                <Button
-                                  colorScheme="red"
-                                  onClick={() => {
-                                    setContents([]);
-                                    onClose();
-                                  }}
-                                >
-                                  자막 전체 삭제
-                                </Button>
-                              </Stack>
-                            </PopoverBody>
-                          </PopoverContent>
-                        </Portal>
-                      </>
-                    )}
-                  </Popover>
-                  <ToggleTheme />
-                </Stack>
+                <EditLeftPanel />
                 <EditArray />
               </HStack>
             </ReflexElement>
-            <ReflexSplitter propagate />
+            <ReflexSplitter />
             <ReflexElement maxSize={300} minSize={100}>
               <Property />
             </ReflexElement>
