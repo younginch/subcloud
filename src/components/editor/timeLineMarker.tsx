@@ -1,4 +1,4 @@
-import { Box, createIcon } from "@chakra-ui/react";
+import { Box, createIcon, useInterval } from "@chakra-ui/react";
 import { useContext, useEffect, useRef } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import {
@@ -38,11 +38,13 @@ export default function TimeLineMarker() {
   const {
     leftTime,
     rightTime,
+    changeLRTime,
     getPlayerTime,
     setPlayerTime,
     state,
     setState,
     forceRerender,
+    duration,
   } = useContext(EditorContext);
 
   const ref = useRef<HTMLDivElement>(null);
@@ -82,6 +84,22 @@ export default function TimeLineMarker() {
     }
     if (ref.current) ref.current.style.marginLeft = `${marginLeft + x}px`;
   };
+
+  // Swipe all when the timeline bar reaches the end of the screen
+  useInterval(() => {
+    if (
+      state === PlayerState.PLAYING &&
+      (6000 * (getPlayerTime() - leftTime)) / (rightTime - leftTime) - 2000 >
+        window.screen.width
+    ) {
+      let deltaTime = (window.screen.width / 6000) * (rightTime - leftTime);
+      const maxTime =
+        duration +
+        ((rightTime - leftTime) * (4000 - window.screen.width)) / 6000;
+      deltaTime = Math.min(deltaTime, maxTime - rightTime);
+      changeLRTime(leftTime + deltaTime, rightTime + deltaTime);
+    }
+  }, 30);
 
   return (
     <Draggable

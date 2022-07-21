@@ -32,6 +32,7 @@ export default function VideoCreate() {
   const { t } = useTranslation("create");
   const router = useRouter();
   const toast = useToast();
+  const isEvent = false; // TODO: 이벤트 종류를 받아오는 API 추가 필요
   const {
     handleSubmit,
     register,
@@ -154,7 +155,7 @@ export default function VideoCreate() {
               </FormErrorMessage>
             </Box>
           </FormControl>
-          {router.query.next === "sub" && <EventNotice />}
+          {router.query.next === "sub" && isEvent && <EventNotice />}
           <ExplainBox>
             {router.query.next === "request" ? (
               <>
