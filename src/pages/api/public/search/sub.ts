@@ -6,7 +6,7 @@ import {
 
 async function SubSearch({ req, res, prisma }: RouteParams<ResSubSearch>) {
   const { serviceId, videoId, userId, status } = req.query;
-  let where: any = {};
+  const where: any = {};
   if (userId) {
     where.userId = userId;
   }

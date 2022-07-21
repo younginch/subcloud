@@ -1,17 +1,17 @@
+import { Role } from "@prisma/client";
+import dayjs, { OpUnitType } from "dayjs";
 import {
   handleRoute,
   RouteParams,
   SubErrorType,
 } from "../../../../utils/types";
-import { Role } from "@prisma/client";
-import dayjs, { OpUnitType } from "dayjs";
 
 async function SubStatsRead({ req, res, prisma }: RouteParams<Array<number>>) {
   const { userId, cnt, date, type } = req.query;
   const subs = await prisma.sub.findMany({
     where: { userId: userId as string },
   });
-  const count = parseInt(cnt as string);
+  const count = parseInt(cnt as string, 10);
   if (subs === []) {
     return res
       .status(404)

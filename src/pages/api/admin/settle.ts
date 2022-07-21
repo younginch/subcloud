@@ -20,26 +20,24 @@ async function RecordCreate({ req, res, prisma }: RouteParams<Settle>) {
     },
   });
   const users = rawUsers.filter((user) => user.subs.length > 0);
-  const userWithViews = users.map((user) => {
-    return {
-      user,
-      view: user.subs.reduce(
-        (prevUser, currUser) => prevUser + currUser.views,
-        0
-      ),
-    };
-  });
+  const userWithViews = users.map((user) => ({
+    user,
+    view: user.subs.reduce(
+      (prevUser, currUser) => prevUser + currUser.views,
+      0
+    ),
+  }));
   const totalView = userWithViews.reduce(
     (prevView, currView) => prevView + currView.view,
     0
   );
-  const userWithPoints = userWithViews.map((userWithView) => {
-    return {
-      user: userWithView.user,
-      point: Math.floor((Number(totalPoint) / totalView) * userWithView.view),
-    };
-  });
+  const userWithPoints = userWithViews.map((userWithView) => ({
+    user: userWithView.user,
+    point: Math.floor((Number(totalPoint) / totalView) * userWithView.view),
+  }));
+  // eslint-disable-next-line no-restricted-syntax
   for (const userWithPoint of userWithPoints) {
+    // eslint-disable-next-line no-await-in-loop
     await prisma.user.update({
       where: { id: userWithPoint.user.id },
       data: {

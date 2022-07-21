@@ -1,4 +1,4 @@
-import { HStack, Text, useColorModeValue, Tr, Td, Box } from "@chakra-ui/react";
+import { HStack, Text, useColorModeValue, Tr, Td } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
 import { AiOutlineUser } from "react-icons/ai";
@@ -7,12 +7,10 @@ import { YoutubeIcon } from "../icons/customIcons";
 
 type Props = {
   rank: number;
-  key: string;
   name: string;
   duration: number;
   requests: number;
   points: number;
-  platform: string;
   url: string;
   langs: string;
 };
@@ -21,7 +19,6 @@ export default function VideoTableRow({
   rank,
   name,
   duration,
-  platform,
   requests,
   points,
   url,
@@ -29,19 +26,19 @@ export default function VideoTableRow({
 }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
   const paddingLeftBp = { base: "7px", md: "15px", lg: "24px" };
-  const fontBreakPoints = { base: "15px", md: "20px" };
   const mainTextSize = { base: "12px", md: "15px" };
   const subTextSize = { base: "14px", md: "17px" };
 
-  const timeFormat = (time: number) => {
-    let second = time % 60;
+  const timeFormat = (seconds: number) => {
+    let time = seconds;
+    const second = time % 60;
     if (time < 60) return `${second}s`;
     time = Math.floor((time - second) / 60);
     const minute = time % 60;
-    if (time < 60) return `${minute}:${second < 10 ? "0" + second : second}`;
+    if (time < 60) return `${minute}:${second < 10 ? `0${second}` : second}`;
     const hour = Math.floor((time - minute) / 60);
-    return `${hour}:${minute < 10 ? "0" + minute : minute}:${
-      second < 10 ? "0" + second : second
+    return `${hour}:${minute < 10 ? `0${minute}` : minute}:${
+      second < 10 ? `0${second}` : second
     }`;
   };
 

@@ -4,6 +4,31 @@ import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
+type LinkButtonProps = {
+  route: string;
+  width?: string;
+  onClick?: () => void;
+};
+
+function LinkButton({ route, width, onClick }: LinkButtonProps) {
+  const { t } = useTranslation("routes");
+
+  return (
+    <Link href={`${route}`} passHref>
+      <Button
+        as="a"
+        variant="ghost"
+        flexDirection="column"
+        alignItems="start"
+        width={width}
+        onClick={onClick}
+      >
+        {t(`${route}`)}
+      </Button>
+    </Link>
+  );
+}
+
 type LinksProps = {
   width?: string;
   onClick?: () => void;
@@ -50,30 +75,5 @@ export default function Links({ width, onClick }: LinksProps) {
       <LinkButton route="/buy" width={width} onClick={onClick} />
       <LinkButton route="/editor" width={width} onClick={onClick} />
     </>
-  );
-}
-
-type LinkButtonProps = {
-  route: string;
-  width?: string;
-  onClick?: () => void;
-};
-
-function LinkButton({ route, width, onClick }: LinkButtonProps) {
-  const { t } = useTranslation("routes");
-
-  return (
-    <Link href={`${route}`} passHref>
-      <Button
-        as="a"
-        variant="ghost"
-        flexDirection="column"
-        alignItems="start"
-        width={width}
-        onClick={onClick}
-      >
-        {t(`${route}`)}
-      </Button>
-    </Link>
   );
 }

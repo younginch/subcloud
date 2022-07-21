@@ -1,9 +1,9 @@
 import { Box, Button, Text, useColorModeValue } from "@chakra-ui/react";
+import Image from "next/image";
+import NextLink from "next/link";
 import ChromeIcon from "../../public/browsers/chrome.png";
 import FirefoxIcon from "../../public/browsers/firefox.svg";
 import SafariIcon from "../../public/browsers/safari.png";
-import Image from "next/image";
-import NextLink from "next/link";
 
 type Props = {
   browser: string;
@@ -32,6 +32,8 @@ export default function ExtensionButton({
       icon = SafariIcon;
       name = "Safari";
       break;
+    default:
+      break;
   }
 
   return (
@@ -50,7 +52,7 @@ export default function ExtensionButton({
           <Image src={icon} alt="icon" />
         </Box>
         <Text marginStart="12px" color="gray.200">
-          {"SubCloud for " + name}
+          {`SubCloud for ${name}`}
         </Text>
       </Button>
     </NextLink>

@@ -14,14 +14,13 @@ import {
 import { Role, Sub, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
+import Link from "next/link";
+import useTranslation from "next-translate/useTranslation";
 import {
   PageOptions,
   ResRequestSearch,
   ResSubSearch,
 } from "../../../utils/types";
-import Link from "next/link";
-import TierBadge from "../../../components/badges/tierBadge";
-import { UserTier } from "../../../utils/tier";
 import RoleBadge from "../../../components/badges/roleBadge";
 import CalendarChart from "../../../components/user/graphs/calanderChart";
 import RecentReviews from "../../../components/user/my/recentReviews";
@@ -29,7 +28,6 @@ import DetailViewGraph from "../../../components/user/my/detailViewGraph";
 import SubStatusPreview from "../../../components/user/my/subStatusPreview";
 import ActivityHeader from "../../../components/user/my/activityHeader";
 import SwingProvider from "../../../components/swingProvider";
-import useTranslation from "next-translate/useTranslation";
 
 export default function UserMyIndex() {
   const { t } = useTranslation("privateProfile");
@@ -87,8 +85,8 @@ export default function UserMyIndex() {
           <Button
             minW="140px"
             bg={useColorModeValue("#151f21", "gray.900")}
-            color={"white"}
-            rounded={"md"}
+            color="white"
+            rounded="md"
             _hover={{
               transform: "translateY(-2px)",
               boxShadow: "lg",
@@ -104,13 +102,13 @@ export default function UserMyIndex() {
           views={views ?? 0}
           points={session.data?.user.point ?? 0}
         />
-        <Wrap p="30px" spacing={"20px"}>
+        <Wrap p="30px" spacing="20px">
           <WrapItem>
             <Box
               w="500px"
               h="250px"
               bg={panelColor}
-              boxShadow={"0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"}
+              boxShadow="0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"
               borderRadius="12px"
               p="20px"
               overflow="hidden"
@@ -127,7 +125,7 @@ export default function UserMyIndex() {
               </HStack>
               <CalendarChart
                 range={150}
-                type={"day"}
+                type="day"
                 userId={session.data?.user.id}
               />
             </Box>
@@ -137,7 +135,7 @@ export default function UserMyIndex() {
               w="500px"
               maxH="350px"
               bg={panelColor}
-              boxShadow={"0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"}
+              boxShadow="0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"
               borderRadius="12px"
               pt="15px"
               pl="15px"
@@ -154,7 +152,7 @@ export default function UserMyIndex() {
               w="180px"
               h="170px"
               bg={panelColor}
-              boxShadow={"0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"}
+              boxShadow="0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"
               borderRadius="12px"
               p="20px"
               borderWidth={useColorModeValue("1px", "none")}
@@ -166,7 +164,7 @@ export default function UserMyIndex() {
                 <SwingProvider>
                   <Text
                     fontSize={50}
-                    fontWeight={"bold"}
+                    fontWeight="bold"
                     bgGradient={useColorModeValue(
                       "linear(to-l, #7928CA, #FF0080)",
                       "linear(to-l, #8e50cc, #fb52a7)"
@@ -177,7 +175,7 @@ export default function UserMyIndex() {
                   </Text>
                 </SwingProvider>
               </Center>
-              <Link href={`/buy`}>
+              <Link href="/buy">
                 <Text
                   color={useColorModeValue("gray.800", "gray.200")}
                   _hover={{ textDecoration: "underline" }}
@@ -193,7 +191,7 @@ export default function UserMyIndex() {
               w="700px"
               h="350px"
               bg={panelColor}
-              boxShadow={"0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"}
+              boxShadow="0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"
               borderRadius="12px"
               p="20px"
               borderWidth={useColorModeValue("1px", "none")}
@@ -209,7 +207,7 @@ export default function UserMyIndex() {
               w="500px"
               h="350px"
               bg={panelColor}
-              boxShadow={"0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"}
+              boxShadow="0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"
               borderRadius="12px"
               p="20px"
               pr="0px"

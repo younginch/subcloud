@@ -8,7 +8,6 @@ import {
 } from "@chakra-ui/react";
 import { Role } from "@prisma/client";
 import router from "next/router";
-import { PageOptions } from "../utils/types";
 import {
   ProSidebar,
   Menu,
@@ -16,11 +15,12 @@ import {
   SidebarFooter,
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
-import { SubcloudIcon } from "./icons/customIcons";
 import { MdAttachMoney } from "react-icons/md";
 import { useState } from "react";
 import { RiAdminFill, RiSlideshow3Fill } from "react-icons/ri";
 import { FaDatabase, FaUserCog } from "react-icons/fa";
+import { SubcloudIcon } from "./icons/customIcons";
+import { PageOptions } from "../utils/types";
 import MyMenuItem from "./user/my/myMenuItem";
 
 type AdminLayoutProps = {
@@ -72,17 +72,15 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           </Center>
         </SidebarHeader>
         <Menu iconShape="circle">
-          {dashBoardItems.map((element) => {
-            return (
-              <MyMenuItem
-                key={element.text}
-                active={element.href === router.pathname}
-                icon={element.icon}
-                href={element.href}
-                text={element.text}
-              />
-            );
-          })}
+          {dashBoardItems.map((element) => (
+            <MyMenuItem
+              key={element.text}
+              active={element.href === router.pathname}
+              icon={element.icon}
+              href={element.href}
+              text={element.text}
+            />
+          ))}
           <Box h={`calc(90vh - ${145 + dashBoardItems.length * 50}px)`} />
         </Menu>
         <SidebarFooter>

@@ -29,7 +29,7 @@ function PriceWrapper({ children }: { children: ReactNode }) {
       borderWidth="1px"
       alignSelf={{ base: "center", lg: "flex-start" }}
       borderColor={useColorModeValue("gray.200", "gray.500")}
-      borderRadius={"xl"}
+      borderRadius="xl"
     >
       {children}
     </Box>
@@ -43,7 +43,7 @@ export default function SubscribeItem({
   disabled,
   children,
 }: Props) {
-  const [tossPayments, setTossPayments] = useState<any>();
+  const [toss, setToss] = useState<any>();
   const { data } = useSession();
   const toast = useToast();
   const headerBgColor = useColorModeValue("red.300", "red.700");
@@ -52,7 +52,7 @@ export default function SubscribeItem({
   useEffect(() => {
     loadTossPayments("test_ck_5GePWvyJnrK4bNAaAZe8gLzN97Eo").then(
       (tossPayments) => {
-        setTossPayments(tossPayments);
+        setToss(tossPayments);
       }
     );
   }, []);
@@ -61,7 +61,7 @@ export default function SubscribeItem({
     axios
       .post("/api/subscription")
       .then((res) => {
-        tossPayments
+        toss
           .requestBillingAuth("카드", {
             customerKey: res.data.customerKey,
             successUrl: `${window.location.origin}/buy/subscription/process`,
@@ -130,7 +130,7 @@ export default function SubscribeItem({
         <VStack
           bg={useColorModeValue("gray.50", "gray.700")}
           py={4}
-          borderBottomRadius={"xl"}
+          borderBottomRadius="xl"
         >
           <List spacing={3} textAlign="start" px={12}>
             {children}

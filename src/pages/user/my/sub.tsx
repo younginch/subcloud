@@ -4,17 +4,17 @@ import type { GetServerSideProps } from "next";
 import SubPanel from "../../../components/user/subPanel";
 import { PageOptions, ResSubSearch } from "../../../utils/types";
 
-type UserMySub = {
+type UserMySubProps = {
   subs: ResSubSearch;
 };
 
-export default function UserMySub({ subs }: UserMySub) {
-  return <SubPanel subs={subs} />;
+export default function UserMySub({ subs }: UserMySubProps) {
+  return <SubPanel initialSubs={subs} />;
 }
 
 UserMySub.auth = Role.User;
 
-export const getServerSideProps: GetServerSideProps<UserMySub> = async (
+export const getServerSideProps: GetServerSideProps<UserMySubProps> = async (
   context
 ) => {
   const { userId } = context.query;

@@ -1,9 +1,5 @@
-import { Rating, Role } from "@prisma/client";
-import {
-  handleRoute,
-  RouteParams,
-  SubErrorType,
-} from "../../../../utils/types";
+import { Rating } from "@prisma/client";
+import { handleRoute, RouteParams } from "../../../../utils/types";
 
 async function GetRating({ req, res, prisma }: RouteParams<Rating[]>) {
   const { userId, cnt } = req.query;
@@ -16,7 +12,7 @@ async function GetRating({ req, res, prisma }: RouteParams<Rating[]>) {
       updatedAt: "desc",
     },
   });
-  return res.json(review.slice(0, parseInt(cnt as string)));
+  return res.json(review.slice(0, parseInt(cnt as string, 10)));
 }
 
 export default handleRoute({

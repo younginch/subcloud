@@ -13,13 +13,13 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import Image from "next/image";
+import NextLink from "next/link";
+import useTranslation from "next-translate/useTranslation";
 import TitleImage from "../../public/title.png";
 import InViewProvider from "../components/inviewProvider";
 import ExtensionButton from "../components/extensionButton";
 import { PageOptions } from "../utils/types";
 import { DottedBox } from "../components/icons/customIcons";
-import NextLink from "next/link";
-import useTranslation from "next-translate/useTranslation";
 import Features from "../components/features";
 
 export default function Home() {
@@ -86,7 +86,7 @@ export default function Home() {
             >
               <Text>{t("search_vid")}</Text>
             </Button>
-            <NextLink href={"/video/create?next=request"}>
+            <NextLink href="/video/create?next=request">
               <Button
                 w={{ base: "100%", sm: "auto" }}
                 h={10}
@@ -200,6 +200,7 @@ export default function Home() {
               <Center flexDir="column">
                 <Box w={14} h={14} mt={8} color="red.400">
                   <IconContext.Provider
+                    // eslint-disable-next-line react/jsx-no-constructed-context-values
                     value={{ color: "inherit", className: "global-class-name" }}
                   >
                     <div>
@@ -362,7 +363,7 @@ export default function Home() {
               </Text>
             </Box>
             <Spacer />
-            <NextLink href={"/auth/signin"}>
+            <NextLink href="/auth/signin">
               <Button
                 color="white"
                 variant="solid"

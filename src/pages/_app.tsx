@@ -11,12 +11,52 @@ import { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import { Role } from "@prisma/client";
+import { SWRConfig } from "swr";
 import Layout from "../components/layout";
 import { PageOptions } from "../utils/types";
-import { SWRConfig } from "swr";
 import AdminLayout from "../components/adminLayout";
 import UserLayout from "../components/user/my/userLayout";
 import isRightRole from "../utils/role";
+
+type AuthProps = {
+  children: JSX.Element;
+  auth?: boolean;
+  role?: Role;
+};
+
+function Auth({ children, auth, role }: AuthProps): JSX.Element {
+  const router = useRouter();
+  const toast = useToast();
+  const { data, status } = useSession();
+
+  useEffect(() => {
+    if (!auth && !role) {
+      return;
+    }
+    if (status === "loading" || !router.isReady) {
+      // Do nothing while loading
+    } else if (status === "unauthenticated") {
+      router.push(`/auth/signin?callbackUrl=${router.asPath}`); // If not authenticated, force log in
+    } else if (!isRightRole(data?.user.role, role!)) {
+      router.push("/api/auth/signout");
+      toast({
+        title: "You are not authorized to access this page",
+        description: `Required role: ${role}, your role: ${data?.user.role}`,
+        status: "error",
+      });
+    }
+  }, [auth, data?.user, role, router, status, toast]);
+
+  if (status === "authenticated") {
+    return children;
+  }
+
+  return (
+    <Center>
+      <CircularProgress />
+    </Center>
+  );
+}
 
 type NextPageWithAuth = NextPage & {
   options: PageOptions;
@@ -33,12 +73,12 @@ function getCustomLayout(
 ): FunctionComponent<{ children: ReactElement }> {
   if (pathname.startsWith("/admin")) {
     return AdminLayout;
-  } else if (pathname.startsWith("/user/my")) {
-    return UserLayout;
-  } else {
-    return (props: { children: ReactElement }): ReactElement<any, any> | null =>
-      props.children;
   }
+  if (pathname.startsWith("/user/my")) {
+    return UserLayout;
+  }
+  return (props: { children: ReactElement }): ReactElement<any, any> | null =>
+    props.children;
 }
 
 export default function MyApp({
@@ -91,52 +131,5 @@ export default function MyApp({
         </ChakraProvider>
       </SessionProvider>
     </SWRConfig>
-  );
-}
-
-type AuthProps = {
-  children: JSX.Element;
-  auth?: boolean;
-  role?: Role;
-};
-
-function Auth({ children, auth, role }: AuthProps): JSX.Element {
-  const router = useRouter();
-  const toast = useToast();
-  const { data, status } = useSession();
-
-  useEffect(() => {
-    if (!auth && !role) {
-      return;
-    }
-    if (status === "loading" || !router.isReady) {
-      return; // Do nothing while loading
-    } else if (status === "unauthenticated") {
-      router.push(`/auth/signin?callbackUrl=${router.asPath}`); // If not authenticated, force log in
-      return;
-    } else {
-      if (!data?.user) {
-        return;
-      } else if (auth || !role) {
-        return;
-      } else if (!isRightRole(data.user.role, role)) {
-        router.push("/api/auth/signout");
-        toast({
-          title: "You are not authorized to access this page",
-          description: `Required role: ${role}, your role: ${data.user.role}`,
-          status: "error",
-        });
-      }
-    }
-  }, [auth, data?.user, role, router, status, toast]);
-
-  if (status === "authenticated") {
-    return children;
-  }
-
-  return (
-    <Center>
-      <CircularProgress />
-    </Center>
   );
 }

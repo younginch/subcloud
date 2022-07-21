@@ -44,41 +44,35 @@ export default function Search() {
     </Center>
   );
   return (
-    <>
-      <Box
-        pt={10}
-        pl={{ base: "10px", lg: "30px", xl: "70px" }}
-        pr={{ base: "10px", lg: "30px", xl: "70px" }}
-        overflowX={{ sm: "scroll", xl: "hidden" }}
-      >
-        <GeneralTable captions={captions} title={titleComponent}>
-          {videos.map((video, index) => {
-            return (
-              <SearchTableRow
-                key={video.videoId}
-                videoId={video.videoId}
-                platform={video.serviceId}
-                videoName={
-                  video.youtubeVideo ? video.youtubeVideo.title : "no title"
-                }
-                channelName={
-                  video?.youtubeVideo?.channel.title ?? "채널 정보없음"
-                }
-                channelImageUrl={
-                  video?.youtubeVideo?.channel.thumbnailUrl ?? "채널 정보없음"
-                }
-                channelUrl={
-                  video?.youtubeVideo?.channel.channelUrl ?? "채널 정보없음"
-                }
-                totalRequests={video._count.requests}
-                totalSubtitles={video._count.subs}
-                totalPoints={video._count.points}
-              />
-            );
-          })}
-        </GeneralTable>
-      </Box>
-    </>
+    <Box
+      pt={10}
+      pl={{ base: "10px", lg: "30px", xl: "70px" }}
+      pr={{ base: "10px", lg: "30px", xl: "70px" }}
+      overflowX={{ sm: "scroll", xl: "hidden" }}
+    >
+      <GeneralTable captions={captions} title={titleComponent}>
+        {videos.map((video) => (
+          <SearchTableRow
+            key={video.videoId}
+            videoId={video.videoId}
+            platform={video.serviceId}
+            videoName={
+              video.youtubeVideo ? video.youtubeVideo.title : "no title"
+            }
+            channelName={video?.youtubeVideo?.channel.title ?? "채널 정보없음"}
+            channelImageUrl={
+              video?.youtubeVideo?.channel.thumbnailUrl ?? "채널 정보없음"
+            }
+            channelUrl={
+              video?.youtubeVideo?.channel.channelUrl ?? "채널 정보없음"
+            }
+            totalRequests={video._count.requests}
+            totalSubtitles={video._count.subs}
+            totalPoints={video._count.points}
+          />
+        ))}
+      </GeneralTable>
+    </Box>
   );
 }
 

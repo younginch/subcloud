@@ -11,9 +11,8 @@ async function RankingUserByFulfilledRequests({
   res,
   prisma,
 }: RouteParams<ResRankingUser>) {
-  const compareByFulfilledRequests = (a: UserWithCount, b: UserWithCount) => {
-    return b._count.fulfilledRequests - a._count.fulfilledRequests;
-  };
+  const compareByFulfilledRequests = (a: UserWithCount, b: UserWithCount) =>
+    b._count.fulfilledRequests - a._count.fulfilledRequests;
   await RankingUser({ req, res, prisma }, compareByFulfilledRequests);
 }
 

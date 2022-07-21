@@ -45,15 +45,11 @@ export default function SelectLanguage({ lang, error, setLang }: Props) {
           </MenuButton>
           <Portal>
             <MenuList>
-              {codeList.map((code) => {
-                return (
-                  <MenuItem key={code} onClick={() => setLang(code)}>
-                    {`${ISO6391.getName(code)} (${ISO6391.getNativeName(
-                      code
-                    )})`}
-                  </MenuItem>
-                );
-              })}
+              {codeList.map((code) => (
+                <MenuItem key={code} onClick={() => setLang(code)}>
+                  {`${ISO6391.getName(code)} (${ISO6391.getNativeName(code)})`}
+                </MenuItem>
+              ))}
             </MenuList>
           </Portal>
         </MenuOptionGroup>

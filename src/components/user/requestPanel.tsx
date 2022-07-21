@@ -27,11 +27,15 @@ import { ResRequestSearch } from "../../utils/types";
 import AvatarWithName from "../badges/avatarWithName";
 import { YoutubeIcon } from "../icons/customIcons";
 
-export default function RequestPanel(props: { requests: ResRequestSearch }) {
+export default function RequestPanel({
+  initialRequests,
+}: {
+  initialRequests: ResRequestSearch;
+}) {
   const { t } = useTranslation("privateProfile");
   const router = useRouter();
   const toast = useToast();
-  const [requests, setRequests] = useState<ResRequestSearch>(props.requests);
+  const [requests, setRequests] = useState<ResRequestSearch>(initialRequests);
 
   function getRequests() {
     axios
@@ -63,78 +67,74 @@ export default function RequestPanel(props: { requests: ResRequestSearch }) {
           </Tr>
         </Thead>
         <Tbody>
-          {requests.map((request) => {
-            return (
-              <Tr key={request.id}>
-                <Td
+          {requests.map((request) => (
+            <Tr key={request.id}>
+              <Td
+                onClick={() => {
+                  router.push(`/video/${request.serviceId}/${request.videoId}`);
+                }}
+              >
+                <HStack>
+                  <YoutubeIcon size="36px" />
+                  <Text maxW={480} noOfLines={1}>
+                    {request.video?.youtubeVideo?.title ?? "Invalid video"}
+                  </Text>
+                </HStack>
+              </Td>
+              <Td>
+                <AvatarWithName
+                  imageUrl={request.video?.youtubeVideo?.channel.thumbnailUrl}
+                  name={request.video?.youtubeVideo?.channel.title}
+                />
+              </Td>
+              <Td>{request.lang}</Td>
+              <Td>{request.point}</Td>
+              <Td>
+                <Button
+                  leftIcon={<DeleteIcon />}
+                  colorScheme="red"
                   onClick={() => {
-                    router.push(
-                      `/video/${request.serviceId}/${request.videoId}`
-                    );
+                    axios
+                      .delete(`/api/user/request`, {
+                        params: { id: request.id },
+                      })
+                      .then(() => {
+                        toast({
+                          title: "성공",
+                          description: "자막 요청을 취소했습니다.",
+                          status: "success",
+                        });
+                        getRequests();
+                      })
+                      .catch(() => {
+                        toast({
+                          title: "오류",
+                          description: "자막 요청을 취소하는데 실패했습니다.",
+                          status: "error",
+                        });
+                      });
                   }}
                 >
-                  <HStack>
-                    <YoutubeIcon size="36px" />
-                    <Text maxW={480} noOfLines={1}>
-                      {request.video?.youtubeVideo?.title ?? "Invalid video"}
-                    </Text>
-                  </HStack>
-                </Td>
-                <Td>
-                  <AvatarWithName
-                    imageUrl={request.video?.youtubeVideo?.channel.thumbnailUrl}
-                    name={request.video?.youtubeVideo?.channel.title}
+                  {t("delete")}
+                </Button>
+                <Menu>
+                  <MenuButton
+                    as={IconButton}
+                    aria-label="Options"
+                    icon={<MoreIcon />}
+                    variant="outline"
                   />
-                </Td>
-                <Td>{request.lang}</Td>
-                <Td>{request.point}</Td>
-                <Td>
-                  <Button
-                    leftIcon={<DeleteIcon />}
-                    colorScheme="red"
-                    onClick={() => {
-                      axios
-                        .delete(`/api/user/request`, {
-                          params: { id: request.id },
-                        })
-                        .then(() => {
-                          toast({
-                            title: "성공",
-                            description: "자막 요청을 취소했습니다.",
-                            status: "success",
-                          });
-                          getRequests();
-                        })
-                        .catch(() => {
-                          toast({
-                            title: "오류",
-                            description: "자막 요청을 취소하는데 실패했습니다.",
-                            status: "error",
-                          });
-                        });
-                    }}
-                  >
-                    {t("delete")}
-                  </Button>
-                  <Menu>
-                    <MenuButton
-                      as={IconButton}
-                      aria-label="Options"
-                      icon={<MoreIcon />}
-                      variant="outline"
-                    />
-                    <MenuList>
-                      <MenuItem>
-                        <CopyToClipboard text={request.id}>
-                          <Button>요청 ID 복사</Button>
-                        </CopyToClipboard>
-                      </MenuItem>
-                    </MenuList>
-                  </Menu>
-                </Td>
-              </Tr>
-            );
-          })}
+                  <MenuList>
+                    <MenuItem>
+                      <CopyToClipboard text={request.id}>
+                        <Button>요청 ID 복사</Button>
+                      </CopyToClipboard>
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              </Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>

@@ -20,14 +20,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
-import { RequestCreateSchema } from "../../../../../utils/schema";
 import { useSession } from "next-auth/react";
 import { Role } from "@prisma/client";
-import VideoInfo from "../../../../../components/create/videoInfo";
-import { PageOptions, ResVideo } from "../../../../../utils/types";
-import Card from "../../../../../components/user/card/card";
-import CardHeader from "../../../../../components/user/card/cardHeader";
-import InViewProvider from "../../../../../components/inviewProvider";
 import { useEffect, useState } from "react";
 import ISO6391 from "iso-639-1";
 import { CgShapeTriangle } from "react-icons/cg";
@@ -36,6 +30,12 @@ import { BiRocket } from "react-icons/bi";
 import { BsLightningCharge } from "react-icons/bs";
 import { HiOutlineFire } from "react-icons/hi";
 import useTranslation from "next-translate/useTranslation";
+import InViewProvider from "../../../../../components/inviewProvider";
+import CardHeader from "../../../../../components/user/card/cardHeader";
+import Card from "../../../../../components/user/card/card";
+import { PageOptions, ResVideo } from "../../../../../utils/types";
+import VideoInfo from "../../../../../components/create/videoInfo";
+import { RequestCreateSchema } from "../../../../../utils/schema";
 import SelectLanguage from "../../../../../components/selectLanguage";
 
 type FormData = {
@@ -129,6 +129,7 @@ export default function RequestCreate() {
   `;
 
   const getLevel = (point: number) => {
+    // eslint-disable-next-line no-plusplus
     for (let i = points.length - 1; i >= 0; i--) {
       if (points[i].amount <= point) return i;
     }
@@ -142,7 +143,7 @@ export default function RequestCreate() {
         .patch("/api/user/lang", {
           requestLang: watch().lang,
         })
-        .catch((err) => {
+        .catch(() => {
           toast({
             title: "Error",
             description: "Request Lang not changed",
@@ -161,7 +162,7 @@ export default function RequestCreate() {
           lang: values.lang,
           point: values.point,
         })
-        .then((res) => {
+        .then(() => {
           toast({
             title: "Success",
             description: "Request created",
@@ -240,42 +241,40 @@ export default function RequestCreate() {
             </Text>
           </CardHeader>
           <Wrap p={5} justify="space-evenly">
-            {points.map((element, index) => {
-              return (
-                <WrapItem key={index} zIndex={10}>
-                  <InViewProvider whileHover={1.15} initialScale={0.95}>
-                    <Box
-                      as={Stack}
-                      justifyContent="center"
-                      alignItems="center"
-                      spacing="-3px"
-                      w="80px"
-                      h="80px"
-                      borderRadius="20%"
-                      bg={pointBg}
-                      onClick={() =>
-                        setValue(
-                          "point",
-                          Number(element.amount) + Number(watch().point)
-                        )
-                      }
-                      _hover={{
-                        bg: element.hoverColor,
-                        animation: `1s ${changeRadius}`,
-                        borderRadius: "50%",
-                      }}
-                    >
-                      <Box w="40%" h="40%">
-                        {element.icon}
-                      </Box>
-                      <Text fontWeight="bold" fontSize="lg">
-                        {element.amount}P
-                      </Text>
+            {points.map((element) => (
+              <WrapItem key={element.amount} zIndex={10}>
+                <InViewProvider whileHover={1.15} initialScale={0.95}>
+                  <Box
+                    as={Stack}
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing="-3px"
+                    w="80px"
+                    h="80px"
+                    borderRadius="20%"
+                    bg={pointBg}
+                    onClick={() =>
+                      setValue(
+                        "point",
+                        Number(element.amount) + Number(watch().point)
+                      )
+                    }
+                    _hover={{
+                      bg: element.hoverColor,
+                      animation: `1s ${changeRadius}`,
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <Box w="40%" h="40%">
+                      {element.icon}
                     </Box>
-                  </InViewProvider>
-                </WrapItem>
-              );
-            })}
+                    <Text fontWeight="bold" fontSize="lg">
+                      {element.amount}P
+                    </Text>
+                  </Box>
+                </InViewProvider>
+              </WrapItem>
+            ))}
           </Wrap>
           <HStack pt={5}>
             <FormControl isInvalid={errors.point !== undefined}>
@@ -314,8 +313,8 @@ export default function RequestCreate() {
           </Text>
           <Text fontWeight="bold" fontSize="20px">
             {video?.youtubeVideo
-              ? `${Math.floor(video?.youtubeVideo.duration / 60)}${t("min")} ${
-                  video?.youtubeVideo.duration % 60
+              ? `${Math.floor(video!.youtubeVideo.duration / 60)}${t("min")} ${
+                  video!.youtubeVideo.duration % 60
                 }${t("sec")}`
               : "unknown"}
           </Text>

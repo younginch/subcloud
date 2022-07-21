@@ -83,7 +83,7 @@ function SiteMap() {
           <Text fontSize="xs">{t("company_registration_number")}</Text>
           <Text fontSize="xs">{t("representative")}</Text>
           <Text fontSize="xs">
-            {t("business_address")} <br></br>
+            {t("business_address")} <br />
             {t("business_address_end")}
           </Text>
           <Text fontSize="xs">{t("tel")}</Text>
@@ -111,8 +111,8 @@ export default function Footer() {
         <SiteMap />
         <Spacer />
         <HStack margin={6} align="flex-start" paddingEnd="84px">
-          <SelectTranslation isLarge={true} />
-          <SelectTheme isLarge={true} />
+          <SelectTranslation isLarge />
+          <SelectTheme isLarge />
         </HStack>
       </Flex>
     );
@@ -130,8 +130,8 @@ export default function Footer() {
       bgColor={colorMode === "light" ? "#f7fafc" : "inherit"}
     >
       <HStack margin={6} align="flex-start">
-        <SelectTranslation isLarge={true} />
-        <SelectTheme isLarge={true} />
+        <SelectTranslation isLarge />
+        <SelectTheme isLarge />
       </HStack>
       <SiteMap />
     </Stack>

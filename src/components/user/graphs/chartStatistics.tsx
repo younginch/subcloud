@@ -1,6 +1,6 @@
 import { Flex, Progress, Text, useColorModeValue } from "@chakra-ui/react";
-import IconBox from "../../../components/icons/iconBox";
 import React from "react";
+import IconBox from "../../icons/iconBox";
 
 type Props = {
   title: string;

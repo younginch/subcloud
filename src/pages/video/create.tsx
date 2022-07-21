@@ -8,21 +8,20 @@ import {
   Stack,
   useColorModeValue,
   useToast,
-  UnorderedList,
   ListItem,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { joiResolver } from "@hookform/resolvers/joi";
-import { VideoCreateSchema } from "../../utils/schema";
 import { Role } from "@prisma/client";
-import CreateHeader from "../../components/create/createHeader";
-import { PageOptions } from "../../utils/types";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FiUpload } from "react-icons/fi";
+import useTranslation from "next-translate/useTranslation";
+import { VideoCreateSchema } from "../../utils/schema";
+import CreateHeader from "../../components/create/createHeader";
+import { PageOptions } from "../../utils/types";
 import SwingProvider from "../../components/swingProvider";
 import EventNotice from "../../components/create/eventNotice";
-import useTranslation from "next-translate/useTranslation";
 import ExplainBox from "../../components/create/ExplainBox";
 
 type FormData = {

@@ -100,24 +100,22 @@ export default function AdminSettle() {
             </Tr>
           </Thead>
           <Tbody>
-            {data?.map((record) => {
-              return (
-                <Tr key={record.id}>
-                  <Td>{record.totalPoint}</Td>
-                  <Td>{dayjs(record.startAt).format("YYYY-MM-DD HH:mm:ss")}</Td>
-                  <Td>{dayjs(record.endAt).format("YYYY-MM-DD HH:mm:ss")}</Td>
-                  <Td>{record.settlePoints.length}</Td>
-                  <Td>
-                    <Button
-                      id={record.id}
-                      onClick={() => handleDelete(record.id)}
-                    >
-                      삭제
-                    </Button>
-                  </Td>
-                </Tr>
-              );
-            })}
+            {data?.map((record) => (
+              <Tr key={record.id}>
+                <Td>{record.totalPoint}</Td>
+                <Td>{dayjs(record.startAt).format("YYYY-MM-DD HH:mm:ss")}</Td>
+                <Td>{dayjs(record.endAt).format("YYYY-MM-DD HH:mm:ss")}</Td>
+                <Td>{record.settlePoints.length}</Td>
+                <Td>
+                  <Button
+                    id={record.id}
+                    onClick={() => handleDelete(record.id)}
+                  >
+                    삭제
+                  </Button>
+                </Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
       </TableContainer>

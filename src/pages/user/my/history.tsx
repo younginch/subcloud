@@ -9,7 +9,7 @@ import {
   HStack,
   Text,
 } from "@chakra-ui/react";
-import { Role, SubHistory } from "@prisma/client";
+import { Role } from "@prisma/client";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import useTranslation from "next-translate/useTranslation";
@@ -37,31 +37,29 @@ export default function UserMyHistory() {
           </Tr>
         </Thead>
         <Tbody>
-          {data?.map((subHistory) => {
-            return (
-              <Tr key={subHistory.id}>
-                <Td>
-                  <HStack>
-                    <YoutubeIcon size="36px" />
-                    <Text maxW={480} noOfLines={1}>
-                      {subHistory.sub.video?.youtubeVideo?.title ??
-                        "Invalid video"}
-                    </Text>
-                  </HStack>
-                </Td>
-                <Td>
-                  <AvatarWithName
-                    imageUrl={
-                      subHistory.sub.video?.youtubeVideo?.channel.thumbnailUrl
-                    }
-                    name={subHistory.sub.video?.youtubeVideo?.channel.title}
-                  />
-                </Td>
-                <Td>{subHistory.sub.lang}</Td>
-                <Td>{dayjs(subHistory.viewAt).format("YYYY-MM-DD")}</Td>
-              </Tr>
-            );
-          })}
+          {data?.map((subHistory) => (
+            <Tr key={subHistory.id}>
+              <Td>
+                <HStack>
+                  <YoutubeIcon size="36px" />
+                  <Text maxW={480} noOfLines={1}>
+                    {subHistory.sub.video?.youtubeVideo?.title ??
+                      "Invalid video"}
+                  </Text>
+                </HStack>
+              </Td>
+              <Td>
+                <AvatarWithName
+                  imageUrl={
+                    subHistory.sub.video?.youtubeVideo?.channel.thumbnailUrl
+                  }
+                  name={subHistory.sub.video?.youtubeVideo?.channel.title}
+                />
+              </Td>
+              <Td>{subHistory.sub.lang}</Td>
+              <Td>{dayjs(subHistory.viewAt).format("YYYY-MM-DD")}</Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>

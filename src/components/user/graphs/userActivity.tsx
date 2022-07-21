@@ -5,14 +5,14 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import CardBody from "../card/cardBody";
 import React, { ReactElement } from "react";
-import ChartStatistics from "./chartStatistics";
-import PurityCard from "../card/purityCard";
-import CardHeader from "../card/cardHeader";
 import { IoWallet } from "react-icons/io5";
 import { AiFillEye } from "react-icons/ai";
 import useTranslation from "next-translate/useTranslation";
+import CardBody from "../card/cardBody";
+import ChartStatistics from "./chartStatistics";
+import PurityCard from "../card/purityCard";
+import CardHeader from "../card/cardHeader";
 
 type Props = {
   title: string;

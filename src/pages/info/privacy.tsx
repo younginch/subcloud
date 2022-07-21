@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import { ListItem, UnorderedList, Text, List } from "@chakra-ui/react";
 import { HoList, HangList, Jo } from "../../components/list";
 import { PageOptions } from "../../utils/types";

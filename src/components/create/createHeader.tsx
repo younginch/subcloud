@@ -7,7 +7,6 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
-import { GoChevronRight } from "react-icons/go";
 
 type Props = {
   type: "request" | "sub";

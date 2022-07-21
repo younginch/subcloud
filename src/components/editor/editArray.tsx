@@ -23,17 +23,15 @@ import {
   Portal,
   useDisclosure,
   Divider,
-  Center,
-  useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { ChangeEvent, useContext, useRef, useState } from "react";
 import { MdTimer } from "react-icons/md";
-import { EditorContext } from "../../pages/editor";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 import { SRTContent } from "@younginch/subtitle";
+import { EditorContext } from "../../utils/editorCore";
 
 dayjs.extend(duration);
 
@@ -80,7 +78,7 @@ function PlusButton({ index, onClose, amount }: PMButtonProps) {
       }
       onClick={() => {
         const newContents = [...contents];
-        newContents[index].endTime = newContents[index].endTime + amount;
+        newContents[index].endTime += amount;
         setContents(newContents);
         onClose();
       }}
@@ -117,9 +115,54 @@ function StartTimestamp({ index }: { index: number }) {
 
   return (
     <HStack justifyContent="space-between">
-      <Button maxW="100px" h={8} variant="outline" onClick={onToggle}>
-        {miliToString(contents[index].startTime!)}
-      </Button>
+      <Popover isOpen={isOpen} onClose={onClose}>
+        <PopoverTrigger>
+          <Button maxW="100px" h={8} variant="outline" onClick={onToggle}>
+            {miliToString(contents[index].endTime!)}
+          </Button>
+        </PopoverTrigger>
+        <Portal>
+          <PopoverContent w="400px">
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverHeader>시작 시간 조절</PopoverHeader>
+            <PopoverBody>
+              <FormControl>
+                <FormLabel>자막의 끝부터</FormLabel>
+                <HStack>
+                  <MinusButton index={index} onClose={onClose} amount={500} />
+                  <MinusButton index={index} onClose={onClose} amount={1000} />
+                  <MinusButton index={index} onClose={onClose} amount={2000} />
+                  <Button
+                    onClick={() => {
+                      const newContents = [...contents];
+                      newContents[index].endTime =
+                        newContents[index + 1].startTime;
+                      setContents(newContents);
+                      onClose();
+                    }}
+                    isDisabled={index >= contents.length - 1}
+                  >
+                    이전 자막 직후
+                  </Button>
+                </HStack>
+                <InputGroup mt={2}>
+                  <Input isDisabled />
+                  <InputRightAddon>초</InputRightAddon>
+                </InputGroup>
+              </FormControl>
+            </PopoverBody>
+            <PopoverFooter>
+              <FormControl>
+                <FormLabel>자막 시작 시간</FormLabel>
+                <InputGroup>
+                  <Input isDisabled />
+                </InputGroup>
+              </FormControl>
+            </PopoverFooter>
+          </PopoverContent>
+        </Portal>
+      </Popover>
     </HStack>
   );
 }
@@ -182,7 +225,7 @@ function EndTimestamp({ index }: { index: number }) {
   );
 }
 
-const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
+function Row({ index, style }: ListChildComponentProps<SRTContent[]>) {
   const { contents, setContents, getPlayerTime, duration } =
     useContext(EditorContext);
 
@@ -278,7 +321,7 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
       </Button>
     </>
   );
-};
+}
 
 export default function EditArray() {
   const { contents } = useContext(EditorContext);

@@ -2,12 +2,12 @@ import nextConnect from "next-connect";
 import multer from "multer";
 import multerS3 from "multer-s3";
 import { NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
 import ResError, {
   ResFileUpload,
   setCORS,
   SubErrorType,
 } from "../../../../utils/types";
-import { getSession } from "next-auth/react";
 import { configuredBucket, configuredS3 } from "../../../../utils/aws";
 import prisma from "../../../../utils/prisma";
 
@@ -20,10 +20,10 @@ const awsStorage = multerS3({
   bucket: configuredBucket,
   contentType: multerS3.AUTO_CONTENT_TYPE,
   acl: "public-read",
-  metadata: function (req: any, file: any, cb: any) {
+  metadata(req: any, file: any, cb: any) {
     cb(null, { fieldName: file.fieldname });
   },
-  key: function (req: any, file: any, cb: any) {
+  key(req: any, file: any, cb: any) {
     cb(null, `${Date.now()}_${file.originalname}`);
   },
 });

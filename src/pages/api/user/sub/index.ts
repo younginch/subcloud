@@ -1,3 +1,4 @@
+import { Role } from "@prisma/client";
 import {
   handleRoute,
   ResSub,
@@ -7,7 +8,6 @@ import {
 } from "../../../../utils/types";
 import { SubCreateSchema } from "../../../../utils/schema";
 import { getS3Url } from "../../../../utils/aws";
-import { Role } from "@prisma/client";
 
 async function SubRead({ req, res, prisma }: RouteParams<ResSubRead>) {
   const { id } = req.query;

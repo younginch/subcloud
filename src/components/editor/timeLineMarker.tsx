@@ -1,8 +1,11 @@
 import { Box, createIcon } from "@chakra-ui/react";
 import { useContext, useEffect, useRef } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
-import { EditorContext, PlayerState } from "../../pages/editor";
-import { makeLeftAnimation } from "../../utils/editorCore";
+import {
+  EditorContext,
+  PlayerState,
+  makeLeftAnimation,
+} from "../../utils/editorCore";
 
 export const TimeLineMarkerSVG = createIcon({
   displayName: "SubCloud Logo ",
@@ -53,13 +56,13 @@ export default function TimeLineMarker() {
 
   const animation = makeLeftAnimation(
     initialLeft,
-    state == PlayerState.PLAYING ? 6000 : initialLeft,
-    state == PlayerState.PLAYING
+    state === PlayerState.PLAYING ? 6000 : initialLeft,
+    state === PlayerState.PLAYING
       ? (rightTime - getPlayerTime()) / 1000
       : 10000000
   );
 
-  const onDragStart = (e: DraggableEvent, data: DraggableData) => {
+  const onDragStart = (e: DraggableEvent) => {
     e.stopPropagation();
     e.preventDefault();
     setState(PlayerState.PAUSED);

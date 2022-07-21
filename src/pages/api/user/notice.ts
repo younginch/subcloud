@@ -1,4 +1,4 @@
-import { Role, Notice, Notification } from "@prisma/client";
+import { Role, Notification } from "@prisma/client";
 import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 
 async function getNotification({

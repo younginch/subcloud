@@ -59,12 +59,12 @@ export default function Shortcuts() {
           </Tr>
         </Thead>
         <Tbody>
-          {shortcutsData.map(({ action, keys }, index) => (
-            <Tr key={index}>
+          {shortcutsData.map(({ action, keys }) => (
+            <Tr key={action}>
               <Td p="8px 10px 8px 10px">{action}</Td>
               <Td p="8px 10px 8px 10px">
-                {keys.map((key, index) => (
-                  <Kbd key={index} me={1}>
+                {keys.map((key) => (
+                  <Kbd key={key} me={1}>
                     {key}
                   </Kbd>
                 ))}

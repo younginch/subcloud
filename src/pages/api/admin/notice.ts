@@ -1,7 +1,7 @@
-import { Role, Notification, Notice } from "@prisma/client";
+import { Role, Notice } from "@prisma/client";
 import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 
-async function getNotices({ req, res, prisma }: RouteParams<Notice[]>) {
+async function getNotices({ res, prisma }: RouteParams<Notice[]>) {
   const notices = await prisma.notice.findMany({
     orderBy: { createdAt: "desc" },
     include: { notifications: true },

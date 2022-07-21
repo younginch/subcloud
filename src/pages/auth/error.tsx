@@ -14,10 +14,10 @@ export default function Error() {
     <Result>
       <WarningTwoIcon w="100px" h="100px" color="red.400" />
       <Text fontSize="25px">{t("error_title")}</Text>
-      {router.query["error"] !== "undefined" && (
+      {router.query.error !== "undefined" && (
         <Text fontSize="20px" color={textColor}>
           {t("error_message")}
-          {router.query["error"]}
+          {router.query.error}
         </Text>
       )}
     </Result>

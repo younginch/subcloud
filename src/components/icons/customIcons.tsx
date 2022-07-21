@@ -3,10 +3,9 @@ import { FaYoutube } from "react-icons/fa";
 
 type IconProps = {
   size: number | string;
-  fill?: string;
 };
 
-export function YoutubeIcon({ size, fill }: IconProps) {
+export function YoutubeIcon({ size }: IconProps) {
   return (
     <Box minW={size} minH={size}>
       <FaYoutube size={size} fill="#ff5b5b" />
@@ -30,10 +29,15 @@ export const SubCloudSVG = createIcon({
   ),
 });
 
-export function SubcloudIcon({ size, fill }: IconProps) {
+type SubcloudIconProps = {
+  size: number | string;
+  fill?: string;
+};
+
+export function SubcloudIcon({ size, fill }: SubcloudIconProps) {
   return (
     <Box minW={size} minH={size}>
-      <SubCloudSVG w={size} h={size} fill={fill ? fill : "#00dbdb"} />
+      <SubCloudSVG w={size} h={size} fill={fill || "#00dbdb"} />
     </Box>
   );
 }
@@ -63,14 +67,14 @@ export function DottedBox() {
             height="20"
             patternUnits="userSpaceOnUse"
           >
-            <rect x="0" y="0" width="4" height="4" fill="currentColor"></rect>
+            <rect x="0" y="0" width="4" height="4" fill="currentColor" />
           </pattern>
         </defs>
         <rect
           width="404"
           height="404"
           fill="url(#5d0dd344-b041-4d26-bec4-8d33ea57ec9b)"
-        ></rect>
+        />
       </svg>
     </Box>
   );

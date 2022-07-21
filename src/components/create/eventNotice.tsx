@@ -1,6 +1,5 @@
-import { Box, useColorModeValue, Text, Icon, HStack } from "@chakra-ui/react";
+import { Box, useColorModeValue, Text, HStack } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
-import { GoChevronRight } from "react-icons/go";
 
 export default function EventNotice() {
   const { t } = useTranslation("create");

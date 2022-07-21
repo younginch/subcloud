@@ -1,8 +1,7 @@
 import dayjs, { ManipulateType } from "dayjs";
-import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
-import React, { useEffect, useState } from "react";
 import useSWR from "swr";
+
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
@@ -17,7 +16,7 @@ type Props = {
 export default function LineChart({ range, type, subId, userId }: Props) {
   const currentDate = dayjs();
   const subQuery = subId ? `&subId=${subId}` : "";
-  const { data: viewArray, error: viewError } = useSWR(
+  const { data: viewArray } = useSWR(
     `/api/user/stats/view?userId=${userId}&cnt=${range}&date=${currentDate.format(
       "YYYY-MM-DD"
     )}&type=${type}${subQuery}`

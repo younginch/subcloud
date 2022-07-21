@@ -14,8 +14,6 @@ import { YoutubeIcon } from "../icons/customIcons";
 
 type Props = {
   rank: number;
-  userId: string;
-  platform: string;
   videoName: string;
   videoUrl: string;
   channelName: string;
@@ -28,8 +26,6 @@ type Props = {
 
 export default function ProfileSubtitleRow({
   rank,
-  userId,
-  platform,
   videoName,
   videoUrl,
   channelName,

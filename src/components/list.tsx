@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import { Heading, List, ListItem, OrderedList } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
@@ -54,24 +55,21 @@ export function HangList({ children }: HangListProps) {
   if (Array.isArray(children)) {
     return (
       <List>
-        {children?.map((child, index) => {
-          return (
-            <ListItem key={index}>
-              {`${circledNumbers[index]} `}
-              {child}
-            </ListItem>
-          );
-        })}
+        {children?.map((child, index) => (
+          <ListItem key={index}>
+            {`${circledNumbers[index]} `}
+            {child}
+          </ListItem>
+        ))}
       </List>
     );
-  } else {
-    return (
-      <ListItem>
-        {`${circledNumbers[0]} `}
-        {children}
-      </ListItem>
-    );
   }
+  return (
+    <ListItem>
+      {`${circledNumbers[0]} `}
+      {children}
+    </ListItem>
+  );
 }
 
 type HoListProps = {
@@ -81,9 +79,9 @@ type HoListProps = {
 export function HoList({ children }: HoListProps) {
   return (
     <OrderedList marginStart="24px">
-      {children.map((item, index) => {
-        return <ListItem key={index}>{item}</ListItem>;
-      })}
+      {children.map((item, index) => (
+        <ListItem key={index}>{item}</ListItem>
+      ))}
     </OrderedList>
   );
 }
