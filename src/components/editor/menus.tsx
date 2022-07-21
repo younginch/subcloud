@@ -4,6 +4,7 @@ import {
   RepeatIcon,
   EditIcon,
   ChevronDownIcon,
+  DeleteIcon,
 } from "@chakra-ui/icons";
 import {
   Button,
@@ -20,11 +21,16 @@ import { EditorContext } from "../../utils/editorCore";
 
 function keysToString(sequence: KeySequence) {
   let array: string[] = [];
-  if (!Array.isArray(sequence)) {
-    array = [sequence as string];
+  if (Array.isArray(sequence)) {
+    if ((sequence as string[])[0].includes("+")) {
+      array = (sequence as string[])[0].split("+");
+    } else {
+      array = sequence as string[];
+    }
   } else {
-    array = sequence as string[];
+    array = [sequence as string];
   }
+
   return array
     .map((key) => {
       switch (key) {
@@ -40,6 +46,8 @@ function keysToString(sequence: KeySequence) {
           return "←";
         case "right":
           return "→";
+        case "backspace":
+          return "⌫";
         default:
           return key;
       }
@@ -81,8 +89,6 @@ function EditorMenu({ title, items }: EditorMenuProps) {
 }
 
 export default function Menus() {
-  const { commandKeys, commandHandlers } = useContext(EditorContext);
-
   return (
     <HStack>
       <Link href="/" passHref>
@@ -109,72 +115,76 @@ export default function Menus() {
           },
         ]}
       />
-      <Menu>
-        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-          편집(E)
-        </MenuButton>
-        <MenuList zIndex={200}>
-          <MenuItem
-            icon={<AddIcon />}
-            command={keysToString(commandKeys.NEW_SUBTITLE)}
-            onClick={commandHandlers.NEW_SUBTITLE}
-          >
-            현재 시간에서 새 자막
-          </MenuItem>
-          <MenuItem
-            icon={<EditIcon />}
-            command={keysToString(commandKeys.CUT_SUBTITLE)}
-            onClick={commandHandlers.CUT_SUBTITLE}
-          >
-            현재 시간에서 자막 끝내기
-          </MenuItem>
-          <MenuItem
-            icon={<ExternalLinkIcon />}
-            command={keysToString(commandKeys.DELETE_ALL)}
-            onClick={commandHandlers.DELETE_ALL}
-          >
-            모두 지우기
-          </MenuItem>
-          <MenuItem icon={<RepeatIcon />} command="\">
-            현재 커서에서 자르기
-          </MenuItem>
-        </MenuList>
-      </Menu>
-      <Menu>
-        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-          보기(V)
-        </MenuButton>
-        <MenuList zIndex={200}>
-          <MenuItem icon={<AddIcon />} command="⌘T">
-            타임라인 보기
-          </MenuItem>
-          <MenuItem icon={<ExternalLinkIcon />} command="⌘N">
-            자막 속성 보기
-          </MenuItem>
-        </MenuList>
-      </Menu>
-      <Menu>
-        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-          재생(Y)
-        </MenuButton>
-        <MenuList zIndex={200}>
-          <MenuItem icon={<AddIcon />} command="space">
-            재생/일시정지
-          </MenuItem>
-          <MenuItem icon={<ExternalLinkIcon />} command="←">
-            0.5초 되감기
-          </MenuItem>
-          <MenuItem icon={<RepeatIcon />} command="⇧←">
-            5초 되감기
-          </MenuItem>
-          <MenuItem icon={<EditIcon />} command="→">
-            0.5초 빨리감기
-          </MenuItem>
-          <MenuItem icon={<EditIcon />} command="⇧→">
-            5초 빨리감기
-          </MenuItem>
-        </MenuList>
-      </Menu>
+      <EditorMenu
+        title="편집(E)"
+        items={[
+          {
+            title: "현재 시간에서 새 자막",
+            icon: <AddIcon />,
+            command: "NEW_SUBTITLE",
+          },
+          {
+            title: "현재 시간에서 자막 끝내기",
+            icon: <EditIcon />,
+            command: "CUT_SUBTITLE",
+          },
+          {
+            title: "모두 지우기",
+            icon: <DeleteIcon />,
+            command: "DELETE_ALL",
+          },
+          {
+            title: "현재 커서에서 분리하기",
+            icon: <RepeatIcon />,
+            command: "SPLIT_SUBTITLE",
+          },
+        ]}
+      />
+      <EditorMenu
+        title="보기(V)"
+        items={[
+          {
+            title: "타임라인 보기/가리기",
+            icon: <EditIcon />,
+            command: "TOGGLE_TIMELINE",
+          },
+          {
+            title: "자막 속성 보기/가리기",
+            icon: <EditIcon />,
+            command: "TOGGLE_SUBTITLE_PROPERTIES",
+          },
+        ]}
+      />
+      <EditorMenu
+        title="재생(Y)"
+        items={[
+          {
+            title: "재생/일시정지",
+            icon: <EditIcon />,
+            command: "PLAY_PAUSE",
+          },
+          {
+            title: "0.5초 되감기",
+            icon: <EditIcon />,
+            command: "LEFT_0_5",
+          },
+          {
+            title: "5초 되감기",
+            icon: <EditIcon />,
+            command: "LEFT_5",
+          },
+          {
+            title: "0.5초 빨리감기",
+            icon: <EditIcon />,
+            command: "RIGHT_0_5",
+          },
+          {
+            title: "5초 빨리감기",
+            icon: <EditIcon />,
+            command: "RIGHT_5",
+          },
+        ]}
+      />
     </HStack>
   );
 }

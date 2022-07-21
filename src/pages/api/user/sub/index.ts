@@ -6,7 +6,7 @@ import {
   RouteParams,
   SubErrorType,
 } from "../../../../utils/types";
-import { SubCreateSchema } from "../../../../utils/schema";
+import { SubCreateSchema, SubUpdateSchema } from "../../../../utils/schema";
 import { getS3Url } from "../../../../utils/aws";
 
 async function SubRead({ req, res, prisma }: RouteParams<ResSubRead>) {
@@ -63,7 +63,13 @@ async function SubCreate({ req, res, prisma, session }: RouteParams<ResSub>) {
 }
 
 async function SubUpdate({ req, res, prisma }: RouteParams<ResSub>) {
-  const { id } = req.body;
+  const { id } = req.query;
+  const { value, error } = SubUpdateSchema.validate(req.body);
+  if (error) {
+    return res
+      .status(400)
+      .json({ error: SubErrorType.FormValidation, message: error.message });
+  }
   const sub = await prisma.sub.findUnique({ where: { id: id as string } });
   if (!sub) {
     return res
@@ -72,7 +78,13 @@ async function SubUpdate({ req, res, prisma }: RouteParams<ResSub>) {
   }
   const updatedSub = await prisma.sub.update({
     where: { id: id as string },
-    data: {},
+    data: {
+      userId: value.userId,
+      fileId: value.fileId,
+      serviceId: value.serviceId,
+      videoId: value.videoId,
+      lang: value.lang,
+    },
   });
   return res.status(200).json(updatedSub);
 }
