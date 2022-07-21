@@ -46,10 +46,15 @@ export default function UserRankTableRow({
       <Td w="30%" minW="200px" pl="0px">
         <HStack>
           <Link href={`/user/${userId}`}>
-            <Avatar size="sm" name={userName} src={userImageUrl} />
+            <Avatar
+              size="sm"
+              name={userName}
+              src={userImageUrl}
+              cursor="pointer"
+            />
           </Link>
           <Link href={`/user/${userId}`}>
-            <Text fontWeight="bold" fontSize={subTextSize}>
+            <Text fontWeight="bold" fontSize={subTextSize} cursor="pointer">
               {userName}
             </Text>
           </Link>

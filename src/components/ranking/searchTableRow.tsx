@@ -57,12 +57,13 @@ export default function SearchTableRow({
             router.push(`/video/${platform}/${videoId}`);
           }}
         >
-          <YoutubeIcon size={30} />
+          <YoutubeIcon size={30} cursor="pointer" />
           <Text
             fontWeight="bold"
             textOverflow="ellipsis"
             whiteSpace="nowrap"
             overflow="hidden"
+            cursor="pointer"
           >
             {videoName}
           </Text>

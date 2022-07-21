@@ -58,7 +58,7 @@ export default function VideoTableRow({
       >
         <HStack w="inherit">
           <Link href={url}>
-            <YoutubeIcon size={30} />
+            <YoutubeIcon size={30} cursor="pointer" />
           </Link>
           <Link href={url}>
             <Text
@@ -66,6 +66,7 @@ export default function VideoTableRow({
               textOverflow="ellipsis"
               whiteSpace="nowrap"
               overflow="hidden"
+              cursor="pointer"
             >
               {name}
             </Text>

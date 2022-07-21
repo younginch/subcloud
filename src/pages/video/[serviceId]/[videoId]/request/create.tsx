@@ -20,7 +20,6 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
-import { useSession } from "next-auth/react";
 import { Role } from "@prisma/client";
 import { useEffect, useState } from "react";
 import ISO6391 from "iso-639-1";
@@ -59,7 +58,6 @@ export default function RequestCreate() {
   const serviceId = router.query.serviceId as string;
   const videoId = router.query.videoId as string;
   const toast = useToast();
-  const { data } = useSession();
   const [check, setCheck] = useState(false);
   const {
     handleSubmit,
@@ -168,7 +166,7 @@ export default function RequestCreate() {
             description: "Request created",
             status: "success",
           });
-          router.push(`/user/${data?.user.id}?tab=requests`);
+          router.push(`/user/my/request`);
           resolve();
         })
         .catch((err) => {
