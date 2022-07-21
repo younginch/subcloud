@@ -90,7 +90,7 @@ export default function UserRankingPage() {
             totalViewCount={user._count.views}
             totalSubCount={user._count.subs}
             totalFulfilledRequest={user._count.fulfilledRequests}
-            totalRating={user._count.ratings}
+            totalRating={Math.round(user._count.ratings * 10) / 10}
           />
         ))}
       </GeneralTable>
