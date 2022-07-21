@@ -237,6 +237,8 @@ type FileWithUrl = File & {
 };
 
 type SubWithVideo = Sub & {
+  user: User;
+} & {
   video: VideoWithInfo;
 };
 

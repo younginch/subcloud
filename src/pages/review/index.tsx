@@ -36,6 +36,7 @@ export default function Review() {
           <Tr>
             <Th>Title</Th>
             <Th>Channel</Th>
+            <Th>UploadBy</Th>
             <Th>Date</Th>
             <Th>Status</Th>
             <Th>Actions</Th>
@@ -60,9 +61,18 @@ export default function Review() {
                 <AvatarWithName
                   imageUrl={sub.video?.youtubeVideo?.channel.thumbnailUrl}
                   name={sub.video?.youtubeVideo?.channel.title}
+                  size="sm"
                 />
               </Td>
-              <Td>{sub.updatedAt.toString()}</Td>
+              <Td>
+                <AvatarWithName
+                  imageUrl={sub.user.image || "Anonymous"}
+                  name={sub.user.name || "Anonymous"}
+                  size="sm"
+                  maxW="full"
+                />
+              </Td>
+              <Td>{new Date(sub.updatedAt).toLocaleString("ko-KR")}</Td>
               <Td>
                 <ReviewStatusBadge status={sub.status} />
               </Td>
