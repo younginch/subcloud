@@ -4,6 +4,7 @@ import axios from "axios";
 import { createContext, useState } from "react";
 import { KeyMap } from "react-hotkeys";
 import { YouTubePlayer } from "react-youtube";
+import EditorAction from "./editorActions";
 
 export function checkOccupation(contents: SRTContent[], time: number): number {
   if (Number.isNaN(time)) return -1;
@@ -11,7 +12,6 @@ export function checkOccupation(contents: SRTContent[], time: number): number {
   for (let i = 0; i < contents.length; i++) {
     if (contents[i].startTime <= time && contents[i].endTime >= time) return i;
   }
-
   return -1;
 }
 
@@ -67,6 +67,7 @@ type EditorContextProps = {
   forceRerender: boolean;
   commandKeys: KeyMap;
   commandHandlers: { [key: string]: () => void };
+  execute: (actions: EditorAction) => void;
 };
 
 export enum PlayerState {
@@ -79,6 +80,8 @@ export enum PlayerState {
 }
 
 const commandKeys = {
+  EDIT_UNDO: ["shift+z"],
+  EDIT_REDO: ["shift+y"],
   PLAY_PAUSE: ["space"],
   NEW_SUBTITLE: ["["],
   CUT_SUBTITLE: ["]"],
@@ -112,6 +115,7 @@ export const EditorContext = createContext<EditorContextProps>({
   forceRerender: true,
   commandKeys,
   commandHandlers: {},
+  execute: () => {},
 });
 
 type EditorProviderProps = {
@@ -131,6 +135,44 @@ export function EditorProvider({ children }: EditorProviderProps) {
     PlayerState.UNSTARTED
   );
   const [forceRerender, setForceRerender] = useState<boolean>(true);
+  const [undoActions, setUndoActions] = useState<EditorAction[]>([]);
+  const [redoActions, setRedoActions] = useState<EditorAction[]>([]);
+
+  function execute(action: EditorAction) {
+    action.execute();
+
+    const newUndoStack = [...undoActions];
+    newUndoStack.push(action);
+    setUndoActions(newUndoStack);
+    setRedoActions([]);
+  }
+
+  function undo() {
+    if (undoActions.length > 0) {
+      const action = undoActions[-1];
+      if (action) {
+        action.undo();
+        const newUndoStack = [...undoActions];
+        newUndoStack.pop();
+        setUndoActions(newUndoStack);
+        const newRedoStack = [...redoActions];
+        newRedoStack.push(action);
+        setRedoActions(newRedoStack);
+      }
+    }
+  }
+
+  function redo() {
+    if (redoActions.length > 0) {
+      const action = redoActions.pop();
+      if (action) {
+        action.execute();
+        const newUndoStack = [...undoActions];
+        newUndoStack.push(action);
+        setUndoActions(newUndoStack);
+      }
+    }
+  }
 
   function getPlayerTime() {
     return (player?.getCurrentTime() ?? 0) * 1000;
@@ -149,6 +191,8 @@ export function EditorProvider({ children }: EditorProviderProps) {
   }
 
   const commandHandlers = {
+    EDIT_UNDO: undo,
+    EDIT_REDO: redo,
     PLAY_PAUSE: () => {
       playOrPause();
     },
@@ -280,6 +324,7 @@ export function EditorProvider({ children }: EditorProviderProps) {
         forceRerender,
         commandKeys,
         commandHandlers,
+        execute,
       }}
     >
       {children}

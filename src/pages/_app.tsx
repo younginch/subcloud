@@ -34,16 +34,30 @@ function Auth({ children, auth, role }: AuthProps): JSX.Element {
       return;
     }
     if (status === "loading" || !router.isReady) {
-      // Do nothing while loading
+      // eslint-disable-next-line no-useless-return
+      return; // Do nothing while loading
+      // eslint-disable-next-line no-else-return
     } else if (status === "unauthenticated") {
       router.push(`/auth/signin?callbackUrl=${router.asPath}`); // If not authenticated, force log in
-    } else if (!isRightRole(data?.user.role, role!)) {
-      router.push("/api/auth/signout");
-      toast({
-        title: "You are not authorized to access this page",
-        description: `Required role: ${role}, your role: ${data?.user.role}`,
-        status: "error",
-      });
+      // eslint-disable-next-line no-useless-return
+      return;
+    } else {
+      // eslint-disable-next-line no-lonely-if
+      if (!data?.user) {
+        // eslint-disable-next-line no-useless-return
+        return;
+        // eslint-disable-next-line no-else-return
+      } else if (auth || !role) {
+        // eslint-disable-next-line no-useless-return
+        return;
+      } else if (!isRightRole(data.user.role, role)) {
+        router.push("/api/auth/signout");
+        toast({
+          title: "You are not authorized to access this page",
+          description: `Required role: ${role}, your role: ${data.user.role}`,
+          status: "error",
+        });
+      }
     }
   }, [auth, data?.user, role, router, status, toast]);
 
