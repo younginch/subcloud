@@ -23,6 +23,7 @@ import { SRTFile } from "@younginch/subtitle";
 import { useDropzone } from "react-dropzone";
 import { GlobalHotKeys } from "react-hotkeys";
 import { useRouter } from "next/router";
+import { AiOutlineUpload } from "react-icons/ai";
 import Property from "../components/editor/property";
 import EditArray from "../components/editor/editArray";
 import NoVideo from "../components/editor/noVideo";
@@ -69,7 +70,9 @@ function EditorWithoutContext() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const headerBg = useColorModeValue("gray.100", "#18161d");
+  const headerBg = useColorModeValue("gray.100", "#181818");
+  const headerBodyBg = useColorModeValue("white", "#1f1f1f");
+  const splitterColor = useColorModeValue("#cccccc", "black");
 
   return (
     <GlobalHotKeys keyMap={commandKeys} handlers={commandHandlers} allowChanges>
@@ -81,12 +84,12 @@ function EditorWithoutContext() {
         <ReflexElement minSize={100}>
           <ReflexContainer orientation="vertical">
             <ReflexElement minSize={200} maxSize={500}>
-              <Stack>
+              <Stack bg={headerBodyBg} h="100%">
                 <Heading
                   fontSize="lg"
                   bg={headerBg}
                   w="100%"
-                  borderBottomWidth="2px"
+                  borderBottomWidth="1px"
                   p="5px"
                   textAlign="center"
                 >
@@ -94,16 +97,16 @@ function EditorWithoutContext() {
                 </Heading>
                 <Stack p="10px" mt="0px !important" spacing="10px">
                   <Box
-                    h="100px"
+                    h="150px"
                     borderWidth="1px"
                     borderRadius="6px"
                     {...getRootProps()}
                     bg={useColorModeValue(
                       isDragActive ? "blue.100" : "blue.50",
-                      isDragActive ? "blue.800" : "blue.900"
+                      isDragActive ? "#444466" : "#333333"
                     )}
                     _hover={{
-                      bg: useColorModeValue("blue.100", "blue.800"),
+                      bg: useColorModeValue("blue.100", "#444466"),
                     }}
                     p="15px"
                     cursor="pointer"
@@ -112,7 +115,12 @@ function EditorWithoutContext() {
                     {isDragActive ? (
                       <p>파일을 여기에 놓으세요</p>
                     ) : (
-                      <p>클릭하거나 드래그 앤 드롭으로 자막을 업로드 하세요</p>
+                      <Stack alignItems="center">
+                        <AiOutlineUpload size="50px" />
+                        <p>
+                          클릭하거나 드래그 앤 드롭으로 자막을 업로드 하세요
+                        </p>
+                      </Stack>
                     )}
                   </Box>
                 </Stack>
@@ -120,8 +128,8 @@ function EditorWithoutContext() {
                   fontSize="lg"
                   bg={headerBg}
                   w="100%"
-                  borderBottomWidth="2px"
-                  borderTopWidth="2px"
+                  borderBottomWidth="1px"
+                  borderTopWidth="1px"
                   p="5px"
                   textAlign="center"
                 >
@@ -175,7 +183,7 @@ function EditorWithoutContext() {
                 </form>
               </Stack>
             </ReflexElement>
-            <ReflexSplitter propagate />
+            <ReflexSplitter propagate style={{ borderColor: splitterColor }} />
             <ReflexElement
               minSize={600}
               style={{ overflow: "hidden" }}
@@ -187,14 +195,14 @@ function EditorWithoutContext() {
                 <YoutubePlayer id={id} />
               )}
             </ReflexElement>
-            <ReflexSplitter propagate />
+            <ReflexSplitter propagate style={{ borderColor: splitterColor }} />
             <ReflexElement minSize={300}>
-              <Stack>
+              <Stack bg={headerBodyBg} h="100%">
                 <Heading
                   fontSize="lg"
                   bg={headerBg}
                   w="100%"
-                  borderBottomWidth="2px"
+                  borderBottomWidth="1px"
                   p="5px"
                   textAlign="center"
                 >
@@ -217,7 +225,7 @@ function EditorWithoutContext() {
         <ReflexSplitter
           propagate
           style={{
-            height: "3px",
+            height: "2px",
           }}
         />
         <ReflexElement size={400}>
@@ -228,8 +236,8 @@ function EditorWithoutContext() {
                 <EditArray />
               </HStack>
             </ReflexElement>
-            <ReflexSplitter />
-            <ReflexElement maxSize={300} minSize={100}>
+            <ReflexSplitter style={{ borderColor: "#aaaaaa" }} />
+            <ReflexElement maxSize={500} minSize={100}>
               <Property />
             </ReflexElement>
           </ReflexContainer>

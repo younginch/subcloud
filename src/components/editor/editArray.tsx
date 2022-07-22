@@ -338,6 +338,7 @@ export default function EditArray() {
         }
         itemSize={90}
         width="100%"
+        className="editArrayContainer"
       >
         {Row}
       </FixedSizeList>

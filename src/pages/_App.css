@@ -121,3 +121,30 @@
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
+
+
+.editArrayContainer::-webkit-scrollbar {
+  width: 8px;
+}
+body.chakra-ui-light .editArrayContainer::-webkit-scrollbar-track {
+  background: #f2f2f2;
+}
+body.chakra-ui-light .editArrayContainer::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+body.chakra-ui-light .editArrayContainer::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+body.chakra-ui-dark .editArrayContainer::-webkit-scrollbar-track {
+  background: #333333;
+}
+body.chakra-ui-dark .editArrayContainer::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+body.chakra-ui-dark .editArrayContainer::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
