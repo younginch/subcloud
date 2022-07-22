@@ -67,12 +67,25 @@ export default function SubCreate() {
             "Content-Type": "multipart/form-data",
           },
         });
-        await axios.post("/api/user/sub", {
-          fileId: newFile.data.id,
-          serviceId,
-          videoId,
-          lang: values.lang,
-        });
+        await axios
+          .post("/api/user/sub", {
+            fileId: newFile.data.id,
+            serviceId,
+            videoId,
+            lang: values.lang,
+          })
+          .catch(async (e) => {
+            if (e.response.status === 409) {
+              await axios.patch(`/api/user/sub?id=${e.response.data.id}`, {
+                fileId: newFile.data.id,
+                serviceId,
+                videoId,
+                lang: values.lang,
+              });
+            } else {
+              throw new Error(e.message);
+            }
+          });
         resolve();
         toast({
           title: "Subtitles created",
@@ -135,7 +148,8 @@ export default function SubCreate() {
       .then(({ data }) => {
         setVideo(data[0]);
       });
-  }, [serviceId, videoId, watch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [serviceId, videoId, watch().lang]);
 
   useEffect(() => {
     setValue("file", file as File);

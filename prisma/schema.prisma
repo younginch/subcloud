@@ -173,7 +173,7 @@ model Review {
   reviewerId String
   reviewer   User       @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
   subId      String
-  sub        Sub        @relation(fields: [subId], references: [id])
+  sub        Sub        @relation(fields: [subId], references: [id], onDelete: Cascade)
   type       ReviewType
   content    String
   startTime  Int?

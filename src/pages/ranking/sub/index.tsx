@@ -25,7 +25,7 @@ export default function SubRankingPage() {
   ];
   const [lang, setLang] = useState<string>();
   const [sortBy, setSortBy] = useState({ by: "view", order: true });
-  const pageSize = 5;
+  const pageSize = 15;
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingSub>(url);
     return res.data;

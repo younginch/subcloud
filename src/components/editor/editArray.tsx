@@ -118,7 +118,7 @@ function StartTimestamp({ index }: { index: number }) {
       <Popover isOpen={isOpen} onClose={onClose}>
         <PopoverTrigger>
           <Button maxW="100px" h={8} variant="outline" onClick={onToggle}>
-            {miliToString(contents[index].endTime!)}
+            {miliToString(contents[index].startTime!)}
           </Button>
         </PopoverTrigger>
         <Portal>
@@ -328,7 +328,7 @@ export default function EditArray() {
   const ref = useRef<HTMLDivElement>(null);
 
   return (
-    <Box h="100%" maxH="100%" w="full" ref={ref} ml="0px !important" pr="8px">
+    <Box h="100%" maxH="100%" w="full" ref={ref} ml="0px !important">
       <FixedSizeList
         height={Number(ref.current?.clientHeight)}
         itemData={contents}
