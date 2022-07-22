@@ -149,7 +149,7 @@ export function EditorProvider({ children }: EditorProviderProps) {
 
   function undo() {
     if (undoActions.length > 0) {
-      const action = undoActions[-1];
+      const action = undoActions[undoActions.length - 1];
       if (action) {
         action.undo();
         const newUndoStack = [...undoActions];
