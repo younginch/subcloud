@@ -14,7 +14,8 @@ import { EditorContext } from "../../utils/editorCore";
 export default function Property() {
   const { contents, focusedIndex } = useContext(EditorContext);
 
-  const headerBg = useColorModeValue("gray.100", "#18161d");
+  const headerBg = useColorModeValue("gray.100", "#181818");
+  const bodyBg = useColorModeValue("transparent", "#222222");
 
   if (contents[focusedIndex] === undefined) {
     return (
@@ -52,7 +53,7 @@ export default function Property() {
   }
 
   return (
-    <Stack>
+    <Stack bg={bodyBg} h="100%">
       <Heading
         fontSize="lg"
         bg={headerBg}
@@ -75,7 +76,7 @@ export default function Property() {
         </HStack>
         <Stack>
           {errors.map((error) => (
-            <Text color="red" key={uuid()}>
+            <Text color="red.400" key={uuid()}>
               {error}
             </Text>
           ))}

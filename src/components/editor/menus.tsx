@@ -13,6 +13,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useContext } from "react";
@@ -67,12 +68,21 @@ type EditorMenuProps = {
 function EditorMenu({ title, items }: EditorMenuProps) {
   const { commandKeys, commandHandlers } = useContext(EditorContext);
 
+  const menuBg = useColorModeValue("#dddddd", "#3a3a3a");
+
   return (
     <Menu>
-      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+      <MenuButton
+        as={Button}
+        rightIcon={<ChevronDownIcon />}
+        variant="ghost"
+        borderRadius={0}
+        fontSize="12px"
+        h="100%"
+      >
         {title}
       </MenuButton>
-      <MenuList zIndex={200}>
+      <MenuList zIndex={200} bg={menuBg} borderRadius={0} p={0}>
         {items.map((item) => (
           <MenuItem
             key={item.title}
@@ -89,10 +99,13 @@ function EditorMenu({ title, items }: EditorMenuProps) {
 }
 
 export default function Menus() {
+  const menuBg = useColorModeValue("#dddddd", "#3a3a3a");
   return (
-    <HStack>
+    <HStack bg={menuBg} spacing={0} h="30px">
       <Link href="/" passHref>
-        <Button variant="ghost">SubCloud</Button>
+        <Button variant="ghost" borderRadius={0} h="100%">
+          SubCloud
+        </Button>
       </Link>
       <EditorMenu
         title="파일(F)"

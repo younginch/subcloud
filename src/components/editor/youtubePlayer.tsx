@@ -1,4 +1,4 @@
-import { Box, useToast, Stack } from "@chakra-ui/react";
+import { Box, useToast, Stack, useColorModeValue } from "@chakra-ui/react";
 import { useContext, useRef } from "react";
 import YouTube, { YouTubeEvent, YouTubeProps } from "react-youtube";
 import { EditorContext } from "../../utils/editorCore";
@@ -8,6 +8,7 @@ export default function YoutubePlayer({ id }: { id: string }) {
   const { setPlayer, setState } = useContext(EditorContext);
   const toast = useToast();
   const boxRef = useRef<HTMLDivElement>(null);
+  const youtubeBodyBg = useColorModeValue("#f2f2f2", "#161616");
 
   function onPlayerError(event: YouTubeEvent<number>) {
     toast({
@@ -23,7 +24,7 @@ export default function YoutubePlayer({ id }: { id: string }) {
   };
 
   return (
-    <Stack w="100%" h="100%" alignItems="center">
+    <Stack w="100%" h="100%" alignItems="center" bg={youtubeBodyBg}>
       <Box
         h="100%"
         maxH="100%"
