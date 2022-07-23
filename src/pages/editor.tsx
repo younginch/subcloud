@@ -248,12 +248,17 @@ function EditorWithoutContext() {
 }
 
 export default function Editor() {
+  function beforeUnload(event: BeforeUnloadEvent) {
+    event.preventDefault();
+    // eslint-disable-next-line no-param-reassign
+    event.returnValue = "";
+  }
+
   useEffect(() => {
-    window.addEventListener("beforeunload", (event) => {
-      event.preventDefault();
-      // eslint-disable-next-line no-param-reassign
-      event.returnValue = "";
-    });
+    window.addEventListener("beforeunload", beforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", beforeUnload);
+    };
   }, []);
 
   return (
