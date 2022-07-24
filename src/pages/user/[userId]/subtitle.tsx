@@ -6,7 +6,7 @@ import useTranslation from "next-translate/useTranslation";
 import GeneralTable from "../../../components/ranking/generalTable";
 import ProfileSubtitleRow from "../../../components/user/profileSubtitleRow";
 import { PageOptions, ResSubSearch } from "../../../utils/types";
-import { PublicProfileTab } from "../../../utils/tabs";
+import { PublicProfileTab } from "../../../utils/enums";
 import PublicProfileLayout from "../../../components/user/publicProfileLayout";
 
 type UserReadProps = {

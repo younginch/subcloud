@@ -33,6 +33,7 @@ export const Products: Product[] = [
 ];
 
 export function getPointFromAmount(amount: number): number {
+  // eslint-disable-next-line no-restricted-syntax
   for (const product of Products) {
     if (product.price === amount) {
       return product.point;

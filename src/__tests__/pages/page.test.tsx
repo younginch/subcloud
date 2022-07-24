@@ -8,7 +8,7 @@ import {
   renderWithSession,
   renderWithTheme,
   renderWithThemeAndSession,
-} from "../../utils/jest";
+} from "../jest";
 import QnaPage from "../../pages/qna";
 import Search from "../../pages/search";
 import Dmca from "../../pages/info/dmca";
@@ -135,7 +135,6 @@ describe("Pages (user)", () => {
 
   it("renders UserMy", () => {
     renderWithThemeAndSession(<UserMyHistory />);
-    renderWithThemeAndSession(<UserMyIndex />);
     renderWithThemeAndSession(<UserMyOrder />);
     renderWithThemeAndSession(<UserMyRequest />);
     renderWithThemeAndSession(<UserMySub subs={[]} />);

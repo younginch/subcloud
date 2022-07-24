@@ -1,5 +1,5 @@
 import { Badge } from "@chakra-ui/react";
-import { UserTier } from "../../utils/tier";
+import { UserTier } from "../../utils/enums";
 
 type Props = {
   tier?: UserTier;

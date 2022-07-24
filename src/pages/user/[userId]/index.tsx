@@ -6,7 +6,7 @@ import useTranslation from "next-translate/useTranslation";
 import { PageOptions, ResSubSearch, ResUserSearch } from "../../../utils/types";
 import SubtitleDashboard from "../../../components/user/subtitleDashboard";
 import PublicProfileLayout from "../../../components/user/publicProfileLayout";
-import { PublicProfileTab } from "../../../utils/tabs";
+import { PublicProfileTab } from "../../../utils/enums";
 
 type UserReadProps = {
   user: ResUserSearch;

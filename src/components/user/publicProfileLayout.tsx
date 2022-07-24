@@ -5,7 +5,7 @@ import { FaCube } from "react-icons/fa";
 import { IoDocumentsSharp } from "react-icons/io5";
 import { MdSubtitles } from "react-icons/md";
 import useSWR from "swr";
-import { PublicProfileTab } from "../../utils/tabs";
+import { PublicProfileTab } from "../../utils/enums";
 import Header from "./header";
 
 type Props = {

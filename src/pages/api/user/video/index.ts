@@ -2,13 +2,24 @@ import { Role, Video } from "@prisma/client";
 import axios from "axios";
 import prisma from "../../../../utils/prisma";
 import { VideoCreateSchema } from "../../../../utils/schema";
-import { youtubeDurationToSeconds } from "../../../../utils/subtitle";
 import {
   handleRoute,
   ResVideo,
   RouteParams,
   SubErrorType,
 } from "../../../../utils/types";
+
+function youtubeDurationToSeconds(duration: string): number {
+  const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+  const regexResult = regex.exec(duration);
+  if (!regexResult) {
+    return 0;
+  }
+  const hours = parseInt(regexResult[1] || "0", 10);
+  const minutes = parseInt(regexResult[2] || "0", 10);
+  const seconds = parseInt(regexResult[3] || "0", 10);
+  return hours * 60 * 60 + minutes * 60 + seconds;
+}
 
 function getYoutubeVideo(url: URL): Video {
   if (url.pathname !== "/watch") {

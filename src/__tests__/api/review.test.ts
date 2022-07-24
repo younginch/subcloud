@@ -1,7 +1,7 @@
 import { ReviewType, Role } from "@prisma/client";
 import * as NextAuth from "next-auth/react";
 import reviewRoute from "../../pages/api/review";
-import { mockRequestResponse, testRes } from "../../utils/jest";
+import { testRes } from "../jest";
 
 describe("/api/review", () => {
   beforeAll(() => {
