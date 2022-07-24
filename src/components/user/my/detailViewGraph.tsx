@@ -14,7 +14,12 @@ import { useState } from "react";
 import useSWR from "swr";
 import LineChart from "../graphs/lineChart";
 
-export default function DetailViewGraph({ subId }: { subId?: string }) {
+type Props = {
+  subId?: string;
+  p?: string | number;
+};
+
+export default function DetailViewGraph({ subId, p = 4 }: Props) {
   const { t } = useTranslation("privateProfile");
   const viewRange = 10;
 
@@ -31,7 +36,7 @@ export default function DetailViewGraph({ subId }: { subId?: string }) {
   );
 
   return (
-    <Box p={4}>
+    <Box p={p}>
       <HStack>
         <RadioGroup onChange={setValue} value={value}>
           <Stack direction="row">

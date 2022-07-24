@@ -107,7 +107,7 @@ export default function UserMyOrder() {
   );
 
   return (
-    <TableContainer>
+    <TableContainer p={5}>
       <Table variant="simple">
         <Thead>
           <Tr>
