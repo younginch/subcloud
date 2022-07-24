@@ -21,9 +21,12 @@ import {
   PopoverBody,
   PopoverTrigger,
   Popover,
-  Stack,
-  Spacer,
   Box,
+  TabList,
+  Tab,
+  TabPanel,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
 import { SubStatus } from "@prisma/client";
 import axios from "axios";
@@ -38,6 +41,7 @@ import { YoutubeIcon } from "../icons/customIcons";
 import DetailViewGraph from "./my/detailViewGraph";
 import ReviewStatusBadge from "../badges/reviewStatusBadge";
 import AvatarWithName from "../badges/avatarWithName";
+import BreifReviews from "../review/breifReviews";
 
 type SubPanelProps = {
   initialSubs: ResSubSearch;
@@ -158,58 +162,71 @@ export default function SubPanel({ initialSubs }: SubPanelProps) {
                     <PopoverArrow />
                     <PopoverCloseButton />
                     <PopoverBody>
-                      <Stack>
-                        <DetailViewGraph subId={sub.id} />
-                        <HStack>
-                          <CopyToClipboard text={sub.id}>
-                            <Button>{t("my_sub_copy")}</Button>
-                          </CopyToClipboard>
-                          <Button marginEnd="6px" isDisabled>
-                            {t("my_sub_edit")}
-                          </Button>
-                          <Button
-                            onClick={() => {
-                              axios
-                                .get<ResFileRead>(`/api/user/file`, {
-                                  params: { id: sub.fileId },
-                                })
-                                .then((res) => {
-                                  window.open(res.data.url);
-                                });
-                            }}
-                          >
-                            {t("my_sub_download")}
-                          </Button>
-                          <Spacer />
-                          <Button
-                            colorScheme="red"
-                            onClick={() => {
-                              axios
-                                .delete(`/api/user/sub`, {
-                                  params: { id: sub.id },
-                                })
-                                .then(() => {
-                                  toast({
-                                    title: "성공",
-                                    description: "자막을 삭제했습니다.",
-                                    status: "success",
-                                  });
-                                  getSubs();
-                                })
-                                .catch(() => {
-                                  toast({
-                                    title: "오류",
-                                    description:
-                                      "자막을 삭제하는데 실패했습니다.",
-                                    status: "error",
-                                  });
-                                });
-                            }}
-                          >
-                            {t("delete")}
-                          </Button>
-                        </HStack>
-                      </Stack>
+                      <Tabs>
+                        <TabList>
+                          <Tab>{t("dash_sub_view")}</Tab>
+                          <Tab>{t("my_sub_review")}</Tab>
+                          <Tab>편집</Tab>
+                        </TabList>
+                        <TabPanels>
+                          <TabPanel>
+                            <DetailViewGraph subId={sub.id} p={0} />
+                          </TabPanel>
+                          <TabPanel>
+                            <BreifReviews />
+                          </TabPanel>
+                          <TabPanel>
+                            <HStack>
+                              <Button marginEnd="6px" isDisabled>
+                                {t("my_sub_edit")}
+                              </Button>
+                              <CopyToClipboard text={sub.id}>
+                                <Button>{t("my_sub_copy")}</Button>
+                              </CopyToClipboard>
+                              <Button
+                                onClick={() => {
+                                  axios
+                                    .get<ResFileRead>(`/api/user/file`, {
+                                      params: { id: sub.fileId },
+                                    })
+                                    .then((res) => {
+                                      window.open(res.data.url);
+                                    });
+                                }}
+                              >
+                                {t("my_sub_download")}
+                              </Button>
+                              <Button
+                                colorScheme="red"
+                                onClick={() => {
+                                  axios
+                                    .delete(`/api/user/sub`, {
+                                      params: { id: sub.id },
+                                    })
+                                    .then(() => {
+                                      toast({
+                                        title: "성공",
+                                        description: "자막을 삭제했습니다.",
+                                        status: "success",
+                                      });
+                                      getSubs();
+                                    })
+                                    .catch(() => {
+                                      toast({
+                                        title: "오류",
+                                        description:
+                                          "자막을 삭제하는데 실패했습니다.",
+                                        status: "error",
+                                      });
+                                    });
+                                }}
+                              >
+                                {t("delete")}
+                              </Button>
+                            </HStack>
+                          </TabPanel>
+                        </TabPanels>
+                      </Tabs>
                     </PopoverBody>
                   </PopoverContent>
                 </Popover>
