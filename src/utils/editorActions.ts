@@ -28,6 +28,48 @@ export class CreateAction implements EditorAction {
   }
 }
 
+export class SplitAction implements EditorAction {
+  index!: number;
+
+  splitTime!: number;
+
+  endTime!: number;
+
+  constructor(index: number, splitTime: number) {
+    this.index = index;
+    this.splitTime = splitTime;
+  }
+
+  execute(contents: SRTContent[]): SRTContent[] {
+    const newItem = new SRTContent(
+      contents.length.toString(),
+      "00:00:00,000 --> 00:00:00,000",
+      []
+    );
+    newItem.startTime = this.splitTime;
+    newItem.endTime = contents[this.index].endTime;
+    newItem.textArray = contents[this.index].textArray;
+
+    const newContents = [...contents];
+    this.endTime = contents[this.index].endTime;
+    newContents[this.index].endTime = this.splitTime;
+    return [
+      ...newContents.slice(0, this.index + 1),
+      newItem,
+      ...newContents.slice(this.index + 1),
+    ];
+  }
+
+  undo(contents: SRTContent[]): SRTContent[] {
+    const newContents = [...contents];
+    newContents[this.index].endTime = this.endTime;
+    return [
+      ...newContents.slice(0, this.index + 1),
+      ...newContents.slice(this.index + 2),
+    ];
+  }
+}
+
 export class EditTimeAction implements EditorAction {
   index!: number;
 

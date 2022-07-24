@@ -4,7 +4,11 @@ import axios from "axios";
 import { createContext, useState } from "react";
 import { KeyMap } from "react-hotkeys";
 import { YouTubePlayer } from "react-youtube";
-import EditorAction from "./editorActions";
+import EditorAction, {
+  CreateAction,
+  EditTimeAction,
+  SplitAction,
+} from "./editorActions";
 
 export function checkOccupation(contents: SRTContent[], time: number): number {
   if (Number.isNaN(time)) return -1;
@@ -212,42 +216,21 @@ export function EditorProvider({ children }: EditorProviderProps) {
       newItem.startTime = getPlayerTime();
       newItem.endTime = Math.min(newItem.startTime + 5 * 1000, endTime); // default 5 seconds
 
-      setContents([
-        ...contents.slice(0, newIndex),
-        newItem,
-        ...contents.slice(newIndex),
-      ]);
+      execute(new CreateAction(newIndex, newItem));
       setForceRerender(!forceRerender);
     },
     CUT_SUBTITLE: () => {
       const index = checkOccupation(contents, getPlayerTime());
       if (index === -1) return;
 
-      const newContents = [...contents];
-      newContents[index].endTime = getPlayerTime();
-      setContents(newContents);
+      execute(new EditTimeAction(index, "end", getPlayerTime()));
       setForceRerender(!forceRerender);
     },
     SPLIT_SUBTITLE: () => {
       const index = checkOccupation(contents, getPlayerTime());
       if (index === -1) return;
 
-      const newItem = new SRTContent(
-        contents.length.toString(),
-        "00:00:00,000 --> 00:00:00,000",
-        []
-      );
-      newItem.startTime = getPlayerTime();
-      newItem.endTime = contents[index].endTime;
-      newItem.textArray = contents[index].textArray;
-
-      const newContents = [...contents];
-      newContents[index].endTime = getPlayerTime();
-      setContents([
-        ...newContents.slice(0, index + 1),
-        newItem,
-        ...newContents.slice(index + 1),
-      ]);
+      execute(new SplitAction(index, getPlayerTime()));
       setForceRerender(!forceRerender);
     },
     LEFT_0_5: () => {
