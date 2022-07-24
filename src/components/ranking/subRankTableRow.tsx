@@ -98,8 +98,11 @@ export default function SubRankTableRow({
           </Link>
         </HStack>
       </Td>
-      <Td w={{ base: "70px", md: "90px", lg: "110px" }} pl={paddingLeftBp}>
-        <Text fontSize={mainTextSize}>
+      <Td
+        w={{ base: "fit-content", md: "fit-content", lg: "170px" }}
+        pl={paddingLeftBp}
+      >
+        <Text fontSize={mainTextSize} whiteSpace="nowrap">
           {dayjs(uploadDate).format("YYYY-MM-DD")}
         </Text>
       </Td>

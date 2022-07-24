@@ -22,7 +22,7 @@ export default function ExtensionButton({
       icon = ChromeIcon;
       name = "Chrome";
       url =
-        "https://chrome.google.com/webstore/detail/subcloud/jekpacppociidhmfenohpnajdmjdddel";
+        "https://chrome.google.com/webstore/detail/subcloud/ocjfkiipkmckngedlljnkackhohcffpa?hl=ko";
       break;
     case "firefox":
       icon = FirefoxIcon;

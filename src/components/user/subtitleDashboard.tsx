@@ -5,13 +5,13 @@ import UserRatingComponent from "./graphs/userRatingComponent";
 import FulfilledGraph from "./graphs/fulfilledGraph";
 import CardHeader from "./card/cardHeader";
 import Card from "./card/card";
-import SalesOverview from "./graphs/salesOverview";
 import LineChart from "./graphs/lineChart";
 import GeneralTable from "../ranking/generalTable";
 import { ResSubSearch, ResUserSearch } from "../../utils/types";
 import ProfileSubtitleRow from "./profileSubtitleRow";
 import UserActivity from "./graphs/userActivity";
 import CalendarChart from "./graphs/calanderChart";
+import ViewsOverview from "./graphs/viewsOverview";
 
 type Props = {
   user: ResUserSearch;
@@ -105,9 +105,8 @@ export default function SubtitleDashboard({ user, subs }: Props) {
           subs={user._count.subs}
           views={user._count.views}
         />
-        <SalesOverview
+        <ViewsOverview
           title={t("subtitleDashboard_activity_overview")}
-          percentage={5}
           chart={
             <LineChart
               range={10}

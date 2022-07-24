@@ -25,6 +25,7 @@ export default function Search() {
           placeholder={t("placeholder")}
           value={value}
           onChange={(e) => setValue(e.currentTarget.value)}
+          disabled
         />
       </InputGroup>
     </form>
