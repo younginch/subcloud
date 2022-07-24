@@ -1,6 +1,5 @@
 import { SRTContent } from "@younginch/subtitle";
 import { checkOccupation, findPosition } from "../../utils/editorCore";
-import { testRes } from "../../utils/jest";
 
 describe("/utils/editorCore", () => {
   it("checkOccupation return -1 if time is NaN", () => {

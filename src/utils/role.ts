@@ -10,6 +10,8 @@ function changeRoleToNumber(role: Role): number {
       return 1;
     case Role.Restricted:
       return 0;
+    default:
+      throw new Error("Unknown role");
   }
 }
 
