@@ -74,7 +74,7 @@ export default function UserLayout({ children }: UserLayoutProps) {
               text={element.text}
             />
           ))}
-          <Box h={`calc(90vh - ${94 + dashBoardItems.length * 50}px)`} />
+          <Box h={`calc(90vh - ${73 + dashBoardItems.length * 50}px)`} />
         </Menu>
         <SidebarFooter>
           <Stack alignItems="center" p="5px">
