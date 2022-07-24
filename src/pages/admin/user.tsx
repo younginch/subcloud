@@ -267,6 +267,8 @@ export default function AdminUser() {
               <Th>이메일</Th>
               <Th>역할</Th>
               <Th>포인트</Th>
+              <Th>생성 날짜</Th>
+              <Th>변경 날짜</Th>
               <Th>작업</Th>
             </Tr>
           </Thead>
@@ -277,6 +279,8 @@ export default function AdminUser() {
                 <Td>{user.email}</Td>
                 <Td>{user.role}</Td>
                 <Td>{user.point}</Td>
+                <Td>{user.createdAt.toString()}</Td>
+                <Td>{user.updatedAt?.toString()}</Td>
                 <Td>
                   <UpdateButton user={user} mutate={mutate} />
                   <DeleteButton id={user.id} />
