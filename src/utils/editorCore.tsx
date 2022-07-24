@@ -283,7 +283,9 @@ export function EditorProvider({ children }: EditorProviderProps) {
           setRightTime(right);
         },
         contents,
-        setContents,
+        setContents: (newContents) => {
+          setContents(newContents);
+        },
         focusedIndex,
         setFocusedIndex: (index) => {
           setFocusedIndex(index);
