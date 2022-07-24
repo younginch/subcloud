@@ -362,4 +362,5 @@ enum NotifyType {
   Announce
   Upload
   Review
+  StatusChange
 }
