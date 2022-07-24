@@ -26,7 +26,7 @@ export default function UserMyHistory() {
   );
 
   return (
-    <TableContainer>
+    <TableContainer p={5}>
       <Table variant="simple">
         <Thead>
           <Tr>

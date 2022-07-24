@@ -77,8 +77,13 @@ function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
   };
 
   return (
-    <>
-      <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={onOpen}>
+    <Stack p={5}>
+      <Button
+        leftIcon={<AddIcon />}
+        colorScheme="teal"
+        onClick={onOpen}
+        w="150px"
+      >
         새 출금 요청
       </Button>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
@@ -89,7 +94,6 @@ function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
             <DrawerHeader borderBottomWidth="1px">
               새 포인트 출금 요청
             </DrawerHeader>
-
             <DrawerBody>
               <Stack spacing="24px">
                 <FormControl isInvalid={errors.point !== undefined}>
@@ -139,7 +143,7 @@ function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
           </form>
         </DrawerContent>
       </Drawer>
-    </>
+    </Stack>
   );
 }
 
