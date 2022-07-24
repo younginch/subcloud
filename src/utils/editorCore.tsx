@@ -52,7 +52,7 @@ type EditorContextProps = {
   rightTime: number;
   changeLRTime: (left: number, right: number) => void;
   contents: SRTContent[];
-  setContents: (newContents: SRTContent[]) => void;
+  setContents: (contents: SRTContent[]) => void;
   focusedIndex: number;
   setFocusedIndex: (index: number) => void;
   id: string;
@@ -80,8 +80,8 @@ export enum PlayerState {
 }
 
 const commandKeys = {
-  EDIT_UNDO: ["shift+z"],
-  EDIT_REDO: ["shift+y"],
+  EDIT_UNDO: ["option+z"],
+  EDIT_REDO: ["option+y"],
   PLAY_PAUSE: ["space"],
   NEW_SUBTITLE: ["["],
   CUT_SUBTITLE: ["]"],
@@ -139,7 +139,7 @@ export function EditorProvider({ children }: EditorProviderProps) {
   const [redoActions, setRedoActions] = useState<EditorAction[]>([]);
 
   function execute(action: EditorAction) {
-    action.execute();
+    setContents(() => action.execute(contents));
 
     const newUndoStack = [...undoActions];
     newUndoStack.push(action);
@@ -149,9 +149,9 @@ export function EditorProvider({ children }: EditorProviderProps) {
 
   function undo() {
     if (undoActions.length > 0) {
-      const action = undoActions[-1];
+      const action = undoActions[undoActions.length - 1];
       if (action) {
-        action.undo();
+        setContents(() => action.undo(contents));
         const newUndoStack = [...undoActions];
         newUndoStack.pop();
         setUndoActions(newUndoStack);
@@ -166,7 +166,7 @@ export function EditorProvider({ children }: EditorProviderProps) {
     if (redoActions.length > 0) {
       const action = redoActions.pop();
       if (action) {
-        action.execute();
+        setContents(() => action.execute(contents));
         const newUndoStack = [...undoActions];
         newUndoStack.push(action);
         setUndoActions(newUndoStack);

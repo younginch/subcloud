@@ -78,7 +78,7 @@ function EditorWithoutContext() {
     <GlobalHotKeys keyMap={commandKeys} handlers={commandHandlers} allowChanges>
       <Menus />
       <ReflexContainer
-        style={{ width: "100vw", height: "calc(100vh - 40px)" }}
+        style={{ width: "100vw", height: "calc(100vh - 30px)" }}
         orientation="horizontal"
       >
         <ReflexElement minSize={100}>
@@ -248,12 +248,17 @@ function EditorWithoutContext() {
 }
 
 export default function Editor() {
+  function beforeUnload(event: BeforeUnloadEvent) {
+    event.preventDefault();
+    // eslint-disable-next-line no-param-reassign
+    event.returnValue = "";
+  }
+
   useEffect(() => {
-    window.addEventListener("beforeunload", (event) => {
-      event.preventDefault();
-      // eslint-disable-next-line no-param-reassign
-      event.returnValue = "";
-    });
+    window.addEventListener("beforeunload", beforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", beforeUnload);
+    };
   }, []);
 
   return (

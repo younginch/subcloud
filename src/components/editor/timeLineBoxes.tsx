@@ -4,6 +4,7 @@ import { SRTContent } from "@younginch/subtitle";
 import { useContext } from "react";
 import { DraggableData, Rnd } from "react-rnd";
 import { v4 as uuid } from "uuid";
+import { EditTimeAction, MoveTimeAction } from "../../utils/editorActions";
 import { EditorContext } from "../../utils/editorCore";
 
 type TimeLineBoxProps = {
@@ -12,8 +13,7 @@ type TimeLineBoxProps = {
 };
 
 function TimeLineBox({ item, index }: TimeLineBoxProps) {
-  const { contents, setContents, leftTime, rightTime } =
-    useContext(EditorContext);
+  const { contents, execute, leftTime, rightTime } = useContext(EditorContext);
   const normalColor = useColorModeValue("#ffffff", "#333333");
   const resizePositiveColor = useColorModeValue("#ccffcc", "#113311");
   const resizeNegativeColor = useColorModeValue("#ffcccc", "#331111");
@@ -59,10 +59,10 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
               (rightTime - leftTime)) *
             6000;
           if (delta.width > leftLimit) {
-            const newContents = [...contents];
-            newContents[index].startTime -=
+            const newTime =
+              contents[index].startTime -
               (leftLimit * (rightTime - leftTime)) / 6000;
-            setContents(newContents);
+            execute(new EditTimeAction(index, "start", newTime));
           }
         } else if (direction === "right" && index + 1 < contents.length) {
           const rightLimit =
@@ -70,24 +70,24 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
               (rightTime - leftTime)) *
             6000;
           if (delta.width > rightLimit) {
-            const newContents = [...contents];
-            newContents[index].endTime +=
+            const newTime =
+              contents[index].endTime +
               (rightLimit * (rightTime - leftTime)) / 6000;
-            setContents(newContents);
+            execute(new EditTimeAction(index, "end", newTime));
           }
         }
       }}
       onResizeStop={(_e, direction, _ref, delta) => {
         if (direction === "left") {
-          const newContents = [...contents];
-          newContents[index].startTime -=
+          const newTime =
+            contents[index].startTime -
             (delta.width * (rightTime - leftTime)) / 6000;
-          setContents(newContents);
+          execute(new EditTimeAction(index, "start", newTime));
         } else if (direction === "right") {
-          const newContents = [...contents];
-          newContents[index].endTime +=
+          const newTime =
+            contents[index].endTime +
             (delta.width * (rightTime - leftTime)) / 6000;
-          setContents(newContents);
+          execute(new EditTimeAction(index, "end", newTime));
         }
       }}
       onDragStart={(e) => {
@@ -101,33 +101,25 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
         if (index > 0) {
           const leftLimit = item.startTime - contents[index - 1].endTime;
           if (-deltaT > leftLimit) {
-            const newContents = [...contents];
-            newContents[index].startTime -= leftLimit;
-            newContents[index].endTime -= leftLimit;
-            setContents(newContents);
+            execute(new MoveTimeAction(index, -leftLimit));
           }
         }
         if (index + 1 < contents.length) {
           const rightLimit = contents[index + 1].startTime - item.endTime;
           if (deltaT > rightLimit) {
-            const newContents = [...contents];
-            newContents[index].startTime += rightLimit;
-            newContents[index].endTime += rightLimit;
-            setContents(newContents);
+            execute(new MoveTimeAction(index, rightLimit));
           }
         }
       }}
       onDragStop={(e, data: DraggableData) => {
         e.preventDefault();
         e.stopPropagation();
-        const newContents = [...contents];
         const deltaX =
           data.x -
           ((item.startTime - leftTime) / (rightTime - leftTime)) * 6000;
-        newContents[index].endTime += (deltaX * (rightTime - leftTime)) / 6000;
-        newContents[index].startTime +=
-          (deltaX * (rightTime - leftTime)) / 6000;
-        setContents(newContents);
+        execute(
+          new MoveTimeAction(index, (deltaX * (rightTime - leftTime)) / 6000)
+        );
       }}
     >
       <HStack w="100%" h="100%" cursor="move">

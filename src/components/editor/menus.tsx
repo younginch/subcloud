@@ -7,6 +7,12 @@ import {
   DeleteIcon,
 } from "@chakra-ui/icons";
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Button,
   HStack,
   Menu,
@@ -14,9 +20,10 @@ import {
   MenuItem,
   MenuList,
   useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
-import Link from "next/link";
-import { useContext } from "react";
+import { useRouter } from "next/router";
+import { useContext, useRef } from "react";
 import { KeySequence } from "react-hotkeys";
 import { EditorContext } from "../../utils/editorCore";
 
@@ -98,15 +105,59 @@ function EditorMenu({ title, items }: EditorMenuProps) {
   );
 }
 
+function HomeAlertDialog() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  const router = useRouter();
+
+  return (
+    <>
+      <Button variant="ghost" borderRadius={0} h="100%" onClick={onOpen}>
+        SubCloud
+      </Button>
+
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              홈 화면으로 돌아가기
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              현재 저장하지 않은 내용은 모두 삭제됩니다.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                취소
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={() => {
+                  onClose();
+                  router.push("/");
+                }}
+                ml={3}
+              >
+                돌아가기
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </>
+  );
+}
+
 export default function Menus() {
   const menuBg = useColorModeValue("#dddddd", "#3a3a3a");
   return (
     <HStack bg={menuBg} spacing={0} h="30px">
-      <Link href="/" passHref>
-        <Button variant="ghost" borderRadius={0} h="100%">
-          SubCloud
-        </Button>
-      </Link>
+      <HomeAlertDialog />
       <EditorMenu
         title="파일(F)"
         items={[
@@ -131,6 +182,16 @@ export default function Menus() {
       <EditorMenu
         title="편집(E)"
         items={[
+          {
+            title: "실행 취소",
+            icon: <AddIcon />,
+            command: "EDIT_UNDO",
+          },
+          {
+            title: "다시 실행",
+            icon: <RepeatIcon />,
+            command: "EDIT_REDO",
+          },
           {
             title: "현재 시간에서 새 자막",
             icon: <AddIcon />,

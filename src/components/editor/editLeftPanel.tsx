@@ -20,9 +20,10 @@ import { FaPlus, FaSave } from "react-icons/fa";
 import { BiHelpCircle } from "react-icons/bi";
 import { EditorContext } from "../../utils/editorCore";
 import ToggleTheme from "./toggleTheme";
+import { CreateAction, DeleteAllAction } from "../../utils/editorActions";
 
 export default function EditLeftPanel() {
-  const { contents, setContents, duration } = useContext(EditorContext);
+  const { contents, execute, duration } = useContext(EditorContext);
 
   function downloadSRT() {
     const srtFile = new SRTFile();
@@ -62,7 +63,7 @@ export default function EditLeftPanel() {
             newItem.startTime = contents[contents.length - 1].endTime;
             newItem.endTime = Math.min(duration, newItem.startTime + 1000);
           }
-          setContents([...contents, newItem]);
+          execute(new CreateAction(contents.length, newItem));
         }}
         colorScheme="blue"
         w="full"
@@ -99,7 +100,7 @@ export default function EditLeftPanel() {
                     <Button
                       colorScheme="red"
                       onClick={() => {
-                        setContents([]);
+                        execute(new DeleteAllAction());
                         onClose();
                       }}
                     >
