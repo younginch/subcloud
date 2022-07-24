@@ -2,6 +2,7 @@ import {
   TableContainer,
   Table,
   Thead,
+  Text,
   Tr,
   Th,
   Tbody,
@@ -29,6 +30,7 @@ import {
   RadioGroup,
   FormControl,
   FormErrorMessage,
+  Center,
 } from "@chakra-ui/react";
 import { Role, User } from "@prisma/client";
 import axios from "axios";
@@ -253,36 +255,41 @@ export default function AdminUser() {
   const { data, mutate } = useSWR<User[]>("/api/admin/user");
 
   return (
-    <TableContainer>
-      <Table variant="simple" size="sm">
-        <Thead>
-          <Tr>
-            <Th>이름</Th>
-            <Th>이메일</Th>
-            <Th>역할</Th>
-            <Th>포인트</Th>
-            <Th>작업</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data?.map((user) => (
-            <Tr key={user.id}>
-              <Td>{user.name}</Td>
-              <Td>{user.email}</Td>
-              <Td>{user.role}</Td>
-              <Td>{user.point}</Td>
-              <Td>
-                <UpdateButton user={user} mutate={mutate} />
-                <DeleteButton id={user.id} />
-                <CopyToClipboard text={user.id}>
-                  <Button>Copy ID</Button>
-                </CopyToClipboard>
-              </Td>
+    <>
+      <Center>
+        <Text>전체 유저 : {data?.length}명</Text>
+      </Center>
+      <TableContainer mt="20px">
+        <Table variant="simple" size="sm">
+          <Thead>
+            <Tr>
+              <Th>이름</Th>
+              <Th>이메일</Th>
+              <Th>역할</Th>
+              <Th>포인트</Th>
+              <Th>작업</Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
-    </TableContainer>
+          </Thead>
+          <Tbody>
+            {data?.map((user) => (
+              <Tr key={user.id}>
+                <Td>{user.name}</Td>
+                <Td>{user.email}</Td>
+                <Td>{user.role}</Td>
+                <Td>{user.point}</Td>
+                <Td>
+                  <UpdateButton user={user} mutate={mutate} />
+                  <DeleteButton id={user.id} />
+                  <CopyToClipboard text={user.id}>
+                    <Button>Copy ID</Button>
+                  </CopyToClipboard>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }
 

@@ -51,7 +51,7 @@ function SiteMap() {
         <Stack>
           <Heading size="sm">{t("download")}</Heading>
           <NextLink
-            href="https://chrome.google.com/webstore/detail/subcloud/jekpacppociidhmfenohpnajdmjdddel"
+            href="https://chrome.google.com/webstore/detail/subcloud/ocjfkiipkmckngedlljnkackhohcffpa?hl=ko"
             passHref
           >
             <Text fontSize="xs">SubCloud for Chrome</Text>

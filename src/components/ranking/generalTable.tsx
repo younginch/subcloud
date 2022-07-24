@@ -108,8 +108,9 @@ export default function GeneralTable({
                         message: "Minimum length should be 2",
                       },
                     })}
+                    disabled
                   />
-                  <Button type="submit">
+                  <Button type="submit" disabled>
                     <AiOutlineSearch />
                   </Button>
                 </HStack>

@@ -72,7 +72,7 @@ export default function VideoRankingPage() {
       pt={10}
       pl={{ base: "10px", lg: "30px", xl: "70px" }}
       pr={{ base: "10px", lg: "30px", xl: "70px" }}
-      overflowX={{ sm: "scroll", xl: "hidden" }}
+      overflowX={{ sm: "scroll", md: "hidden" }}
     >
       <GeneralTable
         captions={captions}
