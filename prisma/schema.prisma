@@ -48,6 +48,8 @@ model User {
   point         Int            @default(0)
   baseLangs     String[]
   requestLangs  String[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime?      @updatedAt
   settlePoints  SettlePoint[]
   accounts      Account[]
   sessions      Session[]
@@ -61,8 +63,8 @@ model User {
   subHistories  SubHistory[]
   subscriptions Subscription[]
   coupons       Coupon[]
-  withdraws      Withdraw[]
-  notifications  Notification[]
+  withdraws     Withdraw[]
+  notifications Notification[]
 }
 
 model VerificationToken {
@@ -182,16 +184,17 @@ model Review {
 }
 
 model Rating {
-  id      String  @id @default(cuid())
-  subId   String
-  sub     Sub     @relation(fields: [subId], references: [id], onDelete: Cascade)
-  userId  String
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  score   Int
-  comment String?
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
-  notice  Notice?
+  id        String   @id @default(cuid())
+  subId     String
+  sub       Sub      @relation(fields: [subId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  score     Int
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  notice    Notice?
+
   @@unique([subId, userId])
 }
 
@@ -333,26 +336,26 @@ model Withdraw {
 }
 
 model Notice {
-  id            String @id @default(cuid())
+  id            String         @id @default(cuid())
   type          NotifyType
   message       String?
   notifications Notification[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   url           String?
-  ratingId      String?  @unique
-  rating        Rating?  @relation(fields: [ratingId], references: [id], onDelete: Cascade)
-  subId         String?  @unique
-  sub           Sub?     @relation(fields: [subId], references: [id], onDelete: Cascade)
+  ratingId      String?        @unique
+  rating        Rating?        @relation(fields: [ratingId], references: [id], onDelete: Cascade)
+  subId         String?        @unique
+  sub           Sub?           @relation(fields: [subId], references: [id], onDelete: Cascade)
 }
 
 model Notification {
-  id            String @id @default(cuid())
-  userId        String
-  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  noticeId      String
-  notice        Notice  @relation(fields: [noticeId], references: [id], onDelete: Cascade)
-  checked       Boolean
+  id       String  @id @default(cuid())
+  userId   String
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  noticeId String
+  notice   Notice  @relation(fields: [noticeId], references: [id], onDelete: Cascade)
+  checked  Boolean
 }
 
 enum NotifyType {
