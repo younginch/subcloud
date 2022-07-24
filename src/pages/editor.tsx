@@ -78,7 +78,7 @@ function EditorWithoutContext() {
     <GlobalHotKeys keyMap={commandKeys} handlers={commandHandlers} allowChanges>
       <Menus />
       <ReflexContainer
-        style={{ width: "100vw", height: "calc(100vh - 40px)" }}
+        style={{ width: "100vw", height: "calc(100vh - 30px)" }}
         orientation="horizontal"
       >
         <ReflexElement minSize={100}>

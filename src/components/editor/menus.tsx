@@ -183,6 +183,16 @@ export default function Menus() {
         title="편집(E)"
         items={[
           {
+            title: "실행 취소",
+            icon: <AddIcon />,
+            command: "EDIT_UNDO",
+          },
+          {
+            title: "다시 실행",
+            icon: <RepeatIcon />,
+            command: "EDIT_REDO",
+          },
+          {
             title: "현재 시간에서 새 자막",
             icon: <AddIcon />,
             command: "NEW_SUBTITLE",

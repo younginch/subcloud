@@ -32,6 +32,12 @@ import { MdTimer } from "react-icons/md";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 import { SRTContent } from "@younginch/subtitle";
 import { EditorContext } from "../../utils/editorCore";
+import {
+  CreateAction,
+  DeleteAction,
+  EditContentAction,
+  EditTimeAction,
+} from "../../utils/editorActions";
 
 dayjs.extend(duration);
 
@@ -40,7 +46,7 @@ function miliToString(second: number): string {
 }
 
 function EditComponent({ index }: { index: number }) {
-  const { contents, setContents, setFocusedIndex } = useContext(EditorContext);
+  const { contents, setFocusedIndex, execute } = useContext(EditorContext);
   const [value, setValue] = useState<string>(contents[index].toText());
 
   return (
@@ -51,10 +57,8 @@ function EditComponent({ index }: { index: number }) {
         setFocusedIndex(index);
       }}
       onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
+        execute(new EditContentAction(index, event.target.value.split("\n")));
         setValue(event.target.value);
-        const newContents = [...contents];
-        newContents[index].textArray = event.target.value.split("\n");
-        setContents(newContents);
       }}
       resize="none"
     />
@@ -68,7 +72,7 @@ type PMButtonProps = {
 };
 
 function PlusButton({ index, onClose, amount }: PMButtonProps) {
-  const { contents, setContents } = useContext(EditorContext);
+  const { contents, execute } = useContext(EditorContext);
 
   return (
     <Button
@@ -77,9 +81,9 @@ function PlusButton({ index, onClose, amount }: PMButtonProps) {
         contents[index].startTime + amount > contents[index + 1].startTime
       }
       onClick={() => {
-        const newContents = [...contents];
-        newContents[index].endTime += amount;
-        setContents(newContents);
+        execute(
+          new EditTimeAction(index, "end", contents[index].startTime + amount)
+        );
         onClose();
       }}
     >
@@ -89,7 +93,7 @@ function PlusButton({ index, onClose, amount }: PMButtonProps) {
 }
 
 function MinusButton({ index, onClose, amount }: PMButtonProps) {
-  const { contents, setContents } = useContext(EditorContext);
+  const { contents, execute } = useContext(EditorContext);
 
   return (
     <Button
@@ -98,9 +102,9 @@ function MinusButton({ index, onClose, amount }: PMButtonProps) {
         contents[index].endTime - amount < contents[index - 1].endTime
       }
       onClick={() => {
-        const newContents = [...contents];
-        newContents[index].startTime = newContents[index].endTime - amount;
-        setContents(newContents);
+        execute(
+          new EditTimeAction(index, "start", contents[index].endTime - amount)
+        );
         onClose();
       }}
     >
@@ -110,7 +114,7 @@ function MinusButton({ index, onClose, amount }: PMButtonProps) {
 }
 
 function StartTimestamp({ index }: { index: number }) {
-  const { contents, setContents } = useContext(EditorContext);
+  const { contents, execute } = useContext(EditorContext);
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
@@ -135,10 +139,13 @@ function StartTimestamp({ index }: { index: number }) {
                   <MinusButton index={index} onClose={onClose} amount={2000} />
                   <Button
                     onClick={() => {
-                      const newContents = [...contents];
-                      newContents[index].endTime =
-                        newContents[index + 1].startTime;
-                      setContents(newContents);
+                      execute(
+                        new EditTimeAction(
+                          index,
+                          "end",
+                          contents[index + 1].startTime
+                        )
+                      );
                       onClose();
                     }}
                     isDisabled={index >= contents.length - 1}
@@ -168,7 +175,7 @@ function StartTimestamp({ index }: { index: number }) {
 }
 
 function EndTimestamp({ index }: { index: number }) {
-  const { contents, setContents } = useContext(EditorContext);
+  const { contents, execute } = useContext(EditorContext);
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
@@ -193,10 +200,13 @@ function EndTimestamp({ index }: { index: number }) {
                   <PlusButton index={index} onClose={onClose} amount={2000} />
                   <Button
                     onClick={() => {
-                      const newContents = [...contents];
-                      newContents[index].endTime =
-                        newContents[index + 1].startTime;
-                      setContents(newContents);
+                      execute(
+                        new EditTimeAction(
+                          index,
+                          "end",
+                          contents[index + 1].startTime
+                        )
+                      );
                       onClose();
                     }}
                     isDisabled={index >= contents.length - 1}
@@ -226,7 +236,7 @@ function EndTimestamp({ index }: { index: number }) {
 }
 
 function Row({ index, style }: ListChildComponentProps<SRTContent[]>) {
-  const { contents, setContents, getPlayerTime, duration } =
+  const { contents, execute, getPlayerTime, duration } =
     useContext(EditorContext);
 
   return (
@@ -241,9 +251,7 @@ function Row({ index, style }: ListChildComponentProps<SRTContent[]>) {
             <Box w="16px" minW="16px" m="0px !important">
               <MdTimer
                 onClick={() => {
-                  const newContents = [...contents];
-                  newContents[index].startTime = getPlayerTime();
-                  setContents(newContents);
+                  execute(new EditTimeAction(index, "start", getPlayerTime()));
                 }}
                 cursor="pointer"
                 size="16px"
@@ -256,9 +264,7 @@ function Row({ index, style }: ListChildComponentProps<SRTContent[]>) {
             <Box w="16px" minW="16px" m="0px !important">
               <MdTimer
                 onClick={() => {
-                  const newContents = [...contents];
-                  newContents[index].endTime = getPlayerTime();
-                  setContents(newContents);
+                  execute(new EditTimeAction(index, "end", getPlayerTime()));
                 }}
                 cursor="pointer"
               />
@@ -270,11 +276,7 @@ function Row({ index, style }: ListChildComponentProps<SRTContent[]>) {
           aria-label="Delete subtitle"
           icon={<DeleteIcon />}
           onClick={() => {
-            const newContents = [
-              ...contents.slice(0, index),
-              ...contents.slice(index + 1),
-            ];
-            setContents(newContents);
+            execute(new DeleteAction(index));
           }}
           colorScheme="red"
         />
@@ -304,11 +306,7 @@ function Row({ index, style }: ListChildComponentProps<SRTContent[]>) {
           else {
             newItem.endTime = Math.min(duration, newItem.startTime + 1000);
           }
-          setContents([
-            ...contents.slice(0, index + 1),
-            newItem,
-            ...contents.slice(index + 1),
-          ]);
+          execute(new CreateAction(index + 1, newItem));
         }}
       >
         <Text>Add</Text>
