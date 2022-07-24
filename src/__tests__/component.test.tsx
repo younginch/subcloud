@@ -15,7 +15,7 @@ import Result from "../components/result";
 import SelectLanguage from "../components/selectLanguage";
 import UserLayout from "../components/user/my/userLayout";
 import RequestPanel from "../components/user/requestPanel";
-import { renderWithThemeAndSession } from "../utils/jest";
+import { renderWithThemeAndSession } from "./jest";
 
 describe("Components", () => {
   it("renders a Footer", () => {

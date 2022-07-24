@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { ReactNode, useEffect, useRef } from "react";
-import { PublicProfileTab } from "../../utils/tabs";
+import { PublicProfileTab } from "../../utils/enums";
 
 type Tabs = {
   name: string;

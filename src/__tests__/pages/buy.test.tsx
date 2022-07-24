@@ -6,7 +6,7 @@ import OrderSuccess from "../../pages/buy/order/success";
 import SubscriptionFail from "../../pages/buy/subscription/fail";
 import SubscriptionProcess from "../../pages/buy/subscription/process";
 import SubscriptionSuccess from "../../pages/buy/subscription/success";
-import { renderWithSession } from "../../utils/jest";
+import { renderWithSession } from "../jest";
 
 describe("Pages (buy)", () => {
   it("renders Order Fail", () => {

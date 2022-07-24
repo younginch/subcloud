@@ -1,12 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 
+// eslint-disable-next-line import/no-mutable-exports
 let prisma: PrismaClient;
 
-//check if we are running in production mode
+// check if we are running in production mode
 if (process.env.NODE_ENV === "production") {
   prisma = new PrismaClient();
 } else {
-  //check if there is already a connection to the database
+  // check if there is already a connection to the database
   // @ts-ignore
   if (!global.prisma) {
     // @ts-ignore

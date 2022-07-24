@@ -1,3 +1,4 @@
+/* eslint-disable react/function-component-definition */
 import { ChakraProvider, ChakraProviderProps } from "@chakra-ui/react";
 import { Role } from "@prisma/client";
 import { render } from "@testing-library/react";
