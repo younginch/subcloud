@@ -7,7 +7,7 @@ import TimeLineBoxes from "./timeLineBoxes";
 import TimeLineMarker from "./timeLineMarker";
 
 export default function TimeLineContainer() {
-  const { leftTime, rightTime, changeLRTime, duration } =
+  const { leftTime, rightTime, changeLRTime, duration, setPlayerTime } =
     useContext(EditorContext);
 
   const handleScroll = (e: WheelEvent<HTMLDivElement>) => {
@@ -39,6 +39,18 @@ export default function TimeLineContainer() {
   };
 
   const handleStop = (e: any, data: DraggableData) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (
+      Math.abs(data.lastX) < 2 &&
+      Math.abs(data.lastY) < 2 &&
+      e.layerY <= 40
+    ) {
+      // consider as click
+      setPlayerTime(
+        leftTime + ((rightTime - leftTime) * (e.screenX + 2000)) / 6000
+      );
+    }
     const mouseRatio = -data.lastX / 6000;
     changeLRTime(
       leftTime + (rightTime - leftTime) * mouseRatio,
