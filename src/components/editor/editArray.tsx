@@ -238,6 +238,13 @@ function EndTimestamp({ index }: { index: number }) {
 function Row({ index, style }: ListChildComponentProps<SRTContent[]>) {
   const { contents, execute, getPlayerTime, duration } =
     useContext(EditorContext);
+  let showButton = true;
+  if (
+    index < contents.length - 1 &&
+    contents[index].endTime >= contents[index + 1].startTime
+  )
+    showButton = false;
+  const addButtonBg = useColorModeValue("white", "gray.800");
 
   return (
     <>
@@ -281,42 +288,40 @@ function Row({ index, style }: ListChildComponentProps<SRTContent[]>) {
           colorScheme="red"
         />
       </HStack>
-      <Button
-        position="absolute"
-        top={`${90 * index + 75}px`}
-        left="50%"
-        transform="translateX(-50%)"
-        h="30px"
-        zIndex={2}
-        colorScheme="green"
-        opacity={0}
-        _hover={{
-          opacity: 1,
-        }}
-        pr="5px"
-        onClick={() => {
-          const newItem = new SRTContent(
-            contents.length.toString(),
-            "00:00:00,000 --> 00:00:00,000",
-            []
-          );
-          newItem.startTime = contents[index].endTime;
-          if (index + 1 < contents.length)
-            newItem.endTime = contents[index + 1].startTime;
-          else {
-            newItem.endTime = Math.min(duration, newItem.startTime + 1000);
-          }
-          execute(new CreateAction(index + 1, newItem));
-        }}
-      >
-        <Text>Add</Text>
-        <Divider
-          orientation="vertical"
-          ml="13px"
-          borderColor={useColorModeValue("white", "gray.800")}
-        />
-        <SmallAddIcon ml="5px" />
-      </Button>
+      {showButton && (
+        <Button
+          position="absolute"
+          top={`${90 * index + 75}px`}
+          left="50%"
+          transform="translateX(-50%)"
+          h="30px"
+          zIndex={2}
+          colorScheme="green"
+          opacity={0}
+          _hover={{
+            opacity: 1,
+          }}
+          pr="5px"
+          onClick={() => {
+            const newItem = new SRTContent(
+              contents.length.toString(),
+              "00:00:00,000 --> 00:00:00,000",
+              []
+            );
+            newItem.startTime = contents[index].endTime;
+            if (index + 1 < contents.length)
+              newItem.endTime = contents[index + 1].startTime;
+            else {
+              newItem.endTime = Math.min(duration, newItem.startTime + 1000);
+            }
+            execute(new CreateAction(index + 1, newItem));
+          }}
+        >
+          <Text>Add</Text>
+          <Divider orientation="vertical" ml="13px" borderColor={addButtonBg} />
+          <SmallAddIcon ml="5px" />
+        </Button>
+      )}
     </>
   );
 }
