@@ -29,11 +29,11 @@ import EditArray from "../components/editor/editArray";
 import NoVideo from "../components/editor/noVideo";
 import TimeLineContainer from "../components/editor/timeLineContainer";
 import YoutubePlayer from "../components/editor/youtubePlayer";
-import Shortcuts from "../components/editor/shortcuts";
 import { EditorContext, EditorProvider } from "../utils/editorCore";
 import Menus from "../components/editor/menus";
 import { PageOptions } from "../utils/types";
 import EditLeftPanel from "../components/editor/editLeftPanel";
+import TopRightPanel from "../components/editor/topRightPanel";
 
 function EditorWithoutContext() {
   const toast = useToast();
@@ -197,19 +197,7 @@ function EditorWithoutContext() {
             </ReflexElement>
             <ReflexSplitter propagate style={{ borderColor: splitterColor }} />
             <ReflexElement minSize={300}>
-              <Stack bg={headerBodyBg} h="100%">
-                <Heading
-                  fontSize="lg"
-                  bg={headerBg}
-                  w="100%"
-                  borderBottomWidth="1px"
-                  p="5px"
-                  textAlign="center"
-                >
-                  단축키
-                </Heading>
-                <Shortcuts />
-              </Stack>
+              <TopRightPanel />
             </ReflexElement>
           </ReflexContainer>
         </ReflexElement>
