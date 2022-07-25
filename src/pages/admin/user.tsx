@@ -126,7 +126,7 @@ function UpdateButton({ user, mutate }: UpdateButtonProps) {
                     {...register("role")}
                   />
                   <RadioGroup
-                    onChange={(value) => {
+                    onChange={(value: string) => {
                       setRole(value as Role);
                     }}
                     value={role}

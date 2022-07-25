@@ -71,7 +71,7 @@ export default function Property() {
         </HStack>
         <Text>{`단어 수: ${wordCount}자`}</Text>
         <HStack>
-          <Text>{`단어수/초: ${(wordCount / duration).toFixed(3)}`}</Text>
+          <Text>{`초당 단어 수: ${(wordCount / duration).toFixed(3)}`}</Text>
           {readingRateSoFast && <WarningIcon color="red.500" />}
         </HStack>
         <Stack>

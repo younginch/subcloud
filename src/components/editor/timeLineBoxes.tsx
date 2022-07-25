@@ -13,11 +13,13 @@ type TimeLineBoxProps = {
 };
 
 function TimeLineBox({ item, index }: TimeLineBoxProps) {
-  const { contents, execute, leftTime, rightTime } = useContext(EditorContext);
+  const { contents, execute, leftTime, rightTime, focusedIndex } =
+    useContext(EditorContext);
   const normalColor = useColorModeValue("#ffffff", "#333333");
+  const focusedColor = useColorModeValue("#f0f0ff", "#444466");
   const resizePositiveColor = useColorModeValue("#ccffcc", "#113311");
   const resizeNegativeColor = useColorModeValue("#ffcccc", "#331111");
-  const moveColor = useColorModeValue("#ccccff", "#111133");
+  const moveColor = useColorModeValue("#fff0ff", "#111133");
 
   return (
     <Rnd
@@ -27,7 +29,7 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
         borderWidth: "1px",
         borderRadius: "6px",
         overflow: "hidden",
-        backgroundColor: normalColor,
+        backgroundColor: index === focusedIndex ? focusedColor : normalColor,
       }}
       default={{
         x: ((item.startTime - leftTime) / (rightTime - leftTime)) * 6000,
