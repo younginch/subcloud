@@ -8,54 +8,55 @@ import {
   Td,
   Kbd,
 } from "@chakra-ui/react";
-
-const shortcutsData = [
-  {
-    action: "Play / Pause video",
-    keys: ["space"],
-  },
-  {
-    action: "create subtitle",
-    keys: ["["],
-  },
-  {
-    action: "cut subtitle",
-    keys: ["]"],
-  },
-  {
-    action: "split subtitle",
-    keys: ["\\ or /"],
-  },
-  {
-    action: "skip 0.5 seconds",
-    keys: ["right arrow"],
-  },
-  {
-    action: "skip back 0.5 seconds",
-    keys: ["left arrow"],
-  },
-  {
-    action: "Skip 5 seconds",
-    keys: ["shift", "right"],
-  },
-  {
-    action: "Skip back 5 seconds",
-    keys: ["shift", "left"],
-  },
-  {
-    action: "Insert a line break",
-    keys: ["shift", "enter"],
-  },
-];
+import useTranslation from "next-translate/useTranslation";
 
 export default function Shortcuts() {
+  const { t } = useTranslation("editor");
+  const shortcutsData = [
+    {
+      action: t("play_pause"),
+      keys: ["space"],
+    },
+    {
+      action: t("create"),
+      keys: ["["],
+    },
+    {
+      action: t("cut"),
+      keys: ["]"],
+    },
+    {
+      action: t("split"),
+      keys: ["\\ or /"],
+    },
+    {
+      action: t("skip_05"),
+      keys: ["right arrow"],
+    },
+    {
+      action: t("skip_back_05"),
+      keys: ["left arrow"],
+    },
+    {
+      action: t("skip_5"),
+      keys: ["shift", "right"],
+    },
+    {
+      action: t("skip_back_5"),
+      keys: ["shift", "left"],
+    },
+    {
+      action: t("line_break"),
+      keys: ["shift", "enter"],
+    },
+  ];
   return (
     <TableContainer h="full" overflowX="hidden">
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th p="8px 10px 8px 10px">Action</Th>
-            <Th p="8px 10px 8px 10px">Shortcut</Th>
+            <Th p="8px 10px 8px 10px">{t("action")}</Th>
+            <Th p="8px 10px 8px 10px">{t("shortcut")}</Th>
           </Tr>
         </Thead>
         <Tbody>

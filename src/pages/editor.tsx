@@ -24,6 +24,7 @@ import { useDropzone } from "react-dropzone";
 import { GlobalHotKeys } from "react-hotkeys";
 import { useRouter } from "next/router";
 import { AiOutlineUpload } from "react-icons/ai";
+import useTranslation from "next-translate/useTranslation";
 import Property from "../components/editor/property";
 import EditArray from "../components/editor/editArray";
 import NoVideo from "../components/editor/noVideo";
@@ -36,6 +37,7 @@ import EditLeftPanel from "../components/editor/editLeftPanel";
 import TopRightPanel from "../components/editor/topRightPanel";
 
 function EditorWithoutContext() {
+  const { t } = useTranslation("editor");
   const toast = useToast();
   const {
     setContents,
@@ -93,7 +95,7 @@ function EditorWithoutContext() {
                   p="5px"
                   textAlign="center"
                 >
-                  자막 업로드
+                  {t("upload_sub")}
                 </Heading>
                 <Stack p="10px" mt="0px !important" spacing="10px">
                   <Box
@@ -113,13 +115,11 @@ function EditorWithoutContext() {
                   >
                     <input {...getInputProps()} />
                     {isDragActive ? (
-                      <p>파일을 여기에 놓으세요</p>
+                      <p>{t("file_drop")}</p>
                     ) : (
                       <Stack alignItems="center">
                         <AiOutlineUpload size="50px" />
-                        <p>
-                          클릭하거나 드래그 앤 드롭으로 자막을 업로드 하세요
-                        </p>
+                        <p>{t("click&drop")}</p>
                       </Stack>
                     )}
                   </Box>
@@ -133,7 +133,7 @@ function EditorWithoutContext() {
                   p="5px"
                   textAlign="center"
                 >
-                  {id.length === 0 ? "동영상 선택" : "동영상 변경"}
+                  {id.length === 0 ? t("select_vid") : t("change_vid")}
                 </Heading>
                 <form
                   onSubmit={(event: FormEvent) => {
@@ -146,14 +146,14 @@ function EditorWithoutContext() {
                       }
                       setId(id);
                       toast({
-                        title: "동영상 변경 완료",
-                        description: "동영상이 변경되었습니다",
+                        title: t("complete_vid_title"),
+                        description: t("complete_vid_description"),
                         status: "success",
                       });
                     } catch {
                       toast({
-                        title: "Error (URL)",
-                        description: "Invalid URL",
+                        title: t("error_vid_title"),
+                        description: t("error_vid_description"),
                         status: "error",
                       });
                     }
@@ -170,14 +170,14 @@ function EditorWithoutContext() {
                         }}
                         placeholder={
                           id.length === 0
-                            ? "동영상 url 입력"
-                            : "변경할 url 입력"
+                            ? t("insert_url")
+                            : t("change_insert_url")
                         }
                         ref={urlField}
                       />
                     </FormControl>
                     <Button type="submit" colorScheme="blue" w="80px">
-                      {id.length === 0 ? "선택" : "변경"}
+                      {id.length === 0 ? t("select") : t("change")}
                     </Button>
                   </Stack>
                 </form>

@@ -18,11 +18,13 @@ import { SRTContent, SRTFile } from "@younginch/subtitle";
 import { MdDelete } from "react-icons/md";
 import { FaPlus, FaSave } from "react-icons/fa";
 import { BiHelpCircle } from "react-icons/bi";
+import useTranslation from "next-translate/useTranslation";
 import { EditorContext } from "../../utils/editorCore";
 import ToggleTheme from "./toggleTheme";
 import { CreateAction, DeleteAllAction } from "../../utils/editorActions";
 
 export default function EditLeftPanel() {
+  const { t } = useTranslation("editor");
   const { contents, execute, duration } = useContext(EditorContext);
 
   function downloadSRT() {
@@ -68,14 +70,14 @@ export default function EditLeftPanel() {
         colorScheme="blue"
         w="full"
       >
-        자막 추가
+        {t("add_sub")}
       </Button>
       <Button rightIcon={<FaSave />} onClick={downloadSRT} colorScheme="blue">
-        Save to SRT
+        {t("save_srt")}
       </Button>
       <Tooltip label="Comming soon!">
         <Button rightIcon={<BiHelpCircle />} colorScheme="blue" isDisabled>
-          How to use
+          {t("how_use")}
         </Button>
       </Tooltip>
       <Popover placement="right">
@@ -83,20 +85,17 @@ export default function EditLeftPanel() {
           <>
             <PopoverTrigger>
               <Button rightIcon={<MdDelete />} colorScheme="red" w="full">
-                Delete all
+                {t("delete")}
               </Button>
             </PopoverTrigger>
             <Portal>
               <PopoverContent>
                 <PopoverArrow />
-                <PopoverHeader>Confirmation!</PopoverHeader>
+                <PopoverHeader>{t("confirmation")}</PopoverHeader>
                 <PopoverCloseButton />
                 <PopoverBody>
                   <Stack>
-                    <Text>
-                      SRT파일로 저장하지 않으면 지금까지의 수정사항을 전부 잃게
-                      됩니다.
-                    </Text>
+                    <Text>{t("confirmation_ex")}</Text>
                     <Button
                       colorScheme="red"
                       onClick={() => {
@@ -104,7 +103,7 @@ export default function EditLeftPanel() {
                         onClose();
                       }}
                     >
-                      자막 전체 삭제
+                      {t("confirmation_delete")}
                     </Button>
                   </Stack>
                 </PopoverBody>
