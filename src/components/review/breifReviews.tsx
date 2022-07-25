@@ -46,7 +46,7 @@ export default function BreifReviews() {
           resolved: false,
         },
         {
-          id: "1",
+          id: "2",
           reviewerId: "red",
           subId: "12",
           type: ReviewType.IncorrectTiming,
@@ -71,7 +71,7 @@ export default function BreifReviews() {
           resolved: false,
         },
         {
-          id: "1",
+          id: "2",
           reviewerId: "red",
           subId: "12",
           type: ReviewType.IncorrectTiming,

@@ -50,7 +50,7 @@ export default function TimeLineContainer() {
     if (
       Math.abs(data.lastX) < 2 &&
       Math.abs(data.lastY) < 2 &&
-      e.layerY <= 40
+      e.target.className === "canvas"
     ) {
       // consider as click
       setPlayerTime(
