@@ -12,7 +12,7 @@ import { v4 as uuid } from "uuid";
 import { EditorContext } from "../../utils/editorCore";
 
 export default function Property() {
-  const { contents, focusedIndex } = useContext(EditorContext);
+  const { contents, focusedIndex, commandHandlers } = useContext(EditorContext);
 
   const headerBg = useColorModeValue("gray.100", "#181818");
   const bodyBg = useColorModeValue("transparent", "#222222");
@@ -81,7 +81,9 @@ export default function Property() {
             </Text>
           ))}
         </Stack>
-        <Button>자막 위치로 이동</Button>
+        <Button onClick={commandHandlers.GOTO_TIMELINE}>
+          타임라인 위치로 이동
+        </Button>
       </Stack>
     </Stack>
   );

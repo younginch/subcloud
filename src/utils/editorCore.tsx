@@ -253,6 +253,13 @@ export function EditorProvider({ children }: EditorProviderProps) {
       setContents([]);
       setFocusedIndex(-1);
     },
+    GOTO_TIMELINE: () => {
+      // TODO @red1108
+      // const startTime = contents[focusedIndex].startTime;
+      // const endTime = contents[focusedIndex].endTime;
+      setLeftTime(0);
+      setRightTime(0);
+    },
   };
 
   return (
