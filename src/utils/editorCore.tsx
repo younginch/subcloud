@@ -68,7 +68,8 @@ type EditorContextProps = {
   setState: (state: PlayerState) => void;
   duration: number;
   aspectRatio: number;
-  forceRerender: boolean;
+  shouldRerender: boolean;
+  forceRerender: () => void;
   commandKeys: KeyMap;
   commandHandlers: { [key: string]: () => void };
   execute: (actions: EditorAction) => void;
@@ -116,7 +117,8 @@ export const EditorContext = createContext<EditorContextProps>({
   setState: () => {},
   duration: 0,
   aspectRatio: 0,
-  forceRerender: true,
+  shouldRerender: true,
+  forceRerender: () => {},
   commandKeys,
   commandHandlers: {},
   execute: () => {},
@@ -138,7 +140,7 @@ export function EditorProvider({ children }: EditorProviderProps) {
   const [playerState, setPlayerState] = useState<PlayerState>(
     PlayerState.UNSTARTED
   );
-  const [forceRerender, setForceRerender] = useState<boolean>(true);
+  const [rerenderIndicator, setRerenderIndicator] = useState<boolean>(true);
   const [undoActions, setUndoActions] = useState<EditorAction[]>([]);
   const [redoActions, setRedoActions] = useState<EditorAction[]>([]);
 
@@ -217,37 +219,37 @@ export function EditorProvider({ children }: EditorProviderProps) {
       newItem.endTime = Math.min(newItem.startTime + 5 * 1000, endTime); // default 5 seconds
 
       execute(new CreateAction(newIndex, newItem));
-      setForceRerender(!forceRerender);
+      setRerenderIndicator(!rerenderIndicator);
     },
     CUT_SUBTITLE: () => {
       const index = checkOccupation(contents, getPlayerTime());
       if (index === -1) return;
 
       execute(new EditTimeAction(index, "end", getPlayerTime()));
-      setForceRerender(!forceRerender);
+      setRerenderIndicator(!rerenderIndicator);
     },
     SPLIT_SUBTITLE: () => {
       const index = checkOccupation(contents, getPlayerTime());
       if (index === -1) return;
 
       execute(new SplitAction(index, getPlayerTime()));
-      setForceRerender(!forceRerender);
+      setRerenderIndicator(!rerenderIndicator);
     },
     LEFT_0_5: () => {
       setPlayerTime(Math.max(getPlayerTime() - 500, 0));
-      setForceRerender(!forceRerender);
+      setRerenderIndicator(!rerenderIndicator);
     },
     RIGHT_0_5: () => {
       setPlayerTime(Math.min(getPlayerTime() + 500, duration));
-      setForceRerender(!forceRerender);
+      setRerenderIndicator(!rerenderIndicator);
     },
     LEFT_5: () => {
       setPlayerTime(Math.max(getPlayerTime() - 5000, 0));
-      setForceRerender(!forceRerender);
+      setRerenderIndicator(!rerenderIndicator);
     },
     RIGHT_5: () => {
       setPlayerTime(Math.min(getPlayerTime() + 5000, duration));
-      setForceRerender(!forceRerender);
+      setRerenderIndicator(!rerenderIndicator);
     },
     DELETE_ALL: () => {
       setContents([]);
@@ -325,7 +327,10 @@ export function EditorProvider({ children }: EditorProviderProps) {
             player?.pauseVideo();
           }
         },
-        forceRerender,
+        shouldRerender: rerenderIndicator,
+        forceRerender: () => {
+          setRerenderIndicator(!rerenderIndicator);
+        },
         commandKeys,
         commandHandlers,
         execute,
