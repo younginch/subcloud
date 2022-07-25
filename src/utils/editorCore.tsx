@@ -193,7 +193,13 @@ export function EditorProvider({ children }: EditorProviderProps) {
   }
 
   function setPlayerTime(time: number) {
-    player?.seekTo(time / 1000);
+    player?.seekTo(time / 1000, true);
+  }
+
+  function rerenderWithTimeout() {
+    setTimeout(() => {
+      setRerenderIndicator(!rerenderIndicator);
+    }, 100);
   }
 
   const commandHandlers = {
@@ -237,19 +243,19 @@ export function EditorProvider({ children }: EditorProviderProps) {
     },
     LEFT_0_5: () => {
       setPlayerTime(Math.max(getPlayerTime() - 500, 0));
-      setRerenderIndicator(!rerenderIndicator);
+      rerenderWithTimeout();
     },
     RIGHT_0_5: () => {
       setPlayerTime(Math.min(getPlayerTime() + 500, duration));
-      setRerenderIndicator(!rerenderIndicator);
+      rerenderWithTimeout();
     },
     LEFT_5: () => {
       setPlayerTime(Math.max(getPlayerTime() - 5000, 0));
-      setRerenderIndicator(!rerenderIndicator);
+      rerenderWithTimeout();
     },
     RIGHT_5: () => {
       setPlayerTime(Math.min(getPlayerTime() + 5000, duration));
-      setRerenderIndicator(!rerenderIndicator);
+      rerenderWithTimeout();
     },
     DELETE_ALL: () => {
       setContents([]);
@@ -329,7 +335,9 @@ export function EditorProvider({ children }: EditorProviderProps) {
         },
         shouldRerender: rerenderIndicator,
         forceRerender: () => {
-          setRerenderIndicator(!rerenderIndicator);
+          setTimeout(() => {
+            setRerenderIndicator(!rerenderIndicator);
+          }, 100);
         },
         commandKeys,
         commandHandlers,

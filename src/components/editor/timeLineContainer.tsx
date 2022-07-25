@@ -7,8 +7,14 @@ import TimeLineBoxes from "./timeLineBoxes";
 import TimeLineMarker from "./timeLineMarker";
 
 export default function TimeLineContainer() {
-  const { leftTime, rightTime, changeLRTime, duration, setPlayerTime } =
-    useContext(EditorContext);
+  const {
+    leftTime,
+    rightTime,
+    changeLRTime,
+    duration,
+    setPlayerTime,
+    forceRerender,
+  } = useContext(EditorContext);
 
   const handleScroll = (e: WheelEvent<HTMLDivElement>) => {
     const mouseRatio = e.screenX / window.screen.width;
@@ -50,6 +56,7 @@ export default function TimeLineContainer() {
       setPlayerTime(
         leftTime + ((rightTime - leftTime) * (e.screenX + 2000)) / 6000
       );
+      forceRerender();
     }
     const mouseRatio = -data.lastX / 6000;
     changeLRTime(
