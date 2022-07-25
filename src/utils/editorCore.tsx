@@ -68,7 +68,7 @@ type EditorContextProps = {
   setState: (state: PlayerState) => void;
   duration: number;
   aspectRatio: number;
-  forceRerender: boolean;
+  forceRerender: () => void;
   commandKeys: KeyMap;
   commandHandlers: { [key: string]: () => void };
   execute: (actions: EditorAction) => void;
@@ -116,7 +116,7 @@ export const EditorContext = createContext<EditorContextProps>({
   setState: () => {},
   duration: 0,
   aspectRatio: 0,
-  forceRerender: true,
+  forceRerender: () => {},
   commandKeys,
   commandHandlers: {},
   execute: () => {},
@@ -311,7 +311,9 @@ export function EditorProvider({ children }: EditorProviderProps) {
             player?.pauseVideo();
           }
         },
-        forceRerender,
+        forceRerender: () => {
+          setForceRerender(!forceRerender);
+        },
         commandKeys,
         commandHandlers,
         execute,
