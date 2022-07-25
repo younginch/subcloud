@@ -28,13 +28,13 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import YouTube, { YouTubePlayer } from "react-youtube";
 import useSWR, { mutate } from "swr";
-import CommentComponent from "../../components/review/commentComponent";
-import { ReviewCreateSchema } from "../../utils/schema";
-import { PageOptions, ResSubRead } from "../../utils/types";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { AiFillTool } from "react-icons/ai";
 import { MdReport } from "react-icons/md";
 import { SRTContent, SRTFile } from "@younginch/subtitle";
+import { PageOptions, ResSubRead } from "../../utils/types";
+import { ReviewCreateSchema } from "../../utils/schema";
+import CommentComponent from "../../components/review/commentComponent";
 
 type ReviewAddFormData = {
   type: ReviewType;
@@ -59,8 +59,8 @@ function ReviewAddForm({ subId }: ReviewAddFormProps) {
     content,
     startTime,
     endTime,
-  }) => {
-    return new Promise((resolve, reject) => {
+  }) =>
+    new Promise((resolve, reject) => {
       axios
         .post(`/api/review?subId=${subId}`, {
           type,
@@ -76,13 +76,12 @@ function ReviewAddForm({ subId }: ReviewAddFormProps) {
           reject(err);
         });
     });
-  };
 
   return (
     <Box
       bg={useColorModeValue("white", "#1F2733")}
       boxShadow="lg"
-      rounded={"xl"}
+      rounded="xl"
       p={4}
     >
       <form>
@@ -179,7 +178,7 @@ function ReviewList({ subId }: ReviewListProps) {
         justifyContent="center"
       >
         <Text textAlign="center" h="fit-content" fontWeight="bold">
-          {data?.length == 0 ? "아직 리뷰가 없습니다" : "리뷰 목록"}
+          {data?.length === 0 ? "아직 리뷰가 없습니다" : "리뷰 목록"}
         </Text>
       </Stack>
       <List maxH="300px" overflow="auto">
@@ -198,13 +197,6 @@ function ReviewList({ subId }: ReviewListProps) {
     </Box>
   );
 }
-
-type SubtitleData = {
-  line: string;
-  startTime: number;
-  endTime: number;
-  text: string;
-}[];
 
 type YoutubeOptions =
   | {
@@ -253,11 +245,12 @@ export default function ReviewDetail() {
   }, [router.query.subId]);
 
   const intervalSub = () => {
-    const currentTime = player?.getCurrentTime() * 1000;
+    const currentTime = (player?.getCurrentTime() ?? 0) * 1000;
     if (!currentTime) {
       return;
     }
 
+    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < contentArray.length; i++) {
       if (
         contentArray[i].startTime <= currentTime &&

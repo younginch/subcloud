@@ -12,7 +12,7 @@ import {
 const shortcutsData = [
   {
     action: "Play / Pause video",
-    keys: ["tab"],
+    keys: ["space"],
   },
   {
     action: "create subtitle",
@@ -35,12 +35,12 @@ const shortcutsData = [
     keys: ["left arrow"],
   },
   {
-    action: "skip 5 seconds",
-    keys: ["left arrow"],
+    action: "Skip 5 seconds",
+    keys: ["shift", "right"],
   },
   {
     action: "Skip back 5 seconds",
-    keys: ["shift", "tab"],
+    keys: ["shift", "left"],
   },
   {
     action: "Insert a line break",
@@ -59,12 +59,12 @@ export default function Shortcuts() {
           </Tr>
         </Thead>
         <Tbody>
-          {shortcutsData.map(({ action, keys }, index) => (
-            <Tr key={index}>
+          {shortcutsData.map(({ action, keys }) => (
+            <Tr key={action}>
               <Td p="8px 10px 8px 10px">{action}</Td>
               <Td p="8px 10px 8px 10px">
-                {keys.map((key, index) => (
-                  <Kbd key={index} me={1}>
+                {keys.map((key) => (
+                  <Kbd key={key} me={1}>
                     {key}
                   </Kbd>
                 ))}

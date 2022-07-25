@@ -17,7 +17,6 @@ type Props = {
   userId: string;
   videoName: string;
   videoUrl: string;
-  platform: string;
   viewCount: number;
   userName: string;
   userImageUrl: string;
@@ -29,7 +28,6 @@ export default function SubRankTableRow({
   rank,
   videoUrl,
   videoName,
-  platform,
   viewCount,
   userId,
   userName,
@@ -57,7 +55,7 @@ export default function SubRankTableRow({
       >
         <HStack w="inherit">
           <Link href={videoUrl}>
-            <YoutubeIcon size={30} />
+            <YoutubeIcon size={30} cursor="pointer" />
           </Link>
           <Link href={videoUrl}>
             <Text
@@ -66,6 +64,7 @@ export default function SubRankTableRow({
               textOverflow="ellipsis"
               whiteSpace="nowrap"
               overflow="hidden"
+              cursor="pointer"
             >
               {videoName}
             </Text>
@@ -99,8 +98,11 @@ export default function SubRankTableRow({
           </Link>
         </HStack>
       </Td>
-      <Td w={{ base: "70px", md: "90px", lg: "110px" }} pl={paddingLeftBp}>
-        <Text fontSize={mainTextSize}>
+      <Td
+        w={{ base: "fit-content", md: "fit-content", lg: "170px" }}
+        pl={paddingLeftBp}
+      >
+        <Text fontSize={mainTextSize} whiteSpace="nowrap">
           {dayjs(uploadDate).format("YYYY-MM-DD")}
         </Text>
       </Td>

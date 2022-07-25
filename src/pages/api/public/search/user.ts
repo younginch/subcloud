@@ -48,6 +48,8 @@ export async function UserSearch({
         point: user.point,
         baseLangs: user.baseLangs,
         requestLangs: user.requestLangs,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
         _count: {
           subs: subs.length,
           views: subs.reduce((prev, curr) => prev + curr.views, 0),
@@ -108,17 +110,19 @@ export async function UserSearch({
   }
   const fulfilledRequestPercentage =
     (newUsers
-      .sort((a: UserWithCount, b: UserWithCount) => {
-        return b._count.fulfilledRequests - a._count.fulfilledRequests;
-      })
+      .sort(
+        (a: UserWithCount, b: UserWithCount) =>
+          b._count.fulfilledRequests - a._count.fulfilledRequests
+      )
       .findIndex((user) => user.id === userId) /
       newUsers.length) *
     100;
   const ratingPercentage =
     (newUsers
-      .sort((a: UserWithCount, b: UserWithCount) => {
-        return b._count.ratings - a._count.ratings;
-      })
+      .sort(
+        (a: UserWithCount, b: UserWithCount) =>
+          b._count.ratings - a._count.ratings
+      )
       .findIndex((user) => user.id === userId) /
       newUsers.length) *
     100;

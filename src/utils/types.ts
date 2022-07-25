@@ -1,4 +1,3 @@
-import type { CreateStandAloneToastParam } from "@chakra-ui/react";
 import {
   YoutubeVideo,
   Request,
@@ -20,7 +19,6 @@ import {
   PrismaClientUnknownRequestError,
   PrismaClientValidationError,
 } from "@prisma/client/runtime";
-import { AxiosError } from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { Session } from "next-auth";
 import { getSession } from "next-auth/react";
@@ -72,6 +70,36 @@ export enum SubErrorType {
   ServerError,
 }
 
+function handleServerError(res: NextApiResponse<ResError>, e: Error) {
+  if (e instanceof PrismaClientValidationError) {
+    return res
+      .status(400)
+      .json({ error: SubErrorType.Validation, message: e.message });
+  }
+  if (e instanceof PrismaClientKnownRequestError) {
+    return res.status(500).json({
+      error: SubErrorType.DB,
+      message: e.message,
+      code: e.code,
+      meta: e.meta,
+    });
+  }
+  if (
+    e instanceof PrismaClientUnknownRequestError ||
+    e instanceof PrismaClientRustPanicError
+  ) {
+    return res.status(500).json({ error: SubErrorType.DB, message: e.message });
+  }
+  if (e instanceof PrismaClientInitializationError) {
+    return res
+      .status(500)
+      .json({ error: SubErrorType.DB, message: e.message, code: e.errorCode });
+  }
+  return res
+    .status(500)
+    .json({ error: SubErrorType.Unknown, message: "Unknown server error" });
+}
+
 export type RouteParams<ResponseType> = {
   req: NextApiRequest;
   res: NextApiResponse<ResponseType | ResError>;
@@ -105,6 +133,7 @@ export function handleRoute<GetRes, PostRes, PatchRes, DeleteRes>(
   return async (
     req: NextApiRequest,
     res: NextApiResponse<GetRes | PostRes | PatchRes | DeleteRes | ResError>
+    // eslint-disable-next-line consistent-return
   ) => {
     setCORS(req, res);
     let params: RouteParams<GetRes | PostRes | PatchRes | DeleteRes> = {
@@ -139,72 +168,45 @@ export function handleRoute<GetRes, PostRes, PatchRes, DeleteRes>(
     try {
       if (GET && req.method === "GET") {
         return GET(params);
-      } else if (POST && req.method === "POST") {
-        return POST(params);
-      } else if (PATCH && req.method === "PATCH") {
-        return PATCH(params);
-      } else if (DELETE && req.method === "DELETE") {
-        return DELETE(params);
-      } else {
-        return res.status(405).json({
-          error: SubErrorType.MethodNotAllowed,
-          message: `Method "${req.method}" not allowed`,
-        });
       }
+      if (POST && req.method === "POST") {
+        return POST(params);
+      }
+      if (PATCH && req.method === "PATCH") {
+        return PATCH(params);
+      }
+      if (DELETE && req.method === "DELETE") {
+        return DELETE(params);
+      }
+      return res.status(405).json({
+        error: SubErrorType.MethodNotAllowed,
+        message: `Method "${req.method}" not allowed`,
+      });
     } catch (e: any) {
-      console.log(e);
       handleServerError(res, e);
     }
   };
 }
 
-function handleServerError(res: NextApiResponse<ResError>, e: Error) {
-  if (e instanceof PrismaClientValidationError) {
-    return res
-      .status(400)
-      .json({ error: SubErrorType.Validation, message: e.message });
-  } else if (e instanceof PrismaClientKnownRequestError) {
-    return res.status(500).json({
-      error: SubErrorType.DB,
-      message: e.message,
-      code: e.code,
-      meta: e.meta,
-    });
-  } else if (
-    e instanceof PrismaClientUnknownRequestError ||
-    e instanceof PrismaClientRustPanicError
-  ) {
-    return res.status(500).json({ error: SubErrorType.DB, message: e.message });
-  } else if (e instanceof PrismaClientInitializationError) {
-    return res
-      .status(500)
-      .json({ error: SubErrorType.DB, message: e.message, code: e.errorCode });
-  } else {
-    return res
-      .status(500)
-      .json({ error: SubErrorType.Unknown, message: "Unknown server error" });
-  }
-}
-
-export function handleClientError(
-  error: AxiosError,
-  toast: CreateStandAloneToastParam
-) {
-  if (error.response) {
-    // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
-    console.log(error.response.data);
-    console.log(error.response.status);
-    console.log(error.response.headers);
-  } else if (error.request) {
-    // 요청이 이루어 졌으나 응답을 받지 못했습니다.
-    // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
-    // Node.js의 http.ClientRequest 인스턴스입니다.
-    console.log(error.request);
-  } else {
-    // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
-    console.log("Error", error.message);
-  }
-}
+// export function handleClientError(
+//   error: AxiosError,
+//   toast: CreateStandAloneToastParam
+// ) {
+//   if (error.response) {
+//     // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+//     console.log(error.response.data);
+//     console.log(error.response.status);
+//     console.log(error.response.headers);
+//   } else if (error.request) {
+//     // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+//     // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+//     // Node.js의 http.ClientRequest 인스턴스입니다.
+//     console.log(error.request);
+//   } else {
+//     // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+//     console.log("Error", error.message);
+//   }
+// }
 
 type YoutubeVideoWithChannel = YoutubeVideo & {
   channel: YoutubeChannel;
@@ -237,6 +239,8 @@ type FileWithUrl = File & {
 };
 
 type SubWithVideo = Sub & {
+  user: User;
+} & {
   video: VideoWithInfo;
 };
 

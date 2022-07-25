@@ -5,7 +5,7 @@ import { FaCube } from "react-icons/fa";
 import { IoDocumentsSharp } from "react-icons/io5";
 import { MdSubtitles } from "react-icons/md";
 import useSWR from "swr";
-import { PublicProfileTab } from "../../utils/tabs";
+import { PublicProfileTab } from "../../utils/enums";
 import Header from "./header";
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 export default function PublicProfileLayout({ currentTab, children }: Props) {
   const { t } = useTranslation("publicProfile");
   const router = useRouter();
-  const { data: user, error } = useSWR(`/api/user?id=${router.query.userId}`);
+  const { data: user } = useSWR(`/api/user?id=${router.query.userId}`);
   const bgProfile = useColorModeValue(
     "hsla(0,0%,100%,.8)",
     "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"

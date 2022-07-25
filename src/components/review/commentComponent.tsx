@@ -8,6 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Review } from "@prisma/client";
+import ReviewBadge from "../badges/reviewBadge";
 
 type Props = {
   review: Review;
@@ -15,25 +16,6 @@ type Props = {
 };
 
 export default function CommentComponent({ review, onClick }: Props) {
-  const badgeColor = (type: string) => {
-    switch (type) {
-      case "Mistranslation":
-        return "teal";
-      case "IncorrectTiming":
-        return "blue";
-      case "NoSubtitle":
-        return "red";
-      case "IncorrectTitle":
-        return "orange";
-      case "IncorrectLanguage":
-        return "cyan";
-      case "GuidelineViolation":
-        return "purple";
-      default:
-        return "gray";
-    }
-  };
-
   return (
     <Box
       p={2}
@@ -41,9 +23,7 @@ export default function CommentComponent({ review, onClick }: Props) {
       bg={useColorModeValue("white", "#1F2733")}
     >
       <HStack>
-        <Badge borderRadius="5px" px="2" colorScheme={badgeColor(review.type)}>
-          {review.type}
-        </Badge>
+        <ReviewBadge type={review.type} />
         <Badge variant="outline" colorScheme="gray">
           {review.startTime}-{review.endTime}
         </Badge>

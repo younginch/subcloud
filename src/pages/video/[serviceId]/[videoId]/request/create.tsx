@@ -9,15 +9,10 @@ import {
   Stack,
   Text,
   useColorModeValue,
-  MenuButton,
-  Menu,
-  MenuList,
-  MenuItem,
   Wrap,
   HStack,
   useMediaQuery,
   Checkbox,
-  MenuOptionGroup,
   Box,
   keyframes,
 } from "@chakra-ui/react";
@@ -25,23 +20,22 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
-import { RequestCreateSchema } from "../../../../../utils/schema";
-import { useSession } from "next-auth/react";
 import { Role } from "@prisma/client";
-import VideoInfo from "../../../../../components/create/videoInfo";
-import { PageOptions, ResVideo } from "../../../../../utils/types";
-import Card from "../../../../../components/user/card/card";
-import CardHeader from "../../../../../components/user/card/cardHeader";
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import InViewProvider from "../../../../../components/inviewProvider";
 import { useEffect, useState } from "react";
-import ISO6391, { LanguageCode } from "iso-639-1";
+import ISO6391 from "iso-639-1";
 import { CgShapeTriangle } from "react-icons/cg";
 import { TbDiamond, TbDiamonds } from "react-icons/tb";
 import { BiRocket } from "react-icons/bi";
 import { BsLightningCharge } from "react-icons/bs";
 import { HiOutlineFire } from "react-icons/hi";
 import useTranslation from "next-translate/useTranslation";
+import InViewProvider from "../../../../../components/inviewProvider";
+import CardHeader from "../../../../../components/user/card/cardHeader";
+import Card from "../../../../../components/user/card/card";
+import { PageOptions, ResVideo } from "../../../../../utils/types";
+import VideoInfo from "../../../../../components/create/videoInfo";
+import { RequestCreateSchema } from "../../../../../utils/schema";
+import SelectLanguage from "../../../../../components/selectLanguage";
 
 type FormData = {
   serviceId: string;
@@ -64,7 +58,6 @@ export default function RequestCreate() {
   const serviceId = router.query.serviceId as string;
   const videoId = router.query.videoId as string;
   const toast = useToast();
-  const { data } = useSession();
   const [check, setCheck] = useState(false);
   const {
     handleSubmit,
@@ -105,18 +98,6 @@ export default function RequestCreate() {
       icon: <BsLightningCharge size="100%" strokeWidth="0.2px" />,
     },
   ];
-  const codeList: LanguageCode[] = [
-    "en",
-    "fr",
-    "de",
-    "it",
-    "es",
-    "pt",
-    "ru",
-    "ja",
-    "zh",
-    "ko",
-  ];
 
   const pulseRing = keyframes`
 	0% {
@@ -146,6 +127,7 @@ export default function RequestCreate() {
   `;
 
   const getLevel = (point: number) => {
+    // eslint-disable-next-line no-plusplus
     for (let i = points.length - 1; i >= 0; i--) {
       if (points[i].amount <= point) return i;
     }
@@ -159,7 +141,7 @@ export default function RequestCreate() {
         .patch("/api/user/lang", {
           requestLang: watch().lang,
         })
-        .catch((err) => {
+        .catch(() => {
           toast({
             title: "Error",
             description: "Request Lang not changed",
@@ -178,13 +160,13 @@ export default function RequestCreate() {
           lang: values.lang,
           point: values.point,
         })
-        .then((res) => {
+        .then(() => {
           toast({
             title: "Success",
             description: "Request created",
             status: "success",
           });
-          router.push(`/user/${data?.user.id}?tab=requests`);
+          router.push(`/user/my/request`);
           resolve();
         })
         .catch((err) => {
@@ -236,39 +218,11 @@ export default function RequestCreate() {
               {t("select_lang")}
             </Text>
           </CardHeader>
-          <Menu>
-            <FormControl isInvalid={errors.lang !== undefined} as="fieldset">
-              <MenuOptionGroup>
-                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                  {watch().lang
-                    ? ISO6391.getName(watch().lang)
-                    : t("select_lang")}
-                </MenuButton>
-                <MenuList>
-                  {codeList.map((code) => {
-                    return (
-                      <MenuItem
-                        key={code}
-                        onClick={() => setValue("lang", code)}
-                      >
-                        {`${ISO6391.getName(code)} (${ISO6391.getNativeName(
-                          code
-                        )})`}
-                      </MenuItem>
-                    );
-                  })}
-                </MenuList>
-              </MenuOptionGroup>
-              <FormErrorMessage
-                w="fit-content"
-                justifyContent="center"
-                fontSize="14px"
-                color="red.300"
-              >
-                {errors.lang && t("check_subtitle_lang_required")}
-              </FormErrorMessage>
-            </FormControl>
-          </Menu>
+          <SelectLanguage
+            lang={watch().lang}
+            error={errors.lang}
+            setLang={(lang: string) => setValue("lang", lang)}
+          />
           <Checkbox
             mt={5}
             size="lg"
@@ -285,42 +239,40 @@ export default function RequestCreate() {
             </Text>
           </CardHeader>
           <Wrap p={5} justify="space-evenly">
-            {points.map((element, index) => {
-              return (
-                <WrapItem key={index} zIndex={10}>
-                  <InViewProvider whileHover={1.15} initialScale={0.95}>
-                    <Box
-                      as={Stack}
-                      justifyContent="center"
-                      alignItems="center"
-                      spacing="-3px"
-                      w="80px"
-                      h="80px"
-                      borderRadius="20%"
-                      bg={pointBg}
-                      onClick={() =>
-                        setValue(
-                          "point",
-                          Number(element.amount) + Number(watch().point)
-                        )
-                      }
-                      _hover={{
-                        bg: element.hoverColor,
-                        animation: `1s ${changeRadius}`,
-                        borderRadius: "50%",
-                      }}
-                    >
-                      <Box w="40%" h="40%">
-                        {element.icon}
-                      </Box>
-                      <Text fontWeight="bold" fontSize="lg">
-                        {element.amount}P
-                      </Text>
+            {points.map((element) => (
+              <WrapItem key={element.amount} zIndex={10}>
+                <InViewProvider whileHover={1.15} initialScale={0.95}>
+                  <Box
+                    as={Stack}
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing="-3px"
+                    w="80px"
+                    h="80px"
+                    borderRadius="20%"
+                    bg={pointBg}
+                    onClick={() =>
+                      setValue(
+                        "point",
+                        Number(element.amount) + Number(watch().point)
+                      )
+                    }
+                    _hover={{
+                      bg: element.hoverColor,
+                      animation: `1s ${changeRadius}`,
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <Box w="40%" h="40%">
+                      {element.icon}
                     </Box>
-                  </InViewProvider>
-                </WrapItem>
-              );
-            })}
+                    <Text fontWeight="bold" fontSize="lg">
+                      {element.amount}P
+                    </Text>
+                  </Box>
+                </InViewProvider>
+              </WrapItem>
+            ))}
           </Wrap>
           <HStack pt={5}>
             <FormControl isInvalid={errors.point !== undefined}>
@@ -359,8 +311,8 @@ export default function RequestCreate() {
           </Text>
           <Text fontWeight="bold" fontSize="20px">
             {video?.youtubeVideo
-              ? `${Math.floor(video?.youtubeVideo.duration / 60)}${t("min")} ${
-                  video?.youtubeVideo.duration % 60
+              ? `${Math.floor(video!.youtubeVideo.duration / 60)}${t("min")} ${
+                  video!.youtubeVideo.duration % 60
                 }${t("sec")}`
               : "unknown"}
           </Text>

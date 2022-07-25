@@ -25,7 +25,6 @@ type Props = {
   videoUrl: string;
   channelName: string;
   channelThumbnailUrl?: string;
-  platform: string;
   viewCount: number;
   lang: string;
   reviewStatus: string;
@@ -34,7 +33,6 @@ type Props = {
 export default function UserSubtitleRow({
   videoUrl,
   videoName,
-  platform,
   channelName,
   channelThumbnailUrl,
   lang,
@@ -44,7 +42,6 @@ export default function UserSubtitleRow({
   const textColor = useColorModeValue("gray.700", "gray.300");
   const paddingLeftBp = { base: "7px", md: "15px", lg: "24px" };
   const mainTextSize = { base: "12px", md: "15px" };
-  const subTextSize = { base: "10px", md: "13px" };
   return (
     <Tr color={textColor}>
       <Td

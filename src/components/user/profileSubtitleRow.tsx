@@ -14,8 +14,6 @@ import { YoutubeIcon } from "../icons/customIcons";
 
 type Props = {
   rank: number;
-  userId: string;
-  platform: string;
   videoName: string;
   videoUrl: string;
   channelName: string;
@@ -28,8 +26,6 @@ type Props = {
 
 export default function ProfileSubtitleRow({
   rank,
-  userId,
-  platform,
   videoName,
   videoUrl,
   channelName,
@@ -59,7 +55,7 @@ export default function ProfileSubtitleRow({
       >
         <HStack w="inherit">
           <Link href={videoUrl}>
-            <YoutubeIcon size={30} />
+            <YoutubeIcon size={30} cursor="pointer" />
           </Link>
           <Link href={videoUrl}>
             <Text
@@ -68,6 +64,7 @@ export default function ProfileSubtitleRow({
               textOverflow="ellipsis"
               whiteSpace="nowrap"
               overflow="hidden"
+              cursor="pointer"
             >
               {videoName}
             </Text>
@@ -101,8 +98,11 @@ export default function ProfileSubtitleRow({
           <Text>{viewCount}</Text>
         </HStack>
       </Td>
-      <Td w={{ base: "70px", md: "90px", lg: "110px" }} pl={paddingLeftBp}>
-        <Text fontSize={mainTextSize}>
+      <Td
+        w={{ base: "fit-content", md: "fit-content", lg: "170px" }}
+        pl={paddingLeftBp}
+      >
+        <Text fontSize={mainTextSize} whiteSpace="nowrap">
           {dayjs(uploadDate).format("YYYY-MM-DD")}
         </Text>
       </Td>

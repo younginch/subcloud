@@ -1,13 +1,14 @@
-import nextConnect from "next-connect";
+import { createRouter } from "next-connect";
 import multer from "multer";
 import multerS3 from "multer-s3";
+import type e from "express";
 import { NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
 import ResError, {
   ResFileUpload,
   setCORS,
   SubErrorType,
 } from "../../../../utils/types";
-import { getSession } from "next-auth/react";
 import { configuredBucket, configuredS3 } from "../../../../utils/aws";
 import prisma from "../../../../utils/prisma";
 
@@ -20,10 +21,10 @@ const awsStorage = multerS3({
   bucket: configuredBucket,
   contentType: multerS3.AUTO_CONTENT_TYPE,
   acl: "public-read",
-  metadata: function (req: any, file: any, cb: any) {
+  metadata(req: any, file: any, cb: any) {
     cb(null, { fieldName: file.fieldname });
   },
-  key: function (req: any, file: any, cb: any) {
+  key(req: any, file: any, cb: any) {
     cb(null, `${Date.now()}_${file.originalname}`);
   },
 });
@@ -32,24 +33,25 @@ const upload = multer({
   storage: awsStorage,
 });
 
-const app = nextConnect<
+const expressWrapper =
+  (middleware: e.RequestHandler) =>
+  async (req: NextApiRequest, res: NextApiResponse, next: any) => {
+    await new Promise<void>((resolve, reject) => {
+      middleware(
+        req as unknown as e.Request,
+        res as unknown as e.Response,
+        (err: any) => (err ? reject(err) : resolve())
+      );
+    });
+    return next();
+  };
+
+const router = createRouter<
   NextApiRequestWithFile,
   NextApiResponse<ResFileUpload | ResError>
->({
-  onError(error, req, res) {
-    res
-      .status(501)
-      .json({ error: SubErrorType.Unknown, message: error.message });
-  },
-  onNoMatch(req, res) {
-    res.status(405).json({
-      error: SubErrorType.MethodNotAllowed,
-      message: `Method '${req.method}' Not Allowed`,
-    });
-  },
-});
+>();
 
-app.post(upload.single("file"), async (req, res) => {
+router.post(expressWrapper(upload.single("file")), async (req, res) => {
   await setCORS(req, res);
 
   const session = await getSession({ req });
@@ -75,7 +77,19 @@ app.post(upload.single("file"), async (req, res) => {
   }
 });
 
-export default app;
+export default router.handler({
+  onError(error: any, _, res) {
+    res
+      .status(501)
+      .json({ error: SubErrorType.Unknown, message: error.message });
+  },
+  onNoMatch(req, res) {
+    res.status(405).json({
+      error: SubErrorType.MethodNotAllowed,
+      message: `Method '${req.method}' Not Allowed`,
+    });
+  },
+});
 
 export const config = {
   api: {

@@ -11,9 +11,8 @@ async function RankingUserByView({
   res,
   prisma,
 }: RouteParams<ResRankingUser>) {
-  const compareByViews = (a: UserWithCount, b: UserWithCount) => {
-    return b._count.views - a._count.views;
-  };
+  const compareByViews = (a: UserWithCount, b: UserWithCount) =>
+    b._count.views - a._count.views;
   await RankingUser({ req, res, prisma }, compareByViews);
 }
 

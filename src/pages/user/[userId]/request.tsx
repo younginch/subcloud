@@ -1,7 +1,7 @@
-import PublicProfileLayout from "../../../components/user/publicProfileLayout";
-import { PublicProfileTab } from "../../../utils/tabs";
-import { PageOptions } from "../../../utils/types";
 import { Stack, Heading } from "@chakra-ui/react";
+import PublicProfileLayout from "../../../components/user/publicProfileLayout";
+import { PublicProfileTab } from "../../../utils/enums";
+import { PageOptions } from "../../../utils/types";
 
 export default function UserRequest() {
   return (

@@ -6,7 +6,7 @@ import {
 
 async function SubSearch({ req, res, prisma }: RouteParams<ResSubSearch>) {
   const { serviceId, videoId, userId, status } = req.query;
-  let where: any = {};
+  const where: any = {};
   if (userId) {
     where.userId = userId;
   }
@@ -15,7 +15,7 @@ async function SubSearch({ req, res, prisma }: RouteParams<ResSubSearch>) {
     where.videoId = videoId;
   }
   if (status) {
-    if (status !== "all") {
+    if (status !== "All") {
       where.status = status;
     }
   }
@@ -24,7 +24,7 @@ async function SubSearch({ req, res, prisma }: RouteParams<ResSubSearch>) {
     where,
     include: {
       video: { include: { youtubeVideo: { include: { channel: true } } } },
-      user: { select: { name: true, id: true } },
+      user: true,
       ratings: true,
     },
   });

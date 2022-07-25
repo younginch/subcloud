@@ -2,12 +2,7 @@ import { Button, ButtonGroup, VisuallyHidden } from "@chakra-ui/react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FaFacebook } from "react-icons/fa";
-import {
-  GitHubIcon,
-  GoogleIcon,
-  KakaoIcon,
-  TwitterIcon,
-} from "./providerIcons";
+import { GitHubIcon, GoogleIcon, KakaoIcon } from "./providerIcons";
 
 const providers = [
   { name: "Google", icon: <GoogleIcon boxSize="5" /> },
@@ -27,7 +22,7 @@ export default function OAuthButtonGroup() {
           width="full"
           onClick={() => {
             signIn(name.toLowerCase(), {
-              callbackUrl: router.query["callbackUrl"] as string,
+              callbackUrl: router.query.callbackUrl as string,
             });
           }}
         >

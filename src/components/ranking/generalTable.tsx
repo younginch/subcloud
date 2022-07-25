@@ -21,8 +21,8 @@ import useTranslation from "next-translate/useTranslation";
 import { ReactElement } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineSearch } from "react-icons/ai";
-import { RankQueryData } from "../../utils/types";
 import ISO6391, { LanguageCode } from "iso-639-1";
+import { RankQueryData } from "../../utils/types";
 
 type Props = {
   captions: Array<{
@@ -65,11 +65,7 @@ export default function GeneralTable({
   ];
   const textColor = useColorModeValue("gray.700", "white");
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors, isSubmitting },
-  } = useForm<RankQueryData>();
+  const { handleSubmit, register } = useForm<RankQueryData>();
 
   return (
     <>
@@ -86,15 +82,11 @@ export default function GeneralTable({
               <MenuItem key={t("all lang")} onClick={() => setLang("All Lang")}>
                 {t("all lang")}
               </MenuItem>
-              {codeList.map((code) => {
-                return (
-                  <MenuItem key={code} onClick={() => setLang(code)}>
-                    {`${ISO6391.getName(code)} (${ISO6391.getNativeName(
-                      code
-                    )})`}
-                  </MenuItem>
-                );
-              })}
+              {codeList.map((code) => (
+                <MenuItem key={code} onClick={() => setLang(code)}>
+                  {`${ISO6391.getName(code)} (${ISO6391.getNativeName(code)})`}
+                </MenuItem>
+              ))}
             </MenuList>
           </Menu>
         )}
@@ -116,8 +108,9 @@ export default function GeneralTable({
                         message: "Minimum length should be 2",
                       },
                     })}
+                    disabled
                   />
-                  <Button type="submit">
+                  <Button type="submit" disabled>
                     <AiOutlineSearch />
                   </Button>
                 </HStack>
@@ -129,25 +122,23 @@ export default function GeneralTable({
       <Table variant="simple" color={textColor} mt={5}>
         <Thead>
           <Tr my=".8rem" ps="0px">
-            {captions.map((data, index) => {
-              return (
-                <Th
-                  color="gray.400"
-                  key={index}
-                  fontWeight="bold"
-                  fontSize={{ base: "12px", md: "15px" }}
-                  onClick={() =>
-                    data.sortBy && setSortBy
-                      ? data.sortBy === sortBy?.by
-                        ? setSortBy({ by: data.sortBy, order: !sortBy?.order })
-                        : setSortBy({ by: data.sortBy, order: true })
-                      : undefined
-                  }
-                >
-                  {data.caption}
-                </Th>
-              );
-            })}
+            {captions.map((data) => (
+              <Th
+                color="gray.400"
+                key={data.caption}
+                fontWeight="bold"
+                fontSize={{ base: "12px", md: "15px" }}
+                onClick={() =>
+                  data.sortBy && setSortBy
+                    ? data.sortBy === sortBy?.by
+                      ? setSortBy({ by: data.sortBy, order: !sortBy?.order })
+                      : setSortBy({ by: data.sortBy, order: true })
+                    : undefined
+                }
+              >
+                {data.caption}
+              </Th>
+            ))}
           </Tr>
         </Thead>
         <Tbody>{children}</Tbody>

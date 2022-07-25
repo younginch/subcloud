@@ -9,9 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { ReactNode, useEffect, useRef } from "react";
-import TierBadge from "../badges/tierBadge";
-import { PublicProfileTab } from "../../utils/tabs";
-import { UserTier } from "../../utils/tier";
+import { PublicProfileTab } from "../../utils/enums";
 
 type Tabs = {
   name: string;
@@ -29,7 +27,7 @@ type Props = {
   tabs: Array<Tabs>;
 };
 
-const Header = ({
+function Header({
   backgroundHeader,
   backgroundProfile,
   avatarImage,
@@ -37,13 +35,9 @@ const Header = ({
   email,
   currentTab,
   tabs,
-}: Props) => {
+}: Props) {
   const router = useRouter();
   const textColor = useColorModeValue("gray.700", "white");
-  const borderProfileColor = useColorModeValue(
-    "white",
-    "rgba(255, 255, 255, 0.1)"
-  );
   const emailColor = useColorModeValue("gray.400", "gray.300");
   const tabTextSize = { base: "xs", md: "12px", lg: "15px" };
   const headerMargin = { base: "5px", md: "10px", xl: "15px" };
@@ -135,71 +129,69 @@ const Header = ({
             direction={{ base: "column", lg: "row" }}
             w={{ base: "100%", md: "50%", lg: "auto" }}
           >
-            {tabs.map((tab, index) => {
-              return (
-                <Button
-                  key={index}
-                  p="0px"
-                  bg="transparent"
-                  _hover={{ bg: "none" }}
-                  onClick={() => {
-                    router.push(
-                      `/user/${router.query.userId}${
-                        index > 0 ? "/" + tab.router : ""
-                      }`
-                    );
-                  }}
-                >
-                  {tab.router === currentTab ? (
-                    <Flex
-                      align="center"
-                      w={{ base: "100%", lg: "135px" }}
-                      bg="hsla(0,0%,100%,.3)"
-                      borderRadius="15px"
-                      justifyContent="center"
-                      py="10px"
-                      boxShadow="inset 0 0 1px 1px hsl(0deg 0% 100% / 90%), 0 20px 27px 0 rgb(0 0 0 / 5%)"
-                      border="1px solid gray.200"
-                      cursor="pointer"
+            {tabs.map((tab, index) => (
+              <Button
+                key={tab.name}
+                p="0px"
+                bg="transparent"
+                _hover={{ bg: "none" }}
+                onClick={() => {
+                  router.push(
+                    `/user/${router.query.userId}${
+                      index > 0 ? `/${tab.router}` : ""
+                    }`
+                  );
+                }}
+              >
+                {tab.router === currentTab ? (
+                  <Flex
+                    align="center"
+                    w={{ base: "100%", lg: "135px" }}
+                    bg="hsla(0,0%,100%,.3)"
+                    borderRadius="15px"
+                    justifyContent="center"
+                    py="10px"
+                    boxShadow="inset 0 0 1px 1px hsl(0deg 0% 100% / 90%), 0 20px 27px 0 rgb(0 0 0 / 5%)"
+                    border="1px solid gray.200"
+                    cursor="pointer"
+                  >
+                    {tab.icon}
+                    <Text
+                      fontSize={tabTextSize}
+                      color={textColor}
+                      fontWeight="bold"
+                      ms="6px"
                     >
-                      {tab.icon}
-                      <Text
-                        fontSize={tabTextSize}
-                        color={textColor}
-                        fontWeight="bold"
-                        ms="6px"
-                      >
-                        {tab.name}
-                      </Text>
-                    </Flex>
-                  ) : (
-                    <Flex
-                      align="center"
-                      w={{ lg: "135px" }}
-                      borderRadius="15px"
-                      justifyContent="center"
-                      py="10px"
-                      cursor="pointer"
+                      {tab.name}
+                    </Text>
+                  </Flex>
+                ) : (
+                  <Flex
+                    align="center"
+                    w={{ lg: "135px" }}
+                    borderRadius="15px"
+                    justifyContent="center"
+                    py="10px"
+                    cursor="pointer"
+                  >
+                    {tab.icon}
+                    <Text
+                      fontSize={tabTextSize}
+                      color={textColor}
+                      fontWeight="bold"
+                      ms="6px"
                     >
-                      {tab.icon}
-                      <Text
-                        fontSize={tabTextSize}
-                        color={textColor}
-                        fontWeight="bold"
-                        ms="6px"
-                      >
-                        {tab.name}
-                      </Text>
-                    </Flex>
-                  )}
-                </Button>
-              );
-            })}
+                      {tab.name}
+                    </Text>
+                  </Flex>
+                )}
+              </Button>
+            ))}
           </Flex>
         </Flex>
       </Box>
     </Box>
   );
-};
+}
 
 export default Header;

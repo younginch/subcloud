@@ -36,6 +36,7 @@ export async function RankingUser(
     .filter((user) => user.subs.length > 0)
     .map((user) => {
       const subs = user.subs.filter((sub) => sub.status === "Approved");
+      const ratedSubs = subs.filter((sub) => sub.ratings.length > 0);
       return {
         id: user.id,
         name: user.name,
@@ -47,6 +48,8 @@ export async function RankingUser(
         point: user.point,
         baseLangs: user.baseLangs,
         requestLangs: user.requestLangs,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
         _count: {
           subs: subs.length,
           views: subs.reduce((prev, curr) => prev + curr.views, 0),
@@ -64,20 +67,17 @@ export async function RankingUser(
             0
           ),
           ratings:
-            subs.length > 0
-              ? subs
-                  .filter((sub) => sub.ratings.length > 0)
-                  .reduce(
-                    (prevSub, currSub) =>
-                      prevSub +
-                      currSub.ratings.reduce(
-                        (prevRating, currRating) =>
-                          prevRating + currRating.score,
-                        0
-                      ) /
-                        currSub.ratings.length,
-                    0
-                  ) / subs.length
+            ratedSubs.length > 0
+              ? ratedSubs.reduce(
+                  (prevSub, currSub) =>
+                    prevSub +
+                    currSub.ratings.reduce(
+                      (prevRating, currRating) => prevRating + currRating.score,
+                      0
+                    ) /
+                      currSub.ratings.length,
+                  0
+                ) / ratedSubs.length
               : 0,
         },
       };
@@ -107,7 +107,7 @@ export async function RankingVideo(
     where = {
       requests: {
         some: {
-          lang: lang,
+          lang,
         },
       },
     };
@@ -142,7 +142,7 @@ export async function RankingVideo(
         },
         langs: requests
           .slice(1)
-          .reduce((prev, curr) => prev + ", " + curr.lang, requests[0].lang),
+          .reduce((prev, curr) => `${prev}, ${curr.lang}`, requests[0].lang),
       };
     })
     .sort(sortBy);

@@ -21,45 +21,8 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import useTranslation from "next-translate/useTranslation";
 import React, { useRef } from "react";
-import useSWR, { KeyedMutator, mutate } from "swr";
+import useSWR, { KeyedMutator } from "swr";
 import { PageOptions } from "../../../utils/types";
-
-export default function UserMyOrder() {
-  const { t } = useTranslation("privateProfile");
-  const session = useSession();
-  const { data, mutate } = useSWR<Order[]>(
-    `/api/user/order/search?userId=${session.data?.user.id}`
-  );
-
-  return (
-    <TableContainer>
-      <Table variant="simple">
-        <Thead>
-          <Tr>
-            <Th>{t("orders_type")}</Th>
-            <Th isNumeric>{t("orders_amount")}</Th>
-            <Th>{t("status")}</Th>
-            <Th>{t("task")}</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data?.map((order) => {
-            return (
-              <Tr key={order.id}>
-                <Td>{order.type}</Td>
-                <Td isNumeric>{order.amount}</Td>
-                <Td>{order.status}</Td>
-                <Td>
-                  <DeleteOrderButton id={order.id} mutate={mutate} />
-                </Td>
-              </Tr>
-            );
-          })}
-        </Tbody>
-      </Table>
-    </TableContainer>
-  );
-}
 
 type DeleteOrderButtonProps = {
   id: string;
@@ -133,6 +96,41 @@ function DeleteOrderButton({ id, mutate }: DeleteOrderButtonProps) {
         </AlertDialogOverlay>
       </AlertDialog>
     </>
+  );
+}
+
+export default function UserMyOrder() {
+  const { t } = useTranslation("privateProfile");
+  const session = useSession();
+  const { data, mutate } = useSWR<Order[]>(
+    `/api/user/order/search?userId=${session.data?.user.id}`
+  );
+
+  return (
+    <TableContainer p={5}>
+      <Table variant="simple">
+        <Thead>
+          <Tr>
+            <Th>{t("orders_type")}</Th>
+            <Th isNumeric>{t("orders_amount")}</Th>
+            <Th>{t("status")}</Th>
+            <Th>{t("task")}</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {data?.map((order) => (
+            <Tr key={order.id}>
+              <Td>{order.type}</Td>
+              <Td isNumeric>{order.amount}</Td>
+              <Td>{order.status}</Td>
+              <Td>
+                <DeleteOrderButton id={order.id} mutate={mutate} />
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+    </TableContainer>
   );
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import NextAuth, { Session, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -16,7 +17,7 @@ const providers = [
       email: { label: "Email", type: "email", placeholder: "test@test.com" },
       password: { label: "Password", type: "password" },
     },
-    async authorize(credentials, req) {
+    async authorize(credentials) {
       const email = credentials?.email;
       const user = await prisma.user.findUnique({ where: { email } });
       if (user) {
@@ -24,9 +25,8 @@ const providers = [
           throw new Error("아이디 혹은 패스워드가 틀립니다.");
         }
         return user;
-      } else {
-        return null;
       }
+      return null;
     },
   }),
   EmailProvider({
@@ -84,10 +84,9 @@ export default NextAuth({
       // Allows relative callback URLs
       if (url.startsWith("/")) return `${baseUrl}${url}`;
       // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url;
-      else {
-        return `${baseUrl}/auth/callback?open=${encodeURIComponent(url)}`;
-      }
+      if (new URL(url).origin === baseUrl) return url;
+
+      return `${baseUrl}/auth/callback?open=${encodeURIComponent(url)}`;
     },
   },
 });

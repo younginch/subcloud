@@ -6,7 +6,7 @@ type Props = {
 };
 
 export default function ProfileFloatingBtn({ onOpen }: Props) {
-  let bgButton = useColorModeValue("white", "gray.600");
+  const bgButton = useColorModeValue("white", "gray.600");
 
   return (
     <Button

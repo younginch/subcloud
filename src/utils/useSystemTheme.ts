@@ -10,9 +10,8 @@ export function getCurrentTheme(): Theme {
   if (typeof window !== "undefined") {
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
       return Theme.DARK;
-    } else {
-      return Theme.LIGHT;
     }
+    return Theme.LIGHT;
   }
   return Theme.LIGHT;
 }

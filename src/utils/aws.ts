@@ -20,5 +20,6 @@ export async function getS3Url(key: string) {
     Key: key,
   };
   const command = new GetObjectCommand(getObjectParams);
-  return await getSignedUrl(configuredS3, command, { expiresIn: 3600 });
+  const url = await getSignedUrl(configuredS3, command, { expiresIn: 60 });
+  return url;
 }

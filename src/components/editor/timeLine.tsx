@@ -1,7 +1,7 @@
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useContext, useEffect, useRef } from "react";
-import { EditorContext } from "../../pages/editor";
+import { EditorContext } from "../../utils/editorCore";
 
 const breakPointConfig = [
   {
@@ -73,6 +73,7 @@ function drawLine(
 
 function getBreakPoint(intervalSize: number) {
   let index = breakPointConfig.length - 1;
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < breakPointConfig.length; i++) {
     const timeContain =
       (12000 / breakPointConfig[i].unitPx) * breakPointConfig[i].unitTime;
@@ -105,9 +106,8 @@ export default function TimeLine() {
   const currentBreakPoint = getBreakPoint(rightTime - leftTime);
   const config = breakPointConfig[currentBreakPoint];
   const unitSize = (canvasWidth * config.unitTime) / (rightTime - leftTime);
-  const formatNumber = (mili: number) => {
-    return dayjs.duration(mili).format("mm:ss:SSS").substring(0, 9);
-  };
+  const formatNumber = (mili: number) =>
+    dayjs.duration(mili).format("mm:ss:SSS").substring(0, 9);
 
   const render = (ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -117,13 +117,14 @@ export default function TimeLine() {
     for (
       let i = Math.ceil(leftTime / config.unitTime);
       i <= Math.round(rightTime / config.unitTime);
+      // eslint-disable-next-line no-plusplus
       i++
     ) {
       const x = ((i * config.unitTime - leftTime) * unitSize) / config.unitTime;
 
       ctx.font = "34px Consolas";
       ctx.fillStyle = textColor;
-      if (i % config.num == 0) {
+      if (i % config.num === 0) {
         ctx.fillText(formatNumber(i * config.unitTime), x - 90, 38);
         drawLine(
           ctx,

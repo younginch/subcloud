@@ -35,14 +35,12 @@ function RequestList({ requests }: { requests: ResRequestSearch }) {
           </Tr>
         </Thead>
         <Tbody>
-          {requests.map((request) => {
-            return (
-              <Tr key={request.id}>
-                <Td>{request.lang}</Td>
-                <Td isNumeric>{request._count.users}</Td>
-              </Tr>
-            );
-          })}
+          {requests.map((request) => (
+            <Tr key={request.id}>
+              <Td>{request.lang}</Td>
+              <Td isNumeric>{request._count.users}</Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>
@@ -60,14 +58,12 @@ function SubList({ subs }: { subs: Sub[] }) {
           </Tr>
         </Thead>
         <Tbody>
-          {subs.map((sub) => {
-            return (
-              <Tr key={sub.id}>
-                <Td>{sub.lang}</Td>
-                <Td isNumeric>{sub.views}</Td>
-              </Tr>
-            );
-          })}
+          {subs.map((sub) => (
+            <Tr key={sub.id}>
+              <Td>{sub.lang}</Td>
+              <Td isNumeric>{sub.views}</Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>

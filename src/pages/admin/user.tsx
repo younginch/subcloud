@@ -2,6 +2,7 @@ import {
   TableContainer,
   Table,
   Thead,
+  Text,
   Tr,
   Th,
   Tbody,
@@ -29,6 +30,7 @@ import {
   RadioGroup,
   FormControl,
   FormErrorMessage,
+  Center,
 } from "@chakra-ui/react";
 import { Role, User } from "@prisma/client";
 import axios from "axios";
@@ -36,48 +38,9 @@ import { useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
+import useSWR, { KeyedMutator } from "swr";
 import { UserUpdateSchema } from "../../utils/schema";
 import { PageOptions } from "../../utils/types";
-import useSWR, { KeyedMutator } from "swr";
-
-export default function AdminUser() {
-  const { data, mutate } = useSWR<User[]>("/api/admin/user");
-
-  return (
-    <TableContainer>
-      <Table variant="simple" size="sm">
-        <Thead>
-          <Tr>
-            <Th>이름</Th>
-            <Th>이메일</Th>
-            <Th>역할</Th>
-            <Th>포인트</Th>
-            <Th>작업</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data?.map((user) => {
-            return (
-              <Tr key={user.id}>
-                <Td>{user.name}</Td>
-                <Td>{user.email}</Td>
-                <Td>{user.role}</Td>
-                <Td>{user.point}</Td>
-                <Td>
-                  <UpdateButton user={user} mutate={mutate} />
-                  <DeleteButton id={user.id} />
-                  <CopyToClipboard text={user.id}>
-                    <Button>Copy ID</Button>
-                  </CopyToClipboard>
-                </Td>
-              </Tr>
-            );
-          })}
-        </Tbody>
-      </Table>
-    </TableContainer>
-  );
-}
 
 type UpdateButtonProps = {
   user: User;
@@ -110,7 +73,7 @@ function UpdateButton({ user, mutate }: UpdateButtonProps) {
           { role: role as Role, point },
           { params: { id: user.id } }
         )
-        .then((res) => {
+        .then(() => {
           onClose();
           mutate();
           resolve();
@@ -163,7 +126,7 @@ function UpdateButton({ user, mutate }: UpdateButtonProps) {
                     {...register("role")}
                   />
                   <RadioGroup
-                    onChange={(value) => {
+                    onChange={(value: string) => {
                       setRole(value as Role);
                     }}
                     value={role}
@@ -284,6 +247,52 @@ function DeleteButton({ id }: DeleteButtonProps) {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
+    </>
+  );
+}
+
+export default function AdminUser() {
+  const { data, mutate } = useSWR<User[]>("/api/admin/user");
+
+  return (
+    <>
+      <Center>
+        <Text>전체 유저 : {data?.length}명</Text>
+      </Center>
+      <TableContainer mt="20px">
+        <Table variant="simple" size="sm">
+          <Thead>
+            <Tr>
+              <Th>이름</Th>
+              <Th>이메일</Th>
+              <Th>역할</Th>
+              <Th>포인트</Th>
+              <Th>생성 날짜</Th>
+              <Th>변경 날짜</Th>
+              <Th>작업</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {data?.map((user) => (
+              <Tr key={user.id}>
+                <Td>{user.name}</Td>
+                <Td>{user.email}</Td>
+                <Td>{user.role}</Td>
+                <Td>{user.point}</Td>
+                <Td>{user.createdAt.toString()}</Td>
+                <Td>{user.updatedAt?.toString()}</Td>
+                <Td>
+                  <UpdateButton user={user} mutate={mutate} />
+                  <DeleteButton id={user.id} />
+                  <CopyToClipboard text={user.id}>
+                    <Button>Copy ID</Button>
+                  </CopyToClipboard>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
     </>
   );
 }

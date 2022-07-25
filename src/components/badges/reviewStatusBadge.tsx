@@ -30,18 +30,18 @@ export default function ReviewStatusBadge({ status }: Props) {
     default:
       isBadge = false;
   }
+
+  if (!isBadge) {
+    return null;
+  }
   return (
-    <>
-      {isBadge && (
-        <Badge
-          variant="subtle"
-          colorScheme={color}
-          fontSize="sm"
-          textTransform="none"
-        >
-          {status}
-        </Badge>
-      )}
-    </>
+    <Badge
+      variant="subtle"
+      colorScheme={color}
+      fontSize="sm"
+      textTransform="none"
+    >
+      {status}
+    </Badge>
   );
 }

@@ -26,12 +26,55 @@ import {
 import type { Provider } from "next-auth/providers";
 import { getCsrfToken, getProviders, signIn } from "next-auth/react";
 import type { GetServerSidePropsContext } from "next/types";
-import OAuthButtonGroup from "../../components/signin/oAuthButtonGroup";
-import { PasswordField } from "../../components/signin/passwordField";
 import React, { useRef } from "react";
-import { PageOptions } from "../../utils/types";
 import { useForm } from "react-hook-form";
+import OAuthButtonGroup from "../../components/signin/oAuthButtonGroup";
+import PasswordField from "../../components/signin/passwordField";
+import { PageOptions } from "../../utils/types";
 import { SubcloudIcon } from "../../components/icons/customIcons";
+
+function PasswordReset({ csrfToken }: { csrfToken: string }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef<HTMLButtonElement>(null);
+
+  return (
+    <>
+      <Button onClick={onOpen} variant="link" colorScheme="blue" size="sm">
+        Forgot password?
+      </Button>
+      <AlertDialog
+        motionPreset="slideInBottom"
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+        <AlertDialogContent>
+          <AlertDialogHeader>Sign in without password</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <form method="post" action="/api/auth/signin/email">
+            <AlertDialogBody>
+              <FormControl>
+                <FormLabel htmlFor="email">Email address</FormLabel>
+                <Input type="email" id="email" name="email" />
+              </FormControl>
+              <Input name="csrfToken" hidden defaultValue={csrfToken} />
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="blue" ml={3} type="submit">
+                Send
+              </Button>
+            </AlertDialogFooter>
+          </form>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  );
+}
 
 type Props = {
   providers: Provider[];
@@ -123,49 +166,6 @@ export default function SignIn({ csrfToken }: Props) {
         </Box>
       </Stack>
     </Container>
-  );
-}
-
-function PasswordReset({ csrfToken }: { csrfToken: string }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef<HTMLButtonElement>(null);
-
-  return (
-    <>
-      <Button onClick={onOpen} variant="link" colorScheme="blue" size="sm">
-        Forgot password?
-      </Button>
-      <AlertDialog
-        motionPreset="slideInBottom"
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-        isOpen={isOpen}
-        isCentered
-      >
-        <AlertDialogOverlay />
-        <AlertDialogContent>
-          <AlertDialogHeader>Sign in without password</AlertDialogHeader>
-          <AlertDialogCloseButton />
-          <form method="post" action="/api/auth/signin/email">
-            <AlertDialogBody>
-              <FormControl>
-                <FormLabel htmlFor="email">Email address</FormLabel>
-                <Input type="email" id="email" name="email" />
-              </FormControl>
-              <Input name="csrfToken" hidden defaultValue={csrfToken} />
-            </AlertDialogBody>
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                Cancel
-              </Button>
-              <Button colorScheme="blue" ml={3} type="submit">
-                Send
-              </Button>
-            </AlertDialogFooter>
-          </form>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
   );
 }
 

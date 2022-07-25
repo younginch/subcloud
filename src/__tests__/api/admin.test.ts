@@ -1,12 +1,12 @@
-import { testRes, testRequests, Requests } from "../../utils/jest";
+import * as NextAuth from "next-auth/react";
+import { Role } from "@prisma/client";
+import { testRes, testRequests, Requests } from "../jest";
 import adminDeleteRoute from "../../pages/api/admin/delete";
 import adminExampleRoute from "../../pages/api/admin/example";
 import adminNoticeRoute from "../../pages/api/admin/notice";
 import adminSettleRoute from "../../pages/api/admin/settle";
 import adminUserRoute from "../../pages/api/admin/user";
 import adminWithdraw from "../../pages/api/admin/withdraw";
-import * as NextAuth from "next-auth/react";
-import { Role } from "@prisma/client";
 import prisma from "../../utils/prisma";
 
 const allRequests: Requests = [

@@ -7,7 +7,6 @@ import {
   Flex,
   Icon,
   SimpleGrid,
-  Container,
   Stack,
   Box,
 } from "@chakra-ui/react";
@@ -28,52 +27,6 @@ interface StatData {
   href: string;
 }
 
-type Props = {
-  requests: number;
-  views: number;
-  points: number;
-};
-
-export default function ActivityHeader({ requests, views, points }: Props) {
-  const { t } = useTranslation("privateProfile");
-
-  const statData: StatData[] = [
-    {
-      id: 1,
-      label: t("dashboard_head_request"),
-      score: requests,
-      icon: FiSend,
-      detail: t("dash_activityHeader_view"),
-      href: "/user/my/request",
-    },
-    {
-      id: 2,
-      label: t("dashboard_head_views"),
-      score: views,
-      icon: AiOutlineEye,
-      detail: t("dash_activityHeader_view"),
-      href: "/user/my/sub",
-    },
-    {
-      id: 3,
-      label: t("dashboard_head_points"),
-      score: points,
-      icon: GrProductHunt,
-      detail: t("dash_activityHeader_charge"),
-      href: "/buy",
-    },
-  ];
-
-  return (
-    <Box maxW="7xl" h="fit-content" pl={10} pr={10} pt={5}>
-      <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={5} mb={4}>
-        {statData.map((data, index) => (
-          <Card key={index} data={data} />
-        ))}
-      </SimpleGrid>
-    </Box>
-  );
-}
 export function Card({ data }: { data: StatData }) {
   const [onHover, setOnHover] = useState<boolean>(false);
   const mouseLeave = () => {
@@ -156,5 +109,52 @@ export function Card({ data }: { data: StatData }) {
         </Flex>
       </Stack>
     </motion.div>
+  );
+}
+
+type Props = {
+  requests: number;
+  views: number;
+  points: number;
+};
+
+export default function ActivityHeader({ requests, views, points }: Props) {
+  const { t } = useTranslation("privateProfile");
+
+  const statData: StatData[] = [
+    {
+      id: 1,
+      label: t("dashboard_head_request"),
+      score: requests,
+      icon: FiSend,
+      detail: t("dash_activityHeader_view"),
+      href: "/user/my/request",
+    },
+    {
+      id: 2,
+      label: t("dashboard_head_views"),
+      score: views,
+      icon: AiOutlineEye,
+      detail: t("dash_activityHeader_view"),
+      href: "/user/my/sub",
+    },
+    {
+      id: 3,
+      label: t("dashboard_head_points"),
+      score: points,
+      icon: GrProductHunt,
+      detail: t("dash_activityHeader_charge"),
+      href: "/buy",
+    },
+  ];
+
+  return (
+    <Box maxW="7xl" h="fit-content" pl={10} pr={10} pt={5}>
+      <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={5} mb={4}>
+        {statData.map((data) => (
+          <Card key={data.id} data={data} />
+        ))}
+      </SimpleGrid>
+    </Box>
   );
 }

@@ -1,6 +1,11 @@
-import { Box, createIcon, keyframes } from "@chakra-ui/react";
-import { useContext, useEffect } from "react";
-import { EditorContext, PlayerState } from "../../pages/editor";
+import { Box, createIcon, useInterval } from "@chakra-ui/react";
+import { useContext, useEffect, useRef } from "react";
+import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
+import {
+  EditorContext,
+  PlayerState,
+  makeLeftAnimation,
+} from "../../utils/editorCore";
 
 export const TimeLineMarkerSVG = createIcon({
   displayName: "SubCloud Logo ",
@@ -30,31 +35,90 @@ export const TimeLineMarkerSVG = createIcon({
 });
 
 export default function TimeLineMarker() {
-  const { leftTime, rightTime, getPlayerTime, state } =
-    useContext(EditorContext);
+  const {
+    leftTime,
+    rightTime,
+    changeLRTime,
+    getPlayerTime,
+    setPlayerTime,
+    state,
+    setState,
+    forceRerender,
+    duration,
+  } = useContext(EditorContext);
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (ref.current) ref.current.style.marginLeft = `0px`;
+  }, [state, forceRerender]);
 
   const initialLeft =
     ((getPlayerTime() - leftTime) / (rightTime - leftTime)) * 6000;
-  const changeLeft = keyframes`
-  0% {
-    left: ${initialLeft}px;
-  }
-  100% {
-    left: ${state == PlayerState.PLAYING ? 6000 : initialLeft}px;
-  }
-  `;
+
+  const animation = makeLeftAnimation(
+    initialLeft,
+    state === PlayerState.PLAYING ? 6000 : initialLeft,
+    state === PlayerState.PLAYING
+      ? (rightTime - getPlayerTime()) / 1000
+      : 10000000
+  );
+
+  const onDragStart = (e: DraggableEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setState(PlayerState.PAUSED);
+  };
+
+  const onDragStop = (e: DraggableEvent, data: DraggableData) => {
+    const { x } = data;
+
+    e.stopPropagation();
+    e.preventDefault();
+    setPlayerTime(getPlayerTime() + (x * (rightTime - leftTime)) / 6000);
+
+    let marginLeft = 0;
+    if (data.node.style.marginLeft) {
+      const marginLeftStr = data.node.style.marginLeft;
+      marginLeft = Number(marginLeftStr.substring(0, marginLeftStr.length - 2));
+    }
+    if (ref.current) ref.current.style.marginLeft = `${marginLeft + x}px`;
+  };
+
+  // Swipe all when the timeline bar reaches the end of the screen
+  useInterval(() => {
+    if (
+      state === PlayerState.PLAYING &&
+      (6000 * (getPlayerTime() - leftTime)) / (rightTime - leftTime) - 2000 >
+        window.screen.width
+    ) {
+      let deltaTime = (window.screen.width / 6000) * (rightTime - leftTime);
+      const maxTime =
+        duration +
+        ((rightTime - leftTime) * (4000 - window.screen.width)) / 6000;
+      deltaTime = Math.min(deltaTime, maxTime - rightTime);
+      changeLRTime(leftTime + deltaTime, rightTime + deltaTime);
+    }
+  }, 30);
 
   return (
-    <Box
-      top="26px"
-      position="absolute"
-      zIndex={11}
-      animation={`${
-        (rightTime - getPlayerTime()) / 1000
-      }s ${changeLeft} linear`}
-      transform="translateX(-50%)"
+    <Draggable
+      axis="x"
+      onStart={onDragStart}
+      onStop={onDragStop}
+      position={{ x: -8, y: 0 }}
     >
-      <TimeLineMarkerSVG h="200px" cursor="grab" />
-    </Box>
+      <Box
+        top="26px"
+        zIndex={12}
+        animation={animation}
+        transform="translateX(-50%)"
+        cursor="ew-resize"
+        position="absolute"
+        ref={ref}
+      >
+        <TimeLineMarkerSVG h="200px" />
+      </Box>
+    </Draggable>
   );
 }

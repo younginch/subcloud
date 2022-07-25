@@ -1,5 +1,5 @@
 import { Badge } from "@chakra-ui/react";
-import { UserTier } from "../../utils/tier";
+import { UserTier } from "../../utils/enums";
 
 type Props = {
   tier?: UserTier;
@@ -7,7 +7,7 @@ type Props = {
 
 export default function TierBadge({ tier }: Props) {
   let color = "gray";
-  let isBadge = false;
+  let isBadge;
   switch (tier) {
     case UserTier.Grandmaster:
       color = "red";
@@ -25,20 +25,20 @@ export default function TierBadge({ tier }: Props) {
       color = "blue";
       isBadge = true;
       break;
+    default:
+      isBadge = false;
   }
 
-  return (
-    <>
-      {isBadge && (
-        <Badge
-          variant="subtle"
-          colorScheme={color}
-          fontSize={{ base: "sm", lg: "lg" }}
-          textTransform="none"
-        >
-          {tier}
-        </Badge>
-      )}
-    </>
-  );
+  if (isBadge) {
+    return (
+      <Badge
+        variant="subtle"
+        colorScheme={color}
+        fontSize={{ base: "sm", lg: "lg" }}
+        textTransform="none"
+      >
+        {tier}
+      </Badge>
+    );
+  }
 }

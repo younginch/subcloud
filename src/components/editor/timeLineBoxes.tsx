@@ -1,9 +1,11 @@
+/* eslint-disable no-param-reassign */
 import { Box, HStack, Text, useColorModeValue } from "@chakra-ui/react";
 import { SRTContent } from "@younginch/subtitle";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { DraggableData, Rnd } from "react-rnd";
 import { v4 as uuid } from "uuid";
-import { EditorContext } from "../../pages/editor";
+import { EditTimeAction, MoveTimeAction } from "../../utils/editorActions";
+import { EditorContext } from "../../utils/editorCore";
 
 type TimeLineBoxProps = {
   item: SRTContent;
@@ -11,12 +13,13 @@ type TimeLineBoxProps = {
 };
 
 function TimeLineBox({ item, index }: TimeLineBoxProps) {
-  const { contents, setContents, leftTime, rightTime } =
+  const { contents, execute, leftTime, rightTime, focusedIndex } =
     useContext(EditorContext);
   const normalColor = useColorModeValue("#ffffff", "#333333");
+  const focusedColor = useColorModeValue("#f0f0ff", "#444466");
   const resizePositiveColor = useColorModeValue("#ccffcc", "#113311");
   const resizeNegativeColor = useColorModeValue("#ffcccc", "#331111");
-  const moveColor = useColorModeValue("#ccccff", "#111133");
+  const moveColor = useColorModeValue("#fff0ff", "#111133");
 
   return (
     <Rnd
@@ -26,7 +29,7 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
         borderWidth: "1px",
         borderRadius: "6px",
         overflow: "hidden",
-        backgroundColor: normalColor,
+        backgroundColor: index === focusedIndex ? focusedColor : normalColor,
       }}
       default={{
         x: ((item.startTime - leftTime) / (rightTime - leftTime)) * 6000,
@@ -46,7 +49,7 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
         topLeft: false,
       }}
       dragAxis="x"
-      onResize={(e, direction, ref, delta) => {
+      onResize={(_e, direction, ref, delta) => {
         if (delta.width > 0) ref.style.backgroundColor = resizePositiveColor;
         else if (delta.width < 0)
           ref.style.backgroundColor = resizeNegativeColor;
@@ -57,76 +60,68 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
             ((item.startTime - contents[index - 1].endTime) /
               (rightTime - leftTime)) *
             6000;
-          if (delta.width >= leftLimit) {
-            const newContents = [...contents];
-            newContents[index].startTime -=
+          if (delta.width > leftLimit) {
+            const newTime =
+              contents[index].startTime -
               (leftLimit * (rightTime - leftTime)) / 6000;
-            setContents(newContents);
+            execute(new EditTimeAction(index, "start", newTime));
           }
         } else if (direction === "right" && index + 1 < contents.length) {
           const rightLimit =
             ((contents[index + 1].startTime - item.endTime) /
               (rightTime - leftTime)) *
             6000;
-          if (delta.width >= rightLimit) {
-            const newContents = [...contents];
-            newContents[index].endTime +=
+          if (delta.width > rightLimit) {
+            const newTime =
+              contents[index].endTime +
               (rightLimit * (rightTime - leftTime)) / 6000;
-            setContents(newContents);
+            execute(new EditTimeAction(index, "end", newTime));
           }
         }
       }}
-      onResizeStop={(e, direction, ref, delta, position) => {
+      onResizeStop={(_e, direction, _ref, delta) => {
         if (direction === "left") {
-          const newContents = [...contents];
-          newContents[index].startTime -=
+          const newTime =
+            contents[index].startTime -
             (delta.width * (rightTime - leftTime)) / 6000;
-          setContents(newContents);
+          execute(new EditTimeAction(index, "start", newTime));
         } else if (direction === "right") {
-          const newContents = [...contents];
-          newContents[index].endTime +=
+          const newTime =
+            contents[index].endTime +
             (delta.width * (rightTime - leftTime)) / 6000;
-          setContents(newContents);
+          execute(new EditTimeAction(index, "end", newTime));
         }
       }}
       onDragStart={(e) => {
         e.preventDefault();
         e.stopPropagation();
       }}
-      onDrag={(e, data: DraggableData) => {
+      onDrag={(_e, data: DraggableData) => {
         const deltaT =
           leftTime + (data.x * (rightTime - leftTime)) / 6000 - item.startTime;
         data.node.style.backgroundColor = moveColor;
         if (index > 0) {
           const leftLimit = item.startTime - contents[index - 1].endTime;
-          if (-deltaT >= leftLimit) {
-            const newContents = [...contents];
-            newContents[index].startTime -= leftLimit;
-            newContents[index].endTime -= leftLimit;
-            setContents(newContents);
+          if (-deltaT > leftLimit) {
+            execute(new MoveTimeAction(index, -leftLimit));
           }
         }
         if (index + 1 < contents.length) {
           const rightLimit = contents[index + 1].startTime - item.endTime;
-          if (deltaT >= rightLimit) {
-            const newContents = [...contents];
-            newContents[index].startTime += rightLimit;
-            newContents[index].endTime += rightLimit;
-            setContents(newContents);
+          if (deltaT > rightLimit) {
+            execute(new MoveTimeAction(index, rightLimit));
           }
         }
       }}
       onDragStop={(e, data: DraggableData) => {
         e.preventDefault();
         e.stopPropagation();
-        const newContents = [...contents];
         const deltaX =
           data.x -
           ((item.startTime - leftTime) / (rightTime - leftTime)) * 6000;
-        newContents[index].endTime += (deltaX * (rightTime - leftTime)) / 6000;
-        newContents[index].startTime +=
-          (deltaX * (rightTime - leftTime)) / 6000;
-        setContents(newContents);
+        execute(
+          new MoveTimeAction(index, (deltaX * (rightTime - leftTime)) / 6000)
+        );
       }}
     >
       <HStack w="100%" h="100%" cursor="move">
@@ -159,6 +154,7 @@ export default function TimeLineBoxes() {
         ) {
           return;
         }
+        // eslint-disable-next-line consistent-return
         return <TimeLineBox key={uuid()} item={item} index={index} />;
       })}
     </Box>

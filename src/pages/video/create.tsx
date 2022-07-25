@@ -8,21 +8,20 @@ import {
   Stack,
   useColorModeValue,
   useToast,
-  UnorderedList,
   ListItem,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { joiResolver } from "@hookform/resolvers/joi";
-import { VideoCreateSchema } from "../../utils/schema";
 import { Role } from "@prisma/client";
-import CreateHeader from "../../components/create/createHeader";
-import { PageOptions } from "../../utils/types";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FiUpload } from "react-icons/fi";
+import useTranslation from "next-translate/useTranslation";
+import { VideoCreateSchema } from "../../utils/schema";
+import CreateHeader from "../../components/create/createHeader";
+import { PageOptions } from "../../utils/types";
 import SwingProvider from "../../components/swingProvider";
 import EventNotice from "../../components/create/eventNotice";
-import useTranslation from "next-translate/useTranslation";
 import ExplainBox from "../../components/create/ExplainBox";
 
 type FormData = {
@@ -33,6 +32,7 @@ export default function VideoCreate() {
   const { t } = useTranslation("create");
   const router = useRouter();
   const toast = useToast();
+  const isEvent = false; // TODO: 이벤트 종류를 받아오는 API 추가 필요
   const {
     handleSubmit,
     register,
@@ -155,7 +155,7 @@ export default function VideoCreate() {
               </FormErrorMessage>
             </Box>
           </FormControl>
-          {router.query.next === "sub" && <EventNotice />}
+          {router.query.next === "sub" && isEvent && <EventNotice />}
           <ExplainBox>
             {router.query.next === "request" ? (
               <>

@@ -23,17 +23,21 @@ import {
   Portal,
   useDisclosure,
   Divider,
-  Center,
-  useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { ChangeEvent, useContext, useRef, useState } from "react";
 import { MdTimer } from "react-icons/md";
-import { EditorContext } from "../../pages/editor";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 import { SRTContent } from "@younginch/subtitle";
+import { EditorContext } from "../../utils/editorCore";
+import {
+  CreateAction,
+  DeleteAction,
+  EditContentAction,
+  EditTimeAction,
+} from "../../utils/editorActions";
 
 dayjs.extend(duration);
 
@@ -42,7 +46,7 @@ function miliToString(second: number): string {
 }
 
 function EditComponent({ index }: { index: number }) {
-  const { contents, setContents, setFocusedIndex } = useContext(EditorContext);
+  const { contents, setFocusedIndex, execute } = useContext(EditorContext);
   const [value, setValue] = useState<string>(contents[index].toText());
 
   return (
@@ -53,20 +57,12 @@ function EditComponent({ index }: { index: number }) {
         setFocusedIndex(index);
       }}
       onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
+        execute(new EditContentAction(index, event.target.value.split("\n")));
         setValue(event.target.value);
-        const newContents = [...contents];
-        newContents[index].textArray = event.target.value.split("\n");
-        setContents(newContents);
       }}
+      resize="none"
     />
   );
-}
-
-function parseTime(sTime: string): number {
-  const m = Number(sTime.substring(0, 2));
-  const s = Number(sTime.substring(3, 5));
-  const ms = Number(sTime.substring(6, 9));
-  return m * 60 * 1000 + s * 1000 + ms;
 }
 
 type PMButtonProps = {
@@ -76,7 +72,7 @@ type PMButtonProps = {
 };
 
 function PlusButton({ index, onClose, amount }: PMButtonProps) {
-  const { contents, setContents } = useContext(EditorContext);
+  const { contents, execute } = useContext(EditorContext);
 
   return (
     <Button
@@ -85,9 +81,9 @@ function PlusButton({ index, onClose, amount }: PMButtonProps) {
         contents[index].startTime + amount > contents[index + 1].startTime
       }
       onClick={() => {
-        const newContents = [...contents];
-        newContents[index].endTime = newContents[index].startTime + amount;
-        setContents(newContents);
+        execute(
+          new EditTimeAction(index, "end", contents[index].startTime + amount)
+        );
         onClose();
       }}
     >
@@ -97,7 +93,7 @@ function PlusButton({ index, onClose, amount }: PMButtonProps) {
 }
 
 function MinusButton({ index, onClose, amount }: PMButtonProps) {
-  const { contents, setContents } = useContext(EditorContext);
+  const { contents, execute } = useContext(EditorContext);
 
   return (
     <Button
@@ -106,9 +102,9 @@ function MinusButton({ index, onClose, amount }: PMButtonProps) {
         contents[index].endTime - amount < contents[index - 1].endTime
       }
       onClick={() => {
-        const newContents = [...contents];
-        newContents[index].startTime = newContents[index].endTime - amount;
-        setContents(newContents);
+        execute(
+          new EditTimeAction(index, "start", contents[index].endTime - amount)
+        );
         onClose();
       }}
     >
@@ -118,20 +114,68 @@ function MinusButton({ index, onClose, amount }: PMButtonProps) {
 }
 
 function StartTimestamp({ index }: { index: number }) {
-  const { contents, setContents } = useContext(EditorContext);
+  const { contents, execute } = useContext(EditorContext);
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
     <HStack justifyContent="space-between">
-      <Button maxW="100px" h={8} variant="outline" onClick={onToggle}>
-        {miliToString(contents[index].startTime!)}
-      </Button>
+      <Popover isOpen={isOpen} onClose={onClose}>
+        <PopoverTrigger>
+          <Button maxW="100px" h={8} variant="outline" onClick={onToggle}>
+            {miliToString(contents[index].startTime!)}
+          </Button>
+        </PopoverTrigger>
+        <Portal>
+          <PopoverContent w="400px">
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverHeader>시작 시간 조절</PopoverHeader>
+            <PopoverBody>
+              <FormControl>
+                <FormLabel>자막의 끝부터</FormLabel>
+                <HStack>
+                  <MinusButton index={index} onClose={onClose} amount={500} />
+                  <MinusButton index={index} onClose={onClose} amount={1000} />
+                  <MinusButton index={index} onClose={onClose} amount={2000} />
+                  <Button
+                    onClick={() => {
+                      execute(
+                        new EditTimeAction(
+                          index,
+                          "end",
+                          contents[index + 1].startTime
+                        )
+                      );
+                      onClose();
+                    }}
+                    isDisabled={index >= contents.length - 1}
+                  >
+                    이전 자막 직후
+                  </Button>
+                </HStack>
+                <InputGroup mt={2}>
+                  <Input isDisabled />
+                  <InputRightAddon>초</InputRightAddon>
+                </InputGroup>
+              </FormControl>
+            </PopoverBody>
+            <PopoverFooter>
+              <FormControl>
+                <FormLabel>자막 시작 시간</FormLabel>
+                <InputGroup>
+                  <Input isDisabled />
+                </InputGroup>
+              </FormControl>
+            </PopoverFooter>
+          </PopoverContent>
+        </Portal>
+      </Popover>
     </HStack>
   );
 }
 
 function EndTimestamp({ index }: { index: number }) {
-  const { contents, setContents } = useContext(EditorContext);
+  const { contents, execute } = useContext(EditorContext);
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
@@ -149,12 +193,26 @@ function EndTimestamp({ index }: { index: number }) {
             <PopoverHeader>종료 시간 조절</PopoverHeader>
             <PopoverBody>
               <FormControl>
-                <FormLabel>시작 시간으로부터</FormLabel>
+                <FormLabel>자막 길이 증가</FormLabel>
                 <HStack>
+                  <PlusButton index={index} onClose={onClose} amount={500} />
                   <PlusButton index={index} onClose={onClose} amount={1000} />
-                  <PlusButton index={index} onClose={onClose} amount={1500} />
                   <PlusButton index={index} onClose={onClose} amount={2000} />
-                  <Button>다음 자막 전까지</Button>
+                  <Button
+                    onClick={() => {
+                      execute(
+                        new EditTimeAction(
+                          index,
+                          "end",
+                          contents[index + 1].startTime
+                        )
+                      );
+                      onClose();
+                    }}
+                    isDisabled={index >= contents.length - 1}
+                  >
+                    다음 자막 전까지
+                  </Button>
                 </HStack>
                 <InputGroup mt={2}>
                   <Input isDisabled />
@@ -177,8 +235,8 @@ function EndTimestamp({ index }: { index: number }) {
   );
 }
 
-const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
-  const { contents, setContents, getPlayerTime, duration } =
+function Row({ index, style }: ListChildComponentProps<SRTContent[]>) {
+  const { contents, execute, getPlayerTime, duration } =
     useContext(EditorContext);
 
   return (
@@ -193,9 +251,7 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
             <Box w="16px" minW="16px" m="0px !important">
               <MdTimer
                 onClick={() => {
-                  const newContents = [...contents];
-                  newContents[index].startTime = getPlayerTime();
-                  setContents(newContents);
+                  execute(new EditTimeAction(index, "start", getPlayerTime()));
                 }}
                 cursor="pointer"
                 size="16px"
@@ -208,9 +264,7 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
             <Box w="16px" minW="16px" m="0px !important">
               <MdTimer
                 onClick={() => {
-                  const newContents = [...contents];
-                  newContents[index].endTime = getPlayerTime();
-                  setContents(newContents);
+                  execute(new EditTimeAction(index, "end", getPlayerTime()));
                 }}
                 cursor="pointer"
               />
@@ -222,11 +276,7 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
           aria-label="Delete subtitle"
           icon={<DeleteIcon />}
           onClick={() => {
-            const newContents = [
-              ...contents.slice(0, index),
-              ...contents.slice(index + 1),
-            ];
-            setContents(newContents);
+            execute(new DeleteAction(index));
           }}
           colorScheme="red"
         />
@@ -256,11 +306,7 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
           else {
             newItem.endTime = Math.min(duration, newItem.startTime + 1000);
           }
-          setContents([
-            ...contents.slice(0, index + 1),
-            newItem,
-            ...contents.slice(index + 1),
-          ]);
+          execute(new CreateAction(index + 1, newItem));
         }}
       >
         <Text>Add</Text>
@@ -273,7 +319,7 @@ const Row = ({ data, index, style }: ListChildComponentProps<SRTContent[]>) => {
       </Button>
     </>
   );
-};
+}
 
 export default function EditArray() {
   const { contents } = useContext(EditorContext);
@@ -290,6 +336,7 @@ export default function EditArray() {
         }
         itemSize={90}
         width="100%"
+        className="editArrayContainer"
       >
         {Row}
       </FixedSizeList>

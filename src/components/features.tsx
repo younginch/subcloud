@@ -62,8 +62,12 @@ export default function Features() {
         mt={12}
         mb={4}
       >
-        {features.map((feature, index) => (
-          <Box key={index} textAlign="center" mt={{ base: "0px", md: "40px" }}>
+        {features.map((feature) => (
+          <Box
+            key={feature.heading}
+            textAlign="center"
+            mt={{ base: "0px", md: "40px" }}
+          >
             <Icon as={feature.icon} w="60px" h="60px" color="blue.400" />
             <Heading fontWeight="semibold" fontSize="2xl">
               {feature.heading}

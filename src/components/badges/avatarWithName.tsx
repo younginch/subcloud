@@ -1,13 +1,13 @@
 import { Avatar, HStack, Text } from "@chakra-ui/react";
 
 type Props = {
-  size: string;
+  size?: string;
   name?: string;
+  maxW?: string | number;
   imageUrl?: string;
-  href?: string;
 };
 
-export default function AvatarWithName({ size, name, imageUrl, href }: Props) {
+export default function AvatarWithName({ size, name, maxW, imageUrl }: Props) {
   return (
     <HStack>
       <Avatar
@@ -15,13 +15,9 @@ export default function AvatarWithName({ size, name, imageUrl, href }: Props) {
         src={imageUrl ?? undefined}
         size={size}
       />
-      <Text maxW={120} noOfLines={1}>
+      <Text maxW={maxW} noOfLines={1}>
         {name ?? "채널 정보없음"}
       </Text>
     </HStack>
   );
 }
-
-AvatarWithName.defaultProps = {
-  size: "sm",
-};

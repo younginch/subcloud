@@ -4,7 +4,6 @@ import {
   useColorModeValue,
   Tr,
   Td,
-  Box,
   Avatar,
 } from "@chakra-ui/react";
 import Link from "next/link";
@@ -38,8 +37,6 @@ export default function SearchTableRow({
   totalPoints,
 }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
-  const paddingLeftBp = { base: "7px", md: "15px", lg: "24px" };
-  const fontBreakPoints = { base: "15px", md: "20px" };
   const mainTextSize = { base: "12px", md: "15px" };
   const subTextSize = { base: "14px", md: "17px" };
 
@@ -60,12 +57,13 @@ export default function SearchTableRow({
             router.push(`/video/${platform}/${videoId}`);
           }}
         >
-          <YoutubeIcon size={30} />
+          <YoutubeIcon size={30} cursor="pointer" />
           <Text
             fontWeight="bold"
             textOverflow="ellipsis"
             whiteSpace="nowrap"
             overflow="hidden"
+            cursor="pointer"
           >
             {videoName}
           </Text>

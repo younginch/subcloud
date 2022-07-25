@@ -5,6 +5,7 @@ import AdminLayout from "../components/adminLayout";
 import ReviewStatusBadge from "../components/badges/reviewStatusBadge";
 import EventNotice from "../components/create/eventNotice";
 import ExplainBox from "../components/create/ExplainBox";
+import EditLeftPanel from "../components/editor/editLeftPanel";
 import SubtitleComponent from "../components/editor/SubtitleComponent";
 import TimeLine from "../components/editor/timeLine";
 import Links from "../components/header/links";
@@ -14,7 +15,7 @@ import Result from "../components/result";
 import SelectLanguage from "../components/selectLanguage";
 import UserLayout from "../components/user/my/userLayout";
 import RequestPanel from "../components/user/requestPanel";
-import { renderWithThemeAndSession } from "../utils/jest";
+import { renderWithThemeAndSession } from "./jest";
 
 describe("Components", () => {
   it("renders a Footer", () => {
@@ -26,7 +27,7 @@ describe("Components", () => {
   });
 
   it("renders a RequestPanel", () => {
-    render(<RequestPanel requests={[]} />);
+    render(<RequestPanel initialRequests={[]} />);
   });
 
   it("renders a adminLayout", () => {
@@ -46,24 +47,11 @@ describe("Components", () => {
   });
 
   it("renders a Result", () => {
-    render(
-      <Result>
-        <></>
-      </Result>
-    );
+    render(<Result>test</Result>);
   });
 
   it("renders a SelectLanguage", () => {
-    render(
-      <SelectLanguage
-        register={{
-          onChange: jest.fn(),
-          onBlur: jest.fn(),
-          ref: jest.fn(),
-          name: "",
-        }}
-      />
-    );
+    render(<SelectLanguage lang="en" error={undefined} setLang={jest.fn()} />);
   });
 
   it("renders ReviewStatusBadge", () => {
@@ -81,15 +69,15 @@ describe("Components", () => {
   });
 
   it("renders ExplainBox", () => {
-    renderWithThemeAndSession(
-      <ExplainBox>
-        <></>
-      </ExplainBox>
-    );
+    renderWithThemeAndSession(<ExplainBox>test</ExplainBox>);
   });
 
   it("renders userLayout", () => {
     render(<UserLayout>a</UserLayout>);
+  });
+
+  it("renders editLeftPanel", () => {
+    render(<EditLeftPanel />);
   });
 
   it("renders timeLine", () => {

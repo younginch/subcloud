@@ -30,60 +30,66 @@ export default function Review() {
   });
 
   return (
-    <>
-      <TableContainer>
-        <Table size="sm">
-          <Thead>
-            <Tr>
-              <Th>Title</Th>
-              <Th>Channel</Th>
-              <Th>Date</Th>
-              <Th>Status</Th>
-              <Th>Actions</Th>
+    <TableContainer>
+      <Table size="sm">
+        <Thead>
+          <Tr>
+            <Th>Title</Th>
+            <Th>Channel</Th>
+            <Th>UploadBy</Th>
+            <Th>Date</Th>
+            <Th>Status</Th>
+            <Th>Actions</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {subs.map((sub) => (
+            <Tr key={sub.id}>
+              <Td
+                onClick={() => {
+                  router.push(`/video/${sub.serviceId}/${sub.videoId}`);
+                }}
+              >
+                <HStack>
+                  <YoutubeIcon size="32px" />
+                  <Text maxW={480} noOfLines={1}>
+                    {sub.video?.youtubeVideo?.title ?? "비디오 정보없음"}
+                  </Text>
+                </HStack>
+              </Td>
+              <Td>
+                <AvatarWithName
+                  imageUrl={sub.video?.youtubeVideo?.channel.thumbnailUrl}
+                  name={sub.video?.youtubeVideo?.channel.title}
+                  size="sm"
+                />
+              </Td>
+              <Td>
+                <AvatarWithName
+                  imageUrl={sub.user.image || "Anonymous"}
+                  name={sub.user.name || "Anonymous"}
+                  size="sm"
+                  maxW="full"
+                />
+              </Td>
+              <Td>{new Date(sub.updatedAt).toLocaleString("ko-KR")}</Td>
+              <Td>
+                <ReviewStatusBadge status={sub.status} />
+              </Td>
+              <Td>
+                <Button
+                  onClick={() => {
+                    router.push(`/review/${sub.id}`);
+                  }}
+                >
+                  검토하기
+                </Button>
+              </Td>
             </Tr>
-          </Thead>
-          <Tbody>
-            {subs.map((sub) => {
-              return (
-                <Tr key={sub.id}>
-                  <Td
-                    onClick={() => {
-                      router.push(`/video/${sub.serviceId}/${sub.videoId}`);
-                    }}
-                  >
-                    <HStack>
-                      <YoutubeIcon size="32px" />
-                      <Text maxW={480} noOfLines={1}>
-                        {sub.video?.youtubeVideo?.title ?? "비디오 정보없음"}
-                      </Text>
-                    </HStack>
-                  </Td>
-                  <Td>
-                    <AvatarWithName
-                      imageUrl={sub.video?.youtubeVideo?.channel.thumbnailUrl}
-                      name={sub.video?.youtubeVideo?.channel.title}
-                    />
-                  </Td>
-                  <Td>{sub.updatedAt.toString()}</Td>
-                  <Td>
-                    <ReviewStatusBadge status={sub.status} />
-                  </Td>
-                  <Td>
-                    <Button
-                      onClick={() => {
-                        router.push(`/review/${sub.id}`);
-                      }}
-                    >
-                      검토하기
-                    </Button>
-                  </Td>
-                </Tr>
-              );
-            })}
-          </Tbody>
-        </Table>
-      </TableContainer>
-    </>
+          ))}
+        </Tbody>
+      </Table>
+    </TableContainer>
   );
 }
 

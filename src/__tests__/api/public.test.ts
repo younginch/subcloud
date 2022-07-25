@@ -4,7 +4,7 @@ import userBySubRoute from "../../pages/api/public/ranking/user/sub";
 import userByViewRoute from "../../pages/api/public/ranking/user/view";
 import videoByPoint from "../../pages/api/public/ranking/video/point";
 import videoByRequest from "../../pages/api/public/ranking/video/request";
-import { testRes } from "../../utils/jest";
+import { testRes } from "../jest";
 
 describe("/api/public/ranking", () => {
   it(

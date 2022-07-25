@@ -10,25 +10,22 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { YoutubeIcon } from "../../../components/icons/customIcons";
 import { AiOutlineMenu } from "react-icons/ai";
-import ReviewStatusBadge from "../../../components/badges/reviewStatusBadge";
-import { ResSubSearch } from "../../../utils/types";
 import { SubStatus } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import useTranslation from "next-translate/useTranslation";
+import { ResSubSearch } from "../../../utils/types";
+import ReviewStatusBadge from "../../badges/reviewStatusBadge";
+import { YoutubeIcon } from "../../icons/customIcons";
 
 export default function SubStatusPreview() {
   const { t } = useTranslation("privateProfile");
   const session = useSession();
   const toast = useToast();
   const [subs, setSubs] = useState<ResSubSearch>();
-  const [subStatus, setSubStatus] = useState<SubStatus | "all">("all");
-  useEffect(getSubs, [session.data?.user.id, subStatus, toast]);
+  const [subStatus] = useState<SubStatus | "All">("All");
 
   function getSubs() {
     axios
@@ -47,6 +44,8 @@ export default function SubStatusPreview() {
       });
   }
 
+  useEffect(getSubs, [session.data?.user.id, subStatus, toast]);
+
   return (
     <Table variant="simple" size="sm">
       <Thead>
@@ -58,29 +57,27 @@ export default function SubStatusPreview() {
         </Tr>
       </Thead>
       <Tbody overflowY="scroll">
-        {subs?.map((sub) => {
-          return (
-            <Tr key={sub.id}>
-              <Td>
-                <HStack>
-                  <YoutubeIcon size="30px" />
-                  <Text noOfLines={1}>
-                    {sub.video?.youtubeVideo?.title ?? "비디오 정보없음"}
-                  </Text>
-                </HStack>
-              </Td>
-              <Td>{sub.lang}</Td>
-              <Td>
-                <ReviewStatusBadge status={sub.status} />
-              </Td>
-              <Td>
-                <Button bg="transparent">
-                  <AiOutlineMenu />
-                </Button>
-              </Td>
-            </Tr>
-          );
-        })}
+        {subs?.map((sub) => (
+          <Tr key={sub.id}>
+            <Td>
+              <HStack>
+                <YoutubeIcon size="30px" />
+                <Text noOfLines={1}>
+                  {sub.video?.youtubeVideo?.title ?? "비디오 정보없음"}
+                </Text>
+              </HStack>
+            </Td>
+            <Td>{sub.lang}</Td>
+            <Td>
+              <ReviewStatusBadge status={sub.status} />
+            </Td>
+            <Td>
+              <Button bg="transparent">
+                <AiOutlineMenu />
+              </Button>
+            </Td>
+          </Tr>
+        ))}
       </Tbody>
     </Table>
   );

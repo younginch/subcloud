@@ -9,12 +9,13 @@ import {
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { v4 as uuid } from "uuid";
-import { EditorContext } from "../../pages/editor";
+import { EditorContext } from "../../utils/editorCore";
 
 export default function Property() {
-  const { contents, focusedIndex } = useContext(EditorContext);
+  const { contents, focusedIndex, commandHandlers } = useContext(EditorContext);
 
-  const headerBg = useColorModeValue("gray.100", "#18161d");
+  const headerBg = useColorModeValue("gray.100", "#181818");
+  const bodyBg = useColorModeValue("transparent", "#222222");
 
   if (contents[focusedIndex] === undefined) {
     return (
@@ -29,13 +30,12 @@ export default function Property() {
   const wordCount = contents[focusedIndex]
     .toText()
     .split(" ")
-    .filter(function (str: string) {
-      return str != "";
-    }).length;
+    .filter((str: string) => str !== "").length;
 
   const errors = [];
   const durationTooShort = duration < 0.7;
   const readingRateSoFast = wordCount / duration > 5;
+  const { textArray } = contents[focusedIndex];
   if (durationTooShort) {
     errors.push("Duration is too short.");
   }
@@ -45,12 +45,15 @@ export default function Property() {
   if (contents[focusedIndex].toText().trim() === "") {
     errors.push("Text is empty.");
   }
-  if (contents[focusedIndex].textArray.length > 3) {
+  if (textArray.length > 3) {
     errors.push("Text should be less than 4 lines.");
+  }
+  if (textArray.filter((line) => line.length > 70).length > 0) {
+    errors.push("Each line should not exceed 70 characters");
   }
 
   return (
-    <Stack>
+    <Stack bg={bodyBg} h="100%">
       <Heading
         fontSize="lg"
         bg={headerBg}
@@ -68,19 +71,19 @@ export default function Property() {
         </HStack>
         <Text>{`단어 수: ${wordCount}자`}</Text>
         <HStack>
-          <Text>{`단어수/초: ${(wordCount / duration).toFixed(3)}`}</Text>
+          <Text>{`초당 단어 수: ${(wordCount / duration).toFixed(3)}`}</Text>
           {readingRateSoFast && <WarningIcon color="red.500" />}
         </HStack>
         <Stack>
-          {errors.map((error) => {
-            return (
-              <Text color="red" key={uuid()}>
-                {error}
-              </Text>
-            );
-          })}
+          {errors.map((error) => (
+            <Text color="red.400" key={uuid()}>
+              {error}
+            </Text>
+          ))}
         </Stack>
-        <Button>자막 위치로 이동</Button>
+        <Button onClick={commandHandlers.GOTO_TIMELINE}>
+          타임라인 위치로 이동
+        </Button>
       </Stack>
     </Stack>
   );

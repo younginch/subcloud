@@ -1,7 +1,7 @@
 import { handleRoute, RouteParams } from "../../../../utils/types";
 
 async function VideoSearchGet({ req, res, prisma }: RouteParams<any>) {
-  let where: any = {};
+  const where: any = {};
   const { serviceId, videoId, lang } = req.query;
   if (req.query.q) {
     where.body = {

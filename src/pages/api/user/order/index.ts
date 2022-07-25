@@ -72,7 +72,6 @@ async function completeOrder({
       }
     );
   } catch (error) {
-    console.log(error);
     return res
       .status(500)
       .json({ error: SubErrorType.ServerError, message: "Toss order failed" });
@@ -120,9 +119,8 @@ async function cancelOrder({ req, res, prisma }: RouteParams<Order>) {
       data: { status: OrderStatus.Refunded },
     });
     return res.status(200).json(canceledOrder);
-  } else {
-    return res.status(500).json(result.data);
   }
+  return res.status(500).json(result.data);
 }
 
 export default handleRoute(

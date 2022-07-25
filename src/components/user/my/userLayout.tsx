@@ -1,24 +1,23 @@
 import { HStack, useMediaQuery, Box, Center, Stack } from "@chakra-ui/react";
 import { Role } from "@prisma/client";
 import router from "next/router";
-import { PageOptions } from "../../../utils/types";
 import {
   ProSidebar,
   Menu,
-  MenuItem,
   SidebarHeader,
   SidebarFooter,
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
-import { SubcloudIcon } from "../../icons/customIcons";
 import { MdSpaceDashboard, MdSubtitles } from "react-icons/md";
 import { useState } from "react";
 import { BiPurchaseTagAlt } from "react-icons/bi";
-import { AiOutlineHistory, AiTwotoneSetting } from "react-icons/ai";
+import { AiOutlineHistory } from "react-icons/ai";
 import { IoIosSend } from "react-icons/io";
-import MyMenuItem from "./myMenuItem";
 import { BsCashStack } from "react-icons/bs";
 import useTranslation from "next-translate/useTranslation";
+import MyMenuItem from "./myMenuItem";
+import { SubcloudIcon } from "../../icons/customIcons";
+import { PageOptions } from "../../../utils/types";
 
 type UserLayoutProps = {
   children: React.ReactNode;
@@ -66,18 +65,16 @@ export default function UserLayout({ children }: UserLayoutProps) {
           </Center>
         </SidebarHeader>
         <Menu iconShape="circle">
-          {dashBoardItems.map((element) => {
-            return (
-              <MyMenuItem
-                key={element.text}
-                active={element.href === router.pathname}
-                icon={element.icon}
-                href={element.href}
-                text={element.text}
-              />
-            );
-          })}
-          <Box h={`calc(90vh - ${94 + dashBoardItems.length * 50}px)`} />
+          {dashBoardItems.map((element) => (
+            <MyMenuItem
+              key={element.text}
+              active={element.href === router.pathname}
+              icon={element.icon}
+              href={element.href}
+              text={element.text}
+            />
+          ))}
+          <Box h={`calc(90vh - ${73 + dashBoardItems.length * 50}px)`} />
         </Menu>
         <SidebarFooter>
           <Stack alignItems="center" p="5px">

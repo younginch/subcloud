@@ -18,6 +18,7 @@ module.exports = {
       "qna",
       "rankings",
       "terms",
+      "uninstall",
       "uploadSub",
       "videoRequest",
     ],

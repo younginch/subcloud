@@ -6,6 +6,7 @@
   "subscriber_ko": "구독자",
   "subscriber_en": "명",
   "select_lang": "언어 선택",
+  "require_file": "자막 파일을 선택해 주세요",
   "basic_lang": "기본 요청 언어로 저장",
   "point": "포인트",
   "point_reset": "취소",

@@ -1,0 +1,12 @@
+.eslintrc.js
+i18n.js
+jest.config.js
+jest.setup.js
+next-sitemap.config.js
+next.config.js
+playwright.config.js
+prettier.config.js
+.next/
+.swc/
+coverage/
+src/utils/resolver.js

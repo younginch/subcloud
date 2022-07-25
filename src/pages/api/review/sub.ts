@@ -3,11 +3,25 @@ import { handleRoute, RouteParams } from "../../../utils/types";
 
 async function changeSub({ req, res, prisma }: RouteParams<Sub>) {
   const subId = req.query.subId as string;
-  const subStatus = req.body.subStatus;
+  const { subStatus } = req.body;
 
   const updatedSub = await prisma.sub.update({
     where: { id: subId },
     data: { status: subStatus },
+  });
+  const statusNotice = await prisma.notice.create({
+    data: {
+      type: "StatusChange",
+      message: `Subtitle ${updatedSub.status}`,
+      sub: { connect: { id: updatedSub.id } },
+    },
+  });
+  await prisma.notification.create({
+    data: {
+      userId: updatedSub.userId,
+      noticeId: statusNotice.id,
+      checked: false,
+    },
   });
   if (subStatus === SubStatus.Approved) {
     const request = await prisma.request.findUnique({
@@ -21,7 +35,7 @@ async function changeSub({ req, res, prisma }: RouteParams<Sub>) {
       include: { users: true, video: true },
     });
     if (request) {
-      const notice = await prisma.notice.create({
+      const requestNotice = await prisma.notice.create({
         data: {
           type: "Upload",
           message: "Subtitle uploaded",
@@ -33,7 +47,7 @@ async function changeSub({ req, res, prisma }: RouteParams<Sub>) {
         await prisma.notification.create({
           data: {
             userId: user.id,
-            noticeId: notice.id,
+            noticeId: requestNotice.id,
             checked: false,
           },
         });

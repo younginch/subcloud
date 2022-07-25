@@ -1,5 +1,5 @@
-import { handleRoute, RouteParams } from "../../../../utils/types";
 import { Role, ExampleVideo } from "@prisma/client";
+import { handleRoute, RouteParams } from "../../../../utils/types";
 
 async function getExampleVideo({ res, prisma }: RouteParams<ExampleVideo>) {
   const videos = await prisma.exampleVideo.findMany({

@@ -101,27 +101,23 @@ export default function AdminNotice() {
             </Tr>
           </Thead>
           <Tbody>
-            {data?.map((notice) => {
-              return (
-                <Tr key={notice.id}>
-                  <Td>{notice.type}</Td>
-                  <Td>{notice.message}</Td>
-                  <Td>{notice.url ?? "링크 없음"}</Td>
-                  <Td>
-                    {dayjs(notice.createdAt).format("YYYY-MM-DD HH:mm:ss")}
-                  </Td>
-                  <Td>{notice.notifications.length}</Td>
-                  <Td>
-                    <Button
-                      id={notice.id}
-                      onClick={() => handleDelete(notice.id)}
-                    >
-                      삭제
-                    </Button>
-                  </Td>
-                </Tr>
-              );
-            })}
+            {data?.map((notice) => (
+              <Tr key={notice.id}>
+                <Td>{notice.type}</Td>
+                <Td>{notice.message}</Td>
+                <Td>{notice.url ?? "링크 없음"}</Td>
+                <Td>{dayjs(notice.createdAt).format("YYYY-MM-DD HH:mm:ss")}</Td>
+                <Td>{notice.notifications.length}</Td>
+                <Td>
+                  <Button
+                    id={notice.id}
+                    onClick={() => handleDelete(notice.id)}
+                  >
+                    삭제
+                  </Button>
+                </Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
       </TableContainer>

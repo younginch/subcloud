@@ -1,14 +1,13 @@
-import PublicProfileLayout from "../../../components/user/publicProfileLayout";
-import { PublicProfileTab } from "../../../utils/tabs";
-import { PageOptions, ResSubSearch } from "../../../utils/types";
 import { Box, Stack, Text } from "@chakra-ui/react";
 import { FiBox } from "react-icons/fi";
 import { GetServerSideProps } from "next";
 import axios from "axios";
+import useTranslation from "next-translate/useTranslation";
 import GeneralTable from "../../../components/ranking/generalTable";
 import ProfileSubtitleRow from "../../../components/user/profileSubtitleRow";
-import router from "next/router";
-import useTranslation from "next-translate/useTranslation";
+import { PageOptions, ResSubSearch } from "../../../utils/types";
+import { PublicProfileTab } from "../../../utils/enums";
+import PublicProfileLayout from "../../../components/user/publicProfileLayout";
 
 type UserReadProps = {
   subs: ResSubSearch;
@@ -33,42 +32,36 @@ export default function UserSubtitle({ subs }: UserReadProps) {
           overflowX={{ base: "scroll", xl: "hidden" }}
         >
           <GeneralTable captions={captions}>
-            {subs.map((sub, index) => {
-              return (
-                <ProfileSubtitleRow
-                  rank={index + 1}
-                  key={sub.id}
-                  userId={
-                    router.query.userId ? router.query.userId[0] : "Annonymous"
-                  }
-                  platform={sub.serviceId}
-                  videoName={
-                    sub.video.youtubeVideo
-                      ? sub.video.youtubeVideo.title
-                      : "(Unknown)"
-                  }
-                  videoUrl={sub.video.url}
-                  channelName={
-                    sub.video.youtubeVideo
-                      ? sub.video.youtubeVideo.channel.title
-                      : "(Unknown)"
-                  }
-                  channelUrl={
-                    sub.video.youtubeVideo
-                      ? sub.video.youtubeVideo.channel.channelUrl
-                      : "(Unknown)"
-                  }
-                  channelImageUrl={
-                    sub.video.youtubeVideo
-                      ? sub.video.youtubeVideo.channel.thumbnailUrl
-                      : "(Unknown)"
-                  }
-                  lang={sub.lang}
-                  viewCount={sub.views}
-                  uploadDate={sub.updatedAt.toString()}
-                />
-              );
-            })}
+            {subs.map((sub, index) => (
+              <ProfileSubtitleRow
+                rank={index + 1}
+                key={sub.id}
+                videoName={
+                  sub.video.youtubeVideo
+                    ? sub.video.youtubeVideo.title
+                    : "(Unknown)"
+                }
+                videoUrl={sub.video.url}
+                channelName={
+                  sub.video.youtubeVideo
+                    ? sub.video.youtubeVideo.channel.title
+                    : "(Unknown)"
+                }
+                channelUrl={
+                  sub.video.youtubeVideo
+                    ? sub.video.youtubeVideo.channel.channelUrl
+                    : "(Unknown)"
+                }
+                channelImageUrl={
+                  sub.video.youtubeVideo
+                    ? sub.video.youtubeVideo.channel.thumbnailUrl
+                    : "(Unknown)"
+                }
+                lang={sub.lang}
+                viewCount={sub.views}
+                uploadDate={sub.updatedAt.toString()}
+              />
+            ))}
           </GeneralTable>
         </Box>
       ) : (
