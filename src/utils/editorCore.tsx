@@ -257,8 +257,22 @@ export function EditorProvider({ children }: EditorProviderProps) {
       // TODO @red1108
       // const startTime = contents[focusedIndex].startTime;
       // const endTime = contents[focusedIndex].endTime;
-      setLeftTime(0);
-      setRightTime(0);
+      let newLeft =
+        contents[focusedIndex].startTime - (4 * (rightTime - leftTime)) / 9;
+      let newRight =
+        contents[focusedIndex].startTime + (5 * (rightTime - leftTime)) / 9;
+
+      if (newLeft < 0) {
+        newLeft = 0;
+        newRight = rightTime - leftTime;
+      }
+      if (newRight > duration) {
+        newRight = duration;
+        newLeft = duration - (rightTime - leftTime);
+      }
+
+      setLeftTime(newLeft);
+      setRightTime(newRight);
     },
   };
 
