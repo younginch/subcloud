@@ -193,6 +193,7 @@ function PointCard({
 export default function Buy() {
   const { t } = useTranslation("goods");
   const [isMedium] = useMediaQuery("(min-width: 1200px)");
+  const showMembership = false;
 
   return (
     <Box py={12} mt={15}>
@@ -242,74 +243,78 @@ export default function Buy() {
           </Wrap>
         </Flex>
       </Box>
-      <VStack spacing={2} textAlign="center" mt="100px">
-        <Heading as="h1" fontSize="4xl">
-          {t("membership")}
-        </Heading>
-        <Text fontSize="lg" color="gray.500">
-          {t("membership_explain")}
-        </Text>
-      </VStack>
-      <Stack
-        direction={{ base: "column", md: "row" }}
-        textAlign="center"
-        justify="center"
-        spacing={{ base: 4, lg: 10 }}
-        py={10}
-      >
-        <SubscribeItem price="2" title="Basic" disabled>
-          <ListItem>
-            <ListIcon as={FaCheckCircle} color="green.500" />
-            {t("remove_ads")}
-          </ListItem>
-          <ListItem>
-            <ListIcon as={FaCheckCircle} color="green.500" />
-            {t("free_points")}
-            {t("$1")}
-          </ListItem>
-          <ListItem>
-            <ListIcon as={FaCheckCircle} color="green.500" />
-            {t("subtitle_access")}
-          </ListItem>
-        </SubscribeItem>
-        <SubscribeItem price="4" header="MOST POPULAR" title="Pro" disabled>
-          <ListItem>
-            <ListIcon as={FaCheckCircle} color="green.500" />
-            {t("remove_ads")}
-          </ListItem>
-          <ListItem>
-            <ListIcon as={FaCheckCircle} color="green.500" />
-            {t("free_points")}
-            {t("$2")}
-          </ListItem>
-          <ListItem>
-            <ListIcon as={FaCheckCircle} color="green.500" />
-            {t("subtitle_access")}
-          </ListItem>
-          <ListItem>
-            <ListIcon as={FaCheckCircle} color="blue.500" />
-            {t("lang_pair")}
-          </ListItem>
-          <ListItem>
-            <ListIcon as={FaCheckCircle} color="blue.500" />
-            {t("custom_voca")}
-          </ListItem>
-        </SubscribeItem>
-        <SubscribeItem price="+5" title="Ultimate" disabled>
-          <ListItem>
-            <ListIcon as={FaCheckCircle} color="green.500" />
-            {t("upgrade_pro")}
-          </ListItem>
-          <ListItem>
-            <ListIcon as={FaCheckCircle} color="yellow.500" />
-            {t("portfolio")}
-          </ListItem>
-          <ListItem>
-            <ListIcon as={FaCheckCircle} color="yellow.500" />
-            {t("sub_co_creation")}
-          </ListItem>
-        </SubscribeItem>
-      </Stack>
+      {showMembership && (
+        <>
+          <VStack spacing={2} textAlign="center" mt="100px">
+            <Heading as="h1" fontSize="4xl">
+              {t("membership")}
+            </Heading>
+            <Text fontSize="lg" color="gray.500">
+              {t("membership_explain")}
+            </Text>
+          </VStack>
+          <Stack
+            direction={{ base: "column", md: "row" }}
+            textAlign="center"
+            justify="center"
+            spacing={{ base: 4, lg: 10 }}
+            py={10}
+          >
+            <SubscribeItem price="2" title="Basic" disabled>
+              <ListItem>
+                <ListIcon as={FaCheckCircle} color="green.500" />
+                {t("remove_ads")}
+              </ListItem>
+              <ListItem>
+                <ListIcon as={FaCheckCircle} color="green.500" />
+                {t("free_points")}
+                {t("$1")}
+              </ListItem>
+              <ListItem>
+                <ListIcon as={FaCheckCircle} color="green.500" />
+                {t("subtitle_access")}
+              </ListItem>
+            </SubscribeItem>
+            <SubscribeItem price="4" header="MOST POPULAR" title="Pro" disabled>
+              <ListItem>
+                <ListIcon as={FaCheckCircle} color="green.500" />
+                {t("remove_ads")}
+              </ListItem>
+              <ListItem>
+                <ListIcon as={FaCheckCircle} color="green.500" />
+                {t("free_points")}
+                {t("$2")}
+              </ListItem>
+              <ListItem>
+                <ListIcon as={FaCheckCircle} color="green.500" />
+                {t("subtitle_access")}
+              </ListItem>
+              <ListItem>
+                <ListIcon as={FaCheckCircle} color="blue.500" />
+                {t("lang_pair")}
+              </ListItem>
+              <ListItem>
+                <ListIcon as={FaCheckCircle} color="blue.500" />
+                {t("custom_voca")}
+              </ListItem>
+            </SubscribeItem>
+            <SubscribeItem price="+5" title="Ultimate" disabled>
+              <ListItem>
+                <ListIcon as={FaCheckCircle} color="green.500" />
+                {t("upgrade_pro")}
+              </ListItem>
+              <ListItem>
+                <ListIcon as={FaCheckCircle} color="yellow.500" />
+                {t("portfolio")}
+              </ListItem>
+              <ListItem>
+                <ListIcon as={FaCheckCircle} color="yellow.500" />
+                {t("sub_co_creation")}
+              </ListItem>
+            </SubscribeItem>
+          </Stack>
+        </>
+      )}
     </Box>
   );
 }
