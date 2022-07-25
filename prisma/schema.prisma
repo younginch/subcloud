@@ -164,7 +164,7 @@ model Sub {
 model SubHistory {
   id     String   @id @default(cuid())
   userId String
-  user   User     @relation(fields: [userId], references: [id])
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   subId  String
   sub    Sub      @relation(fields: [subId], references: [id], onDelete: Cascade)
   viewAt DateTime
