@@ -182,80 +182,85 @@ export default function Menus() {
         ]}
       />
       <EditorMenu
-        title="편집(E)"
+        title={t("edit")}
         items={[
           {
-            title: "실행 취소",
+            title: t("undo"),
             icon: <AddIcon />,
             command: "EDIT_UNDO",
           },
           {
-            title: "다시 실행",
+            title: t("redo"),
             icon: <RepeatIcon />,
             command: "EDIT_REDO",
           },
           {
-            title: "현재 시간에서 새 자막",
+            title: t("right_new"),
             icon: <AddIcon />,
             command: "NEW_SUBTITLE",
           },
           {
-            title: "현재 시간에서 자막 끝내기",
+            title: t("right_end"),
             icon: <EditIcon />,
             command: "CUT_SUBTITLE",
           },
           {
-            title: "모두 지우기",
+            title: t("clear_all"),
             icon: <DeleteIcon />,
             command: "DELETE_ALL",
           },
           {
-            title: "현재 커서에서 분리하기",
+            title: t("detach_cursor"),
             icon: <RepeatIcon />,
             command: "SPLIT_SUBTITLE",
           },
         ]}
       />
       <EditorMenu
-        title="보기(V)"
+        title={t("view")}
         items={[
           {
-            title: "타임라인 보기/가리기",
+            title: t("timeline"),
             icon: <EditIcon />,
             command: "TOGGLE_TIMELINE",
           },
           {
-            title: "자막 속성 보기/가리기",
+            title: t("sub_property"),
             icon: <EditIcon />,
             command: "TOGGLE_SUBTITLE_PROPERTIES",
+          },
+          {
+            title: "현재 포커스된 자막으로 이동",
+            icon: <EditIcon />,
+            command: "GOTO_FOCUSED_CONTENT",
           },
         ]}
       />
       <EditorMenu
-        title="재생(Y)"
+        title={t("play")}
         items={[
           {
-            title: "재생/일시정지",
+            title: t("play_pause"),
             icon: <EditIcon />,
             command: "PLAY_PAUSE",
           },
           {
-            title: "0.5초 되감기",
+            title: t("skip_back_05"),
             icon: <EditIcon />,
             command: "LEFT_0_5",
           },
           {
-            title: "5초 되감기",
+            title: t("skip_back_5"),
             icon: <EditIcon />,
             command: "LEFT_5",
           },
           {
-            title: "0.5초 빨리감기",
+            title: t("skip_05"),
             icon: <EditIcon />,
             command: "RIGHT_0_5",
           },
           {
-            title: "5초 빨리감기",
+            title: t("skip_5"),
             icon: <EditIcon />,
             command: "RIGHT_5",
           },

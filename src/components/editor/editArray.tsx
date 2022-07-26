@@ -27,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
-import { ChangeEvent, useContext, useRef, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { MdTimer } from "react-icons/md";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 import { SRTContent } from "@younginch/subtitle";
@@ -235,7 +235,7 @@ function EndTimestamp({ index }: { index: number }) {
   );
 }
 
-function Row({ index, style }: ListChildComponentProps<SRTContent[]>) {
+function Row({ index, style }: ListChildComponentProps) {
   const { contents, execute, getPlayerTime, duration } =
     useContext(EditorContext);
   let showButton = true;
@@ -247,7 +247,7 @@ function Row({ index, style }: ListChildComponentProps<SRTContent[]>) {
   const addButtonBg = useColorModeValue("white", "gray.800");
 
   return (
-    <>
+    <HStack>
       <HStack position="relative" style={style}>
         <Stack alignItems="center" w="70px" h="100%" justifyContent="center">
           <Text>{index + 1}</Text>
@@ -322,19 +322,28 @@ function Row({ index, style }: ListChildComponentProps<SRTContent[]>) {
           <SmallAddIcon ml="5px" />
         </Button>
       )}
-    </>
+    </HStack>
   );
 }
 
 export default function EditArray() {
-  const { contents } = useContext(EditorContext);
+  const { contents, setRefArray } = useContext(EditorContext);
   const ref = useRef<HTMLDivElement>(null);
+  const listRef = useRef<FixedSizeList<any>>(null);
+
+  useEffect(() => {
+    setRefArray(listRef);
+  }, [listRef, setRefArray]);
+
+  // useEffect(() => {
+  //   listRef.current?.forceUpdate();
+  // }, [contents.length]);
 
   return (
     <Box h="100%" maxH="100%" w="full" ref={ref} ml="0px !important">
       <FixedSizeList
+        ref={listRef}
         height={Number(ref.current?.clientHeight)}
-        itemData={contents}
         itemCount={contents.length}
         itemKey={(index) =>
           `${index}${contents[index].startTime}${contents[index].endTime}`
