@@ -4,6 +4,17 @@
   "open_youtube": "유튜브 동영상 열기...",
   "open_subFile": "자막 파일 열기...",
   "save_srtFile": "SRT 파일로 저장...",
+  "edit": "편집(E)",
+  "undo": "실행 취소",
+  "redo": "다시 실행",
+  "right_new": "현재 시간에서 새 자막",
+  "right_end": "현재 시간에서 자막 끝내기",
+  "clear_all": "모두 지우기",
+  "detach_cursor": "현재 커서에서 분리하기",
+  "view": "보기(V)",
+  "timeline": "타임라인 보기/가리기",
+  "sub_property": "자막 속성 보기/가리기",
+  "play": "재생(Y)",
   "upload_sub": "자막 업로드",
   "file_drop": "파일을 여기에 놓으세요",
   "click&drop": "클릭하거나 드래그 앤 드롭으로 자막을 업로드 하세요",
@@ -37,5 +48,6 @@
   "line_break": "줄 바꿈",
   "action": "행동",
   "shortcut": "단축키",
-  "review": "리뷰 현황"
+  "review": "리뷰 현황",
+  "url_insert": "자막을 편집할 영상 URL을 입력해 주세요"
 }
