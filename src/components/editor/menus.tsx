@@ -229,6 +229,11 @@ export default function Menus() {
             icon: <EditIcon />,
             command: "TOGGLE_SUBTITLE_PROPERTIES",
           },
+          {
+            title: "현재 포커스된 자막으로 이동",
+            icon: <EditIcon />,
+            command: "GOTO_FOCUSED_CONTENT",
+          },
         ]}
       />
       <EditorMenu

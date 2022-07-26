@@ -1,8 +1,9 @@
 import { keyframes } from "@chakra-ui/react";
 import { SRTContent } from "@younginch/subtitle";
 import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext, RefObject, useState } from "react";
 import { KeyMap } from "react-hotkeys";
+import { FixedSizeList } from "react-window";
 import { YouTubePlayer } from "react-youtube";
 import EditorAction, {
   CreateAction,
@@ -59,6 +60,9 @@ type EditorContextProps = {
   setContents: (contents: SRTContent[]) => void;
   focusedIndex: number;
   setFocusedIndex: (index: number) => void;
+  setRefArray: (
+    refArray: RefObject<FixedSizeList<RefObject<HTMLDivElement>[]>>
+  ) => void;
   id: string;
   setId: (id: string) => void;
   setPlayer: (player: YouTubePlayer) => void;
@@ -108,6 +112,7 @@ export const EditorContext = createContext<EditorContextProps>({
   setContents: () => {},
   focusedIndex: 0,
   setFocusedIndex: () => {},
+  setRefArray: () => {},
   id: "",
   setId: () => {},
   setPlayer: () => {},
@@ -133,6 +138,8 @@ export function EditorProvider({ children }: EditorProviderProps) {
   const [rightTime, setRightTime] = useState<number>(40 * 1000);
   const [contents, setContents] = useState<SRTContent[]>([]);
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
+  const [refArray, setRefArray] =
+    useState<RefObject<FixedSizeList<RefObject<HTMLDivElement>[]>>>();
   const [id, setId] = useState<string>("");
   const [player, setPlayer] = useState<YouTubePlayer>();
   const [duration, setDuration] = useState<number>(10 * 60 * 1000);
@@ -282,6 +289,9 @@ export function EditorProvider({ children }: EditorProviderProps) {
       setLeftTime(newLeft);
       setRightTime(newRight);
     },
+    GOTO_FOCUSED_CONTENT: () => {
+      refArray?.current?.scrollToItem(focusedIndex);
+    },
   };
 
   return (
@@ -301,6 +311,9 @@ export function EditorProvider({ children }: EditorProviderProps) {
         focusedIndex,
         setFocusedIndex: (index) => {
           setFocusedIndex(index);
+        },
+        setRefArray: (refArray) => {
+          setRefArray(refArray);
         },
         id,
         setId: (newId) => {
