@@ -10,6 +10,7 @@ module.exports = {
       "common",
       "create",
       "landing",
+      "editor",
       "goods",
       "routes",
       "menu",

@@ -22,6 +22,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { useContext, useRef } from "react";
 import { KeySequence } from "react-hotkeys";
@@ -154,26 +155,27 @@ function HomeAlertDialog() {
 }
 
 export default function Menus() {
+  const { t } = useTranslation("editor");
   const menuBg = useColorModeValue("#dddddd", "#3a3a3a");
   return (
     <HStack bg={menuBg} spacing={0} h="30px">
       <HomeAlertDialog />
       <EditorMenu
-        title="파일(F)"
+        title={t("file")}
         items={[
-          { title: "새 창", icon: <AddIcon />, command: "" },
+          { title: t("new_page"), icon: <AddIcon />, command: "" },
           {
-            title: "유튜브 동영상 열기...",
+            title: t("open_youtube"),
             icon: <ExternalLinkIcon />,
             command: "",
           },
           {
-            title: "자막 파일 열기...",
+            title: t("open_subFile"),
             icon: <EditIcon />,
             command: "",
           },
           {
-            title: "SRT 파일로 저장...",
+            title: t("save_srtFile"),
             icon: <EditIcon />,
             command: "",
           },
