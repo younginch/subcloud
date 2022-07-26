@@ -15,7 +15,7 @@ export function YoutubeIcon({ size, cursor = "default" }: IconProps) {
 }
 
 export const SubCloudSVG = createIcon({
-  displayName: "SubCloud Logo ",
+  displayName: "SubCloud Logo",
   viewBox: "0 0 740 640",
   // path can also be an array of elements, if you have multiple paths, lines, shapes, etc.
   path: (
