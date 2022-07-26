@@ -4,6 +4,17 @@
   "open_youtube": "Open Youtube video",
   "open_subFile": "Open subtitle file",
   "save_srtFile": "Save as SRT file",
+  "edit": "Edit(E)",
+  "undo": "Undo",
+  "redo": "Redo",
+  "right_new": "New subtitles from current time",
+  "right_end": "End subtitles at current time",
+  "clear_all": "Clear all",
+  "detach_cursor": "Detach from current cursor",
+  "view": "View(V)",
+  "timeline": "Show/Hide Timeline",
+  "sub_property": "Show/Hide subtitle properties",
+  "play": "Play(Y)",
   "upload_sub": "Upload Subtitle",
   "file_drop": "Put your file here",
   "click&drop": "Upload subtitles by clicking or Drag and Drop",
@@ -35,5 +46,6 @@
   "skip_5": "Skip 5 seconds",
   "skip_back_5": "Skip back 5 seconds",
   "line_break": "Insert a line break",
-  "review": "Reviews"
+  "review": "Reviews",
+  "url_insert": "Please enter the video URL to edit subtitles"
 }

@@ -1,4 +1,5 @@
 import { Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import { RefObject } from "react";
 import { BiVideoPlus } from "react-icons/bi";
 
@@ -7,6 +8,7 @@ type Props = {
 };
 
 export default function NoVideo({ urlRef }: Props) {
+  const { t } = useTranslation("editor");
   return (
     <Stack
       w="100%"
@@ -18,7 +20,7 @@ export default function NoVideo({ urlRef }: Props) {
     >
       <BiVideoPlus size="30%" />
       <Text fontSize="20px" fontWeight="bold">
-        자막을 편집할 영상 URL을 입력해 주세요
+        {t("url_insert")}
       </Text>
     </Stack>
   );
