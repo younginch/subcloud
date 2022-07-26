@@ -11,8 +11,10 @@ import {
 } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import { useState } from "react";
+import { BsCloudUpload } from "react-icons/bs";
 import { MdOutlineRateReview, MdOutlineShortcut } from "react-icons/md";
 import BreifReviews from "../review/breifReviews";
+import QuickUpload from "./quickUpload";
 import Shortcuts from "./shortcuts";
 
 export default function TopRightPanel() {
@@ -31,16 +33,25 @@ export default function TopRightPanel() {
               {tabIndex === 0 && <Text>{t("keyboard_shortcut")}</Text>}
             </HStack>
           </Tab>
+          <Tab _selected={{ color: "white", bg: "blue.500" }}>
+            <HStack>
+              <BsCloudUpload />
+              {tabIndex === 1 && <Text>{t("quick_upload")}</Text>}
+            </HStack>
+          </Tab>
           <Tab _selected={{ color: "white", bg: "green.400" }} isDisabled>
             <HStack>
               <MdOutlineRateReview />
-              {tabIndex === 1 && <Text>{t("review")}</Text>}
+              {tabIndex === 2 && <Text>{t("review")}</Text>}
             </HStack>
           </Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
             <Shortcuts />
+          </TabPanel>
+          <TabPanel>
+            <QuickUpload />
           </TabPanel>
           <TabPanel>
             <BreifReviews />
