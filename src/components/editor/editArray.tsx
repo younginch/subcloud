@@ -322,7 +322,7 @@ function Row({ index, style }: ListChildComponentProps) {
           <SmallAddIcon ml="5px" />
         </Button>
       )}
-    </>
+    </HStack>
   );
 }
 
