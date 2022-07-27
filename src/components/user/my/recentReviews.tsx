@@ -39,7 +39,7 @@ export default function RecentReviews() {
       my={4}
       maxH="280px"
       h="fit-content"
-      overflowY="scroll"
+      overflowY="auto"
     >
       {reviewData?.map((review) => (
         <Stack key={review.id} direction="column" maxW="2xl">
