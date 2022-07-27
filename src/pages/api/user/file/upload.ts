@@ -1,5 +1,5 @@
 import { createRouter } from "next-connect";
-import multer from "multer";
+import multer, { FileFilterCallback } from "multer";
 import multerS3 from "multer-s3";
 import type e from "express";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -29,8 +29,24 @@ const awsStorage = multerS3({
   },
 });
 
+function fileFilter(
+  _: e.Request,
+  file: Express.Multer.File,
+  callback: FileFilterCallback
+) {
+  if (file.mimetype === "text/plain") {
+    callback(null, true);
+  } else {
+    callback(new Error("File type is not for subtitle"));
+  }
+}
+
 const upload = multer({
   storage: awsStorage,
+  fileFilter,
+  limits: {
+    fileSize: 1024 * 1024 * 5,
+  },
 });
 
 const expressWrapper =
