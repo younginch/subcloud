@@ -315,6 +315,26 @@ export default function Buy() {
           </Stack>
         </>
       )}
+      <Center>
+        <Flex direction={isMedium ? "row" : "column"}>
+          <HStack alignItems="center" fontSize={{ base: "15px", md: "20px" }}>
+            <Text>{t("refund_policy_front")}</Text>
+            <Link href="/qna" passHref>
+              <Button
+                rightIcon={<ArrowForwardIcon />}
+                colorScheme="teal"
+                variant="outline"
+                width={{ base: "60px", md: "80px" }}
+                height={{ base: "25px", md: "30px" }}
+                fontSize={{ base: "13px", md: "17px" }}
+              >
+                QNA
+              </Button>
+            </Link>
+            <Text>{t("refund_policy_back")}</Text>
+          </HStack>
+        </Flex>
+      </Center>
     </Box>
   );
 }

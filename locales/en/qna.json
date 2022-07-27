@@ -11,5 +11,7 @@
   "accordion_title_legal": "Are there any legal issues?",
   "accordion_title_legal_ex": "In accordance with Article 102 of the Korean Copyright Act, SubCloud implements standard technical measures to protect copyrighted works. However, please be aware that materials may be deleted without warning if copyright infringement materials are distributed.",
   "accordion_title_point": "What is point?",
-  "accordion_title_point_ex": "Points are required for requesting subtitles within SubCloud, and are goods received when creating subtitles. It can be purchased for a fee and can be withdrawn in exchange for cash. If you are a premium user, we give you a certain amount for free every month."
+  "accordion_title_point_ex": "Points are required for requesting subtitles within SubCloud, and are goods received when creating subtitles. It can be purchased for a fee and can be withdrawn in exchange for cash. If you are a premium user, we give you a certain amount for free every month.",
+  "accordion_title_refund": "How can I get a refund?",
+  "accordion_title_refund_ex": "The points you purchase will remain permanently until you use them. You can get a full refund within one month of purchase, and only 60% after one month. Points used to produce subtitles cannot be refunded regardless of the period."
 }
