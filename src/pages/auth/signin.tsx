@@ -1,17 +1,11 @@
-import {
-  Heading,
-  HStack,
-  Stack,
-  Center,
-  useMediaQuery,
-} from "@chakra-ui/react";
+import { Heading, Stack, Center } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import React from "react";
 import OAuthButtonGroup from "../../components/signin/oAuthButtonGroup";
 import { PageOptions } from "../../utils/types";
-import { SubcloudIcon } from "../../components/icons/customIcons";
 
 export default function SignIn() {
-  const [isPc] = useMediaQuery("(min-width: 850px)");
+  const { t } = useTranslation("auth");
 
   return (
     <Stack
@@ -21,24 +15,12 @@ export default function SignIn() {
       alignItems="center"
       position="relative"
     >
-      <Stack alignItems="center" w="400px" maxW="80vw" mt="16vh">
+      <Stack alignItems="center" w="400px" maxW="80vw" mt="16vh" spacing="1vh">
         <Center mb="4vh">
-          <Heading size="lg">SubCloud에 로그인</Heading>
+          <Heading size={{ base: "lg", lg: "xl" }}>{t("login_title")}</Heading>
         </Center>
         <OAuthButtonGroup />
       </Stack>
-      <HStack
-        position="absolute"
-        bottom="0"
-        bg="#7f90ad"
-        w="100vw"
-        justifyContent="center"
-      >
-        <SubcloudIcon size={isPc ? 100 : 50} fill="gray.200" />
-        <Heading fontSize={isPc ? "40px" : "20px"} color="white">
-          무료 자막은 SubCloud에서
-        </Heading>
-      </HStack>
     </Stack>
   );
 }

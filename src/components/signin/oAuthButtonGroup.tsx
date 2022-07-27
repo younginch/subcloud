@@ -6,12 +6,14 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { signIn } from "next-auth/react";
+import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { FaFacebook } from "react-icons/fa";
 import { GitHubIcon, GoogleIcon, KakaoIcon } from "./providerIcons";
 
 export default function OAuthButtonGroup() {
   const router = useRouter();
+  const { t } = useTranslation("auth");
 
   const providers = [
     {
@@ -55,7 +57,11 @@ export default function OAuthButtonGroup() {
           <VisuallyHidden>Sign in with {name}</VisuallyHidden>
           <HStack>
             {icon}
-            <Text color={color}>{name}로 계속하기</Text>
+            <Text color={color}>
+              {t("oauth_button_start")}
+              {name}
+              {t("oauth_button_end")}
+            </Text>
           </HStack>
         </Button>
       ))}

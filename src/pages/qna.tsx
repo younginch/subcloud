@@ -57,6 +57,9 @@ export default function QnaPage() {
       <QnAAccordion title={t("accordion_title_point")}>
         {t("accordion_title_point_ex")}
       </QnAAccordion>
+      <QnAAccordion title={t("accordion_title_refund")}>
+        {t("accordion_title_refund_ex")}
+      </QnAAccordion>
     </Accordion>
   );
 }
