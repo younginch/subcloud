@@ -227,7 +227,12 @@ export default function Buy() {
           </Flex>
         </VStack>
         <Flex justifyContent="center" py={6}>
-          <Wrap justifyContent="center" spacing={4} className="buyWrap">
+          <Wrap
+            justifyContent="center"
+            spacing={4}
+            className="buyWrap"
+            overflow="visible"
+          >
             {Products.map((product, index) => (
               <WrapItem key={product.point}>
                 <PointCard
@@ -316,24 +321,12 @@ export default function Buy() {
         </>
       )}
       <Center>
-        <Flex direction={isMedium ? "row" : "column"}>
-          <HStack alignItems="center" fontSize={{ base: "15px", md: "20px" }}>
-            <Text>{t("refund_policy_front")}</Text>
-            <Link href="/qna?default=refund" passHref>
-              <Button
-                rightIcon={<ArrowForwardIcon />}
-                colorScheme="teal"
-                variant="outline"
-                width={{ base: "60px", md: "80px" }}
-                height={{ base: "25px", md: "30px" }}
-                fontSize={{ base: "13px", md: "17px" }}
-              >
-                QNA
-              </Button>
-            </Link>
-            <Text>{t("refund_policy_back")}</Text>
-          </HStack>
-        </Flex>
+        <Text w="1000px" maxW="80vw" mt="10vh">
+          구매하신 포인트는 사용하기 전까지 영구적으로 유지됩니다. 해당 포인트는
+          구매 후 1개월 이내에 전액 환불 가능하며, 1개월 이후엔 60%만 환불
+          가능합니다. 자막 제작에 사용되어 소모된 포인트는 기간 관계없이 환불이
+          불가능합니다.
+        </Text>
       </Center>
     </Box>
   );
