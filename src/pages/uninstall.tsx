@@ -117,11 +117,11 @@ export default function Uninstall() {
                 {t("question_1")}
               </Text>
               <Select icon={<ChevronDownIcon />} {...register("reason")}>
-                <option>{t("question_1")}</option>
-                <option>{t("question_2")}</option>
-                <option>{t("question_3")}</option>
-                <option>{t("question_4")}</option>
-                <option>{t("question_5")}</option>
+                <option>{t("option_1")}</option>
+                <option>{t("option_2")}</option>
+                <option>{t("option_3")}</option>
+                <option>{t("option_4")}</option>
+                <option>{t("option_5")}</option>
               </Select>
               <FormErrorMessage m="auto" fontSize="15px">
                 {errors.reason && errors.reason.message}
