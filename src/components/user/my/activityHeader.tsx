@@ -149,7 +149,7 @@ export default function ActivityHeader({ requests, views, points }: Props) {
   ];
 
   return (
-    <Box maxW="7xl" h="fit-content" pl={10} pr={10} pt={5}>
+    <Box w="100%" h="fit-content" pl={10} pr={10} pt={5}>
       <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={5} mb={4}>
         {statData.map((data) => (
           <Card key={data.id} data={data} />
