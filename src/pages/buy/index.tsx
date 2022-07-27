@@ -210,7 +210,7 @@ export default function Buy() {
             </HStack>
             <HStack alignItems="center" fontSize={{ base: "15px", md: "20px" }}>
               <Text>{t("buy_point_front")}</Text>
-              <Link href="/qna" passHref>
+              <Link href="/qna?default=point" passHref>
                 <Button
                   rightIcon={<ArrowForwardIcon />}
                   colorScheme="teal"
@@ -319,7 +319,7 @@ export default function Buy() {
         <Flex direction={isMedium ? "row" : "column"}>
           <HStack alignItems="center" fontSize={{ base: "15px", md: "20px" }}>
             <Text>{t("refund_policy_front")}</Text>
-            <Link href="/qna" passHref>
+            <Link href="/qna?default=refund" passHref>
               <Button
                 rightIcon={<ArrowForwardIcon />}
                 colorScheme="teal"
