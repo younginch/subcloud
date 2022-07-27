@@ -9,7 +9,7 @@ import { signIn } from "next-auth/react";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { FaFacebook } from "react-icons/fa";
-import { GitHubIcon, GoogleIcon, KakaoIcon } from "./providerIcons";
+import { GitHubIcon, GoogleIcon } from "./providerIcons";
 
 export default function OAuthButtonGroup() {
   const router = useRouter();
@@ -28,12 +28,13 @@ export default function OAuthButtonGroup() {
       color: "white",
       bgColor: "#3a77e8",
     },
+    /*
     {
       name: "Kakao",
       icon: <KakaoIcon boxSize="5" />,
       color: "black",
       bgColor: "#ffe812",
-    },
+    }, */
     {
       name: "GitHub",
       icon: <GitHubIcon boxSize="5" color="white" />,
