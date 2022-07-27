@@ -25,9 +25,9 @@
   "/editor": "자막 편집기",
   "/qna": "자주 묻는 질문",
   "/ranking": "랭킹",
-  "/ranking/sub": "자막 랭킹",
-  "/ranking/user": "유저 랭킹",
-  "/ranking/video": "비디오 랭킹",
+  "/ranking/sub": "자막 순위",
+  "/ranking/user": "자막 제작자 랭킹",
+  "/ranking/video": "비디오 요청 순위",
   "/ranking/[lang]": "랭킹",
   "/search": "검색 결과"
 }

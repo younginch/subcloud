@@ -8,6 +8,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
+import { useRouter } from "next/router";
 import { PageOptions } from "../utils/types";
 
 type QnAProps = {
@@ -31,8 +32,31 @@ function QnAAccordion({ title, children }: QnAProps) {
 
 export default function QnaPage() {
   const { t } = useTranslation("qna");
+  const router = useRouter();
+
+  const getDefaultIndex = (query: string[] | string | undefined): number[] => {
+    if (!query) return [];
+    let queries = [];
+    if (Array.isArray(query)) queries = query;
+    else queries = [query];
+
+    const defaultIndexes = [];
+    if (queries.includes("service")) defaultIndexes.push(0);
+    if (queries.includes("no_sub")) defaultIndexes.push(1);
+    if (queries.includes("upload")) defaultIndexes.push(2);
+    if (queries.includes("unvisible")) defaultIndexes.push(3);
+    if (queries.includes("legal")) defaultIndexes.push(4);
+    if (queries.includes("point")) defaultIndexes.push(5);
+    if (queries.includes("refund")) defaultIndexes.push(6);
+
+    return defaultIndexes;
+  };
+
   return (
-    <Accordion>
+    <Accordion
+      defaultIndex={getDefaultIndex(router.query.default)}
+      allowMultiple
+    >
       <QnAAccordion title={t("accordion_title_service")}>
         <a
           href="https://chrome.google.com/webstore/detail/subcloud/ocjfkiipkmckngedlljnkackhohcffpa?hl=ko"

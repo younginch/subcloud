@@ -25,9 +25,9 @@
   "/editor": "Editor",
   "/qna": "QnA",
   "/ranking": "Ranking",
-  "/ranking/sub": "Subtitle",
-  "/ranking/user": "User",
-  "/ranking/video": "Video",
+  "/ranking/sub": "Subtitle ranking",
+  "/ranking/user": "User ranking",
+  "/ranking/video": "Request ranking",
   "/ranking/[lang]": "Ranking",
   "/search": "Search result"
 }
