@@ -1,22 +1,47 @@
-import { Button, ButtonGroup, VisuallyHidden } from "@chakra-ui/react";
+import {
+  Button,
+  Text,
+  HStack,
+  VisuallyHidden,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FaFacebook } from "react-icons/fa";
 import { GitHubIcon, GoogleIcon, KakaoIcon } from "./providerIcons";
 
-const providers = [
-  { name: "Google", icon: <GoogleIcon boxSize="5" /> },
-  { name: "Facebook", icon: <FaFacebook /> },
-  { name: "Kakao", icon: <KakaoIcon boxSize="5" /> },
-  { name: "GitHub", icon: <GitHubIcon boxSize="5" /> },
-];
-
 export default function OAuthButtonGroup() {
   const router = useRouter();
 
+  const providers = [
+    {
+      name: "Google",
+      icon: <GoogleIcon boxSize="5" />,
+      color: "black",
+      bgColor: "#f0f0f0",
+    },
+    {
+      name: "Facebook",
+      icon: <FaFacebook color="white" />,
+      color: "white",
+      bgColor: "#3a77e8",
+    },
+    {
+      name: "Kakao",
+      icon: <KakaoIcon boxSize="5" />,
+      color: "black",
+      bgColor: "#ffe812",
+    },
+    {
+      name: "GitHub",
+      icon: <GitHubIcon boxSize="5" color="white" />,
+      color: "white",
+      bgColor: useColorModeValue("#1a202c", "#444444"),
+    },
+  ];
   return (
-    <ButtonGroup variant="outline" spacing="4" width="full">
-      {providers.map(({ name, icon }) => (
+    <>
+      {providers.map(({ name, icon, color, bgColor }) => (
         <Button
           key={name}
           width="full"
@@ -25,11 +50,15 @@ export default function OAuthButtonGroup() {
               callbackUrl: router.query.callbackUrl as string,
             });
           }}
+          bg={bgColor}
         >
           <VisuallyHidden>Sign in with {name}</VisuallyHidden>
-          {icon}
+          <HStack>
+            {icon}
+            <Text color={color}>{name}로 계속하기</Text>
+          </HStack>
         </Button>
       ))}
-    </ButtonGroup>
+    </>
   );
 }
