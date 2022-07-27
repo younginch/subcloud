@@ -2,14 +2,14 @@ import {
   Avatar,
   Box,
   Button,
-  Center,
+  Grid,
+  GridItem,
   HStack,
   Spacer,
   Stack,
   Text,
   useColorModeValue,
-  Wrap,
-  WrapItem,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { Role, Sub, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
@@ -27,7 +27,6 @@ import RecentReviews from "../../../components/user/my/recentReviews";
 import DetailViewGraph from "../../../components/user/my/detailViewGraph";
 import SubStatusPreview from "../../../components/user/my/subStatusPreview";
 import ActivityHeader from "../../../components/user/my/activityHeader";
-import SwingProvider from "../../../components/swingProvider";
 
 export default function UserMyIndex() {
   const { t } = useTranslation("privateProfile");
@@ -42,6 +41,8 @@ export default function UserMyIndex() {
   );
   const views = subs?.reduce((prev: number, curr: Sub) => prev + curr.views, 0);
   const panelColor = useColorModeValue("white", "gray.700");
+  const [isPc] = useMediaQuery("(min-width: 1180px)");
+  console.log(isPc);
 
   return (
     <Stack w="fit-content">
@@ -102,17 +103,22 @@ export default function UserMyIndex() {
           views={views ?? 0}
           points={session.data?.user.point ?? 0}
         />
-        <Wrap p="30px" spacing="20px">
-          <WrapItem>
+        <Grid
+          templateRows={isPc ? "repeat(10, 1fr)" : "repeat(4, 1fr)"}
+          templateColumns="repeat(10, 1fr)"
+          gap={isPc ? 5 : 4}
+          p={5}
+        >
+          <GridItem rowStart={1} rowEnd={isPc ? 5 : 2} colSpan={isPc ? 5 : 10}>
             <Box
-              w="500px"
-              h="250px"
+              h="100%"
               bg={panelColor}
               boxShadow="0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"
               borderRadius="12px"
               p="20px"
               overflow="hidden"
               borderWidth={useColorModeValue("1px", "none")}
+              className="private-heatmap"
             >
               <Text fontSize="lg" fontWeight="bold" mb="4px">
                 {t("dash_stat_sub")}
@@ -129,11 +135,14 @@ export default function UserMyIndex() {
                 userId={session.data?.user.id}
               />
             </Box>
-          </WrapItem>
-          <WrapItem>
+          </GridItem>
+          <GridItem
+            rowStart={isPc ? 1 : 2}
+            rowEnd={isPc ? 5 : 3}
+            colSpan={isPc ? 5 : 10}
+          >
             <Box
-              w="500px"
-              maxH="350px"
+              h="100%"
               bg={panelColor}
               boxShadow="0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"
               borderRadius="12px"
@@ -146,50 +155,13 @@ export default function UserMyIndex() {
               </Text>
               <RecentReviews />
             </Box>
-          </WrapItem>
-          <WrapItem>
+          </GridItem>
+          <GridItem
+            rowStart={isPc ? 5 : 3}
+            rowEnd={isPc ? 11 : 4}
+            colSpan={isPc ? 6 : 10}
+          >
             <Box
-              w="180px"
-              h="170px"
-              bg={panelColor}
-              boxShadow="0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"
-              borderRadius="12px"
-              p="20px"
-              borderWidth={useColorModeValue("1px", "none")}
-            >
-              <Text fontSize="lg" fontWeight="bold" mb="4px">
-                {t("membership")}
-              </Text>
-              <Center>
-                <SwingProvider>
-                  <Text
-                    fontSize={50}
-                    fontWeight="bold"
-                    bgGradient={useColorModeValue(
-                      "linear(to-l, #7928CA, #FF0080)",
-                      "linear(to-l, #8e50cc, #fb52a7)"
-                    )}
-                    bgClip="text"
-                  >
-                    PRO
-                  </Text>
-                </SwingProvider>
-              </Center>
-              <Link href="/buy">
-                <Text
-                  color={useColorModeValue("gray.800", "gray.200")}
-                  _hover={{ textDecoration: "underline" }}
-                  mt="10px"
-                >
-                  {t("dash_upgrade")}
-                </Text>
-              </Link>
-            </Box>
-          </WrapItem>
-          <WrapItem>
-            <Box
-              w="700px"
-              h="350px"
               bg={panelColor}
               boxShadow="0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"
               borderRadius="12px"
@@ -201,11 +173,13 @@ export default function UserMyIndex() {
               </Text>
               <DetailViewGraph subId={undefined} />
             </Box>
-          </WrapItem>
-          <WrapItem>
+          </GridItem>
+          <GridItem
+            rowStart={isPc ? 5 : 4}
+            rowEnd={isPc ? 11 : 5}
+            colSpan={isPc ? 4 : 10}
+          >
             <Box
-              w="500px"
-              h="350px"
               bg={panelColor}
               boxShadow="0px 3.5px 5.5px rgba(0, 0, 0, 0.02)"
               borderRadius="12px"
@@ -216,12 +190,12 @@ export default function UserMyIndex() {
               <Text fontSize="lg" fontWeight="bold" mb="4px">
                 {t("dash_sub_review")}
               </Text>
-              <Box maxH="300px" overflowY="scroll">
+              <Box maxH="300px" overflowY="auto">
                 <SubStatusPreview />
               </Box>
             </Box>
-          </WrapItem>
-        </Wrap>
+          </GridItem>
+        </Grid>
       </Box>
     </Stack>
   );

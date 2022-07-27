@@ -148,3 +148,7 @@ body.chakra-ui-dark .editArrayContainer::-webkit-scrollbar-thumb {
 body.chakra-ui-dark .editArrayContainer::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.private-heatmap .react-calendar-heatmap {
+  max-height: 250px;
+}

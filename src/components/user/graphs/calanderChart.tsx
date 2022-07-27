@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 import CalendarHeatmap from "react-calendar-heatmap";
@@ -49,7 +49,13 @@ export default function CalendarChart({ range, type, userId }: Props) {
   };
 
   return (
-    <Box onMouseLeave={mouseLeave} onMouseEnter={mouseEnter}>
+    <Flex
+      onMouseLeave={mouseLeave}
+      onMouseEnter={mouseEnter}
+      justifyContent="center"
+      alignItems="center"
+      h="100%"
+    >
       <CalendarHeatmap
         startDate={shiftDate(today, -range)}
         endDate={today}
@@ -70,6 +76,6 @@ export default function CalendarChart({ range, type, userId }: Props) {
       <Box hidden={!onHover}>
         <ReactTooltip />
       </Box>
-    </Box>
+    </Flex>
   );
 }
