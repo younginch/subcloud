@@ -15,9 +15,16 @@ import { useRouter } from "next/router";
 enum Language {
   KO = "ko",
   EN = "en",
+  ES = "es",
+  JA = "ja",
 }
 
-const LanguageNames = { ko: "한국어", en: "English" };
+const LanguageNames = {
+  ko: "한국어",
+  en: "English",
+  es: "Español",
+  ja: "日本語",
+};
 
 type Props = {
   isLarge: boolean;
@@ -47,34 +54,28 @@ export default function SelectTranslation({ isLarge }: Props): JSX.Element {
           rightIcon={<ChevronDownIcon />}
           variant="outline"
         >
-          {locale === "en" ? "English" : "한국어"}
+          {LanguageNames[(locale as Language) ?? Language.EN]}
         </MenuButton>
       ) : (
         <MenuButton as={IconButton} icon={<TranslateIcon />} />
       )}
       <MenuList>
         <MenuOptionGroup
-          defaultValue={locale ?? "ko"}
+          defaultValue={locale ?? "en"}
           title={t("languages")}
           type="radio"
         >
-          <MenuItemOption
-            value={Language.KO}
-            onClick={() => {
-              push({ pathname, query }, asPath, { locale: Language.KO });
-            }}
-          >
-            {LanguageNames[Language.KO]}
-          </MenuItemOption>
-
-          <MenuItemOption
-            value={Language.EN}
-            onClick={() => {
-              push({ pathname, query }, asPath, { locale: Language.EN });
-            }}
-          >
-            {LanguageNames[Language.EN]}
-          </MenuItemOption>
+          {Object.keys(LanguageNames).map((language) => (
+            <MenuItemOption
+              key={language}
+              value={language}
+              onClick={() => {
+                push({ pathname, query }, asPath, { locale: language });
+              }}
+            >
+              {LanguageNames[language as Language]}
+            </MenuItemOption>
+          ))}
         </MenuOptionGroup>
       </MenuList>
     </Menu>
