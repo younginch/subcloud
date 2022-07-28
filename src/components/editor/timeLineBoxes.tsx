@@ -95,6 +95,7 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
       onDragStart={(e) => {
         e.preventDefault();
         e.stopPropagation();
+        // editArray go to index
       }}
       onDrag={(_e, data: DraggableData) => {
         const deltaT =

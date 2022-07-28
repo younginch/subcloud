@@ -77,6 +77,8 @@ type EditorContextProps = {
   commandKeys: KeyMap;
   commandHandlers: { [key: string]: () => void };
   execute: (actions: EditorAction) => void;
+  showTimeline: boolean;
+  showProperty: boolean;
 };
 
 export enum PlayerState {
@@ -127,6 +129,8 @@ export const EditorContext = createContext<EditorContextProps>({
   commandKeys,
   commandHandlers: {},
   execute: () => {},
+  showTimeline: true,
+  showProperty: true,
 });
 
 type EditorProviderProps = {
@@ -150,6 +154,8 @@ export function EditorProvider({ children }: EditorProviderProps) {
   const [rerenderIndicator, setRerenderIndicator] = useState<boolean>(true);
   const [undoActions, setUndoActions] = useState<EditorAction[]>([]);
   const [redoActions, setRedoActions] = useState<EditorAction[]>([]);
+  const [showTimeline, setShowTimeline] = useState<boolean>(true);
+  const [showProperty, setShowProperty] = useState<boolean>(true);
 
   function execute(action: EditorAction) {
     setContents(() => action.execute(contents));
@@ -269,9 +275,6 @@ export function EditorProvider({ children }: EditorProviderProps) {
       setFocusedIndex(-1);
     },
     GOTO_TIMELINE: () => {
-      // TODO @red1108
-      // const startTime = contents[focusedIndex].startTime;
-      // const endTime = contents[focusedIndex].endTime;
       let newLeft =
         contents[focusedIndex].startTime - (4 * (rightTime - leftTime)) / 9;
       let newRight =
@@ -288,6 +291,12 @@ export function EditorProvider({ children }: EditorProviderProps) {
 
       setLeftTime(newLeft);
       setRightTime(newRight);
+    },
+    TOGGLE_TIMELINE: () => {
+      setShowTimeline(!showTimeline);
+    },
+    TOGGLE_SUBTITLE_PROPERTIES: () => {
+      setShowProperty(!showProperty);
     },
     GOTO_FOCUSED_CONTENT: () => {
       refArray?.current?.scrollToItem(focusedIndex);
@@ -355,6 +364,8 @@ export function EditorProvider({ children }: EditorProviderProps) {
         commandKeys,
         commandHandlers,
         execute,
+        showTimeline,
+        showProperty,
       }}
     >
       {children}
