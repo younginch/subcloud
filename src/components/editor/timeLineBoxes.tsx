@@ -13,7 +13,7 @@ type TimeLineBoxProps = {
 };
 
 function TimeLineBox({ item, index }: TimeLineBoxProps) {
-  const { contents, execute, leftTime, rightTime, focusedIndex } =
+  const { contents, execute, leftTime, rightTime, focusedIndex, focusContent } =
     useContext(EditorContext);
   const normalColor = useColorModeValue("#ffffff", "#333333");
   const focusedColor = useColorModeValue("#f0f0ff", "#444466");
@@ -95,6 +95,7 @@ function TimeLineBox({ item, index }: TimeLineBoxProps) {
       onDragStart={(e) => {
         e.preventDefault();
         e.stopPropagation();
+        focusContent(index);
       }}
       onDrag={(_e, data: DraggableData) => {
         const deltaT =

@@ -46,6 +46,8 @@ function EditorWithoutContext() {
     setId,
     commandKeys,
     commandHandlers,
+    showTimeline,
+    showProperty,
   } = useContext(EditorContext);
   const [urlInput, setUrlInput] = useState("");
   const urlField = useRef<HTMLInputElement>(null);
@@ -201,15 +203,18 @@ function EditorWithoutContext() {
             </ReflexElement>
           </ReflexContainer>
         </ReflexElement>
-        <ReflexSplitter propagate />
-        <ReflexElement
-          minSize={100}
-          size={120}
-          maxSize={200}
-          style={{ overflow: "hidden" }}
-        >
-          <TimeLineContainer />
-        </ReflexElement>
+
+        {!showTimeline && <ReflexSplitter propagate />}
+        {!showTimeline && (
+          <ReflexElement
+            minSize={100}
+            size={120}
+            maxSize={200}
+            style={{ overflow: "hidden" }}
+          >
+            <TimeLineContainer />
+          </ReflexElement>
+        )}
         <ReflexSplitter
           propagate
           style={{
@@ -224,10 +229,14 @@ function EditorWithoutContext() {
                 <EditArray />
               </HStack>
             </ReflexElement>
-            <ReflexSplitter style={{ borderColor: "#aaaaaa" }} />
-            <ReflexElement maxSize={500} minSize={100}>
-              <Property />
-            </ReflexElement>
+            {showProperty && (
+              <ReflexSplitter style={{ borderColor: "#aaaaaa" }} />
+            )}
+            {showProperty && (
+              <ReflexElement maxSize={500} minSize={100}>
+                <Property />
+              </ReflexElement>
+            )}
           </ReflexContainer>
         </ReflexElement>
       </ReflexContainer>

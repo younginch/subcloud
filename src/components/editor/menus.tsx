@@ -205,14 +205,14 @@ export default function Menus() {
             command: "CUT_SUBTITLE",
           },
           {
-            title: t("clear_all"),
-            icon: <DeleteIcon />,
-            command: "DELETE_ALL",
-          },
-          {
             title: t("detach_cursor"),
             icon: <RepeatIcon />,
             command: "SPLIT_SUBTITLE",
+          },
+          {
+            title: t("clear_all"),
+            icon: <DeleteIcon />,
+            command: "DELETE_ALL",
           },
         ]}
       />
