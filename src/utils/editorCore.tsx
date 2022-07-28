@@ -60,6 +60,7 @@ type EditorContextProps = {
   setContents: (contents: SRTContent[]) => void;
   focusedIndex: number;
   setFocusedIndex: (index: number) => void;
+  focusContent: (index: number) => void;
   setRefArray: (
     refArray: RefObject<FixedSizeList<RefObject<HTMLDivElement>[]>>
   ) => void;
@@ -114,6 +115,7 @@ export const EditorContext = createContext<EditorContextProps>({
   setContents: () => {},
   focusedIndex: 0,
   setFocusedIndex: () => {},
+  focusContent: () => {},
   setRefArray: () => {},
   id: "",
   setId: () => {},
@@ -320,6 +322,9 @@ export function EditorProvider({ children }: EditorProviderProps) {
         focusedIndex,
         setFocusedIndex: (index) => {
           setFocusedIndex(index);
+        },
+        focusContent: (index) => {
+          refArray?.current?.scrollToItem(index);
         },
         setRefArray: (refArray) => {
           setRefArray(refArray);

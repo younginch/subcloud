@@ -31,16 +31,201 @@ import {
   FormControl,
   FormErrorMessage,
   Center,
+  TabList,
+  Tab,
+  TabPanel,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
-import { Role, User } from "@prisma/client";
+import { Order, Request, Role, Sub, SubHistory, User } from "@prisma/client";
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
 import useSWR, { KeyedMutator } from "swr";
 import { UserUpdateSchema } from "../../utils/schema";
 import { PageOptions } from "../../utils/types";
+
+function DetailButton({ id }: { id: string }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = useRef(null);
+
+  const [subs, setSubs] = useState<Sub[]>([]);
+  const [requests, setRequests] = useState<Request[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [subHistories, setSubHistories] = useState<SubHistory[]>([]);
+
+  useEffect(() => {
+    axios.get(`/api/admin/user?id=${id}`).then((res) => {
+      setSubs(res.data.subs);
+      setRequests(res.data.requests);
+      setOrders(res.data.orders);
+      setSubHistories(res.data.subHistories);
+    });
+  }, [id]);
+
+  return (
+    <>
+      <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
+        Open
+      </Button>
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        size="70%"
+        onClose={onClose}
+        finalFocusRef={btnRef}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>계정 세부정보</DrawerHeader>
+
+          <DrawerBody>
+            <Tabs>
+              <TabList>
+                <Tab>업로드한 자막</Tab>
+                <Tab>요청한 자막</Tab>
+                <Tab>주문 내역</Tab>
+                <Tab>자막 시청 내역</Tab>
+              </TabList>
+
+              <TabPanels>
+                <TabPanel>
+                  <TableContainer>
+                    <Table variant="simple">
+                      <Thead>
+                        <Tr>
+                          <Th>Service</Th>
+                          <Th>Video ID</Th>
+                          <Th>Language</Th>
+                          <Th>Status</Th>
+                          <Th isNumeric>Views</Th>
+                          <Th>Created At</Th>
+                          <Th>Updated At</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {subs.map((sub) => (
+                          <Tr key={sub.id}>
+                            <Td>{sub.serviceId}</Td>
+                            <Td>
+                              {sub.videoId}
+                              <Button
+                                onClick={() => {
+                                  window.location.href = `https://www.youtube.com/watch?v=${sub.videoId}`;
+                                }}
+                              >
+                                Go
+                              </Button>
+                            </Td>
+                            <Td>{sub.lang}</Td>
+                            <Td>{sub.status}</Td>
+                            <Td isNumeric>{sub.views}</Td>
+                            <Td>{sub.createdAt.toString()}</Td>
+                            <Td>{sub.updatedAt.toString()}</Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
+                </TabPanel>
+                <TabPanel>
+                  <TableContainer>
+                    <Table variant="simple">
+                      <Thead>
+                        <Tr>
+                          <Th>Service</Th>
+                          <Th>Video ID</Th>
+                          <Th>Language</Th>
+                          <Th isNumeric>Point</Th>
+                          <Th>Created At</Th>
+                          <Th>Updated At</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {requests.map((request) => (
+                          <Tr key={request.id}>
+                            <Td>{request.serviceId}</Td>
+                            <Td>
+                              {request.videoId}
+                              <Button
+                                onClick={() => {
+                                  window.location.href = `https://www.youtube.com/watch?v=${request.videoId}`;
+                                }}
+                              >
+                                Go
+                              </Button>
+                            </Td>
+                            <Td>{request.lang}</Td>
+                            <Td isNumeric>{request.point}</Td>
+                            <Td>{request.createdAt.toString()}</Td>
+                            <Td>{request.updatedAt?.toString()}</Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
+                </TabPanel>
+                <TabPanel>
+                  <TableContainer>
+                    <Table variant="simple">
+                      <Thead>
+                        <Tr>
+                          <Th>Type</Th>
+                          <Th isNumeric>Amount</Th>
+                          <Th>Approved at</Th>
+                          <Th>Payment key</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {orders.map((order) => (
+                          <Tr key={order.id}>
+                            <Td>{order.type}</Td>
+                            <Td isNumeric>{order.amount}</Td>
+                            <Td>{order.approvedAt?.toString()}</Td>
+                            <Td>{order.paymentKey}</Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
+                </TabPanel>
+                <TabPanel>
+                  <TableContainer>
+                    <Table variant="simple">
+                      <Thead>
+                        <Tr>
+                          <Th>Sub ID</Th>
+                          <Th>viewAt</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {subHistories.map((history) => (
+                          <Tr key={history.id}>
+                            <Td>{history.subId}</Td>
+                            <Td>{history.viewAt.toString()}</Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </DrawerBody>
+
+          <DrawerFooter>
+            <Button variant="outline" mr={3} onClick={onClose}>
+              Dismiss
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </>
+  );
+}
 
 type UpdateButtonProps = {
   user: User;
@@ -259,7 +444,7 @@ export default function AdminUser() {
       <Center>
         <Text>전체 유저 : {data?.length}명</Text>
       </Center>
-      <TableContainer mt="20px">
+      <TableContainer mt="20px" maxHeight="95%" overflowY="auto">
         <Table variant="simple" size="sm">
           <Thead>
             <Tr>
@@ -282,6 +467,7 @@ export default function AdminUser() {
                 <Td>{user.createdAt.toString()}</Td>
                 <Td>{user.updatedAt?.toString()}</Td>
                 <Td>
+                  <DetailButton id={user.id} />
                   <UpdateButton user={user} mutate={mutate} />
                   <DeleteButton id={user.id} />
                   <CopyToClipboard text={user.id}>

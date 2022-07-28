@@ -1,7 +1,30 @@
-import { Role, User } from "@prisma/client";
+import { Order, Role, Sub, SubHistory, User, Request } from "@prisma/client";
 import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 
-async function UserGet({ res, prisma }: RouteParams<User[]>) {
+type UserWithDetail = User & {
+  subs: Sub[];
+  requests: Request[];
+  orders: Order[];
+  subHistories: SubHistory[];
+};
+
+async function UserGet({
+  req,
+  res,
+  prisma,
+}: RouteParams<User[] | UserWithDetail>) {
+  if (req.query.id) {
+    const user = await prisma.user.findUniqueOrThrow({
+      where: { id: req.query.id as string },
+      include: {
+        subs: true,
+        requests: true,
+        orders: true,
+        subHistories: true,
+      },
+    });
+    return res.status(200).json(user);
+  }
   const users = await prisma.user.findMany();
   return res.json(users);
 }
