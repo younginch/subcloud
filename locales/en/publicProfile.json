@@ -20,6 +20,7 @@
   "fufilledGraph_time": "times",
   "userRatingComponent_rate": "User Rating",
   "userRatingComponent_user": "From all users",
+  "userRatingComponent_unrated": "No user reviews",
   "userActivity_stat": "Subtitle Production Statistics",
   "userActivity_sub": "Number of subtitles",
   "userActivity_view": "Total views",
