@@ -1,13 +1,13 @@
 {
-  "placeholder": "search...",
-  "punchline": "Request and Upload subtitles for Youtube",
-  "download": "Download",
+  "placeholder": "búsqueda...",
+  "punchline": "Solicitar y Subir subtítulos para Youtube",
+  "download": "Descargar",
   "legal": "Legal",
-  "business": "Business information",
-  "business_name": "Business name: Younginch Lab.Co., Ltd.",
-  "company_registration_number": "Company Registration Number: 468-81-02692",
-  "representative": "Representative: Myeongjin Shin, Mingyu Lee",
-  "business_address": "Business Address: 12108 63, Byeollae 4-ro, Namyangju-si, Gyeonggi-do, Republic of Korea, 3408-703",
+  "business": "Información de negocios",
+  "business_name": "Nombre del Negocio: Younginch Lab.Co., Ltd.",
+  "company_registration_number": "Número de registro de la compañía: 468-81-02692",
+  "representative": "Representante: Myeongjin Shin, Mingyu Lee",
+  "business_address": "Dirección de Negocios: 12108 63, Byeollae 4-ro, Namyangju-si, Gyeonggi-do, Republic of Korea, 3408-703",
   "business_address_end": "(Byeollae-dong, Shinil Utoville Apt)",
   "tel": "tel.010-3422-2418"
 }
