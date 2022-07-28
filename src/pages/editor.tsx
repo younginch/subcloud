@@ -204,8 +204,8 @@ function EditorWithoutContext() {
           </ReflexContainer>
         </ReflexElement>
 
-        {!showTimeline && <ReflexSplitter propagate />}
-        {!showTimeline && (
+        {showTimeline && <ReflexSplitter propagate />}
+        {showTimeline && (
           <ReflexElement
             minSize={100}
             size={120}
