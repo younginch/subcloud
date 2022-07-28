@@ -107,6 +107,7 @@ function EditorMenu({ title, items }: EditorMenuProps) {
 }
 
 function HomeAlertDialog() {
+  const { t } = useTranslation("editor");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
@@ -125,16 +126,14 @@ function HomeAlertDialog() {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              홈 화면으로 돌아가기
+              {t("home")}
             </AlertDialogHeader>
 
-            <AlertDialogBody>
-              현재 저장하지 않은 내용은 모두 삭제됩니다.
-            </AlertDialogBody>
+            <AlertDialogBody>{t("unsave")}</AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
-                취소
+                {t("delete_small")}
               </Button>
               <Button
                 colorScheme="red"
@@ -144,7 +143,7 @@ function HomeAlertDialog() {
                 }}
                 ml={3}
               >
-                돌아가기
+                {t("back")}
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -230,7 +229,7 @@ export default function Menus() {
             command: "TOGGLE_SUBTITLE_PROPERTIES",
           },
           {
-            title: "현재 포커스된 자막으로 이동",
+            title: t("move_sub"),
             icon: <EditIcon />,
             command: "GOTO_FOCUSED_CONTENT",
           },
