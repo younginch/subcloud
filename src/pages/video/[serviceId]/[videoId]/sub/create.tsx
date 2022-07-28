@@ -245,7 +245,7 @@ export default function SubCreate() {
               {...getRootProps()}
               bg={useColorModeValue(
                 isDragActive ? "blue.100" : "blue.50",
-                isDragActive ? "blue.800" : "blue.900"
+                isDragActive ? "blue.800" : "#333f50"
               )}
               _hover={{
                 bg: useColorModeValue("blue.100", "blue.800"),
