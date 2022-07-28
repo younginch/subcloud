@@ -1,4 +1,8 @@
 {
+  "home": "Back to home",
+  "unsave": "Unsaved content will be deleted.",
+  "delete_small": "Delete",
+  "back": "Back",
   "file": "File(F)",
   "new_page": "New page",
   "open_youtube": "Open Youtube video",
@@ -14,6 +18,7 @@
   "view": "View(V)",
   "timeline": "Show/Hide Timeline",
   "sub_property": "Show/Hide subtitle properties",
+  "move_sub": "Go to the subtitle you are currently viewing",
   "play": "Play(Y)",
   "upload_sub": "Upload Subtitle",
   "file_drop": "Put your file here",
