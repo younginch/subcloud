@@ -1,0 +1,17 @@
+{
+  "accordion_title_service": "How to use SubCloud's service?",
+  "store_link": "(Store Link) ",
+  "accordion_title_service_ex": "You can download it from the extension store. Currently, only Chrome, Naver Whale, and Edge are supported. Support for mobile applications and Safari and Firefox will be added soon.",
+  "accordion_title_no_sub": "Subtitles are not visible in the video.",
+  "accordion_title_no_sub_ex": "First, make sure you have installed the extension in your browser. If you do not see subtitles even after installing, you can use [Subtitle Request] as the video does not have subtitles yet. If you can't see the subtitles even though there are subtitles, try refreshing. If the error persists, please feel free to contact us via chat.",
+  "accordion_title_upload": "How to upload subtitles?",
+  "accordion_title_upload_ex": "If you use the [Making Subtitles] item on the website, or if you are using an extension, you can upload the video with the video you want to upload open. Please note that even if you select a subtitle file, it will not be sent directly to the server. After selecting a file and reviewing it through preview, it is sent to the server only by clicking the [Send] button. Uploaded subtitles will be reviewed by SubCloud and then made available for all to see.",
+  "accordion_title_unvisible": "Why can't I see the subtitles I uploaded?",
+  "accordion_title_unvisible_ex": "SubCloud reviews and registers all subtitles to provide quality subtitles. You can check the review progress of uploaded subtitles in [ Profile > Video Subtitles ]. Subtitles will be made available to everyone upon approval. If the subtitles are rejected, they will be automatically reviewed when re-uploading.",
+  "accordion_title_legal": "Are there any legal issues?",
+  "accordion_title_legal_ex": "In accordance with Article 102 of the Korean Copyright Act, SubCloud implements standard technical measures to protect copyrighted works. However, please be aware that materials may be deleted without warning if copyright infringement materials are distributed.",
+  "accordion_title_point": "What is point?",
+  "accordion_title_point_ex": "Points are required for requesting subtitles within SubCloud, and are goods received when creating subtitles. It can be purchased for a fee and can be withdrawn in exchange for cash. If you are a premium user, we give you a certain amount for free every month.",
+  "accordion_title_refund": "How can I get a refund?",
+  "accordion_title_refund_ex": "The points you purchase will remain permanently until you use them. You can get a full refund within one month of purchase, and only 60% after one month. Points used to produce subtitles cannot be refunded regardless of the period."
+}

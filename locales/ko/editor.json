@@ -1,4 +1,8 @@
 {
+  "home": "홈 화면으로 돌아가기",
+  "unsave": "현재 저장하지 않은 내용은 모두 삭제됩니다.",
+  "delete_small": "취소",
+  "back": "돌아가기",
   "file": "파일(F)",
   "new_page": "새 창",
   "open_youtube": "유튜브 동영상 열기...",
@@ -14,6 +18,7 @@
   "view": "보기(V)",
   "timeline": "타임라인 보기/가리기",
   "sub_property": "자막 속성 보기/가리기",
+  "move_sub": "현재 보고있는 자막으로 이동",
   "play": "재생(Y)",
   "upload_sub": "자막 업로드",
   "file_drop": "파일을 여기에 놓으세요",
