@@ -325,6 +325,7 @@ export function EditorProvider({ children }: EditorProviderProps) {
         },
         focusContent: (index) => {
           refArray?.current?.scrollToItem(index);
+          setFocusedIndex(index);
         },
         setRefArray: (refArray) => {
           setRefArray(refArray);
