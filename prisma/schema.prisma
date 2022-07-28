@@ -125,6 +125,8 @@ model Request {
   lang          String
   point         Int            @default(0)
   requestPoints RequestPoint[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime?      @updatedAt
 
   @@unique([serviceId, videoId, lang])
 }
