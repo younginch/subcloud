@@ -69,7 +69,7 @@ export default function SubtitleDashboard({ user, subs }: Props) {
                 {t("subtitleDashboard_lang")}
               </Text>
               <Text color={subTextColor} fontSize="sm">
-                Top 3 Language
+                Top {langs.length} Language
               </Text>
             </Flex>
           </CardHeader>
