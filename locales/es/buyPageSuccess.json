@@ -1,0 +1,18 @@
+{
+  "profile_button": "ir al perfil",
+  "request_button": "Solicitar subtítulo",
+  "payment": "Monto",
+  "unit": "€",
+  "copy": "Copiar",
+  "copied": "Copiado",
+  "order_sucess_error": "No se pudo obtener la información del pedido",
+  "order_sucess": "Pago completo",
+  "sucess_p1": "Usa puntos para solicitar subtítulos. Consigue los subtítulos lo antes posible",
+  "sucess_p2": "Si se cancela la solicitud, recibirá sus puntos de vuelta",
+  "sucess_p3": "Al suscribirse al servicio premium, puede ganar 80 puntos de forma regular",
+  "order_payment_id": "ID de pago",
+  "subscribe_sucess": "Suscripción completa",
+  "subscription_sucess_error": "No se pudo obtener la información de suscripción",
+  "subscription_sucess_card_info": "Información de la tarjeta",
+  "subscription_sucess_subcribe_id": "ID de suscripción"
+}
