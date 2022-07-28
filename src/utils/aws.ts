@@ -1,4 +1,9 @@
-import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import {
+  DeleteObjectsCommand,
+  GetObjectCommand,
+  ListObjectsCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 export const configuredBucket =
@@ -22,4 +27,22 @@ export async function getS3Url(key: string) {
   const command = new GetObjectCommand(getObjectParams);
   const url = await getSignedUrl(configuredS3, command, { expiresIn: 60 });
   return url;
+}
+
+export async function deleteAllObjects() {
+  const listObjectsParams = {
+    Bucket: configuredBucket,
+  };
+  const listObjectsCommand = new ListObjectsCommand(listObjectsParams);
+  const listObjectsResult = await configuredS3.send(listObjectsCommand);
+  const deleteObjectsParams = {
+    Bucket: configuredBucket,
+    Delete: {
+      Objects: listObjectsResult.Contents?.map((content) => ({
+        Key: content.Key,
+      })),
+    },
+  };
+  const deleteObjectsCommand = new DeleteObjectsCommand(deleteObjectsParams);
+  await configuredS3.send(deleteObjectsCommand);
 }
