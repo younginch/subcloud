@@ -72,11 +72,21 @@ export default function EditLeftPanel() {
       >
         {t("add_sub")}
       </Button>
-      <Button rightIcon={<FaSave />} onClick={downloadSRT} colorScheme="blue">
+      <Button
+        rightIcon={<FaSave />}
+        onClick={downloadSRT}
+        colorScheme="blue"
+        w="full"
+      >
         {t("save_srt")}
       </Button>
       <Tooltip label="Comming soon!">
-        <Button rightIcon={<BiHelpCircle />} colorScheme="blue" isDisabled>
+        <Button
+          rightIcon={<BiHelpCircle />}
+          colorScheme="blue"
+          isDisabled
+          w="full"
+        >
           {t("how_use")}
         </Button>
       </Tooltip>

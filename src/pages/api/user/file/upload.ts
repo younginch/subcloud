@@ -20,7 +20,6 @@ const awsStorage = multerS3({
   s3: configuredS3,
   bucket: configuredBucket,
   contentType: multerS3.AUTO_CONTENT_TYPE,
-  acl: "public-read",
   metadata(req: any, file: any, cb: any) {
     cb(null, { fieldName: file.fieldname });
   },

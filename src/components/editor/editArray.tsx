@@ -236,7 +236,7 @@ function EndTimestamp({ index }: { index: number }) {
 }
 
 function Row({ index, style }: ListChildComponentProps) {
-  const { contents, execute, getPlayerTime, duration } =
+  const { contents, execute, getPlayerTime, duration, focusedIndex } =
     useContext(EditorContext);
   let showButton = true;
   if (
@@ -245,10 +245,15 @@ function Row({ index, style }: ListChildComponentProps) {
   )
     showButton = false;
   const addButtonBg = useColorModeValue("white", "gray.800");
+  const focusedBg = useColorModeValue("blue.50", "#333333");
 
   return (
     <HStack>
-      <HStack position="relative" style={style}>
+      <HStack
+        position="relative"
+        style={style}
+        bg={index === focusedIndex ? focusedBg : "none"}
+      >
         <Stack alignItems="center" w="70px" h="100%" justifyContent="center">
           <Text>{index + 1}</Text>
         </Stack>
