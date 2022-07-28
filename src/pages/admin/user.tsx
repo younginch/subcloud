@@ -444,7 +444,7 @@ export default function AdminUser() {
       <Center>
         <Text>전체 유저 : {data?.length}명</Text>
       </Center>
-      <TableContainer mt="20px">
+      <TableContainer mt="20px" maxHeight="95%" overflowY="auto">
         <Table variant="simple" size="sm">
           <Thead>
             <Tr>
