@@ -15,18 +15,26 @@ import {
   Thead,
   Tr,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { Role } from "@prisma/client";
+import axios from "axios";
 import { useRef } from "react";
-import { deleteAllObjects } from "../../utils/aws";
 import { PageOptions } from "../../utils/types";
 
 function DeleteAllButton() {
+  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
 
   const onConfirm = () => {
-    deleteAllObjects();
+    axios.delete(`/api/admin/file`).then(() => {
+      toast({
+        title: "Success",
+        description: "All files deleted",
+        status: "success",
+      });
+    });
     onClose();
   };
 
