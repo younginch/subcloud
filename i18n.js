@@ -6,7 +6,7 @@ module.exports = {
 
     "/": ["landing"],
 
-    "/auth": ["auth"],
+    "rgx:^/auth": ["auth"],
 
     "rgx:^/buy": ["goods", "buyPageProcess", "buyPageSuccess", "buyPageFail"],
 

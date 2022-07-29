@@ -27,6 +27,7 @@ import {
 import { Withdraw } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import useTranslation from "next-translate/useTranslation";
 import { useForm } from "react-hook-form";
 import useSWR, { KeyedMutator } from "swr";
 import { PageOptions } from "../../../utils/types";
@@ -42,6 +43,7 @@ type CreateWithdrawFormData = {
 };
 
 function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
+  const { t } = useTranslation("privateProfile");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const {
@@ -84,7 +86,7 @@ function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
         onClick={onOpen}
         w="150px"
       >
-        새 출금 요청
+        {t("withdraws_request")}
       </Button>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
@@ -92,24 +94,30 @@ function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
           <form onSubmit={handleSubmit(onSubmit)}>
             <DrawerCloseButton />
             <DrawerHeader borderBottomWidth="1px">
-              새 포인트 출금 요청
+              {t("withdraws_req_point")}
             </DrawerHeader>
             <DrawerBody>
               <Stack spacing="24px">
                 <FormControl isInvalid={errors.point !== undefined}>
-                  <FormLabel htmlFor="point">요청 포인트</FormLabel>
+                  <FormLabel htmlFor="point">{t("withdraws_point")}</FormLabel>
                   <Input
                     id="point"
-                    placeholder="Please enter point to withdraw"
+                    placeholder={t("withdraws_placeholder")}
                     {...register("point", { required: true })}
                   />
                   <FormErrorMessage>
                     {errors.point && errors.point.message}
                   </FormErrorMessage>
                 </FormControl>
-                <Text>예상 입금 금액: {watch().point * 10} 원</Text>
+                <Text>
+                  {t("withedraws_expecatation_dollor")}
+                  {t("withedraws_expecatation")}
+                  {watch().point * 10} {t("withedraws_expecatation_won")}
+                </Text>
                 <FormControl isInvalid={errors.bankName !== undefined}>
-                  <FormLabel htmlFor="bankName">은행</FormLabel>
+                  <FormLabel htmlFor="bankName">
+                    {t("withedraws_bank")}
+                  </FormLabel>
                   <Input
                     id="bankName"
                     placeholder=""
@@ -120,7 +128,9 @@ function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
                   </FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={errors.accountNumber !== undefined}>
-                  <FormLabel htmlFor="accountNumber">계좌번호</FormLabel>
+                  <FormLabel htmlFor="accountNumber">
+                    {t("withedraws_number")}
+                  </FormLabel>
                   <Input
                     id="accountNumber"
                     placeholder=""
@@ -134,10 +144,10 @@ function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
             </DrawerBody>
             <DrawerFooter borderTopWidth="1px">
               <Button variant="outline" mr={3} onClick={onClose}>
-                취소
+                {t("withedraws_button_front")}
               </Button>
               <Button colorScheme="blue" type="submit" isLoading={isSubmitting}>
-                요청
+                {t("withedraws_button_end")}
               </Button>
             </DrawerFooter>
           </form>
@@ -148,6 +158,7 @@ function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
 }
 
 export default function UserMyWithdraw() {
+  const { t } = useTranslation("privateProfile");
   const session = useSession();
   const { data, mutate } = useSWR<Withdraw[]>(
     `/api/withdraw?userId=${session.data?.user.id}`
@@ -160,11 +171,11 @@ export default function UserMyWithdraw() {
         <Table size="sm">
           <Thead>
             <Tr>
-              <Th>신청금액 (원)</Th>
-              <Th>입금계좌</Th>
-              <Th>신청 일시</Th>
-              <Th>처리 완료 여부</Th>
-              <Th>처리 일시</Th>
+              <Th>{t("withdraws_amount")}</Th>
+              <Th>{t("withdraws_account")}</Th>
+              <Th>{t("withdraws_date")}</Th>
+              <Th>{t("withdraws_status")}</Th>
+              <Th>{t("withdraws_processing")}</Th>
             </Tr>
           </Thead>
           <Tbody>
