@@ -50,22 +50,17 @@ function SiteMap() {
       <WrapItem>
         <Stack>
           <Heading size="sm">{t("download")}</Heading>
-          <NextLink
-            href="https://chrome.google.com/webstore/detail/subcloud/ocjfkiipkmckngedlljnkackhohcffpa?hl=ko"
-            passHref
-          >
-            <Text fontSize="xs">SubCloud for Chrome</Text>
-          </NextLink>
-          <NextLink href="#" passHref>
-            <Text fontSize="xs" color="gray.500">
-              SubCloud for Safari
+          <Link href="https://chrome.google.com/webstore/detail/subcloud/ocjfkiipkmckngedlljnkackhohcffpa?hl=ko">
+            <Text fontSize="xs" cursor="pointer">
+              SubCloud for Chrome
             </Text>
-          </NextLink>
-          <NextLink href="#" passHref>
-            <Text fontSize="xs" color="gray.500">
-              SubCloud for Firefox
-            </Text>
-          </NextLink>
+          </Link>
+          <Text fontSize="xs" color="gray.500">
+            SubCloud for Safari
+          </Text>
+          <Text fontSize="xs" color="gray.500">
+            SubCloud for Firefox
+          </Text>
         </Stack>
       </WrapItem>
       <WrapItem>
