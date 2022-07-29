@@ -42,7 +42,6 @@ export default function UserMyIndex() {
   const views = subs?.reduce((prev: number, curr: Sub) => prev + curr.views, 0);
   const panelColor = useColorModeValue("white", "gray.700");
   const [isPc] = useMediaQuery("(min-width: 1180px)");
-  console.log(isPc);
 
   return (
     <Stack w="100%">
