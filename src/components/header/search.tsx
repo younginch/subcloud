@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function Search() {
-  const { t } = useTranslation("menu");
+  const { t } = useTranslation("marginals");
   const router = useRouter();
   const [value, setValue] = useState("");
 

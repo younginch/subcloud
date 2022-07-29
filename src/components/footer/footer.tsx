@@ -33,7 +33,7 @@ function FooterLink({ route }: Props) {
 }
 
 function SiteMap() {
-  const { t } = useTranslation("menu");
+  const { t } = useTranslation("marginals");
   return (
     <Wrap padding={6} spacing={20}>
       <WrapItem>
