@@ -45,7 +45,7 @@ export default function UserMyIndex() {
   console.log(isPc);
 
   return (
-    <Stack w="fit-content">
+    <Stack w="100%">
       <HStack
         marginBottom="10px"
         bg={panelColor}
