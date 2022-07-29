@@ -2,27 +2,28 @@ module.exports = {
   locales: ["ko", "en", "es", "ja"],
   defaultLocale: "en",
   pages: {
-    "*": [
-      "auth",
-      "buyPageSuccess",
-      "buyPageFail",
-      "buyPageProcess",
-      "common",
-      "create",
-      "landing",
-      "editor",
-      "goods",
-      "routes",
-      "menu",
-      "privateProfile",
-      "publicProfile",
-      "qna",
-      "rankings",
-      "terms",
-      "uninstall",
-      "uploadSub",
-      "videoRequest",
-    ],
-    "/": ["common"],
+    "*": ["common", "marginals", "routes"],
+
+    "/": ["landing"],
+
+    "/auth": ["auth"],
+
+    "rgx:^/buy": ["goods", "buyPageProcess", "buyPageSuccess", "buyPageFail"],
+
+    "/editor": ["editor"],
+
+    "/uninstall": ["uninstall"],
+
+    "rgx:^/video": ["create", "uploadSub", "videoRequest"],
+
+    "rgx:^/user": ["publicProfile"],
+
+    "rgx:^/user/my": ["privateProfile"],
+
+    "/qna": ["qna"],
+
+    "/info/terms": ["terms"],
+
+    "rgx:^/ranking": ["rankings"],
   },
 };
