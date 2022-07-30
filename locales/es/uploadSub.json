@@ -1,0 +1,22 @@
+{
+  "preview": "Avance",
+  "preview_tooltip": "Si subes usando la extensión, puedes obtener una vista previa en YouTube",
+  "upload_vid": "Subir vídeo",
+  "select_lang": "Seleccione el idioma",
+  "require_file": "Por favor sube el archivo",
+  "select_lang_ex": "Si selecciona un idioma diferente al contenido de los subtítulos, la revisión puede ser rechazada",
+  "upload_sub": "Subir subtítulo",
+  "edit": "Editar en SubCloud",
+  "file_drop": "Pon tu archivo aquí",
+  "click_drag": "Sube subtítulos haciendo clic o arrastrando y soltando",
+  "point": "Punto ganado",
+  "point_ex": "Los puntos se otorgan al aprobar la revisión.",
+  "upload_summary": "Subir resumen",
+  "vid_title": "Titulo del Video",
+  "sub_file": "Nombre del archivo de subtítulos",
+  "sub_lang": "Idioma de los subtítulos",
+  "upload_req": "Subir solicitud",
+  "fulfilled": "Cumplido",
+  "fulfilled_ex": "Se actualizará a medida que pase la revisión.",
+  "check_subtitle_lang_required": "Seleccione el idioma de los subtítulos"
+}

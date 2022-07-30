@@ -1,0 +1,20 @@
+{
+  "req_vid": "Vídeo solicitado",
+  "view_ko": "",
+  "view_en": " Views",
+  "subscriber_ko": "",
+  "subscriber_en": " Subscribers",
+  "select_lang": "Seleccione el idioma",
+  "basic_lang": "Guardar como idioma básico",
+  "point": "Point",
+  "point_reset": "Reiniciar",
+  "req_summary": "Resumen de la solicitud",
+  "vid_title": "Titulo del Video",
+  "vid_length": "Duración del vídeo",
+  "min": "m",
+  "sec": "s",
+  "req_lang": "Solicitar idioma",
+  "upload_req": "Subir solicitud",
+  "check_subtitle_lang_required": "Seleccione el idioma de los subtítulos",
+  "no_info": "Sin información"
+}

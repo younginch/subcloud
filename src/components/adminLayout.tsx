@@ -45,6 +45,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       text: "포인트 송금",
     },
     { icon: <RiSlideshow3Fill />, href: "/admin/notice", text: "공지하기" },
+    { icon: <RiSlideshow3Fill />, href: "/admin/file", text: "파일" },
   ];
   return (
     <HStack h="100%" overflowX="auto">

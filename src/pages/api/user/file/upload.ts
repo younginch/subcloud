@@ -1,6 +1,4 @@
 import { createRouter } from "next-connect";
-import multer, { FileFilterCallback } from "multer";
-import multerS3 from "multer-s3";
 import type e from "express";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
@@ -9,44 +7,12 @@ import ResError, {
   setCORS,
   SubErrorType,
 } from "../../../../utils/types";
-import { configuredBucket, configuredS3 } from "../../../../utils/aws";
 import prisma from "../../../../utils/prisma";
+import { upload } from "../../../../utils/aws";
 
 interface NextApiRequestWithFile extends NextApiRequest {
   file: Express.MulterS3.File;
 }
-
-const awsStorage = multerS3({
-  s3: configuredS3,
-  bucket: configuredBucket,
-  contentType: multerS3.AUTO_CONTENT_TYPE,
-  metadata(req: any, file: any, cb: any) {
-    cb(null, { fieldName: file.fieldname });
-  },
-  key(req: any, file: any, cb: any) {
-    cb(null, `${Date.now()}_${file.originalname}`);
-  },
-});
-
-function fileFilter(
-  _: e.Request,
-  file: Express.Multer.File,
-  callback: FileFilterCallback
-) {
-  if (file.mimetype === "text/plain") {
-    callback(null, true);
-  } else {
-    callback(new Error("File type is not for subtitle"));
-  }
-}
-
-const upload = multer({
-  storage: awsStorage,
-  fileFilter,
-  limits: {
-    fileSize: 1024 * 1024 * 5,
-  },
-});
 
 const expressWrapper =
   (middleware: e.RequestHandler) =>
