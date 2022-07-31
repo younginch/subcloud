@@ -76,6 +76,7 @@ function SiteMap() {
           <Heading size="sm">{t("business")}</Heading>
           <Text fontSize="xs">{t("business_name")}</Text>
           <Text fontSize="xs">{t("company_registration_number")}</Text>
+          <Text fontSize="xs">{t("company_mail_order_sale_number")}</Text>
           <Text fontSize="xs">{t("representative")}</Text>
           <Text fontSize="xs">
             {t("business_address")} <br />
