@@ -47,7 +47,7 @@ export default function TimeLineMarker() {
   } = useContext(EditorContext);
 
   const ref = useRef<HTMLDivElement>(null);
-  console.log("render!!", getPlayerTime());
+
   useEffect(() => {
     if (ref.current) ref.current.style.marginLeft = `0px`;
   }, [state]);
