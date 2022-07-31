@@ -44,7 +44,7 @@ export default function UserMyIndex() {
   const [isPc] = useMediaQuery("(min-width: 1180px)");
 
   return (
-    <Stack w="fit-content">
+    <Stack w="100%">
       <HStack
         marginBottom="10px"
         bg={panelColor}

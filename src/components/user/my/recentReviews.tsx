@@ -26,7 +26,7 @@ export default function RecentReviews() {
   if (!reviewData || reviewData.length === 0) {
     return (
       <Stack alignItems="center" spacing={5} pt={5} pb={10}>
-        <FiBox size={50} />
+        <FiBox size={80} />
         <Text fontSize="20px">{t("dash_no_review")}</Text>
       </Stack>
     );

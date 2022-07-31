@@ -43,7 +43,6 @@ export default function TimeLineMarker() {
     setPlayerTime,
     state,
     setState,
-    forceRerender,
     duration,
   } = useContext(EditorContext);
 
@@ -51,7 +50,7 @@ export default function TimeLineMarker() {
 
   useEffect(() => {
     if (ref.current) ref.current.style.marginLeft = `0px`;
-  }, [state, forceRerender]);
+  }, [state]);
 
   const initialLeft =
     ((getPlayerTime() - leftTime) / (rightTime - leftTime)) * 6000;
