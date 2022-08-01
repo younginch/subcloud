@@ -20,7 +20,7 @@ import ProfileModal from "./profileModal";
 export default function ToolBar(): JSX.Element {
   const { data: session, status } = useSession();
   const notifyCount = 0;
-  const bellColor = useColorModeValue("#222266", "#aaaaff");
+  const bellColor = useColorModeValue("#6688cc", "#aaaaff");
   const router = useRouter();
 
   if (status === "authenticated") {
