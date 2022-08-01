@@ -12,16 +12,22 @@ import {
   Stack,
   Text,
   useColorModeValue,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import Notify from "../notify/notify";
 import ProfileModal from "./profileModal";
 
 export default function ToolBar(): JSX.Element {
   const { data: session, status } = useSession();
-  const notifyCount = 0;
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const bellColor = useColorModeValue("#6688cc", "#aaaaff");
-  const router = useRouter();
+  const notifyCount = 0;
 
   if (status === "authenticated") {
     return (
@@ -33,9 +39,7 @@ export default function ToolBar(): JSX.Element {
             h="32px"
             mr="10px !important"
             cursor="pointer"
-            onClick={() => {
-              router.push("/user/my/notify");
-            }}
+            onClick={onOpen}
           />
           {notifyCount > 0 && (
             <Text
@@ -54,6 +58,15 @@ export default function ToolBar(): JSX.Element {
             </Text>
           )}
         </Box>
+        <Drawer placement="right" onClose={onClose} isOpen={isOpen} size="lg">
+          <DrawerOverlay />
+          <DrawerContent>
+            <DrawerHeader borderBottomWidth="1px">알림 센터</DrawerHeader>
+            <DrawerBody>
+              <Notify />
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
         <Popover placement="bottom-start">
           <PopoverTrigger>
             <Avatar size="sm" src={session.user.image ?? undefined} />
