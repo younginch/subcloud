@@ -70,7 +70,7 @@ export default function Notify() {
     },
   ];
 
-  if (unreadNotifications.length === 2 && readNotifications.length === 2) {
+  if (unreadNotifications.length === 0 && readNotifications.length === 0) {
     return (
       <DrawerContent>
         <DrawerHeader borderBottomWidth="1px">{t("notification")}</DrawerHeader>
