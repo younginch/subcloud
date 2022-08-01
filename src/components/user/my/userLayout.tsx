@@ -15,6 +15,7 @@ import { AiOutlineHistory } from "react-icons/ai";
 import { IoIosSend } from "react-icons/io";
 import { BsCashStack } from "react-icons/bs";
 import useTranslation from "next-translate/useTranslation";
+import { BellIcon } from "@chakra-ui/icons";
 import MyMenuItem from "./myMenuItem";
 import { SubcloudIcon } from "../../icons/customIcons";
 import { PageOptions } from "../../../utils/types";
@@ -32,6 +33,11 @@ export default function UserLayout({ children }: UserLayoutProps) {
       icon: <MdSpaceDashboard color="inherit" />,
       href: "/user/my",
       text: t("dashboard"),
+    },
+    {
+      icon: <BellIcon color="inherit" w="18px" h="18px" />,
+      href: "/user/my/notify",
+      text: t("notification"),
     },
     { icon: <IoIosSend />, href: "/user/my/request", text: t("my_request") },
     {

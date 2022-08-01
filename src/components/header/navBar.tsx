@@ -27,9 +27,11 @@ export default function NavBar(): JSX.Element {
   const { t } = useTranslation("common");
   const [isLarge] = useMediaQuery("(min-width: 840px)");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const showSearch = false;
 
   return (
     <Box
+      as={Flex}
       bg={
         colorMode === "light"
           ? "rgba(255, 255, 255, 0.7)"
@@ -57,7 +59,8 @@ export default function NavBar(): JSX.Element {
         paddingStart={isLarge ? 6 : 3}
         paddingEnd={isLarge ? 9 : 3}
         h="100%"
-        width="100%"
+        w="1300px"
+        maxW="100%"
         zIndex={10}
         marginStart="auto"
         marginEnd="auto"
@@ -74,11 +77,15 @@ export default function NavBar(): JSX.Element {
         <Heading size="md" marginX="6px" onClick={onClose}>
           <Link href="/">{t("title")}</Link>
         </Heading>
-        <Flex flex={1}>
+        {showSearch ? (
+          <Flex flex={1}>
+            <Spacer />
+            <Search />
+            <Spacer />
+          </Flex>
+        ) : (
           <Spacer />
-          <Search />
-          <Spacer />
-        </Flex>
+        )}
         {!isLarge && <ToolBar />}
         {isLarge ? (
           <Links />
@@ -95,7 +102,12 @@ export default function NavBar(): JSX.Element {
             </DrawerOverlay>
           </Drawer>
         )}
-        {isLarge && <ToolBar />}
+        {isLarge && (
+          <>
+            <Spacer />
+            <ToolBar />
+          </>
+        )}
       </HStack>
     </Box>
   );
