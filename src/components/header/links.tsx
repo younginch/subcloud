@@ -1,18 +1,32 @@
 import React from "react";
-import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import {
+  Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { useRouter } from "next/router";
 
 type LinkButtonProps = {
   route: string;
   width?: string;
   onClick?: () => void;
+  highlighted?: boolean;
 };
+const highlightedColorLight = "#3E3EEE";
+const highlightedColorDark = "#99aaff";
 
-function LinkButton({ route, width, onClick }: LinkButtonProps) {
+function LinkButton({ route, width, onClick, highlighted }: LinkButtonProps) {
   const { t } = useTranslation("routes");
-
+  const highlightedColor = useColorModeValue(
+    highlightedColorLight,
+    highlightedColorDark
+  );
   return (
     <Link href={`${route}`} passHref>
       <Button
@@ -22,6 +36,7 @@ function LinkButton({ route, width, onClick }: LinkButtonProps) {
         alignItems="start"
         width={width}
         onClick={onClick}
+        color={highlighted ? highlightedColor : ""}
       >
         {t(`${route}`)}
       </Button>
@@ -36,6 +51,23 @@ type LinksProps = {
 
 export default function Links({ width, onClick }: LinksProps) {
   const { t } = useTranslation("routes");
+  const router = useRouter();
+  const highlighted = [false, false, false, false, false];
+  const paths = router.pathname.split("/");
+  if (router.pathname === "/video/create") {
+    if (router.query.next === "request") highlighted[0] = true;
+    else highlighted[1] = true;
+  } else if (paths[1] === "ranking") {
+    highlighted[2] = true;
+  } else if (router.pathname === "/buy") {
+    highlighted[3] = true;
+  } else if (router.pathname === "/editor") {
+    highlighted[4] = true;
+  }
+  const highlightedColor = useColorModeValue(
+    highlightedColorLight,
+    highlightedColorDark
+  );
 
   return (
     <>
@@ -43,11 +75,13 @@ export default function Links({ width, onClick }: LinksProps) {
         route="/video/create?next=request"
         width={width}
         onClick={onClick}
+        highlighted={highlighted[0]}
       />
       <LinkButton
         route="/video/create?next=sub"
         width={width}
         onClick={onClick}
+        highlighted={highlighted[1]}
       />
       <Menu>
         <MenuButton
@@ -57,6 +91,7 @@ export default function Links({ width, onClick }: LinksProps) {
           textAlign="left"
           rightIcon={<ChevronDownIcon />}
           pr="12px"
+          color={highlighted[2] ? highlightedColor : ""}
         >
           {t("/ranking")}
         </MenuButton>
@@ -72,8 +107,18 @@ export default function Links({ width, onClick }: LinksProps) {
           </Link>
         </MenuList>
       </Menu>
-      <LinkButton route="/buy" width={width} onClick={onClick} />
-      <LinkButton route="/editor" width={width} onClick={onClick} />
+      <LinkButton
+        route="/buy"
+        width={width}
+        onClick={onClick}
+        highlighted={highlighted[3]}
+      />
+      <LinkButton
+        route="/editor"
+        width={width}
+        onClick={onClick}
+        highlighted={highlighted[4]}
+      />
     </>
   );
 }
