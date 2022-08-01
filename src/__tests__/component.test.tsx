@@ -1,7 +1,8 @@
-import { SubStatus } from "@prisma/client";
+import { NotifyType, ReviewType, SubStatus } from "@prisma/client";
 import { render } from "@testing-library/react";
 import { RefObject } from "react";
 import AdminLayout from "../components/adminLayout";
+import ReviewBadge from "../components/badges/reviewBadge";
 import ReviewStatusBadge from "../components/badges/reviewStatusBadge";
 import EventNotice from "../components/create/eventNotice";
 import ExplainBox from "../components/create/ExplainBox";
@@ -11,6 +12,7 @@ import TimeLine from "../components/editor/timeLine";
 import Links from "../components/header/links";
 import Search from "../components/header/search";
 import Layout from "../components/layout";
+import NotifyCard from "../components/notify/notifyCard";
 import Result from "../components/result";
 import SelectLanguage from "../components/selectLanguage";
 import UserLayout from "../components/user/my/userLayout";
@@ -84,6 +86,34 @@ describe("Components", () => {
     render(<TimeLine />);
   });
 
+  it("renders reviewBadge Etc", () => {
+    render(<ReviewBadge type={ReviewType.Etc} />);
+  });
+
+  it("renders reviewBadge GuidelineViolation", () => {
+    render(<ReviewBadge type={ReviewType.GuidelineViolation} />);
+  });
+
+  it("renders reviewBadge IncorrectLanguage", () => {
+    render(<ReviewBadge type={ReviewType.IncorrectLanguage} />);
+  });
+
+  it("renders reviewBadge IncorrectTiming", () => {
+    render(<ReviewBadge type={ReviewType.IncorrectTiming} />);
+  });
+
+  it("renders reviewBadge IncorrectTitle", () => {
+    render(<ReviewBadge type={ReviewType.IncorrectTitle} />);
+  });
+
+  it("renders reviewBadge Mistranslation", () => {
+    render(<ReviewBadge type={ReviewType.Mistranslation} />);
+  });
+
+  it("renders reviewBadge Mistranslation", () => {
+    render(<ReviewBadge type={ReviewType.Mistranslation} />);
+  });
+
   it("renders SubtitleComponent", () => {
     render(
       <SubtitleComponent
@@ -92,6 +122,88 @@ describe("Components", () => {
             current: { offsetWidth: 0, offsetHeight: 0 },
           } as unknown as RefObject<HTMLDivElement>
         }
+      />
+    );
+  });
+
+  it("renders SubtitleComponent", () => {
+    render(
+      <SubtitleComponent
+        boxRef={
+          {
+            current: { offsetWidth: 0, offsetHeight: 0 },
+          } as unknown as RefObject<HTMLDivElement>
+        }
+      />
+    );
+  });
+
+  it("render NotifyCard Announce", async () => {
+    render(
+      <NotifyCard
+        notifyType={NotifyType.Announce}
+        title="hello"
+        time="world"
+        content="content"
+        href="google.com"
+        onRemove={jest.fn()}
+        id="hello"
+      />
+    );
+  });
+
+  it("render NotifyCard Upload", async () => {
+    render(
+      <NotifyCard
+        notifyType={NotifyType.Upload}
+        title="hello"
+        time="world"
+        content="content"
+        href="google.com"
+        onRemove={jest.fn()}
+        id="hello"
+      />
+    );
+  });
+
+  it("render NotifyCard Review", async () => {
+    render(
+      <NotifyCard
+        notifyType={NotifyType.Review}
+        title="hello"
+        time="world"
+        content="content"
+        href="google.com"
+        onRemove={jest.fn()}
+        id="hello"
+      />
+    );
+  });
+
+  it("render NotifyCard StatusChange", async () => {
+    render(
+      <NotifyCard
+        notifyType={NotifyType.StatusChange}
+        title="hello"
+        time="world"
+        content="content"
+        href="google.com"
+        onRemove={jest.fn()}
+        id="hello"
+      />
+    );
+  });
+
+  it("render NotifyCard DEFAULT", async () => {
+    render(
+      <NotifyCard
+        notifyType={"bug" as NotifyType}
+        title="hello"
+        time="world"
+        content="content"
+        href="google.com"
+        onRemove={jest.fn()}
+        id="hello"
       />
     );
   });

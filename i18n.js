@@ -4,7 +4,7 @@ module.exports = {
   pages: {
     "*": ["common", "marginals", "routes"],
 
-    "/": ["landing"],
+    "/": ["landing", "notify"],
 
     "rgx:^/auth": ["auth"],
 

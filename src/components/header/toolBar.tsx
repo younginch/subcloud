@@ -13,10 +13,7 @@ import {
   Text,
   useColorModeValue,
   Drawer,
-  DrawerBody,
-  DrawerHeader,
   DrawerOverlay,
-  DrawerContent,
   useDisclosure,
 } from "@chakra-ui/react";
 import { signIn, useSession } from "next-auth/react";
@@ -60,12 +57,7 @@ export default function ToolBar(): JSX.Element {
         </Box>
         <Drawer placement="right" onClose={onClose} isOpen={isOpen} size="lg">
           <DrawerOverlay />
-          <DrawerContent>
-            <DrawerHeader borderBottomWidth="1px">알림 센터</DrawerHeader>
-            <DrawerBody>
-              <Notify />
-            </DrawerBody>
-          </DrawerContent>
+          <Notify />
         </Drawer>
         <Popover placement="bottom-start">
           <PopoverTrigger>
