@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { NotifyType } from "@prisma/client";
 import useTranslation from "next-translate/useTranslation";
+import { FiBox } from "react-icons/fi";
 import NotifyCard from "./notifyCard";
 
 type NotificationType = {
@@ -26,6 +27,7 @@ type NotificationType = {
 
 export default function Notify() {
   const { t } = useTranslation("notify");
+  const titleColor = useColorModeValue("gray.600", "gray.300");
 
   const unreadNotifications: NotificationType[] = [
     {
@@ -67,6 +69,21 @@ export default function Notify() {
       onRemove: () => null,
     },
   ];
+
+  if (unreadNotifications.length === 2 && readNotifications.length === 2) {
+    return (
+      <DrawerContent>
+        <DrawerHeader borderBottomWidth="1px">{t("notification")}</DrawerHeader>
+        <DrawerBody>
+          <Stack alignItems="center" spacing={5} h="100%" pt="20%">
+            <FiBox size={150} />
+            <Text fontSize="25px">{t("no_review")}</Text>
+          </Stack>
+        </DrawerBody>
+      </DrawerContent>
+    );
+  }
+
   return (
     <DrawerContent>
       <DrawerHeader borderBottomWidth="1px">{t("notification")}</DrawerHeader>
@@ -81,7 +98,7 @@ export default function Notify() {
             <Text
               fontSize={{ base: "12px", sm: "16px" }}
               textAlign="center"
-              color={useColorModeValue("gray.600", "gray.300")}
+              color={titleColor}
             >
               {t("detail")}
             </Text>
