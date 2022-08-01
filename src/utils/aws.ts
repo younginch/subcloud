@@ -39,7 +39,11 @@ function fileFilter(
   file: Express.Multer.File,
   callback: FileFilterCallback
 ) {
-  if (file.mimetype === "text/plain") {
+  if (
+    file.mimetype === "text/plain" ||
+    file.mimetype === "text/vtt" ||
+    file.mimetype === "application/octet-stream"
+  ) {
     callback(null, true);
   } else {
     callback(new Error("File type is not for subtitle"));
@@ -70,6 +74,7 @@ export async function deleteAllObjects() {
   };
   const listObjectsCommand = new ListObjectsCommand(listObjectsParams);
   const listObjectsResult = await configuredS3.send(listObjectsCommand);
+  console.log(listObjectsResult);
   const deleteObjectsParams = {
     Bucket: configuredBucket,
     Delete: {
