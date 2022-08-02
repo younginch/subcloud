@@ -58,7 +58,7 @@ model User {
   requests      Request[]
   files         File[]
   requestPoints RequestPoint[]
-  reviews       Review[]
+  reviewContents  ReviewContent[]
   orders        Order[]
   subHistories  SubHistory[]
   subscriptions Subscription[]
@@ -174,10 +174,20 @@ model SubHistory {
 
 model Review {
   id         String     @id @default(cuid())
-  reviewerId String
-  reviewer   User       @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
   subId      String
   sub        Sub        @relation(fields: [subId], references: [id], onDelete: Cascade)
+  status     SubStatus
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  reviewContents  ReviewContent[]
+}
+
+model ReviewContent {
+  id         String       @id @default(cuid())
+  reviewId   String
+  review     Review       @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  reviewerId String
+  reviewer   User         @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
   type       ReviewType
   content    String
   startTime  Int?
@@ -288,7 +298,8 @@ enum Role {
   Restricted
 }
 
-enum SubStatus {
+enum SubStatus { 
+  Editing
   Pending
   InReview
   Approved

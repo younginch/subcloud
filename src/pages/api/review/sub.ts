@@ -3,7 +3,7 @@ import { handleRoute, RouteParams } from "../../../utils/types";
 
 async function changeSub({ req, res, prisma }: RouteParams<Sub>) {
   const subId = req.query.subId as string;
-  const { subStatus } = req.body;
+  const { subStatus, reviewId } = req.body;
 
   const updatedSub = await prisma.sub.update({
     where: { id: subId },
@@ -21,6 +21,12 @@ async function changeSub({ req, res, prisma }: RouteParams<Sub>) {
       userId: updatedSub.userId,
       noticeId: statusNotice.id,
       checked: false,
+    },
+  });
+  await prisma.review.update({
+    where: { id: reviewId },
+    data: {
+      status: subStatus,
     },
   });
   if (subStatus === SubStatus.Approved) {
