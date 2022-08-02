@@ -1,5 +1,6 @@
 {
   "notification": "Notification Center",
+  "no_review": "No notification",
   "unchecked_title": "Unchecked notifications",
   "detail": "Click to see details",
   "checked_title": "Checked notifications"
