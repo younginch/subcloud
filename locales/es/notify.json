@@ -1,5 +1,6 @@
 {
   "notification": "Centro de notificaciones",
+  "no_review": "Sin notificación",
   "unchecked_title": "Notificaciones no verificadas",
   "detail": "Click para ver detalles",
   "checked_title": "Notificaciones comprobadas"
