@@ -64,7 +64,7 @@ async function DeleteReview({ req, res, prisma }: RouteParams<ReviewContent>) {
   const reviewContent = await prisma.reviewContent.delete({
     where: { id },
   });
-  return res.json(reviewContent);
+  return res.status(200).json(reviewContent);
 }
 
 export default handleRoute(

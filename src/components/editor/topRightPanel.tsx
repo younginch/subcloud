@@ -17,7 +17,11 @@ import BreifReviews from "../review/breifReviews";
 import QuickUpload from "./quickUpload";
 import Shortcuts from "./shortcuts";
 
-export default function TopRightPanel() {
+type Props = {
+  subId?: string;
+};
+
+export default function TopRightPanel({ subId }: Props) {
   const { t } = useTranslation("editor");
   const [tabIndex, setTabIndex] = useState<number>(0);
   const headerBg = useColorModeValue("gray.100", "#181818");
@@ -53,9 +57,7 @@ export default function TopRightPanel() {
           <TabPanel>
             <QuickUpload />
           </TabPanel>
-          <TabPanel>
-            <BreifReviews />
-          </TabPanel>
+          <TabPanel>{subId && <BreifReviews subId={subId} />}</TabPanel>
         </TabPanels>
       </Tabs>
     </Stack>

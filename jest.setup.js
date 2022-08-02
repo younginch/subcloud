@@ -81,6 +81,7 @@ jest.mock("./src/utils/prisma", () => ({
     sub: dbActions,
     subHistory: dbActions,
     review: dbActions,
+    reviewContent: dbActions,
     rating: dbActions,
     order: dbActions,
     subscription: dbActions,
