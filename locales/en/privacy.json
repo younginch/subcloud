@@ -32,5 +32,14 @@
   "oblitgation_h3": "The exercise of rights pursuant to Paragraph 1 can be done through a legal representative of the information subject or an agent such as a person who has been delegated. You must submit a power of attorney.",
   "oblitgation_h4": "The rights of the information subject may be restricted in accordance with Article 35 (4) and Article 37 (2) of the 「Personal Information Protection Act」.",
   "oblitgation_h5": "The request for correction and deletion of personal information cannot be requested if the personal information is specified as a collection target in other laws.",
-  "oblitgation_h6": "Youngin Lab verifies whether the person who made the request, such as a request for reading, correction or deletion, or request for suspension of processing, is the person or a legitimate agent according to the rights of the information subject."
+  "oblitgation_h6": "Youngin Lab verifies whether the person who made the request, such as a request for reading, correction or deletion, or request for suspension of processing, is the person or a legitimate agent according to the rights of the information subject.",
+  "safety": "Matters concerning measures to ensure the safety of personal information",
+  "safety_h1": "[Youngin Lab] is taking the following measures to ensure the safety of personal information.",
+  "safety_p1": "Periodic Self-Audit We conduct regular (quarterly) self-audits to ensure stability in handling personal information.",
+  "safety_p2": "Minimization and Training of Personnel Handling Personal Information We are implementing measures to manage personal information by designating and limiting personnel handling personal information to the person in charge.",
+  "safety_p3": "Establishment and implementation of internal management plan The internal management plan is established and implemented for safe handling of personal information.",
+  "safety_p4": "Technical measures against hacking, etc. [Young-inch Lab] (“Young-inch”) installs security programs to prevent leakage and damage of personal information due to hacking or computer viruses, etc. A system is installed in the area, and it is technically/physically monitored and blocked.",
+  "safety_p5": "Encryption of personal information User's personal information is stored and managed with an encrypted password, so only the user can know it. .",
+  "safety_p6": "Storage of access records and prevention of forgery We keep and manage the records of access to the personal information processing system for at least one year, but add personal information about more than 50,000 information subjects or process unique identification information or sensitive information. In some cases, it is stored and managed for more than 2 years. In addition, a security function is used to prevent forgery, theft, or loss of access records.",
+  "safety_p7": "Restriction on access to personal information We are taking necessary measures to control access to personal information by granting, changing, and canceling the access right to the database system that processes personal information. are in control."
 }
