@@ -17,6 +17,7 @@ import Result from "../components/result";
 import SelectLanguage from "../components/selectLanguage";
 import UserLayout from "../components/user/my/userLayout";
 import RequestPanel from "../components/user/requestPanel";
+import VideoCard from "../components/videoCard";
 import { renderWithThemeAndSession } from "./jest";
 
 describe("Components", () => {
@@ -206,5 +207,9 @@ describe("Components", () => {
         id="hello"
       />
     );
+  });
+
+  it("render VideoCard", async () => {
+    render(<VideoCard />);
   });
 });
