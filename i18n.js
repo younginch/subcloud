@@ -24,6 +24,8 @@ module.exports = {
 
     "/info/terms": ["terms"],
 
+    "/info/privacy": ["privacy"],
+
     "rgx:^/ranking": ["rankings"],
   },
 };
