@@ -16,7 +16,7 @@ function AnnounceCard({ disabled }: CardProps) {
     <DefaultCard
       imageUrl="https://jamake-asset-prod.s3.amazonaws.com/thumbnailcover_welcome coupon1.png"
       disabled={disabled}
-      link="/"
+      link="/board/1"
     >
       <HStack spacing="10px">
         <Text fontSize="15px" fontWeight="bold">
