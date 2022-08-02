@@ -3,6 +3,7 @@ import {
   WrapItem,
   HStack,
   Text,
+  Badge,
   useColorModeValue,
 } from "@chakra-ui/react";
 import DefaultCard from "./defaultCard";
@@ -11,7 +12,7 @@ type CardProps = {
   disabled?: boolean;
 };
 
-function AnnounceCard({ disabled }: CardProps) {
+function EventCard({ disabled }: CardProps) {
   return (
     <DefaultCard
       imageUrl="https://jamake-asset-prod.s3.amazonaws.com/thumbnailcover_welcome coupon1.png"
@@ -20,11 +21,16 @@ function AnnounceCard({ disabled }: CardProps) {
     >
       <HStack spacing="10px">
         <Text fontSize="15px" fontWeight="bold">
-          2022.7.20
+          2022.7.20 ~ 8.15
         </Text>
+        {disabled ? (
+          <Badge colorScheme="red">종료됨</Badge>
+        ) : (
+          <Badge colorScheme="green">진행중</Badge>
+        )}
       </HStack>
       <Text fontSize="18px" fontWeight="bold">
-        SubCloud가 처음인 모두에게 포인트 증정 🔫
+        SubCloud가 처음인 모두에게 반값 쿠폰팩💸
       </Text>
       <Text
         fontSize="14px"
@@ -37,44 +43,38 @@ function AnnounceCard({ disabled }: CardProps) {
   );
 }
 
-export default function AnnouncePanel() {
+export default function EventPanel() {
   return (
     <Wrap justify="space-evenly" overflow="visible">
       <WrapItem>
-        <AnnounceCard />
+        <EventCard />
       </WrapItem>
       <WrapItem>
-        <AnnounceCard />
+        <EventCard />
       </WrapItem>
       <WrapItem>
-        <AnnounceCard disabled />
+        <EventCard disabled />
       </WrapItem>
       <WrapItem>
-        <AnnounceCard disabled />
+        <EventCard disabled />
       </WrapItem>
       <WrapItem>
-        <AnnounceCard disabled />
+        <EventCard disabled />
       </WrapItem>
       <WrapItem>
-        <AnnounceCard disabled />
+        <EventCard disabled />
       </WrapItem>
       <WrapItem>
-        <AnnounceCard />
+        <EventCard disabled />
       </WrapItem>
       <WrapItem>
-        <AnnounceCard />
+        <EventCard disabled />
       </WrapItem>
       <WrapItem>
-        <AnnounceCard />
+        <EventCard disabled />
       </WrapItem>
       <WrapItem>
-        <AnnounceCard />
-      </WrapItem>
-      <WrapItem>
-        <AnnounceCard />
-      </WrapItem>
-      <WrapItem>
-        <AnnounceCard />
+        <EventCard disabled />
       </WrapItem>
     </Wrap>
   );

@@ -11,6 +11,7 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 import AnnouncePanel from "../components/board/announcePanel";
+import EventPanel from "../components/board/eventPanel";
 import { PageOptions } from "../utils/types";
 
 export default function Board() {
@@ -65,7 +66,7 @@ export default function Board() {
             <AnnouncePanel />
           </TabPanel>
           <TabPanel w="1140px" maxW="100%">
-            <AnnouncePanel />
+            <EventPanel />
           </TabPanel>
         </TabPanels>
       </Tabs>
