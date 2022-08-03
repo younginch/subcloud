@@ -26,6 +26,8 @@ module.exports = {
 
     "/info/privacy": ["privacy"],
 
+    "rgx:^/info/dmca": ["dmca"],
+
     "rgx:^/ranking": ["rankings"],
   },
 };
