@@ -33,7 +33,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import YouTube, { YouTubePlayer } from "react-youtube";
-import { mutate } from "swr";
+import useSWR, { mutate } from "swr";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { AiFillTool } from "react-icons/ai";
 import { MdReport } from "react-icons/md";
@@ -76,7 +76,7 @@ function ReviewAddForm({ subId, reviewId }: ReviewAddFormProps) {
           endTime,
         })
         .then((res) => {
-          mutate(`/api/review?subId=${subId}&reviewId=${reviewId}`);
+          mutate(`/api/review?subId=${subId}`);
           resolve(res.data);
         })
         .catch((err) => {
@@ -156,16 +156,17 @@ function ReviewAddForm({ subId, reviewId }: ReviewAddFormProps) {
 
 type ReviewListProps = {
   reviewContents: ReviewContent[] | undefined;
+  subId: string;
 };
 
-function ReviewList({ reviewContents }: ReviewListProps) {
+function ReviewList({ reviewContents, subId }: ReviewListProps) {
   const toast = useToast();
 
   function onDelete(id: string) {
     axios
       .delete(`/api/review?id=${id}`)
       .then(() => {
-        mutate(`/api/review?id=${id}`);
+        mutate(`/api/review?subId=${subId}`);
       })
       .catch((err) => {
         toast({
@@ -224,7 +225,10 @@ export default function ReviewDetail() {
   const [contentArray, setContentArray] = useState<SRTContent[]>([]);
   const [subText, setSubText] = useState<string>("");
   const [isLargerThan1280] = useMediaQuery("(min-width: 1280px)");
-  const [review, setReview] = useState<ReviewWithContent>();
+  const { data } = useSWR<ReviewWithContent[]>(
+    `/api/review?subId=${router.query.subId}`
+  );
+  const review = data ? data[0] : undefined;
 
   useEffect(() => {
     const opts = {
@@ -239,13 +243,6 @@ export default function ReviewDetail() {
   }, []);
 
   useEffect(() => {
-    axios
-      .get<ReviewWithContent[]>(`/api/review`, {
-        params: { subId: router.query.subId },
-      })
-      .then((res) => {
-        setReview(res.data[0]);
-      });
     axios
       .get<ResSubRead>(`/api/user/sub`, { params: { id: router.query.subId } })
       .then((res) => {
@@ -374,7 +371,10 @@ export default function ReviewDetail() {
           subId={router.query.subId as string}
           reviewId={review?.id}
         />
-        <ReviewList reviewContents={review?.reviewContents} />
+        <ReviewList
+          subId={router.query.subId as string}
+          reviewContents={review?.reviewContents}
+        />
       </Stack>
     </Flex>
   );
