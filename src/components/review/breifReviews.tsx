@@ -1,14 +1,17 @@
 import { Text, Stack, HStack, Badge } from "@chakra-ui/react";
-import { Review, ReviewType, SubStatus } from "@prisma/client";
+import { Review, ReviewContent } from "@prisma/client";
+import dayjs from "dayjs";
+import useSWR from "swr";
 import ReviewStatusBadge from "../badges/reviewStatusBadge";
 
-type ReviewElementType = {
-  status: SubStatus;
-  contents: Review[];
-};
+type ReviewWithContent = Review & { reviewContents?: ReviewContent[] };
 
 type ReviewRowType = {
-  review: ReviewElementType;
+  review: ReviewWithContent;
+};
+
+type Props = {
+  subId: string;
 };
 
 function ReviewRow({ review }: ReviewRowType) {
@@ -16,83 +19,33 @@ function ReviewRow({ review }: ReviewRowType) {
     <Stack>
       <HStack>
         <ReviewStatusBadge status={review.status} />
-        <Text>2022/10/21</Text>
+        <Text>{dayjs(review.createdAt).format("YYYY-MM-DD HH:mm:ss")}</Text>
       </HStack>
-      {review.contents.map((content: Review) => (
-        <HStack key={content.id} pl={10}>
-          <Badge>
-            {content.startTime}-{content.endTime}
-          </Badge>
-          <Text>{content.content}</Text>
-        </HStack>
-      ))}
+      {review.status !== "InReview" &&
+        review.reviewContents?.map((content: ReviewContent) => (
+          <HStack key={content.id} pl={10}>
+            <Badge>
+              {content.startTime}-{content.endTime}
+            </Badge>
+            <Text>{content.content}</Text>
+          </HStack>
+        ))}
     </Stack>
   );
 }
 
-export default function BreifReviews() {
-  const reviews: ReviewElementType[] = [
-    {
-      status: SubStatus.Rejected,
-      contents: [
-        {
-          id: "1",
-          reviewerId: "red",
-          subId: "12",
-          type: ReviewType.IncorrectTiming,
-          content: "hi",
-          startTime: 123,
-          endTime: 345,
-          resolved: false,
-        },
-        {
-          id: "2",
-          reviewerId: "red",
-          subId: "12",
-          type: ReviewType.IncorrectTiming,
-          content: "hi",
-          startTime: 123,
-          endTime: 345,
-          resolved: false,
-        },
-      ],
-    },
-    {
-      status: SubStatus.Rejected,
-      contents: [
-        {
-          id: "1",
-          reviewerId: "red",
-          subId: "12",
-          type: ReviewType.IncorrectTiming,
-          content: "hi",
-          startTime: 123,
-          endTime: 345,
-          resolved: false,
-        },
-        {
-          id: "2",
-          reviewerId: "red",
-          subId: "12",
-          type: ReviewType.IncorrectTiming,
-          content: "hi",
-          startTime: 123,
-          endTime: 345,
-          resolved: false,
-        },
-      ],
-    },
-    {
-      status: SubStatus.Approved,
-      contents: [],
-    },
-  ];
+export default function BreifReviews({ subId }: Props) {
+  const { data: reviews } = useSWR<ReviewWithContent[]>(
+    `/api/review?subId=${subId}`
+  );
   return (
     <Stack>
-      {reviews.map((review, index) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <ReviewRow review={review} key={index} />
-      ))}
+      {reviews
+        ? reviews.map((review, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <ReviewRow review={review} key={index} />
+          ))
+        : null}
     </Stack>
   );
 }
