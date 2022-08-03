@@ -37,34 +37,34 @@ model Session {
 }
 
 model User {
-  id            String         @id @default(cuid())
-  name          String?
-  email         String?        @unique
-  emailVerified DateTime?
-  image         String?
+  id             String          @id @default(cuid())
+  name           String?
+  email          String?         @unique
+  emailVerified  DateTime?
+  image          String?
   // custom fields
-  password      String?
-  role          Role           @default(User)
-  point         Int            @default(0)
-  baseLangs     String[]
-  requestLangs  String[]
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime?      @updatedAt
-  settlePoints  SettlePoint[]
-  accounts      Account[]
-  sessions      Session[]
-  subs          Sub[]
-  ratings       Rating[]
-  requests      Request[]
-  files         File[]
-  requestPoints RequestPoint[]
-  reviewContents  ReviewContent[]
-  orders        Order[]
-  subHistories  SubHistory[]
-  subscriptions Subscription[]
-  coupons       Coupon[]
-  withdraws     Withdraw[]
-  notifications Notification[]
+  password       String?
+  role           Role            @default(User)
+  point          Int             @default(0)
+  baseLangs      String[]
+  requestLangs   String[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime?       @updatedAt
+  settlePoints   SettlePoint[]
+  accounts       Account[]
+  sessions       Session[]
+  subs           Sub[]
+  ratings        Rating[]
+  requests       Request[]
+  files          File[]
+  requestPoints  RequestPoint[]
+  reviewContents ReviewContent[]
+  orders         Order[]
+  subHistories   SubHistory[]
+  subscriptions  Subscription[]
+  coupons        Coupon[]
+  withdraws      Withdraw[]
+  notifications  Notification[]
 }
 
 model VerificationToken {
@@ -173,21 +173,21 @@ model SubHistory {
 }
 
 model Review {
-  id         String     @id @default(cuid())
-  subId      String
-  sub        Sub        @relation(fields: [subId], references: [id], onDelete: Cascade)
-  status     SubStatus
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  reviewContents  ReviewContent[]
+  id             String          @id @default(cuid())
+  subId          String
+  sub            Sub             @relation(fields: [subId], references: [id], onDelete: Cascade)
+  status         SubStatus
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  reviewContents ReviewContent[]
 }
 
 model ReviewContent {
-  id         String       @id @default(cuid())
+  id         String     @id @default(cuid())
   reviewId   String
-  review     Review       @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  review     Review     @relation(fields: [reviewId], references: [id], onDelete: Cascade)
   reviewerId String
-  reviewer   User         @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+  reviewer   User       @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
   type       ReviewType
   content    String
   startTime  Int?
@@ -298,7 +298,7 @@ enum Role {
   Restricted
 }
 
-enum SubStatus { 
+enum SubStatus {
   Editing
   Pending
   InReview
