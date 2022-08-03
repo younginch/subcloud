@@ -1,15 +1,29 @@
-import { Review, Role } from "@prisma/client";
+import { Review, ReviewContent, Role } from "@prisma/client";
 import { ReviewCreateSchema } from "../../../utils/schema";
 import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 
-async function GetReview({ req, res, prisma }: RouteParams<Review[]>) {
+async function GetReview({
+  req,
+  res,
+  prisma,
+}: RouteParams<(Review & { reviewContents: ReviewContent[] })[]>) {
   const subId = req.query.subId as string;
-  const review = await prisma.review.findMany({
-    where: {
-      subId,
-    },
+  const reviews = await prisma.review.findMany({
+    where: { subId },
+    include: { reviewContents: true },
+    orderBy: { createdAt: "desc" },
   });
-  return res.json(review);
+  if (reviews.length === 0) {
+    const newReview = await prisma.review.create({
+      data: {
+        subId,
+        status: "Pending",
+      },
+      include: { reviewContents: true },
+    });
+    return res.status(200).json([newReview]);
+  }
+  return res.status(200).json(reviews);
 }
 
 async function CreateReview({
@@ -17,16 +31,24 @@ async function CreateReview({
   res,
   prisma,
   session,
-}: RouteParams<Review>) {
+}: RouteParams<ReviewContent>) {
   const { value, error } = ReviewCreateSchema.validate(req.body);
   if (error) {
     return res
       .status(400)
       .json({ error: SubErrorType.FormValidation, message: error.message });
   }
-  const createdReview = await prisma.review.create({
+  await prisma.review.update({
+    where: { id: req.query.reviewId as string },
+    data: { status: "InReview" },
+  });
+  await prisma.sub.update({
+    where: { id: req.query.subId as string },
+    data: { status: "InReview" },
+  });
+  const createdReviewContent = await prisma.reviewContent.create({
     data: {
-      subId: req.query.subId as string,
+      reviewId: req.query.reviewId as string,
       reviewerId: session?.user.id!,
       type: value.type,
       content: value.content,
@@ -34,17 +56,15 @@ async function CreateReview({
       endTime: value.endTime,
     },
   });
-  return res.status(201).json(createdReview);
+  return res.status(201).json(createdReviewContent);
 }
 
-async function DeleteReview({ req, res, prisma }: RouteParams<Review>) {
+async function DeleteReview({ req, res, prisma }: RouteParams<ReviewContent>) {
   const id = req.query.id as string;
-  const review = await prisma.review.delete({
-    where: {
-      id,
-    },
+  const reviewContent = await prisma.reviewContent.delete({
+    where: { id },
   });
-  return res.json(review);
+  return res.status(200).json(reviewContent);
 }
 
 export default handleRoute(

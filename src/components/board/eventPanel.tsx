@@ -1,3 +1,4 @@
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Wrap,
   WrapItem,
@@ -5,6 +6,12 @@ import {
   Text,
   Badge,
   useColorModeValue,
+  Stack,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Button,
 } from "@chakra-ui/react";
 import DefaultCard from "./defaultCard";
 
@@ -17,7 +24,7 @@ function EventCard({ disabled }: CardProps) {
     <DefaultCard
       imageUrl="https://jamake-asset-prod.s3.amazonaws.com/thumbnailcover_welcome coupon1.png"
       disabled={disabled}
-      link="/"
+      link="/board/1"
     >
       <HStack spacing="10px">
         <Text fontSize="15px" fontWeight="bold">
@@ -45,37 +52,54 @@ function EventCard({ disabled }: CardProps) {
 
 export default function EventPanel() {
   return (
-    <Wrap justify="space-evenly" overflow="visible">
-      <WrapItem>
-        <EventCard />
-      </WrapItem>
-      <WrapItem>
-        <EventCard />
-      </WrapItem>
-      <WrapItem>
-        <EventCard disabled />
-      </WrapItem>
-      <WrapItem>
-        <EventCard disabled />
-      </WrapItem>
-      <WrapItem>
-        <EventCard disabled />
-      </WrapItem>
-      <WrapItem>
-        <EventCard disabled />
-      </WrapItem>
-      <WrapItem>
-        <EventCard disabled />
-      </WrapItem>
-      <WrapItem>
-        <EventCard disabled />
-      </WrapItem>
-      <WrapItem>
-        <EventCard disabled />
-      </WrapItem>
-      <WrapItem>
-        <EventCard disabled />
-      </WrapItem>
-    </Wrap>
+    <Stack spacing="30px">
+      <Menu>
+        <MenuButton
+          as={Button}
+          rightIcon={<ChevronDownIcon />}
+          w="150px"
+          ml="10px"
+        >
+          전체
+        </MenuButton>
+        <MenuList>
+          <MenuItem>전체</MenuItem>
+          <MenuItem>진행중</MenuItem>
+          <MenuItem>종료됨</MenuItem>
+        </MenuList>
+      </Menu>
+      <Wrap justify="space-evenly" overflow="visible">
+        <WrapItem>
+          <EventCard />
+        </WrapItem>
+        <WrapItem>
+          <EventCard />
+        </WrapItem>
+        <WrapItem>
+          <EventCard disabled />
+        </WrapItem>
+        <WrapItem>
+          <EventCard disabled />
+        </WrapItem>
+        <WrapItem>
+          <EventCard disabled />
+        </WrapItem>
+        <WrapItem>
+          <EventCard disabled />
+        </WrapItem>
+        <WrapItem>
+          <EventCard disabled />
+        </WrapItem>
+        <WrapItem>
+          <EventCard disabled />
+        </WrapItem>
+        <WrapItem>
+          <EventCard disabled />
+        </WrapItem>
+        <WrapItem>
+          <EventCard disabled />
+        </WrapItem>
+      </Wrap>
+    </Stack>
   );
 }
