@@ -52,5 +52,18 @@
   "skip_back_5": "Skip back 5 seconds",
   "line_break": "Insert a line break",
   "review": "Reviews",
-  "url_insert": "Please enter the video URL to edit subtitles"
+  "url_insert": "Please enter the video URL to edit subtitles",
+  "property": "Subtitle Property",
+  "property_noSub": "There are no subtitles selected.",
+  "property_duration": "Duration",
+  "property_sec": " sec",
+  "property_tot_word": "Words",
+  "property_word_unit": "",
+  "property_sec_word": "Words per second",
+  "property_timeLine": "Go to timeline position",
+  "property_duration_short": "Duration is too short.",
+  "property_exceed": "Reading rate shouldn't exceed 5 words / sec.",
+  "property_empty": "Text is empty.",
+  "property_less": "Text should be less than 4 lines.",
+  "property_character": "Each line should not exceed 70 characters"
 }
