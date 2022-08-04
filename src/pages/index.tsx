@@ -84,7 +84,7 @@ export default function Home() {
               }}
               fontSize="xl"
             >
-              <Text>{t("search_vid")}</Text>
+              <Text>{t("how_to_use")}</Text>
             </Button>
             <NextLink href="/video/create?next=request">
               <Button
