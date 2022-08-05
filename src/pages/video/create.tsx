@@ -21,9 +21,10 @@ import { Role } from "@prisma/client";
 import { FiSend, FiUpload } from "react-icons/fi";
 import useTranslation from "next-translate/useTranslation";
 import Marquee from "react-fast-marquee";
+import useSWR from "swr";
 import { VideoCreateSchema } from "../../utils/schema";
 import CreateHeader from "../../components/create/createHeader";
-import { PageOptions } from "../../utils/types";
+import { PageOptions, ResRankingVideo } from "../../utils/types";
 import SwingProvider from "../../components/swingProvider";
 import EventNotice from "../../components/create/eventNotice";
 import RequestCard from "../../components/requestCard";
@@ -45,6 +46,9 @@ export default function VideoCreate() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>({ resolver: joiResolver(VideoCreateSchema) });
   const [isPc] = useMediaQuery("(min-width: 850px)");
+  const { data: topVideos } = useSWR<ResRankingVideo>(
+    `/api/public/ranking/video/request?start=0&end=10&lang=All Lang&order=desc`
+  );
 
   function onSubmit(values: FormData) {
     return new Promise<void>((resolve, reject) => {
@@ -177,106 +181,19 @@ export default function VideoCreate() {
             </NextLink>
           </HStack>
           <Marquee gradient={false} pauseOnHover>
-            <Box mr="30px">
-              <RequestCard
-                title="창모 - 널 지워야 해"
-                time="4:30"
-                link="https://www.youtube.com/watch?v=i7muqI90138"
-                requestLang="한국어"
-                requestCount={100}
-                buttonType={router.query.next}
-              />
-            </Box>
-            <Box mr="30px">
-              <RequestCard
-                title="창모 - 널 지워야 해"
-                time="4:30"
-                link="https://www.youtube.com/watch?v=i7muqI90138"
-                requestLang="한국어"
-                requestCount={100}
-                buttonType={router.query.next}
-              />
-            </Box>
-            <Box mr="30px">
-              <RequestCard
-                title="창모 - 널 지워야 해"
-                time="4:30"
-                link="https://www.youtube.com/watch?v=i7muqI90138"
-                requestLang="한국어"
-                requestCount={100}
-                buttonType={router.query.next}
-              />
-            </Box>
-            <Box mr="30px">
-              <RequestCard
-                title="창모 - 널 지워야 해"
-                time="4:30"
-                link="https://www.youtube.com/watch?v=i7muqI90138"
-                requestLang="한국어"
-                requestCount={100}
-                buttonType={router.query.next}
-              />
-            </Box>
-            <Box mr="30px">
-              <RequestCard
-                title="창모 - 널 지워야 해"
-                time="4:30"
-                link="https://www.youtube.com/watch?v=i7muqI90138"
-                requestLang="한국어"
-                requestCount={100}
-                buttonType={router.query.next}
-              />
-            </Box>
-            <Box mr="30px">
-              <RequestCard
-                title="창모 - 널 지워야 해"
-                time="4:30"
-                link="https://www.youtube.com/watch?v=i7muqI90138"
-                requestLang="한국어"
-                requestCount={100}
-                buttonType={router.query.next}
-              />
-            </Box>
-            <Box mr="30px">
-              <RequestCard
-                title="창모 - 널 지워야 해"
-                time="4:30"
-                link="https://www.youtube.com/watch?v=i7muqI90138"
-                requestLang="한국어"
-                requestCount={100}
-                buttonType={router.query.next}
-              />
-            </Box>
-            <Box mr="30px">
-              <RequestCard
-                title="창모 - 널 지워야 해"
-                time="4:30"
-                link="https://www.youtube.com/watch?v=i7muqI90138"
-                requestLang="한국어"
-                requestCount={100}
-                buttonType={router.query.next}
-              />
-            </Box>
-            <Box mr="30px">
-              <RequestCard
-                title="창모 - 널 지워야 해"
-                time="4:30"
-                link="https://www.youtube.com/watch?v=i7muqI90138"
-                requestLang="한국어"
-                requestCount={100}
-                buttonType={router.query.next}
-              />
-            </Box>
-            <Box mr="30px">
-              <RequestCard
-                title="창모 - 널 지워야 해"
-                time="4:30"
-                link="https://www.youtube.com/watch?v=i7muqI90138"
-                requestLang="한국어"
-                requestCount={100}
-                buttonType={router.query.next}
-              />
-            </Box>
+            {topVideos?.map((video) => (
+              <Box mr="30px" key={video.videoId}>
+                <RequestCard
+                  title={video.youtubeVideo?.title ?? ""}
+                  time={video.youtubeVideo?.duration ?? 0}
+                  thumbnail={`https://i.ytimg.com/vi/${video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
+                  link={video.url}
+                  requestLang={video.langs}
+                  requestCount={video._count.requests}
+                  buttonType={router.query.next}
+                />
+              </Box>
+            ))}
           </Marquee>
         </Stack>
       </Stack>

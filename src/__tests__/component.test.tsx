@@ -1,4 +1,9 @@
-import { NotifyType, ReviewType, SubStatus } from "@prisma/client";
+import {
+  NotifyType,
+  RequestStatus,
+  ReviewType,
+  SubStatus,
+} from "@prisma/client";
 import { render } from "@testing-library/react";
 import { RefObject } from "react";
 import AdminLayout from "../components/adminLayout";
@@ -12,7 +17,7 @@ import Links from "../components/header/links";
 import Search from "../components/header/search";
 import Layout from "../components/layout";
 import NotifyCard from "../components/notify/notifyCard";
-import RequestCard, { RequestStatus } from "../components/requestCard";
+import RequestCard from "../components/requestCard";
 import Result from "../components/result";
 import SelectLanguage from "../components/selectLanguage";
 import UploadCard from "../components/uploadCard";
@@ -214,7 +219,8 @@ describe("Components", () => {
     render(
       <RequestCard
         title="창모 - 널 지워야 해"
-        time="4:30"
+        time={0}
+        thumbnail=""
         link="https://www.youtube.com/watch?v=i7muqI90138"
         requestLang="한국어"
         requestStatus={RequestStatus.Uploaded}
@@ -226,7 +232,8 @@ describe("Components", () => {
     render(
       <RequestCard
         title="창모 - 널 지워야 해"
-        time="4:30"
+        time={0}
+        thumbnail=""
         link="https://www.youtube.com/watch?v=i7muqI90138"
         requestLang="한국어"
         requestStatus={RequestStatus.Waiting}
@@ -238,7 +245,8 @@ describe("Components", () => {
     render(
       <RequestCard
         title="창모 - 널 지워야 해"
-        time="4:30"
+        time={0}
+        thumbnail=""
         link="https://www.youtube.com/watch?v=i7muqI90138"
         requestLang="한국어"
         requestCount={100}
@@ -251,7 +259,8 @@ describe("Components", () => {
     render(
       <RequestCard
         title="창모 - 널 지워야 해"
-        time="4:30"
+        time={0}
+        thumbnail=""
         link="https://www.youtube.com/watch?v=i7muqI90138"
         requestLang="한국어"
         requestCount={100}
@@ -264,7 +273,7 @@ describe("Components", () => {
     render(
       <UploadCard
         title="창모 - 널 지워야 해"
-        time="4:30"
+        time={0}
         link="https://www.youtube.com/watch?v=i7muqI90138"
         thumbnail="https://i.ytimg.com/vi/9bZkp7q19f0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCcjOO401gtXMFAu0GngeIwZOkO-Q"
         lang="한국어"

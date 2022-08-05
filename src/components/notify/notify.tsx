@@ -55,16 +55,16 @@ export default function Notify() {
       let title = "";
       switch (notification.notice.type) {
         case NotifyType.Announce:
-          title = t("Layout_notifyType_announce");
+          title = t("notifyType_announce");
           break;
         case NotifyType.Upload:
-          title = t("Layout_notifyType_newSubtitle");
+          title = t("notifyType_newSubtitle");
           break;
         case NotifyType.Review:
-          title = t("Layout_notifyType_review");
+          title = t("notifyType_review");
           break;
         case NotifyType.StatusChange:
-          title = t("Layout_notifyType_statusChange");
+          title = t("notifyType_statusChange");
           break;
         default:
           title = "";

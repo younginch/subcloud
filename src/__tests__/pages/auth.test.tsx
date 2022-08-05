@@ -19,7 +19,7 @@ describe("Pages (auth)", () => {
   });
 
   it("renders Signin", () => {
-    render(<SignIn providers={[]} csrfToken="" />);
+    render(<SignIn />);
   });
 
   it("renders VerifyRequest", () => {

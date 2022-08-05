@@ -9,7 +9,7 @@ export default function UserMySub() {
   const { data } = useSWR<ResSubSearch>(
     `/api/public/search/sub?userId=${session.data?.user.id}`
   );
-  return data && <SubPanel initialSubs={data} />;
+  return data ? <SubPanel initialSubs={data} /> : null;
 }
 
 UserMySub.auth = Role.User;
