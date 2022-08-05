@@ -1,8 +1,17 @@
 import { WrapItem, Stack, Wrap, Text } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
+import ISO6391 from "iso-639-1";
+import { ResRequestSearch } from "../../utils/types";
 import Pagination from "../pagination";
-import RequestCard, { RequestStatus } from "../requestCard";
+import RequestCard from "../requestCard";
 
 export default function MyRequest() {
+  const session = useSession();
+  const { data: requests } = useSWR<ResRequestSearch>(
+    `/api/public/search/request?userId=${session.data?.user.id}`
+  );
+
   return (
     <Stack p={{ base: 5, lg: 10 }} spacing={10}>
       <Text fontWeight="bold" fontSize={{ base: "25px", md: "30px" }}>
@@ -13,78 +22,18 @@ export default function MyRequest() {
         justify={{ base: "space-evenly", md: "normal" }}
         w="fit-content"
       >
-        <WrapItem>
-          <RequestCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            requestLang="한국어"
-            requestStatus={RequestStatus.Uploaded}
-          />
-        </WrapItem>
-        <WrapItem>
-          <RequestCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            requestLang="한국어"
-            requestStatus={RequestStatus.Uploaded}
-          />
-        </WrapItem>
-        <WrapItem>
-          <RequestCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            requestLang="한국어"
-            requestStatus={RequestStatus.Uploaded}
-          />
-        </WrapItem>
-        <WrapItem>
-          <RequestCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            requestLang="한국어"
-            requestStatus={RequestStatus.Waiting}
-          />
-        </WrapItem>
-        <WrapItem>
-          <RequestCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            requestLang="한국어"
-            requestStatus={RequestStatus.Waiting}
-          />
-        </WrapItem>
-        <WrapItem>
-          <RequestCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            requestLang="한국어"
-            requestStatus={RequestStatus.Waiting}
-          />
-        </WrapItem>
-        <WrapItem>
-          <RequestCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            requestLang="한국어"
-            requestStatus={RequestStatus.Uploaded}
-          />
-        </WrapItem>
-        <WrapItem>
-          <RequestCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            requestLang="한국어"
-            requestStatus={RequestStatus.Uploaded}
-          />
-        </WrapItem>
+        {requests?.map((request) => (
+          <WrapItem key={request.id}>
+            <RequestCard
+              title={request.video?.youtubeVideo?.title ?? ""}
+              time={request.video?.youtubeVideo?.duration ?? 0}
+              link={request.video?.url ?? ""}
+              thumbnail={`https://i.ytimg.com/vi/${request.video?.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
+              requestLang={ISO6391.getNativeName(request.lang)}
+              requestStatus={request.status}
+            />
+          </WrapItem>
+        ))}
       </Wrap>
       <Pagination pageNum={5} currentPage={1} />
     </Stack>

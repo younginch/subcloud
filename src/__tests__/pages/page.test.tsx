@@ -137,7 +137,7 @@ describe("Pages (user)", () => {
     renderWithThemeAndSession(<UserMyHistory />);
     renderWithThemeAndSession(<UserMyOrder />);
     renderWithThemeAndSession(<UserMyRequest />);
-    renderWithThemeAndSession(<UserMySub subs={[]} />);
+    renderWithThemeAndSession(<UserMySub />);
     renderWithThemeAndSession(<UserMyWithdraw />);
   });
 });

@@ -30,7 +30,7 @@ async function changeSub({ req, res, prisma }: RouteParams<Sub>) {
     },
   });
   if (subStatus === SubStatus.Approved) {
-    const request = await prisma.request.findUnique({
+    const request = await prisma.request.update({
       where: {
         serviceId_videoId_lang: {
           serviceId: updatedSub.serviceId,
@@ -38,6 +38,7 @@ async function changeSub({ req, res, prisma }: RouteParams<Sub>) {
           lang: updatedSub.lang,
         },
       },
+      data: { status: "Uploaded" },
       include: { users: true, video: true },
     });
     if (request) {
