@@ -97,7 +97,7 @@ export default function UploadCard({
         onClick={() => router.push("/editor")}
         borderRadius={0}
       >
-        자막 편집하기
+        자막 수정하기
       </Button>
     </Stack>
   );

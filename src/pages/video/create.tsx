@@ -9,22 +9,24 @@ import {
   useColorModeValue,
   useToast,
   Text,
-  Wrap,
-  WrapItem,
+  HStack,
+  Link,
+  useMediaQuery,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { Role } from "@prisma/client";
-import { FiUpload } from "react-icons/fi";
+import { FiSend, FiUpload } from "react-icons/fi";
 import useTranslation from "next-translate/useTranslation";
+import Marquee from "react-fast-marquee";
 import { VideoCreateSchema } from "../../utils/schema";
 import CreateHeader from "../../components/create/createHeader";
 import { PageOptions } from "../../utils/types";
 import SwingProvider from "../../components/swingProvider";
 import EventNotice from "../../components/create/eventNotice";
 import RequestCard from "../../components/requestCard";
-import Pagination from "../../components/pagination";
 import MyRequest from "../../components/create/myRequest";
 import MyUpload from "../../components/create/myUpload";
 
@@ -42,6 +44,7 @@ export default function VideoCreate() {
     register,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({ resolver: joiResolver(VideoCreateSchema) });
+  const [isPc] = useMediaQuery("(min-width: 850px)");
 
   function onSubmit(values: FormData) {
     return new Promise<void>((resolve, reject) => {
@@ -134,7 +137,13 @@ export default function VideoCreate() {
                 >
                   <SwingProvider>
                     {router.query.next === "request" ? (
-                      <Text>자막 요청</Text>
+                      isPc ? (
+                        <Text>자막 요청</Text>
+                      ) : (
+                        <FiSend />
+                      )
+                    ) : isPc ? (
+                      <Text>자막 업로드</Text>
                     ) : (
                       <FiUpload />
                     )}
@@ -151,16 +160,24 @@ export default function VideoCreate() {
           {router.query.next === "sub" && isEvent && <EventNotice />}
         </Stack>
         {router.query.next === "request" ? <MyRequest /> : <MyUpload />}
-        <Stack p={10} spacing={10}>
-          <Text fontWeight="bold" fontSize={{ base: "25px", md: "30px" }}>
-            다른사람이 요청한 인기 영상
-          </Text>
-          <Wrap
-            spacing={5}
-            justify={{ base: "space-evenly", md: "normal" }}
-            w="fit-content"
-          >
-            <WrapItem>
+        <Stack
+          spacing={10}
+          p="50px 12px 80px 12px"
+          bg={useColorModeValue("blue.50", "gray.900")}
+          mt="50px !important"
+        >
+          <HStack pl="30px" alignItems="flex-end">
+            <Text fontWeight="bold" fontSize={{ base: "25px", md: "30px" }}>
+              Top 10 인기 요청 영상🔥
+            </Text>
+            <NextLink href="/ranking/video" passHref>
+              <Link fontSize="lg" ml="15px !important" color="gray.400">
+                더보기
+              </Link>
+            </NextLink>
+          </HStack>
+          <Marquee gradient={false} pauseOnHover>
+            <Box mr="30px">
               <RequestCard
                 title="창모 - 널 지워야 해"
                 time="4:30"
@@ -169,8 +186,8 @@ export default function VideoCreate() {
                 requestCount={100}
                 buttonType={router.query.next}
               />
-            </WrapItem>
-            <WrapItem>
+            </Box>
+            <Box mr="30px">
               <RequestCard
                 title="창모 - 널 지워야 해"
                 time="4:30"
@@ -179,8 +196,8 @@ export default function VideoCreate() {
                 requestCount={100}
                 buttonType={router.query.next}
               />
-            </WrapItem>
-            <WrapItem>
+            </Box>
+            <Box mr="30px">
               <RequestCard
                 title="창모 - 널 지워야 해"
                 time="4:30"
@@ -189,8 +206,8 @@ export default function VideoCreate() {
                 requestCount={100}
                 buttonType={router.query.next}
               />
-            </WrapItem>
-            <WrapItem>
+            </Box>
+            <Box mr="30px">
               <RequestCard
                 title="창모 - 널 지워야 해"
                 time="4:30"
@@ -199,8 +216,8 @@ export default function VideoCreate() {
                 requestCount={100}
                 buttonType={router.query.next}
               />
-            </WrapItem>
-            <WrapItem>
+            </Box>
+            <Box mr="30px">
               <RequestCard
                 title="창모 - 널 지워야 해"
                 time="4:30"
@@ -209,8 +226,8 @@ export default function VideoCreate() {
                 requestCount={100}
                 buttonType={router.query.next}
               />
-            </WrapItem>
-            <WrapItem>
+            </Box>
+            <Box mr="30px">
               <RequestCard
                 title="창모 - 널 지워야 해"
                 time="4:30"
@@ -219,8 +236,8 @@ export default function VideoCreate() {
                 requestCount={100}
                 buttonType={router.query.next}
               />
-            </WrapItem>
-            <WrapItem>
+            </Box>
+            <Box mr="30px">
               <RequestCard
                 title="창모 - 널 지워야 해"
                 time="4:30"
@@ -229,9 +246,38 @@ export default function VideoCreate() {
                 requestCount={100}
                 buttonType={router.query.next}
               />
-            </WrapItem>
-          </Wrap>
-          <Pagination hideArrow />
+            </Box>
+            <Box mr="30px">
+              <RequestCard
+                title="창모 - 널 지워야 해"
+                time="4:30"
+                link="https://www.youtube.com/watch?v=i7muqI90138"
+                requestLang="한국어"
+                requestCount={100}
+                buttonType={router.query.next}
+              />
+            </Box>
+            <Box mr="30px">
+              <RequestCard
+                title="창모 - 널 지워야 해"
+                time="4:30"
+                link="https://www.youtube.com/watch?v=i7muqI90138"
+                requestLang="한국어"
+                requestCount={100}
+                buttonType={router.query.next}
+              />
+            </Box>
+            <Box mr="30px">
+              <RequestCard
+                title="창모 - 널 지워야 해"
+                time="4:30"
+                link="https://www.youtube.com/watch?v=i7muqI90138"
+                requestLang="한국어"
+                requestCount={100}
+                buttonType={router.query.next}
+              />
+            </Box>
+          </Marquee>
         </Stack>
       </Stack>
     </Box>
@@ -241,6 +287,6 @@ export default function VideoCreate() {
 VideoCreate.options = {
   role: Role.User,
   hideTitle: true,
-  hideFooter: true,
+  hideFooter: false,
   bgColorLight: "#F7FAFC",
 } as PageOptions;
