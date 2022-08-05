@@ -5,7 +5,6 @@ import AdminLayout from "../components/adminLayout";
 import ReviewBadge from "../components/badges/reviewBadge";
 import ReviewStatusBadge from "../components/badges/reviewStatusBadge";
 import EventNotice from "../components/create/eventNotice";
-import ExplainBox from "../components/create/ExplainBox";
 import EditLeftPanel from "../components/editor/editLeftPanel";
 import SubtitleComponent from "../components/editor/SubtitleComponent";
 import TimeLine from "../components/editor/timeLine";
@@ -69,10 +68,6 @@ describe("Components", () => {
 
   it("renders EventNotice", () => {
     renderWithThemeAndSession(<EventNotice />);
-  });
-
-  it("renders ExplainBox", () => {
-    renderWithThemeAndSession(<ExplainBox>test</ExplainBox>);
   });
 
   it("renders userLayout", () => {
