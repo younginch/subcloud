@@ -12,8 +12,10 @@ import Links from "../components/header/links";
 import Search from "../components/header/search";
 import Layout from "../components/layout";
 import NotifyCard from "../components/notify/notifyCard";
+import RequestCard, { RequestStatus } from "../components/requestCard";
 import Result from "../components/result";
 import SelectLanguage from "../components/selectLanguage";
+import UploadCard from "../components/uploadCard";
 import UserLayout from "../components/user/my/userLayout";
 import RequestPanel from "../components/user/requestPanel";
 import VideoCard from "../components/videoCard";
@@ -206,5 +208,69 @@ describe("Components", () => {
 
   it("render VideoCard", async () => {
     render(<VideoCard />);
+  });
+
+  it("render RequestCard Uploaded", async () => {
+    render(
+      <RequestCard
+        title="창모 - 널 지워야 해"
+        time="4:30"
+        link="https://www.youtube.com/watch?v=i7muqI90138"
+        requestLang="한국어"
+        requestStatus={RequestStatus.Uploaded}
+      />
+    );
+  });
+
+  it("render RequestCard Wating", async () => {
+    render(
+      <RequestCard
+        title="창모 - 널 지워야 해"
+        time="4:30"
+        link="https://www.youtube.com/watch?v=i7muqI90138"
+        requestLang="한국어"
+        requestStatus={RequestStatus.Waiting}
+      />
+    );
+  });
+
+  it("render RequestCard request", async () => {
+    render(
+      <RequestCard
+        title="창모 - 널 지워야 해"
+        time="4:30"
+        link="https://www.youtube.com/watch?v=i7muqI90138"
+        requestLang="한국어"
+        requestCount={100}
+        buttonType="request"
+      />
+    );
+  });
+
+  it("render RequestCard sub", async () => {
+    render(
+      <RequestCard
+        title="창모 - 널 지워야 해"
+        time="4:30"
+        link="https://www.youtube.com/watch?v=i7muqI90138"
+        requestLang="한국어"
+        requestCount={100}
+        buttonType="sub"
+      />
+    );
+  });
+
+  it("render UploadCard", async () => {
+    render(
+      <UploadCard
+        title="창모 - 널 지워야 해"
+        time="4:30"
+        link="https://www.youtube.com/watch?v=i7muqI90138"
+        thumbnail="https://i.ytimg.com/vi/9bZkp7q19f0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCcjOO401gtXMFAu0GngeIwZOkO-Q"
+        lang="한국어"
+        status={SubStatus.Approved}
+        viewCount={100}
+      />
+    );
   });
 });
