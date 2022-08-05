@@ -3,5 +3,9 @@
   "no_review": "Sin notificación",
   "unchecked_title": "Notificaciones no verificadas",
   "detail": "Click para ver detalles",
-  "checked_title": "Notificaciones comprobadas"
+  "checked_title": "Notificaciones comprobadas",
+  "notifyType_announce": "Anunciar",
+  "notifyType_newSubtitle": "Nuevo subtítulo añadido",
+  "notifyType_review": "Llegó nueva reseña",
+  "notifyType_statusChange": "Revisión completada"
 }
