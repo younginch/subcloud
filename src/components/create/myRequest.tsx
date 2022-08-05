@@ -35,7 +35,7 @@ export default function MyRequest() {
           </WrapItem>
         ))}
       </Wrap>
-      <Pagination />
+      <Pagination pageNum={5} currentPage={1} />
     </Stack>
   );
 }
