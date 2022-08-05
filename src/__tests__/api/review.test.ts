@@ -16,17 +16,15 @@ describe("/api/review", () => {
     "GET should return 200",
     testRes(reviewRoute, "GET", 200, (req) => {
       req.query = { subId: "1" };
-      jest
-        .spyOn(prisma.review, "findMany")
-        .mockResolvedValueOnce([
-          {
-            id: "",
-            subId: "",
-            status: "Approved",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          },
-        ]);
+      jest.spyOn(prisma.review, "findMany").mockResolvedValueOnce([
+        {
+          id: "",
+          subId: "",
+          status: "Approved",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ]);
     })
   );
 
