@@ -2,9 +2,9 @@ module.exports = {
   locales: ["ko", "en", "es", "ja"],
   defaultLocale: "en",
   pages: {
-    "*": ["common", "marginals", "routes"],
+    "*": ["common", "marginals", "routes", "notify"],
 
-    "/": ["landing", "notify"],
+    "/": ["landing"],
 
     "rgx:^/auth": ["auth"],
 
