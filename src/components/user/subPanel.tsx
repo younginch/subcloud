@@ -173,7 +173,7 @@ export default function SubPanel({ initialSubs }: SubPanelProps) {
                             <DetailViewGraph subId={sub.id} p={0} />
                           </TabPanel>
                           <TabPanel>
-                            <BreifReviews />
+                            <BreifReviews subId={sub.id} />
                           </TabPanel>
                           <TabPanel>
                             <HStack>

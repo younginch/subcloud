@@ -16,12 +16,14 @@ import { Role } from "@prisma/client";
 import axios from "axios";
 import { Session } from "next-auth";
 import { signOut, useSession } from "next-auth/react";
+import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import router from "next/router";
 import useSWR from "swr";
 import isRightRole from "../../utils/role";
 
 export default function ProfileModal() {
+  const { t } = useTranslation("profileModal");
   const { data: session } = useSession();
   const { data } = useSWR<Session>("/api/auth/session");
   const { data: subData } = useSWR(
@@ -68,13 +70,13 @@ export default function ProfileModal() {
             <Stack spacing={0} align="center">
               <Text fontWeight={600}>{requestData?.length ?? 0}</Text>
               <Text fontSize="sm" color="gray.500">
-                요청 수
+                {t("request")}
               </Text>
             </Stack>
             <Stack spacing={0} align="center">
               <Text fontWeight={600}>{subData?.length ?? 0}</Text>
               <Text fontSize="sm" color="gray.500">
-                자막 수
+                {t("subtitle")}
               </Text>
             </Stack>
           </Stack>
@@ -90,7 +92,7 @@ export default function ProfileModal() {
                 boxShadow: "lg",
               }}
             >
-              내 프로필
+              {t("profile")}
             </Button>
           </Link>
           <HStack mt={4}>
@@ -100,7 +102,7 @@ export default function ProfileModal() {
                 signOut();
               }}
             >
-              Sign Out
+              {t("signOut")}
             </Button>
             <Spacer />
             {(isRightRole(session?.user.role, Role.Admin) ||
@@ -130,7 +132,7 @@ export default function ProfileModal() {
                   router.push("/review");
                 }}
               >
-                리뷰
+                {t("review")}
               </Button>
             )}
           </HStack>

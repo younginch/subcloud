@@ -52,5 +52,18 @@
   "skip_back_5": "Saltar hacia atrás 5 segundos",
   "line_break": "Insertar un salto de línea",
   "review": "Reseñas",
-  "url_insert": "Ingrese la URL del video para editar los subtítulos"
+  "url_insert": "Ingrese la URL del video para editar los subtítulos",
+  "property": "Propiedad de subtítulos",
+  "property_noSub": "No hay subtítulos seleccionados.",
+  "property_duration": "Duración",
+  "property_sec": " segundo",
+  "property_tot_word": "Palabras",
+  "property_word_unit": "",
+  "property_sec_word": "palabras por segundo",
+  "property_timeLine": "Ir a la posición de la línea de tiempo",
+  "property_duration_short": "La duración es demasiado corta.",
+  "property_exceed": "La velocidad de lectura no debe exceder las 5 palabras/seg.",
+  "property_empty": "El texto está vacío.",
+  "property_less": "El texto debe tener menos de 4 líneas.",
+  "property_character": "Cada línea no debe exceder los 70 caracteres"
 }

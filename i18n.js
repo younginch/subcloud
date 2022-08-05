@@ -2,7 +2,7 @@ module.exports = {
   locales: ["ko", "en", "es", "ja"],
   defaultLocale: "en",
   pages: {
-    "*": ["common", "marginals", "routes", "notify"],
+    "*": ["common", "marginals", "routes", "notify", "profileModal"],
 
     "/": ["landing"],
 
@@ -23,6 +23,10 @@ module.exports = {
     "/qna": ["qna"],
 
     "/info/terms": ["terms"],
+
+    "/info/privacy": ["privacy"],
+
+    "rgx:^/info/dmca": ["dmca"],
 
     "rgx:^/ranking": ["rankings"],
   },

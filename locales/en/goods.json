@@ -14,5 +14,6 @@
   "buy_point": "Points are goods that can be used to request subtitles within SubCloud.",
   "buy_point_subtitle": "Buy Points",
   "buy_point_front": "Please see",
-  "buy_point_back": "for details"
+  "buy_point_back": "for details",
+  "buy_below": "Points purchased are permanent until used. Points are fully refundable within 1 month of purchase, and only 60% of the points are refundable after 1 month. Points used for subtitle production are non-refundable regardless of the period."
 }
