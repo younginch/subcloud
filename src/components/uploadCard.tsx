@@ -10,12 +10,14 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { SubStatus } from "@prisma/client";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
 import { useRouter } from "next/router";
 import ReviewStatusBadge from "./badges/reviewStatusBadge";
 
 type Props = {
   title: string;
-  time: string;
+  time: number;
   thumbnail: string;
   link: string;
   lang: string;
@@ -33,6 +35,7 @@ export default function UploadCard({
   viewCount,
 }: Props) {
   const router = useRouter();
+  dayjs.extend(duration);
 
   return (
     <Stack
@@ -58,7 +61,7 @@ export default function UploadCard({
         position="absolute"
         right="8px"
       >
-        {time}
+        {dayjs.duration(time, "s").format("mm:ss")}
       </Text>
       <Stack pl="10px">
         <Text

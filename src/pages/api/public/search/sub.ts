@@ -27,6 +27,9 @@ async function SubSearch({ req, res, prisma }: RouteParams<ResSubSearch>) {
       user: true,
       ratings: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return res.status(200).json(subs);

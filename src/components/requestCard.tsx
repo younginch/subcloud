@@ -10,11 +10,9 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-
-export enum RequestStatus {
-  Uploaded,
-  Waiting,
-}
+import { RequestStatus } from "@prisma/client";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
 
 function RequestBadge({ status }: { status: RequestStatus }) {
   if (status === RequestStatus.Uploaded)
@@ -32,7 +30,8 @@ function RequestBadge({ status }: { status: RequestStatus }) {
 
 type Props = {
   title: string;
-  time: string;
+  time: number;
+  thumbnail: string;
   link: string;
   requestLang: string;
   requestStatus?: RequestStatus;
@@ -43,6 +42,7 @@ type Props = {
 export default function RequestCard({
   title,
   time,
+  thumbnail,
   link,
   requestLang,
   requestStatus,
@@ -50,6 +50,7 @@ export default function RequestCard({
   buttonType,
 }: Props) {
   const router = useRouter();
+  dayjs.extend(duration);
   const buttonColor = useColorModeValue("blue", "linkedin");
 
   let buttonComponent;
@@ -85,7 +86,7 @@ export default function RequestCard({
       position="relative"
     >
       <Image
-        src="https://i.ytimg.com/vi/i7muqI90138/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ"
+        src={thumbnail}
         alt="thumbnail"
         cursor="pointer"
         onClick={() => router.push(link)}
@@ -99,7 +100,7 @@ export default function RequestCard({
         position="absolute"
         right="8px"
       >
-        {time}
+        {dayjs.duration(time, "s").format("mm:ss")}
       </Text>
       <Stack pl="10px" pb={buttonType === undefined ? "10px" : "0px"}>
         <Text

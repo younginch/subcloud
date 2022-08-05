@@ -28,6 +28,9 @@ async function searchSubtitles({
           },
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     return res.status(200).json(requests);
   }

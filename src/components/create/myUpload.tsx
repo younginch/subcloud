@@ -1,9 +1,17 @@
 import { WrapItem, Stack, Wrap, Text } from "@chakra-ui/react";
-import { SubStatus } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
+import ISO6391 from "iso-639-1";
+import { ResSubSearch } from "../../utils/types";
 import Pagination from "../pagination";
 import UploadCard from "../uploadCard";
 
 export default function MyUpload() {
+  const session = useSession();
+  const { data: subs } = useSWR<ResSubSearch>(
+    `/api/public/search/sub?userId=${session.data?.user.id}`
+  );
+
   return (
     <Stack p={{ base: 5, lg: 10 }} spacing={10}>
       <Text fontWeight="bold" fontSize={{ base: "25px", md: "30px" }}>
@@ -14,94 +22,19 @@ export default function MyUpload() {
         justify={{ base: "space-evenly", md: "normal" }}
         w="fit-content"
       >
-        <WrapItem>
-          <UploadCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            thumbnail="https://i.ytimg.com/vi/i7muqI90138/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ"
-            lang="한국어"
-            status={SubStatus.Approved}
-            viewCount={100}
-          />
-        </WrapItem>
-        <WrapItem>
-          <UploadCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            thumbnail="https://i.ytimg.com/vi/9bZkp7q19f0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCcjOO401gtXMFAu0GngeIwZOkO-Q"
-            lang="한국어"
-            status={SubStatus.Approved}
-            viewCount={100}
-          />
-        </WrapItem>
-        <WrapItem>
-          <UploadCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            thumbnail="https://i.ytimg.com/vi/8gsjaQ_5qIs/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAwFZR_bKOFaZOlz2RezWOoH14Ctw"
-            lang="한국어"
-            status={SubStatus.Pending}
-            viewCount={100}
-          />
-        </WrapItem>
-        <WrapItem>
-          <UploadCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            thumbnail="https://i.ytimg.com/vi/i7muqI90138/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ"
-            lang="한국어"
-            status={SubStatus.InReview}
-            viewCount={100}
-          />
-        </WrapItem>
-        <WrapItem>
-          <UploadCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            thumbnail="https://i.ytimg.com/vi/i7muqI90138/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ"
-            lang="한국어"
-            status={SubStatus.Pending}
-            viewCount={100}
-          />
-        </WrapItem>
-        <WrapItem>
-          <UploadCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            thumbnail="https://i.ytimg.com/vi/i7muqI90138/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ"
-            lang="한국어"
-            status={SubStatus.Rejected}
-            viewCount={100}
-          />
-        </WrapItem>
-        <WrapItem>
-          <UploadCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            thumbnail="https://i.ytimg.com/vi/i7muqI90138/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ"
-            lang="한국어"
-            status={SubStatus.Private}
-            viewCount={100}
-          />
-        </WrapItem>
-        <WrapItem>
-          <UploadCard
-            title="창모 - 널 지워야 해"
-            time="4:30"
-            link="https://www.youtube.com/watch?v=i7muqI90138"
-            thumbnail="https://i.ytimg.com/vi/i7muqI90138/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ"
-            lang="한국어"
-            status={SubStatus.Reported}
-            viewCount={100}
-          />
-        </WrapItem>
+        {subs?.map((sub) => (
+          <WrapItem key={sub.id}>
+            <UploadCard
+              title={sub.video.youtubeVideo?.title ?? ""}
+              time={sub.video.youtubeVideo?.duration ?? 0}
+              link={sub.video.url ?? ""}
+              thumbnail={`https://i.ytimg.com/vi/${sub.video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
+              lang={ISO6391.getNativeName(sub.lang)}
+              status={sub.status}
+              viewCount={sub.views}
+            />
+          </WrapItem>
+        ))}
       </Wrap>
       <Pagination />
     </Stack>
