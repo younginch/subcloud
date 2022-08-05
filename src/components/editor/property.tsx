@@ -7,11 +7,13 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import useTranslation from "next-translate/useTranslation";
 import React, { useContext } from "react";
 import { v4 as uuid } from "uuid";
 import { EditorContext } from "../../utils/editorCore";
 
 function PropertyContainer({ children }: { children: React.ReactNode }) {
+  const { t } = useTranslation("editor");
   const headerBg = useColorModeValue("gray.100", "#181818");
   const bodyBg = useColorModeValue("transparent", "#222222");
 
@@ -25,7 +27,7 @@ function PropertyContainer({ children }: { children: React.ReactNode }) {
         p="5px"
         textAlign="center"
       >
-        자막 속성
+        {t("property")}
       </Heading>
       <Stack p="0px 15px 0px 15px">{children}</Stack>
     </Stack>
@@ -33,12 +35,13 @@ function PropertyContainer({ children }: { children: React.ReactNode }) {
 }
 
 export default function Property() {
+  const { t } = useTranslation("editor");
   const { contents, focusedIndex, commandHandlers } = useContext(EditorContext);
 
   if (contents[focusedIndex] === undefined) {
     return (
       <PropertyContainer>
-        <Text>선택된 자막이 없습니다.</Text>
+        <Text>{t("property_noSub")}</Text>
       </PropertyContainer>
     );
   }
@@ -55,30 +58,37 @@ export default function Property() {
   const readingRateSoFast = wordCount / duration > 5;
   const { textArray } = contents[focusedIndex];
   if (durationTooShort) {
-    errors.push("Duration is too short.");
+    errors.push(t("property_duration_short"));
   }
   if (readingRateSoFast) {
-    errors.push("Reading rate shouldn't exceed 5 words / sec.");
+    errors.push(t("property_duration_short"));
   }
   if (contents[focusedIndex].toText().trim() === "") {
-    errors.push("Text is empty.");
+    errors.push(t("property_empty"));
   }
   if (textArray.length > 3) {
-    errors.push("Text should be less than 4 lines.");
+    errors.push(t("property_less"));
   }
   if (textArray.filter((line) => line.length > 70).length > 0) {
-    errors.push("Each line should not exceed 70 characters");
+    errors.push(t("property_character"));
   }
 
   return (
     <PropertyContainer>
       <HStack>
-        <Text>{`지속 시간: ${duration}초`}</Text>
+        <Text>
+          {t("property_duration")}: {duration}
+          {t("property_sec")}
+        </Text>
         {durationTooShort && <WarningIcon color="red.500" />}
       </HStack>
-      <Text>{`단어 수: ${wordCount}자`}</Text>
+      <Text>{`${t("property_tot_word")}: ${wordCount}${t(
+        "property_word_unit"
+      )}`}</Text>
       <HStack>
-        <Text>{`초당 단어 수: ${(wordCount / duration).toFixed(3)}`}</Text>
+        <Text>{`${t("property_sec_word")}: ${(wordCount / duration).toFixed(
+          3
+        )}`}</Text>
         {readingRateSoFast && <WarningIcon color="red.500" />}
       </HStack>
       <Stack>
@@ -89,7 +99,7 @@ export default function Property() {
         ))}
       </Stack>
       <Button onClick={commandHandlers.GOTO_TIMELINE}>
-        타임라인 위치로 이동
+        {t("property_timeLine")}
       </Button>
     </PropertyContainer>
   );
