@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import ISO6391 from "iso-639-1";
 import { FiBox } from "react-icons/fi";
+import useTranslation from "next-translate/useTranslation";
 import { ResSubSearch } from "../../utils/types";
 import Pagination from "../pagination";
 import UploadCard from "../uploadCard";
@@ -32,6 +33,7 @@ function MyUploadPanel({ subs }: { subs: ResSubSearch | undefined }) {
 }
 
 export default function MyUpload() {
+  const { t } = useTranslation("create");
   const session = useSession();
   const { data: subs } = useSWR<ResSubSearch>(
     `/api/public/search/sub?userId=${session.data?.user.id}`
@@ -40,7 +42,7 @@ export default function MyUpload() {
   return (
     <Stack p={{ base: 5, lg: 10 }} spacing={10}>
       <Text fontWeight="bold" fontSize={{ base: "25px", md: "30px" }}>
-        내가 SubCloud에 업로드한 영상
+        {t("my_up")}
       </Text>
 
       {subs?.length ? (
@@ -48,7 +50,7 @@ export default function MyUpload() {
       ) : (
         <Stack alignItems="center" spacing={5} h="100%" pt="3%" pb="2%">
           <FiBox size={150} />
-          <Text fontSize="25px">업로드한 자막이 없습니다.</Text>
+          <Text fontSize="25px">{t("no_up")}</Text>
         </Stack>
       )}
       <Pagination pageNum={5} currentPage={1} />

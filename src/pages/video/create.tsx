@@ -142,12 +142,12 @@ export default function VideoCreate() {
                   <SwingProvider>
                     {router.query.next === "request" ? (
                       isPc ? (
-                        <Text>자막 요청</Text>
+                        <Text>{t("request")}</Text>
                       ) : (
                         <FiSend />
                       )
                     ) : isPc ? (
-                      <Text>자막 업로드</Text>
+                      <Text>{t("upload")}</Text>
                     ) : (
                       <FiUpload />
                     )}
@@ -172,11 +172,11 @@ export default function VideoCreate() {
         >
           <HStack pl="30px" alignItems="flex-end">
             <Text fontWeight="bold" fontSize={{ base: "25px", md: "30px" }}>
-              Top 10 인기 요청 영상🔥
+              {t("top10")}🔥
             </Text>
             <NextLink href="/ranking/video" passHref>
               <Link fontSize="lg" ml="15px !important" color="gray.400">
-                더보기
+                {t("more")}
               </Link>
             </NextLink>
           </HStack>

@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import ISO6391 from "iso-639-1";
 import { FiBox } from "react-icons/fi";
+import useTranslation from "next-translate/useTranslation";
 import { ResRequestSearch } from "../../utils/types";
 import Pagination from "../pagination";
 import RequestCard from "../requestCard";
@@ -35,6 +36,7 @@ function MyRequestPanel({
 }
 
 export default function MyRequest() {
+  const { t } = useTranslation("create");
   const session = useSession();
   const { data: requests } = useSWR<ResRequestSearch>(
     `/api/public/search/request?userId=${session.data?.user.id}`
@@ -43,16 +45,14 @@ export default function MyRequest() {
   return (
     <Stack p={{ base: 5, lg: 10 }} spacing={10}>
       <Text fontWeight="bold" fontSize={{ base: "25px", md: "30px" }}>
-        내가 SubCloud에 요청한 영상
+        {t("my_req")}
       </Text>
       {requests?.length ? (
         <MyRequestPanel requests={requests} />
       ) : (
         <Stack alignItems="center" spacing={5} h="100%" pt="3%" pb="2%">
           <FiBox size={150} />
-          <Text fontSize="25px">
-            요청이 없습니다. 자막이 필요한 영상에 요청해 보세요.
-          </Text>
+          <Text fontSize="25px">{t("no_req")}</Text>
         </Stack>
       )}
       <Pagination pageNum={5} currentPage={1} />
