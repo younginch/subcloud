@@ -48,16 +48,12 @@ function EditorWithoutContext() {
     commandHandlers,
     showTimeline,
     showProperty,
+    setUrlInput,
+    setFileOpenCommand,
   } = useContext(EditorContext);
-  const [urlInput, setUrlInput] = useState("");
+  const [urlString, setUrlString] = useState("");
   const urlField = useRef<HTMLInputElement>(null);
   const router = useRouter();
-
-  useEffect(() => {
-    if (router.query.youtubeId) {
-      setId(router.query.youtubeId as string);
-    }
-  }, [router.query.youtubeId, setId]);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -72,7 +68,23 @@ function EditorWithoutContext() {
     [setContents, setFocusedIndex]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
+    onDrop,
+  });
+
+  useEffect(() => {
+    setFileOpenCommand(open);
+  });
+
+  useEffect(() => {
+    setUrlInput(urlField);
+  }, [setUrlInput, urlField]);
+
+  useEffect(() => {
+    if (router.query.youtubeId) {
+      setId(router.query.youtubeId as string);
+    }
+  }, [router.query.youtubeId, setId]);
 
   const headerBg = useColorModeValue("gray.100", "#181818");
   const headerBodyBg = useColorModeValue("white", "#1f1f1f");
@@ -142,7 +154,7 @@ function EditorWithoutContext() {
                     event.preventDefault();
                     try {
                       // eslint-disable-next-line @typescript-eslint/no-shadow
-                      const id = new URL(urlInput).searchParams.get("v");
+                      const id = new URL(urlString).searchParams.get("v");
                       if (!id) {
                         throw new Error("");
                       }
@@ -166,9 +178,9 @@ function EditorWithoutContext() {
                       <Input
                         type="url"
                         id="url"
-                        value={urlInput}
+                        value={urlString}
                         onChange={(event: any) => {
-                          setUrlInput(event.target.value);
+                          setUrlString(event.target.value);
                         }}
                         placeholder={
                           id.length === 0

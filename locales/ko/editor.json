@@ -11,7 +11,7 @@
   "edit": "편집(E)",
   "undo": "실행 취소",
   "redo": "다시 실행",
-  "right_new": "현재 시간에서 새 자막",
+  "right_new": "현재 시간에서 자막 시작",
   "right_end": "현재 시간에서 자막 끝내기",
   "clear_all": "모두 지우기",
   "detach_cursor": "현재 커서에서 분리하기",

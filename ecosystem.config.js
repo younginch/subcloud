@@ -1,13 +1,13 @@
 module.exports = {
   apps: [
     {
-      name: "subcloud-strapi",
-      cwd: "/home/ubuntu/subcloud-strapi",
+      name: "subcloud-prod",
+      cwd: "/home/ubuntu/subcloud",
       script: "npm",
       args: "start",
       env: {
         NODE_ENV: "production",
-        NEXTAUTH_URL: "https://test.subcloud.app",
+        NEXTAUTH_URL: "https://subcloud.app",
         NEXTAUTH_SECRET: "WdHfDXg2yXnBZWczLp960YCyJ63jrwcDcutEQRsLjAw=",
         DATABASE_URL:
           "postgresql://sub:dlalsrbditmaktmxj@subcloud-prod.c66c7hkpmaeq.ap-northeast-2.rds.amazonaws.com/prod",

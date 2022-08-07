@@ -14,7 +14,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useContext } from "react";
-import { SRTContent, SRTFile } from "@younginch/subtitle";
+import { SRTContent } from "@younginch/subtitle";
 import { MdDelete } from "react-icons/md";
 import { FaPlus, FaSave } from "react-icons/fa";
 import { BiHelpCircle } from "react-icons/bi";
@@ -25,19 +25,8 @@ import { CreateAction, DeleteAllAction } from "../../utils/editorActions";
 
 export default function EditLeftPanel() {
   const { t } = useTranslation("editor");
-  const { contents, execute, duration } = useContext(EditorContext);
-
-  function downloadSRT() {
-    const srtFile = new SRTFile();
-    srtFile.array = contents;
-    const url = window.URL.createObjectURL(new Blob([srtFile.toText()]));
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", `file.srt`);
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode?.removeChild(link);
-  }
+  const { contents, execute, duration, commandHandlers } =
+    useContext(EditorContext);
 
   const headerBg = useColorModeValue("gray.100", "#18161d");
 
@@ -74,7 +63,7 @@ export default function EditLeftPanel() {
       </Button>
       <Button
         rightIcon={<FaSave />}
-        onClick={downloadSRT}
+        onClick={commandHandlers.FILE_SAVE_SRT}
         colorScheme="blue"
         w="full"
       >

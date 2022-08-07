@@ -1,5 +1,5 @@
 module.exports = {
-  locales: ["ko", "en", "es", "ja"],
+  locales: ["ko", "en", "es", "ja", "zh"],
   defaultLocale: "en",
   pages: {
     "*": ["common", "marginals", "routes", "notify", "profileModal"],

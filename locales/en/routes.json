@@ -3,7 +3,7 @@
   "/auth/callback": "Sign in success",
   "/auth/signin": "Sign in",
   "/buy/fail": "Order failed",
-  "/buy": "Products",
+  "/buy": "Products list",
   "/buy/success": "Order success",
   "/info/privacy": "Privacy",
   "/info/terms": "Terms of use",
@@ -14,12 +14,12 @@
   "/user/[userId]/update": "Edit user profile",
   "/user/settings": "User settings",
   "/video/[serviceId]/[videoId]/request/create": "Request subtitle",
-  "/video/[serviceId]/[videoId]/sub/create": "Upload subtitle",
-  "/video/[serviceId]/[videoId]": "Video info",
-  "/video/create": "Choose video",
+  "/video/[serviceId]/[videoId]/sub/create": "Making subtitle",
+  "/video/[serviceId]/[videoId]": "Video information",
+  "/video/create": "Select video",
   "/video/create?next=request": "Request subtitle",
   "/video/create?next=sub": "Upload subtitle",
-  "/404": "Not found",
+  "/404": "Page Not found",
   "/500": "Server error",
   "/": "Home",
   "/editor": "Editor",
@@ -29,5 +29,5 @@
   "/ranking/user": "User ranking",
   "/ranking/video": "Request ranking",
   "/ranking/[lang]": "Ranking",
-  "/search": "Search result"
+  "/search": "Results"
 }

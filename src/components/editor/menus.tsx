@@ -162,21 +162,25 @@ export default function Menus() {
       <EditorMenu
         title={t("file")}
         items={[
-          { title: t("new_page"), icon: <AddIcon />, command: "" },
+          {
+            title: t("new_page"),
+            icon: <AddIcon />,
+            command: "FILE_NEW_WINDOW",
+          },
           {
             title: t("open_youtube"),
             icon: <ExternalLinkIcon />,
-            command: "",
+            command: "FILE_OPEN_YOUTUBE",
           },
           {
             title: t("open_subFile"),
             icon: <EditIcon />,
-            command: "",
+            command: "FILE_OPEN_SUBFILE",
           },
           {
             title: t("save_srtFile"),
             icon: <EditIcon />,
-            command: "",
+            command: "FILE_SAVE_SRT",
           },
         ]}
       />

@@ -1,0 +1,18 @@
+{
+  "center_h1": "请求字幕",
+  "center_h1_up": "上载字幕",
+  "center_below_front": "选择视频",
+  "center_below_back": "选择字幕的语言",
+  "search_box_request": "输入您想要视频的链接...",
+  "search_box_sub": "输入您要上载视频的链接...",
+  "event_front": "上载字幕的特别活动",
+  "event_back": "上载字幕时，可以获取点数",
+  "explain_box_request_1": "几次点击，请求免费字幕",
+  "explain_box_request_2": "您请求的字幕上载完时要提醒您",
+  "explain_box_request_3": "使用点数可以收到字幕更快",
+  "explain_box_request_4": "字幕制作前，点数是保存的",
+  "explain_box_upload_1": "上载字幕，为每个人提供字幕",
+  "explain_box_upload_2": "上载的字幕要被确认后公布",
+  "explain_box_upload_3": "通过提醒，看一下用户们的反应",
+  "url_error": "URL链接必要包括http或https"
+}

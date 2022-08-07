@@ -1,10 +1,10 @@
 {
   "successful_uninstall": "SubCloud has been deleted successfully",
   "thanks_for_use": "Thanks for using SubCloud",
-  "uninstall_message": "We would appreciate if you leave a comment about the inconvenience while using it. Surveys are recorded completely anonymously.",
+  "uninstall_message": "If you leave a comment about the inconvenience while using it. Surveys are recorded completely anonymously.",
   "question_1": "What was inconvenient?",
   "option_1": "There are not much subtitles",
-  "option_2": "My requested are being ignored",
+  "option_2": "My requests are being ignored",
   "option_3": "I don’t have any needs for this service",
   "option_4": "UX/UI is inconvenient",
   "option_5": "There are too many bugs",
@@ -12,5 +12,5 @@
   "question_2_placeholder": "Any message...",
   "send_message": "Send response",
   "thanks": "Thanks for your response",
-  "objective": "We will try to make a better service."
+  "objective": "We will try our best to provide a better service."
 }

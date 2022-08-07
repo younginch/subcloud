@@ -1,0 +1,16 @@
+{
+  "successful_uninstall": "排除好了SubCloud",
+  "thanks_for_use": "谢谢使用SubCloud",
+  "uninstall_message": "如果使用SubCloud时感到不便，请简单留下意见，谢谢。问卷是完全匿名记录的。",
+  "question_1": "有什么不方便的？",
+  "option_1": "字幕太少",
+  "option_2": "字幕请求被忽略",
+  "option_3": "感觉不到服务的必要性",
+  "option_4": "缺乏便利性",
+  "option_5": "频繁发生错误",
+  "question_2": "请提意见, 积极反映",
+  "question_2_placeholder": "短信",
+  "send_message": "回答",
+  "thanks": "谢谢您回答问卷",
+  "objective": "我们要努力为提供更好的服务。"
+}
