@@ -74,7 +74,6 @@ export async function deleteAllObjects() {
   };
   const listObjectsCommand = new ListObjectsCommand(listObjectsParams);
   const listObjectsResult = await configuredS3.send(listObjectsCommand);
-  console.log(listObjectsResult);
   const deleteObjectsParams = {
     Bucket: configuredBucket,
     Delete: {

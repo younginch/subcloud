@@ -1,5 +1,5 @@
 import { keyframes } from "@chakra-ui/react";
-import { SRTContent } from "@younginch/subtitle";
+import { SRTContent, SRTFile } from "@younginch/subtitle";
 import axios from "axios";
 import { createContext, RefObject, useState } from "react";
 import { KeyMap } from "react-hotkeys";
@@ -80,6 +80,8 @@ type EditorContextProps = {
   execute: (actions: EditorAction) => void;
   showTimeline: boolean;
   showProperty: boolean;
+  setUrlInput: (urlInput: RefObject<HTMLInputElement>) => void;
+  setFileOpenCommand: (command: () => void) => void;
 };
 
 export enum PlayerState {
@@ -92,6 +94,10 @@ export enum PlayerState {
 }
 
 const commandKeys = {
+  FILE_NEW_WINDOW: ["option+n"],
+  FILE_OPEN_YOUTUBE: ["option+shift+o"],
+  FILE_OPEN_SUBFILE: ["option+o"],
+  FILE_SAVE: ["option+s"],
   EDIT_UNDO: ["option+z"],
   EDIT_REDO: ["option+y"],
   PLAY_PAUSE: ["space"],
@@ -133,6 +139,8 @@ export const EditorContext = createContext<EditorContextProps>({
   execute: () => {},
   showTimeline: true,
   showProperty: true,
+  setUrlInput: () => {},
+  setFileOpenCommand: () => {},
 });
 
 type EditorProviderProps = {
@@ -156,8 +164,12 @@ export function EditorProvider({ children }: EditorProviderProps) {
   const [rerenderIndicator, setRerenderIndicator] = useState<boolean>(true);
   const [undoActions, setUndoActions] = useState<EditorAction[]>([]);
   const [redoActions, setRedoActions] = useState<EditorAction[]>([]);
+
   const [showTimeline, setShowTimeline] = useState<boolean>(true);
   const [showProperty, setShowProperty] = useState<boolean>(true);
+
+  const [urlInput, setUrlInput] = useState<RefObject<HTMLInputElement>>();
+  const [fileOpenCommand, setFileOpenCommand] = useState<() => void>();
 
   function execute(action: EditorAction) {
     setContents(() => action.execute(contents));
@@ -217,7 +229,33 @@ export function EditorProvider({ children }: EditorProviderProps) {
     }, 100);
   }
 
-  const commandHandlers = {
+  function downloadSRT() {
+    const srtFile = new SRTFile();
+    srtFile.array = contents;
+    const url = window.URL.createObjectURL(new Blob([srtFile.toText()]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `file.srt`);
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode?.removeChild(link);
+  }
+
+  type CommandHandlers = {
+    [key: string]: () => void;
+  };
+
+  const commandHandlers: CommandHandlers = {
+    FILE_NEW_WINDOW: () => window.open(window.location.href, "_blank"),
+    FILE_OPEN_YOUTUBE: () => {
+      urlInput?.current?.focus();
+    },
+    FILE_OPEN_SUBFILE: () => {
+      if (fileOpenCommand) {
+        fileOpenCommand();
+      }
+    },
+    FILE_SAVE_SRT: downloadSRT,
     EDIT_UNDO: undo,
     EDIT_REDO: redo,
     PLAY_PAUSE: () => {
@@ -372,6 +410,8 @@ export function EditorProvider({ children }: EditorProviderProps) {
         execute,
         showTimeline,
         showProperty,
+        setUrlInput,
+        setFileOpenCommand,
       }}
     >
       {children}
