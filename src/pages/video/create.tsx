@@ -20,6 +20,7 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import { Role } from "@prisma/client";
 import { FiSend, FiUpload } from "react-icons/fi";
 import useTranslation from "next-translate/useTranslation";
+import ISO6391 from "iso-639-1";
 import Marquee from "react-fast-marquee";
 import useSWR from "swr";
 import { VideoCreateSchema } from "../../utils/schema";
@@ -188,9 +189,11 @@ export default function VideoCreate() {
                   time={video.youtubeVideo?.duration ?? 0}
                   thumbnail={`https://i.ytimg.com/vi/${video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
                   link={video.url}
-                  requestLang={video.langs}
+                  requestLang={ISO6391.getNativeName(video.langs)}
                   requestCount={video._count.requests}
                   buttonType={router.query.next}
+                  serviceId={video.serviceId}
+                  videoId={video.videoId}
                 />
               </Box>
             ))}

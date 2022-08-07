@@ -32,6 +32,9 @@ export default function MyUpload() {
               lang={ISO6391.getNativeName(sub.lang)}
               status={sub.status}
               viewCount={sub.views}
+              serviceId={sub.video.serviceId}
+              videoId={sub.video.videoId}
+              subId={sub.id}
             />
           </WrapItem>
         ))}
