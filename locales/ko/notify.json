@@ -1,6 +1,11 @@
 {
   "notification": "알림 센터",
+  "no_review": "알림 없음",
   "unchecked_title": "읽지 않은 알림들",
   "detail": "클릭하여 자세히 보기",
-  "checked_title": "읽은 알림들"
+  "checked_title": "읽은 알림들",
+  "notifyType_announce": "공지사항",
+  "notifyType_newSubtitle": "자막 업로드 알림",
+  "notifyType_review": "새 리뷰 알림",
+  "notifyType_statusChange": "검토 완료"
 }

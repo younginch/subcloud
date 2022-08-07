@@ -59,6 +59,12 @@ async function SubCreate({ req, res, prisma, session }: RouteParams<ResSub>) {
       lang: value.lang as string,
     },
   });
+  await prisma.review.create({
+    data: {
+      sub: { connect: { id: createdSub.id } },
+      status: "Pending",
+    },
+  });
   return res.status(201).json(createdSub);
 }
 
@@ -84,6 +90,13 @@ async function SubUpdate({ req, res, prisma }: RouteParams<ResSub>) {
       serviceId: value.serviceId,
       videoId: value.videoId,
       lang: value.lang,
+      status: "Pending",
+    },
+  });
+  await prisma.review.create({
+    data: {
+      sub: { connect: { id: id as string } },
+      status: "Pending",
     },
   });
   return res.status(200).json(updatedSub);

@@ -1,6 +1,11 @@
 {
   "notification": "Notification Center",
+  "no_review": "No notification",
   "unchecked_title": "Unchecked notifications",
   "detail": "Click to see details",
-  "checked_title": "Checked notifications"
+  "checked_title": "Checked notifications",
+  "notifyType_announce": "Announce",
+  "notifyType_newSubtitle": "New subtitle added",
+  "notifyType_review": "New review have arrived",
+  "notifyType_statusChange": "Review completed"
 }

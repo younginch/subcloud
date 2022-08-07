@@ -14,5 +14,6 @@
   "buy_point": "Los puntos son bienes que se pueden usar para solicitar subtítulos dentro de SubCloud.",
   "buy_point_subtitle": "Comprar puntos",
   "buy_point_front": "Por favor mira",
-  "buy_point_back": "para detalles"
+  "buy_point_back": "para detalles",
+  "buy_below": "Los puntos comprados son permanentes hasta que se utilicen. Los puntos son totalmente reembolsables dentro de 1 mes de la compra, y solo el 60% de los puntos son reembolsables después de 1 mes. Los puntos utilizados para la producción de subtítulos no son reembolsables independientemente del período."
 }

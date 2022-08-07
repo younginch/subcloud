@@ -66,8 +66,8 @@ export default function RequestPanel({
   }
 
   return (
-    <TableContainer>
-      <Table variant="simple" size="sm">
+    <TableContainer p={5}>
+      <Table variant="simple">
         <Thead>
           <Tr>
             <Th>{t("vid")}</Th>

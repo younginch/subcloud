@@ -1,4 +1,5 @@
 .eslintrc.js
+ecosystem.config.js
 i18n.js
 jest.config.js
 jest.setup.js

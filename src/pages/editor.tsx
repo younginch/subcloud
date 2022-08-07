@@ -199,7 +199,7 @@ function EditorWithoutContext() {
             </ReflexElement>
             <ReflexSplitter propagate style={{ borderColor: splitterColor }} />
             <ReflexElement minSize={300}>
-              <TopRightPanel />
+              <TopRightPanel subId={undefined} />
             </ReflexElement>
           </ReflexContainer>
         </ReflexElement>

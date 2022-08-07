@@ -8,6 +8,8 @@
 
 ## Getting Started
 
+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
+
 ### Install Dependency
 
 Node 14
@@ -32,6 +34,7 @@ npx prisma db push
 ```bash
 npm run dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Guide to develop

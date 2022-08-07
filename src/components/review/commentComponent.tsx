@@ -7,15 +7,15 @@ import {
   Spacer,
   Text,
 } from "@chakra-ui/react";
-import { Review } from "@prisma/client";
+import { ReviewContent } from "@prisma/client";
 import ReviewBadge from "../badges/reviewBadge";
 
 type Props = {
-  review: Review;
+  content: ReviewContent;
   onClick: () => void;
 };
 
-export default function CommentComponent({ review, onClick }: Props) {
+export default function CommentComponent({ content, onClick }: Props) {
   return (
     <Box
       p={2}
@@ -23,17 +23,17 @@ export default function CommentComponent({ review, onClick }: Props) {
       bg={useColorModeValue("white", "#1F2733")}
     >
       <HStack>
-        <ReviewBadge type={review.type} />
+        <ReviewBadge type={content.type} />
         <Badge variant="outline" colorScheme="gray">
-          {review.startTime}-{review.endTime}
+          {content.startTime}-{content.endTime}
         </Badge>
         <Spacer />
         <CloseIcon w={3} onClick={onClick} />
       </HStack>
       <Text ml="2px" fontWeight="bold" mt="5px">
-        {review.content}
+        {content.content}
       </Text>
-      <Text ml="2px">리뷰어 : {review.reviewerId}</Text>
+      <Text ml="2px">리뷰어 : {content.reviewerId}</Text>
     </Box>
   );
 }
