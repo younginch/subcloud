@@ -1,0 +1,21 @@
+{
+  "preview": "浏览字幕",
+  "preview_tooltip": "使用扩展程序上载，可以在YouTube上预览。",
+  "upload_vid": "上载字幕的视频",
+  "select_lang": "选择语言",
+  "select_lang_ex": "选择与字幕内容不同的语言时，复查可能会被拒绝。",
+  "upload_sub": "上载字幕",
+  "edit": "编辑在SubCloud",
+  "file_drop": "把文件放这里",
+  "click_drag": "点击或拖动，上载字幕",
+  "point": "获取的点数",
+  "point_ex": "点数将在通过复查时可以收到。",
+  "upload_summary": "总结上载",
+  "vid_title": "视频题目",
+  "sub_file": "字幕的文件名",
+  "sub_lang": "请求语言",
+  "upload_req": "申请请求",
+  "fulfilled": "满足请求数",
+  "fulfilled_ex": "通过复查时更新",
+  "check_subtitle_lang_required": "请选择字幕的语言"
+}

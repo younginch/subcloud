@@ -1,0 +1,22 @@
+{
+  "req_vid": "请求的视频",
+  "view": "View",
+  "view_ko": "浏览次数",
+  "view_en": "次",
+  "subscriber_ko": "订户",
+  "subscriber_en": "个人",
+  "select_lang": "选择语言",
+  "require_file": "请选择字幕的文件",
+  "basic_lang": "保存为基本语言",
+  "point": "点数",
+  "point_reset": "取消",
+  "req_summary": "总结请求",
+  "vid_title": "视频的题目",
+  "vid_length": "视频长度",
+  "min": "分",
+  "sec": "秒",
+  "req_lang": "请求语言",
+  "upload_req": "申请请求",
+  "check_subtitle_lang_required": "请选择字幕的语言",
+  "no_info": "没有信息"
+}
