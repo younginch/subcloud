@@ -104,49 +104,30 @@ export async function RankingVideo(
   let where: any = {};
   const isLang = lang && lang !== "All Lang";
   if (isLang) {
-    where = {
-      requests: {
-        some: {
-          lang,
-        },
-      },
-    };
+    where = { lang: lang as string };
   }
-  const videos = await prisma.video.findMany({
+  const requests = await prisma.request.findMany({
     where,
     include: {
-      requests: {
-        include: { users: true },
-      },
-      youtubeVideo: { include: { channel: true } },
+      video: { include: { youtubeVideo: { include: { channel: true } } } },
+      users: true,
     },
   });
-  const newVideos = videos
-    .filter((video) => video.requests.length > 0)
-    .map((video) => {
-      const requests = video.requests.filter(
-        (request) => !isLang || request.lang === lang
-      );
-      return {
-        url: video.url,
-        serviceId: video.serviceId,
-        videoId: video.videoId,
-        youtubeVideoId: video.youtubeVideoId,
-        youtubeVideo: video.youtubeVideo,
-        _count: {
-          requests: requests.reduce(
-            (prev, curr) => prev + curr.users.length,
-            0
-          ),
-          points: requests.reduce((prev, curr) => prev + curr.point, 0),
-        },
-        langs: requests
-          .slice(1)
-          .reduce((prev, curr) => `${prev}, ${curr.lang}`, requests[0].lang),
-      };
-    })
+  const videos = requests
+    .map((request) => ({
+      url: request.video.url,
+      serviceId: request.video.serviceId,
+      videoId: request.video.videoId,
+      youtubeVideoId: request.video.youtubeVideoId,
+      youtubeVideo: request.video.youtubeVideo,
+      _count: {
+        requests: request.users.length,
+        points: request.point,
+      },
+      langs: request.lang,
+    }))
     .sort(sortBy);
-  if (!videos) {
+  if (!requests) {
     return res
       .status(404)
       .json({ error: SubErrorType.NotFound, message: "RankingVideoByRequest" });
@@ -154,7 +135,7 @@ export async function RankingVideo(
   if ((order as string) === "asc") {
     return res
       .status(200)
-      .json(newVideos.reverse().slice(Number(start), Number(end)));
+      .json(videos.reverse().slice(Number(start), Number(end)));
   }
-  return res.status(200).json(newVideos.slice(Number(start), Number(end)));
+  return res.status(200).json(videos.slice(Number(start), Number(end)));
 }

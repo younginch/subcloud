@@ -25,6 +25,9 @@ function MyUploadPanel({ subs }: { subs: ResSubSearch | undefined }) {
             lang={ISO6391.getNativeName(sub.lang)}
             status={sub.status}
             viewCount={sub.views}
+            serviceId={sub.video.serviceId}
+            videoId={sub.video.videoId}
+            subId={sub.id}
           />
         </WrapItem>
       ))}
@@ -44,7 +47,6 @@ export default function MyUpload() {
       <Text fontWeight="bold" fontSize={{ base: "25px", md: "30px" }}>
         {t("my_up")}
       </Text>
-
       {subs?.length ? (
         <MyUploadPanel subs={subs} />
       ) : (

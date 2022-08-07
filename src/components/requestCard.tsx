@@ -37,6 +37,8 @@ type Props = {
   requestStatus?: RequestStatus;
   requestCount?: number;
   buttonType?: string | string[];
+  serviceId: string;
+  videoId: string;
 };
 
 export default function RequestCard({
@@ -48,6 +50,8 @@ export default function RequestCard({
   requestStatus,
   requestCount,
   buttonType,
+  serviceId,
+  videoId,
 }: Props) {
   const router = useRouter();
   dayjs.extend(duration);
@@ -60,6 +64,9 @@ export default function RequestCard({
         colorScheme={buttonColor}
         rightIcon={<ChevronRightIcon />}
         borderRadius={0}
+        onClick={() =>
+          router.push(`/video/${serviceId}/${videoId}/request/create`)
+        }
       >
         자막 요청하기
       </Button>
@@ -70,6 +77,7 @@ export default function RequestCard({
         colorScheme={buttonColor}
         rightIcon={<ArrowUpIcon />}
         borderRadius={0}
+        onClick={() => router.push(`/video/${serviceId}/${videoId}/sub/create`)}
       >
         자막 업로드
       </Button>

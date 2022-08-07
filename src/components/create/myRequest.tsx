@@ -19,18 +19,23 @@ function MyRequestPanel({
       justify={{ base: "space-evenly", md: "normal" }}
       w="fit-content"
     >
-      {requests?.map((request) => (
-        <WrapItem key={request.id}>
-          <RequestCard
-            title={request.video?.youtubeVideo?.title ?? ""}
-            time={request.video?.youtubeVideo?.duration ?? 0}
-            link={request.video?.url ?? ""}
-            thumbnail={`https://i.ytimg.com/vi/${request.video?.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
-            requestLang={ISO6391.getNativeName(request.lang)}
-            requestStatus={request.status}
-          />
-        </WrapItem>
-      ))}
+      {requests?.map(
+        (request) =>
+          request.video && (
+            <WrapItem key={request.id}>
+              <RequestCard
+                title={request.video.youtubeVideo?.title ?? ""}
+                time={request.video.youtubeVideo?.duration ?? 0}
+                link={request.video.url ?? ""}
+                thumbnail={`https://i.ytimg.com/vi/${request.video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
+                requestLang={ISO6391.getNativeName(request.lang)}
+                requestStatus={request.status}
+                serviceId={request.video.serviceId}
+                videoId={request.video.videoId}
+              />
+            </WrapItem>
+          )
+      )}
     </Wrap>
   );
 }

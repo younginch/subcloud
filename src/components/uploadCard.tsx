@@ -23,6 +23,9 @@ type Props = {
   lang: string;
   status: SubStatus;
   viewCount: number;
+  serviceId: string;
+  videoId: string;
+  subId: string;
 };
 
 export default function UploadCard({
@@ -33,6 +36,9 @@ export default function UploadCard({
   lang,
   status,
   viewCount,
+  serviceId,
+  videoId,
+  subId,
 }: Props) {
   const router = useRouter();
   dayjs.extend(duration);
@@ -97,7 +103,9 @@ export default function UploadCard({
       <Button
         rightIcon={<EditIcon />}
         colorScheme={useColorModeValue("blackAlpha", "linkedin")}
-        onClick={() => router.push("/editor")}
+        onClick={() =>
+          router.push(`/editor?${serviceId}Id=${videoId}&subId=${subId}`)
+        }
         borderRadius={0}
       >
         자막 수정하기
