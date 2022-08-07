@@ -1,4 +1,4 @@
 {
-  "order_process_error": "Failed to fetch order information",
+  "order_process_error": "Failed to retrieve order information",
   "order_process_paying": "Payment in progress"
 }

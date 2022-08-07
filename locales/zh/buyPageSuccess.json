@@ -1,0 +1,18 @@
+{
+  "profile_button": "去简介",
+  "request_button": "请求字幕",
+  "payment": "结算金额",
+  "unit": "₩",
+  "copy": "复制",
+  "copied": "复制了",
+  "order_sucess_error": "订购信息加载失败",
+  "order_sucess": "支付成功",
+  "sucess_p1": "用点数，可以请求字幕。尽快获取想要的字幕",
+  "sucess_p2": "取消请求时把整体点数可以回收",
+  "sucess_p3": "申请高昂订阅时可以定期获取80点数",
+  "order_payment_id": "支付ID",
+  "subscribe_sucess": "支付成功",
+  "subscription_sucess_error": "订阅信息加载失败",
+  "subscription_sucess_card_info": "卡的信息",
+  "subscription_sucess_subcribe_id": "订阅ID"
+}

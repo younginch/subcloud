@@ -1,6 +1,6 @@
 {
   "profile_button": "Go to profile",
   "order_fail_error": "Payment fail",
-  "order_fail_error_process": "Error occurred during point purchase process",
-  "order_fail_retry": "Retry"
+  "order_fail_error_process": "Error occurred in the point purchasing process",
+  "order_fail_retry": "Try again"
 }

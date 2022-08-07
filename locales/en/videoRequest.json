@@ -6,7 +6,7 @@
   "subscriber_en": " Subscribers",
   "select_lang": "Select language",
   "basic_lang": "Save as basic language",
-  "point": "Point",
+  "point": "Points",
   "point_reset": "Reset",
   "req_summary": "Request summary",
   "vid_title": "Video title",
@@ -14,7 +14,7 @@
   "min": "m",
   "sec": "s",
   "req_lang": "Request language",
-  "upload_req": "Upload request",
+  "upload_req": "Request",
   "check_subtitle_lang_required": "Please select subtitle language",
   "no_info": "No information"
 }

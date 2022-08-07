@@ -5,14 +5,14 @@
   "unit": "$",
   "copy": "Copy",
   "copied": "Copied",
-  "order_sucess_error": "Failed to fetch order information",
+  "order_sucess_error": "Failed to retrieve order information",
   "order_sucess": "Payment complete",
   "sucess_p1": "Use points to request subtitles. Get the subtitles as soon as possible",
-  "sucess_p2": "If request is canceled, you will receive your points back",
-  "sucess_p3": "By subscribing to premium service, you can earn 80 points on a regular basis",
+  "sucess_p2": "If request is canceled, you will receive your points",
+  "sucess_p3": "By subscribing premium service, you can earn 80 points on a regular basis",
   "order_payment_id": "Payment ID",
   "subscribe_sucess": "Subscription complete",
-  "subscription_sucess_error": "Failed to fetch subscription information",
+  "subscription_sucess_error": "Failed to retrieve subscription information",
   "subscription_sucess_card_info": "Card information",
   "subscription_sucess_subcribe_id": "Subscription ID"
 }

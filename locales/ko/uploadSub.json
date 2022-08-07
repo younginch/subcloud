@@ -1,9 +1,9 @@
 {
   "preview": "자막 미리보기",
-  "preview_tooltip": "확장프로그램을 사용하여 업로드하면 유튜브 위에서 미리보기가 가능합니다",
+  "preview_tooltip": "확장프로그램을 사용하여 업로드하면 유튜브에서 미리보기가 가능합니다",
   "upload_vid": "자막 업로드 영상",
   "select_lang": "언어 선택",
-  "select_lang_ex": "자막의 내용과 다른 언어를 선택할시 심사가 거절될 수 있습니다.",
+  "select_lang_ex": "자막의 내용과 다른 언어를 선택할 시 심사가 거절될 수 있습니다.",
   "upload_sub": "자막 업로드",
   "edit": "SubCloud에서 편집",
   "file_drop": "파일을 여기에 놓으세요",
@@ -14,7 +14,7 @@
   "vid_title": "영상 제목",
   "sub_file": "자막 파일명",
   "sub_lang": "요청 언어",
-  "upload_req": "요청 올리기",
+  "upload_req": "요청하기",
   "fulfilled": "요청 충족수",
   "fulfilled_ex": "검토를 통과한 시점에 업데이트됩니다",
   "check_subtitle_lang_required": "자막 언어를 선택해 주세요"

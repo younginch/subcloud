@@ -17,6 +17,7 @@ enum Language {
   EN = "en",
   ES = "es",
   JA = "ja",
+  ZH = "zh",
 }
 
 const LanguageNames = {
@@ -24,6 +25,7 @@ const LanguageNames = {
   en: "English",
   es: "Español",
   ja: "日本語",
+  zh: "简体中文",
 };
 
 type Props = {
