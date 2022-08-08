@@ -16,6 +16,13 @@ export default function SubRankingPage() {
 
   const [lang, setLang] = useState<string>();
   const [sortBy, setSortBy] = useState({ by: "view", order: true });
+  const sortOptions = [
+    "조회수 (높은 순)",
+    "조회수 (낮은 순)",
+    "업로드 날짜 (최신 순)",
+    "업로드 날짜 (오래된 순",
+  ];
+
   const pageSize = isPc ? 20 : 8;
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingSub>(url);
@@ -70,6 +77,7 @@ export default function SubRankingPage() {
       <GeneralRanking
         lang={lang}
         setLang={setLang}
+        sortOptions={sortOptions}
         sortBy={sortBy}
         setSortBy={setSortBy}
         onSubmit={onSubmit}
@@ -91,7 +99,7 @@ export default function SubRankingPage() {
             <GridItem key={sub.id}>
               <VideoRankCard
                 key={sub.id}
-                userId={sub.user.id}
+                duration={350}
                 videoName={
                   sub.video.youtubeVideo
                     ? sub.video.youtubeVideo.title
