@@ -79,7 +79,7 @@ function SelectPriority({
   sortOptions,
   direction = "column",
 }: {
-  sortOptions: String[];
+  sortOptions: string[];
   direction?: string;
 }) {
   return (
@@ -107,7 +107,7 @@ function SelectPriority({
 type Props = {
   lang?: string;
   setLang?: (language: string | undefined) => void;
-  sortOptions: String[];
+  sortOptions: string[];
   sortBy?: { by: string; order: boolean };
   setSortBy?: (sortBy: { by: string; order: boolean }) => void;
   onSubmit?: SubmitHandler<RankQueryData>;
