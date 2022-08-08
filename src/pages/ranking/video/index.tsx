@@ -1,29 +1,27 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
-import useTranslation from "next-translate/useTranslation";
 import {
   PageOptions,
   RankQueryData,
   ResRankingVideo,
 } from "../../../utils/types";
-import VideoTableRow from "../../../components/ranking/videoRankTableRow";
-import GeneralTable from "../../../components/ranking/generalTable";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
+import GeneralRanking from "../../../components/ranking/generalRanking";
+import RequestRankCard from "../../../components/ranking/requestRankCard";
 
 export default function VideoRankingPage() {
-  const { t } = useTranslation("rankings");
-  const captions = [
-    { caption: "#" },
-    { caption: t("title") },
-    { caption: t("duration") },
-    { caption: t("language") },
-    { caption: t("requests"), sortBy: "request" },
-    { caption: t("points"), sortBy: "point" },
-  ];
   const [lang, setLang] = useState<string>();
   const [sortBy, setSortBy] = useState({ by: "request", order: true });
+  const sortOptions = [
+    "조회수 (높은 순)",
+    "조회수 (낮은 순)",
+    "요청 포인트 (높은 순)",
+    "요청 포인트 (낮은 순)",
+    "자막 게이지 (높은 순)",
+    "자막 게이지 (낮은 순",
+  ];
   const pageSize = 15;
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingVideo>(url);
@@ -74,28 +72,46 @@ export default function VideoRankingPage() {
       pr={{ base: "10px", lg: "30px", xl: "70px" }}
       overflowX={{ sm: "scroll", md: "hidden" }}
     >
-      <GeneralTable
-        captions={captions}
+      <GeneralRanking
         lang={lang}
         setLang={setLang}
+        sortOptions={sortOptions}
         sortBy={sortBy}
         setSortBy={setSortBy}
         onSubmit={onSubmit}
         btnComponent={loadMoreBtn}
       >
-        {videos.map((video, index) => (
-          <VideoTableRow
-            key={video.videoId}
-            rank={index + 1}
-            name={video.youtubeVideo ? video.youtubeVideo.title : "no title"}
-            duration={video.youtubeVideo ? video.youtubeVideo.duration : 0}
-            requests={video._count.requests}
-            points={video._count.points}
-            url={video.url}
-            langs={video.langs}
-          />
-        ))}
-      </GeneralTable>
+        <Grid
+          templateColumns={[
+            "repeat(1, 1fr)",
+            "repeat(1, 1fr)",
+            "repeat(2, 1fr)",
+            "repeat(3, 1fr)",
+            "repeat(4, 1fr)",
+            "repeat(5, 1fr)",
+          ]}
+          gap={5}
+          justifyItems="center"
+        >
+          {videos.map((video) => (
+            <GridItem key={video.videoId}>
+              <RequestRankCard
+                duration={video.youtubeVideo ? video.youtubeVideo.duration : 0}
+                videoName={
+                  video.youtubeVideo ? video.youtubeVideo.title : "no title"
+                }
+                videoUrl={video.url}
+                requestCount={video._count.requests}
+                requestPoint={video._count.points}
+                requestGoal={1500}
+                channelName="냥뇽녕냥"
+                channelImageUrl="https://yt3.ggpht.com/NipIIXfDrjD14WaJJbd4KIKbTpQ2F0hZkBHPpxbuedlK3L4eH4LeqhPSFKKRDwePt_2SzuGf6Ds=s176-c-k-c0x00ffffff-no-rj-mo"
+                lang={video.langs}
+              />
+            </GridItem>
+          ))}
+        </Grid>
+      </GeneralRanking>
     </Box>
   );
 }

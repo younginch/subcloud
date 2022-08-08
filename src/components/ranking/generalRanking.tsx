@@ -75,7 +75,13 @@ function SelectLang({
   );
 }
 
-function SelectPriority({ direction = "column" }: { direction?: string }) {
+function SelectPriority({
+  sortOptions,
+  direction = "column",
+}: {
+  sortOptions: string[];
+  direction?: string;
+}) {
   return (
     <Stack
       direction={direction as StackDirection}
@@ -85,13 +91,13 @@ function SelectPriority({ direction = "column" }: { direction?: string }) {
       <Text>정렬 기준</Text>
       <Menu>
         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-          조회수 (높은 순)
+          {sortOptions[0]}
         </MenuButton>
         <MenuList>
-          <MenuItem>조회수 (높은 순)</MenuItem>
-          <MenuItem>조회수 (낮은 순)</MenuItem>
-          <MenuItem>업로드 날짜 (최신 순)</MenuItem>
-          <MenuItem>업로드 날짜 (오래된 순)</MenuItem>
+          {sortOptions.map((option, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <MenuItem key={index}>{option}</MenuItem>
+          ))}
         </MenuList>
       </Menu>
     </Stack>
@@ -101,6 +107,7 @@ function SelectPriority({ direction = "column" }: { direction?: string }) {
 type Props = {
   lang?: string;
   setLang?: (language: string | undefined) => void;
+  sortOptions: string[];
   sortBy?: { by: string; order: boolean };
   setSortBy?: (sortBy: { by: string; order: boolean }) => void;
   onSubmit?: SubmitHandler<RankQueryData>;
@@ -111,6 +118,7 @@ type Props = {
 export default function GeneralRanking({
   lang,
   setLang,
+  sortOptions,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   sortBy,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -159,7 +167,7 @@ export default function GeneralRanking({
           {setLang && (
             <SelectLang lang={lang} setLang={setLang} direction="row" />
           )}
-          <SelectPriority direction="row" />
+          <SelectPriority sortOptions={sortOptions} direction="row" />
         </HStack>
         {children}
         {btnComponent}
@@ -218,7 +226,7 @@ export default function GeneralRanking({
               <Spacer />
             </>
           )}
-          <SelectPriority />
+          <SelectPriority sortOptions={sortOptions} />
           <Spacer />
         </HStack>
       </Collapse>
