@@ -81,7 +81,6 @@ type EditorContextProps = {
   showTimeline: boolean;
   showProperty: boolean;
   setUrlInput: (urlInput: RefObject<HTMLInputElement>) => void;
-  setFileOpenCommand: (command: () => void) => void;
 };
 
 export enum PlayerState {
@@ -140,7 +139,6 @@ export const EditorContext = createContext<EditorContextProps>({
   showTimeline: true,
   showProperty: true,
   setUrlInput: () => {},
-  setFileOpenCommand: () => {},
 });
 
 type EditorProviderProps = {
@@ -169,7 +167,6 @@ export function EditorProvider({ children }: EditorProviderProps) {
   const [showProperty, setShowProperty] = useState<boolean>(true);
 
   const [urlInput, setUrlInput] = useState<RefObject<HTMLInputElement>>();
-  const [fileOpenCommand, setFileOpenCommand] = useState<() => void>();
 
   function execute(action: EditorAction) {
     setContents(() => action.execute(contents));
@@ -249,11 +246,6 @@ export function EditorProvider({ children }: EditorProviderProps) {
     FILE_NEW_WINDOW: () => window.open(window.location.href, "_blank"),
     FILE_OPEN_YOUTUBE: () => {
       urlInput?.current?.focus();
-    },
-    FILE_OPEN_SUBFILE: () => {
-      if (fileOpenCommand) {
-        fileOpenCommand();
-      }
     },
     FILE_SAVE_SRT: downloadSRT,
     EDIT_UNDO: undo,
@@ -411,7 +403,6 @@ export function EditorProvider({ children }: EditorProviderProps) {
         showTimeline,
         showProperty,
         setUrlInput,
-        setFileOpenCommand,
       }}
     >
       {children}

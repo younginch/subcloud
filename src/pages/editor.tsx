@@ -49,7 +49,6 @@ function EditorWithoutContext() {
     showTimeline,
     showProperty,
     setUrlInput,
-    setFileOpenCommand,
   } = useContext(EditorContext);
   const [urlString, setUrlString] = useState("");
   const urlField = useRef<HTMLInputElement>(null);
@@ -68,12 +67,8 @@ function EditorWithoutContext() {
     [setContents, setFocusedIndex]
   );
 
-  const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-  });
-
-  useEffect(() => {
-    setFileOpenCommand(open);
   });
 
   useEffect(() => {
