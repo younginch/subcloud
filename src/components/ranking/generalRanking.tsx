@@ -23,7 +23,7 @@ import ISO6391, { LanguageCode } from "iso-639-1";
 import useTranslation from "next-translate/useTranslation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineSearch } from "react-icons/ai";
-import { VscSettings } from "React-icons/vsc";
+import { VscSettings } from "react-icons/vsc";
 import { RankQueryData } from "../../utils/types";
 
 const codeList: LanguageCode[] = [
