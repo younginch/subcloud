@@ -1,4 +1,4 @@
-import { WrapItem, Stack, Wrap, Text } from "@chakra-ui/react";
+import { Stack, Text, useMediaQuery, Grid, GridItem } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import ISO6391 from "iso-639-1";
@@ -13,16 +13,31 @@ function MyRequestPanel({
 }: {
   requests: ResRequestSearch | undefined;
 }) {
+  const [col2, col3, col4, col5, col6] = useMediaQuery([
+    "(min-width: 750px)",
+    "(min-width: 1030px)",
+    "(min-width: 1400px)",
+    "(min-width: 1700px)",
+    "(min-width: 2000px)",
+  ]);
+
   return (
-    <Wrap
-      spacing={5}
-      justify={{ base: "space-evenly", md: "normal" }}
-      w="fit-content"
+    <Grid
+      templateColumns={`repeat(${
+        1 +
+        Number(col2) +
+        Number(col3) +
+        Number(col4) +
+        Number(col5) +
+        Number(col6)
+      }, 1fr)`}
+      gap={5}
+      justifyItems="center"
     >
       {requests?.map(
         (request) =>
           request.video && (
-            <WrapItem key={request.id}>
+            <GridItem key={request.id}>
               <RequestCard
                 title={request.video.youtubeVideo?.title ?? ""}
                 time={request.video.youtubeVideo?.duration ?? 0}
@@ -33,10 +48,10 @@ function MyRequestPanel({
                 serviceId={request.video.serviceId}
                 videoId={request.video.videoId}
               />
-            </WrapItem>
+            </GridItem>
           )
       )}
-    </Wrap>
+    </Grid>
   );
 }
 
