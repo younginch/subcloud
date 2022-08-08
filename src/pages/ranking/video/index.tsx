@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
@@ -65,6 +65,14 @@ export default function VideoRankingPage() {
     />
   );
 
+  const [col2, col3, col4, col5, col6] = useMediaQuery([
+    "(min-width: 750px)",
+    "(min-width: 1030px)",
+    "(min-width: 1400px)",
+    "(min-width: 1700px)",
+    "(min-width: 2000px)",
+  ]);
+
   return (
     <Box
       pt={10}
@@ -82,14 +90,14 @@ export default function VideoRankingPage() {
         btnComponent={loadMoreBtn}
       >
         <Grid
-          templateColumns={[
-            "repeat(1, 1fr)",
-            "repeat(1, 1fr)",
-            "repeat(2, 1fr)",
-            "repeat(3, 1fr)",
-            "repeat(4, 1fr)",
-            "repeat(5, 1fr)",
-          ]}
+          templateColumns={`repeat(${
+            1 +
+            Number(col2) +
+            Number(col3) +
+            Number(col4) +
+            Number(col5) +
+            Number(col6)
+          }, 1fr)`}
           gap={5}
           justifyItems="center"
         >

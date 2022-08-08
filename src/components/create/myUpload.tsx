@@ -1,4 +1,4 @@
-import { WrapItem, Stack, Wrap, Text } from "@chakra-ui/react";
+import { Stack, Text, GridItem, Grid, useMediaQuery } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import ISO6391 from "iso-639-1";
@@ -9,14 +9,29 @@ import Pagination from "../pagination";
 import UploadCard from "../uploadCard";
 
 function MyUploadPanel({ subs }: { subs: ResSubSearch | undefined }) {
+  const [col2, col3, col4, col5, col6] = useMediaQuery([
+    "(min-width: 750px)",
+    "(min-width: 1030px)",
+    "(min-width: 1400px)",
+    "(min-width: 1700px)",
+    "(min-width: 2000px)",
+  ]);
+
   return (
-    <Wrap
-      spacing={5}
-      justify={{ base: "space-evenly", md: "normal" }}
-      w="fit-content"
+    <Grid
+      templateColumns={`repeat(${
+        1 +
+        Number(col2) +
+        Number(col3) +
+        Number(col4) +
+        Number(col5) +
+        Number(col6)
+      }, 1fr)`}
+      gap={5}
+      justifyItems="center"
     >
       {subs?.map((sub) => (
-        <WrapItem key={sub.id}>
+        <GridItem key={sub.id}>
           <UploadCard
             title={sub.video.youtubeVideo?.title ?? ""}
             time={sub.video.youtubeVideo?.duration ?? 0}
@@ -29,9 +44,9 @@ function MyUploadPanel({ subs }: { subs: ResSubSearch | undefined }) {
             videoId={sub.video.videoId}
             subId={sub.id}
           />
-        </WrapItem>
+        </GridItem>
       ))}
-    </Wrap>
+    </Grid>
   );
 }
 
