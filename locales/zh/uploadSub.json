@@ -17,5 +17,9 @@
   "upload_req": "申请请求",
   "fulfilled": "满足请求数",
   "fulfilled_ex": "通过复查时更新",
-  "check_subtitle_lang_required": "请选择字幕的语言"
+  "check_subtitle_lang_required": "请选择字幕的语言",
+  "language": "语言",
+  "status": "承认状态",
+  "view": "浏览次数",
+  "edit_sub": "修改字幕"
 }
