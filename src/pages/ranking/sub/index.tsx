@@ -15,12 +15,15 @@ export default function SubRankingPage() {
   const [isPc] = useMediaQuery("(min-width: 950px)");
 
   const [lang, setLang] = useState<string>();
-  const [sortBy, setSortBy] = useState({ by: "view", order: true });
-  const sortOptions = [
-    "조회수 (높은 순)",
-    "조회수 (낮은 순)",
-    "업로드 날짜 (최신 순)",
-    "업로드 날짜 (오래된 순",
+  const [sortOption, setSortOption] = useState({
+    name: "조회수 (높은 순)",
+    sortBy: { by: "view", order: true },
+  });
+  const sortOptionArray = [
+    { name: "조회수 (높은 순)", sortBy: { by: "view", order: true } },
+    { name: "조회수 (낮은 순)", sortBy: { by: "view", order: false } },
+    { name: "업로드 날짜 (최신 순)", sortBy: { by: "date", order: true } },
+    { name: "업로드 날짜 (오래된 순)", sortBy: { by: "date", order: false } },
   ];
 
   const pageSize = isPc ? 20 : 8;
@@ -37,10 +40,10 @@ export default function SubRankingPage() {
 
   const { data, error, size, setSize, isValidating } = useSWRInfinite(
     (index) =>
-      `/api/public/ranking/sub/${sortBy.by}?start=${pageSize * index}&end=${
-        pageSize * (index + 1)
-      }&lang=${lang ?? "All Lang"}&order=${
-        sortBy.order === true ? "desc" : "asc"
+      `/api/public/ranking/sub/${sortOption.sortBy.by}?start=${
+        pageSize * index
+      }&end=${pageSize * (index + 1)}&lang=${lang ?? "All Lang"}&order=${
+        sortOption.sortBy.order === true ? "desc" : "asc"
       }`,
     fetcher
   );
@@ -85,9 +88,9 @@ export default function SubRankingPage() {
       <GeneralRanking
         lang={lang}
         setLang={setLang}
-        sortOptions={sortOptions}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
+        sortOptionArray={sortOptionArray}
+        sortOption={sortOption}
+        setSortOption={setSortOption}
         onSubmit={onSubmit}
         btnComponent={loadMoreBtn}
       >
@@ -114,9 +117,13 @@ export default function SubRankingPage() {
                     : "no title"
                 }
                 videoUrl={sub.video.url}
+                imageUrl={`https://i.ytimg.com/vi/${sub.video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-jCivJl2_ZKjT2GONS3-JWiYk1w`}
                 viewCount={sub.views}
-                channelName="냥뇽녕냥"
-                channelImageUrl="https://yt3.ggpht.com/NipIIXfDrjD14WaJJbd4KIKbTpQ2F0hZkBHPpxbuedlK3L4eH4LeqhPSFKKRDwePt_2SzuGf6Ds=s176-c-k-c0x00ffffff-no-rj-mo"
+                channelName={sub.video.youtubeVideo?.channel.title ?? "no name"}
+                channelImageUrl={
+                  sub.video.youtubeVideo?.channel.thumbnailUrl ?? ""
+                }
+                channelUrl={sub.video.youtubeVideo?.channel.channelUrl ?? ""}
                 lang={sub.lang}
                 uploadDate={sub.createdAt}
               />

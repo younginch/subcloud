@@ -18,24 +18,28 @@ type Props = {
   duration: number;
   videoName: string;
   videoUrl: string;
+  imageUrl: string;
   requestCount: number;
   requestPoint: number;
   requestGoal: number;
   channelName: string;
   channelImageUrl: string;
+  channelUrl: string;
   lang: string;
   uploadDate?: Date;
 };
 
 export default function RequestRankCard({
   duration,
-  videoUrl,
   videoName,
+  videoUrl,
+  imageUrl,
   requestCount,
   requestPoint,
   requestGoal,
   channelName,
   channelImageUrl,
+  channelUrl,
   lang,
   uploadDate,
 }: Props) {
@@ -44,8 +48,10 @@ export default function RequestRankCard({
       duration={duration}
       videoName={videoName}
       videoUrl={videoUrl}
+      imageUrl={imageUrl}
       channelName={channelName}
       channelImageUrl={channelImageUrl}
+      channelUrl={channelUrl}
       uploadDate={uploadDate}
     >
       <Stack pl="10px" pr="10px">

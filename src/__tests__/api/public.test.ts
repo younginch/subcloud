@@ -1,5 +1,5 @@
 import subByViewRoute from "../../pages/api/public/ranking/sub/view";
-import userByFulfilledRequestsRoute from "../../pages/api/public/ranking/user/fulfilledRequests";
+import userByRatingsRoute from "../../pages/api/public/ranking/user/rating";
 import userBySubRoute from "../../pages/api/public/ranking/user/sub";
 import userByViewRoute from "../../pages/api/public/ranking/user/view";
 import videoByPoint from "../../pages/api/public/ranking/video/point";
@@ -18,7 +18,7 @@ describe("/api/public/ranking", () => {
 
   it(
     "User By Fulfilled Requests should return 200",
-    testRes(userByFulfilledRequestsRoute, "GET", 200, (req) => {
+    testRes(userByRatingsRoute, "GET", 200, (req) => {
       req.query = { lang: "", start: "1", end: "2" };
     })
   );
