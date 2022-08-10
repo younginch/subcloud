@@ -59,6 +59,7 @@ export default function VideoCard({
           onClick={() => router.push(videoUrl)}
           cursor="pointer"
           maxH="169px"
+          w="100%"
         />
         <Text
           bg="black"

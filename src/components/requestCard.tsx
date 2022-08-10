@@ -103,6 +103,7 @@ export default function RequestCard({
         cursor="pointer"
         onClick={() => router.push(link)}
         maxH="169px"
+        w="100%"
       />
       <Text
         bg="black"

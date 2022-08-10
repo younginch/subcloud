@@ -61,6 +61,7 @@ export default function UploadCard({
         onClick={() => router.push(link)}
         cursor="pointer"
         maxH="169px"
+        w="100%"
       />
       <Text
         bg="black"
