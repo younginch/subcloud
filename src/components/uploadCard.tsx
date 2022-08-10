@@ -90,7 +90,7 @@ export default function UploadCard({
             </Badge>
           </Stack>
           <Spacer />
-          <Stack>
+          <Stack spacing="5px">
             <Text fontWeight="bold">{t("status")}</Text>
             <ReviewStatusBadge status={status} />
           </Stack>

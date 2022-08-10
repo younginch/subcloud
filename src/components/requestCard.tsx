@@ -133,7 +133,7 @@ export default function RequestCard({
           </Stack>
           <Spacer />
           {requestStatus !== undefined ? (
-            <Stack>
+            <Stack spacing="5px">
               <Text fontWeight="bold">{t("status")}</Text>
               <RequestBadge status={requestStatus} />
             </Stack>
