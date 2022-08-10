@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
-import { AiFillStar, AiOutlineUser } from "react-icons/ai";
+import { AiFillStar } from "react-icons/ai";
 import { BsEye } from "react-icons/bs";
 import { MdSubtitles } from "react-icons/md";
 
@@ -20,7 +20,7 @@ type Props = {
   userImageUrl: string;
   totalViewCount: number;
   totalSubCount: number;
-  totalFulfilledRequest: number;
+  makedLanguaged: String[];
   totalRating: number;
 };
 
@@ -31,7 +31,7 @@ export default function UserRankTableRow({
   userImageUrl,
   totalViewCount,
   totalSubCount,
-  totalFulfilledRequest,
+  makedLanguaged,
   totalRating,
 }: Props) {
   const textColor = useColorModeValue("gray.700", "gray.300");
@@ -74,18 +74,30 @@ export default function UserRankTableRow({
       </Td>
       <Td w="15%" pl={paddingLeftBp} fontSize={mainTextSize}>
         <HStack>
-          <AiOutlineUser color={textColor} />
-          <Text>{totalFulfilledRequest}</Text>
+          {makedLanguaged.map(
+            (subtitleLanguage, index) =>
+              index <= 1 && (
+                // eslint-disable-next-line react/no-array-index-key
+                <Text key={index}>
+                  {subtitleLanguage}
+                  {index === 0 && ", "}
+                </Text>
+              )
+          )}
+          {makedLanguaged.length >= 3 && <Text>...</Text>}
         </HStack>
       </Td>
-
       <Td w="15%" pl={paddingLeftBp} fontSize={mainTextSize}>
-        <HStack>
-          <Box color="yellow.400">
-            <AiFillStar color="inherit" />
-          </Box>
-          <Text>{totalRating}</Text>
-        </HStack>
+        {totalRating === 0 ? (
+          <Text>평점 없음</Text>
+        ) : (
+          <HStack>
+            <Box color="yellow.400">
+              <AiFillStar color="inherit" />
+            </Box>
+            <Text>{totalRating}</Text>
+          </HStack>
+        )}
       </Td>
     </Tr>
   );
