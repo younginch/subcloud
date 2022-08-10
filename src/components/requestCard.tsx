@@ -13,17 +13,19 @@ import { useRouter } from "next/router";
 import { RequestStatus } from "@prisma/client";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
+import useTranslation from "next-translate/useTranslation";
 
 function RequestBadge({ status }: { status: RequestStatus }) {
+  const { t } = useTranslation("badges");
   if (status === RequestStatus.Uploaded)
     return (
       <Badge colorScheme="green" w="fit-content">
-        업로드 완료
+        {t("complete")}
       </Badge>
     );
   return (
     <Badge colorScheme="red" w="fit-content">
-      대기중
+      {t("waiting")}
     </Badge>
   );
 }
@@ -53,6 +55,7 @@ export default function RequestCard({
   serviceId,
   videoId,
 }: Props) {
+  const { t } = useTranslation("videoRequest");
   const router = useRouter();
   dayjs.extend(duration);
   const buttonColor = useColorModeValue("blue", "linkedin");
@@ -68,7 +71,7 @@ export default function RequestCard({
           router.push(`/video/${serviceId}/${videoId}/request/create`)
         }
       >
-        자막 요청하기
+        {t("request_sub")}
       </Button>
     );
   } else if (buttonType === "sub") {
@@ -79,7 +82,7 @@ export default function RequestCard({
         borderRadius={0}
         onClick={() => router.push(`/video/${serviceId}/${videoId}/sub/create`)}
       >
-        자막 업로드
+        {t("upload_sub")}
       </Button>
     );
   }
@@ -123,7 +126,7 @@ export default function RequestCard({
         </Text>
         <HStack>
           <Stack>
-            <Text fontWeight="bold">요청 언어</Text>
+            <Text fontWeight="bold">{t("request_lang")}</Text>
             <Badge colorScheme="purple" w="fit-content">
               {requestLang}
             </Badge>
@@ -131,12 +134,12 @@ export default function RequestCard({
           <Spacer />
           {requestStatus !== undefined ? (
             <Stack>
-              <Text fontWeight="bold">제작 현황</Text>
+              <Text fontWeight="bold">{t("status")}</Text>
               <RequestBadge status={requestStatus} />
             </Stack>
           ) : (
             <Stack spacing={0}>
-              <Text fontWeight="bold">요청 수</Text>
+              <Text fontWeight="bold">{t("request_num")}</Text>
               <Text fontWeight="bold">{requestCount}</Text>
             </Stack>
           )}

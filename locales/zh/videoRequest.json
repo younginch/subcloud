@@ -18,5 +18,10 @@
   "req_lang": "请求语言",
   "upload_req": "申请请求",
   "check_subtitle_lang_required": "请选择字幕的语言",
-  "no_info": "没有信息"
+  "no_info": "没有信息",
+  "request_sub": "请求字幕",
+  "upload_sub": "上载字幕",
+  "request_lang": "请求语言",
+  "status": "制作情况",
+  "request_num": "请求数"
 }
