@@ -1,5 +1,6 @@
 import { Stack, Text, Badge, HStack, Spacer } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import ISO6391 from "iso-639-1";
 import duration from "dayjs/plugin/duration";
 import VideoCard from "../videoCard";
 
@@ -9,20 +10,24 @@ type Props = {
   duration: number;
   videoName: string;
   videoUrl: string;
+  imageUrl: string;
   viewCount: number;
   channelName: string;
   channelImageUrl: string;
+  channelUrl: string;
   lang: string;
   uploadDate?: Date;
 };
 
 export default function VideoRankCard({
   duration,
-  videoUrl,
   videoName,
+  videoUrl,
+  imageUrl,
   viewCount,
   channelName,
   channelImageUrl,
+  channelUrl,
   lang,
   uploadDate,
 }: Props) {
@@ -31,8 +36,10 @@ export default function VideoRankCard({
       duration={duration}
       videoName={videoName}
       videoUrl={videoUrl}
+      imageUrl={imageUrl}
       channelName={channelName}
       channelImageUrl={channelImageUrl}
+      channelUrl={channelUrl}
       uploadDate={uploadDate}
     >
       <Stack pl="10px">
@@ -40,7 +47,7 @@ export default function VideoRankCard({
           <Stack>
             <Text fontWeight="bold">언어</Text>
             <Badge colorScheme="purple" w="fit-content">
-              {lang}
+              {ISO6391.getNativeName(lang)}
             </Badge>
           </Stack>
           <Spacer />

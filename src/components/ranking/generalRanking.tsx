@@ -75,11 +75,23 @@ function SelectLang({
   );
 }
 
+type SortOption = {
+  name: string;
+  sortBy: {
+    by: string;
+    order: boolean;
+  };
+};
+
 function SelectPriority({
-  sortOptions,
+  sortOptionArray,
+  sortOption,
+  setSortOption,
   direction = "column",
 }: {
-  sortOptions: string[];
+  sortOptionArray: SortOption[];
+  sortOption: SortOption;
+  setSortOption?: (sortOption: SortOption) => void;
   direction?: string;
 }) {
   return (
@@ -91,12 +103,17 @@ function SelectPriority({
       <Text>정렬 기준</Text>
       <Menu>
         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-          {sortOptions[0]}
+          {sortOption.name}
         </MenuButton>
         <MenuList>
-          {sortOptions.map((option, index) => (
+          {sortOptionArray.map((option, index) => (
             // eslint-disable-next-line react/no-array-index-key
-            <MenuItem key={index}>{option}</MenuItem>
+            <MenuItem
+              key={index}
+              onClick={() => setSortOption && setSortOption(option)}
+            >
+              {option.name}
+            </MenuItem>
           ))}
         </MenuList>
       </Menu>
@@ -107,9 +124,9 @@ function SelectPriority({
 type Props = {
   lang?: string;
   setLang?: (language: string | undefined) => void;
-  sortOptions: string[];
-  sortBy?: { by: string; order: boolean };
-  setSortBy?: (sortBy: { by: string; order: boolean }) => void;
+  sortOptionArray: SortOption[];
+  sortOption: SortOption;
+  setSortOption?: (sortOption: SortOption) => void;
   onSubmit?: SubmitHandler<RankQueryData>;
   children: React.ReactNode;
   btnComponent?: React.ReactNode;
@@ -118,11 +135,9 @@ type Props = {
 export default function GeneralRanking({
   lang,
   setLang,
-  sortOptions,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  sortBy,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setSortBy,
+  sortOptionArray,
+  sortOption,
+  setSortOption,
   onSubmit,
   children,
   btnComponent,
@@ -167,7 +182,12 @@ export default function GeneralRanking({
           {setLang && (
             <SelectLang lang={lang} setLang={setLang} direction="row" />
           )}
-          <SelectPriority sortOptions={sortOptions} direction="row" />
+          <SelectPriority
+            sortOptionArray={sortOptionArray}
+            sortOption={sortOption}
+            setSortOption={setSortOption}
+            direction="row"
+          />
         </HStack>
         {children}
         {btnComponent}
@@ -226,7 +246,11 @@ export default function GeneralRanking({
               <Spacer />
             </>
           )}
-          <SelectPriority sortOptions={sortOptions} />
+          <SelectPriority
+            sortOptionArray={sortOptionArray}
+            sortOption={sortOption}
+            setSortOption={setSortOption}
+          />
           <Spacer />
         </HStack>
       </Collapse>
