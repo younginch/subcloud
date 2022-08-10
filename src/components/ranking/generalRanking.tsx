@@ -107,8 +107,8 @@ function SelectPriority({
         </MenuButton>
         <MenuList>
           {sortOptionArray.map((option, index) => (
-            // eslint-disable-next-line react/no-array-index-key
             <MenuItem
+              // eslint-disable-next-line react/no-array-index-key
               key={index}
               onClick={() => setSortOption && setSortOption(option)}
             >
