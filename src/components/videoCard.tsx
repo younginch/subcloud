@@ -50,6 +50,7 @@ export default function VideoCard({
       pb="10px"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      boxShadow="base"
     >
       <Box position="relative">
         <Image
@@ -57,6 +58,8 @@ export default function VideoCard({
           alt="thumbnail"
           onClick={() => router.push(videoUrl)}
           cursor="pointer"
+          maxH="169px"
+          w="100%"
         />
         <Text
           bg="black"

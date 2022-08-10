@@ -19,7 +19,7 @@
   "no_info": "No information",
   "request_sub": "Request subtitle",
   "upload_sub": "Upload subtitle",
-  "request_lang": "Language requested",
-  "statuts": "Production status",
-  "request_num": "Number of requests"
+  "request_lang": "Language",
+  "status": "Status",
+  "request_num": "requests count"
 }

@@ -65,7 +65,7 @@ export default function RequestCard({
     buttonComponent = (
       <Button
         colorScheme={buttonColor}
-        rightIcon={<ChevronRightIcon />}
+        rightIcon={<ChevronRightIcon w="25px" h="25px" />}
         borderRadius={0}
         onClick={() =>
           router.push(`/video/${serviceId}/${videoId}/request/create`)
@@ -95,12 +95,15 @@ export default function RequestCard({
       borderRadius="10px"
       overflow="hidden"
       position="relative"
+      boxShadow="base"
     >
       <Image
         src={thumbnail}
         alt="thumbnail"
         cursor="pointer"
         onClick={() => router.push(link)}
+        maxH="169px"
+        w="100%"
       />
       <Text
         bg="black"
@@ -133,7 +136,7 @@ export default function RequestCard({
           </Stack>
           <Spacer />
           {requestStatus !== undefined ? (
-            <Stack>
+            <Stack spacing="5px">
               <Text fontWeight="bold">{t("status")}</Text>
               <RequestBadge status={requestStatus} />
             </Stack>
