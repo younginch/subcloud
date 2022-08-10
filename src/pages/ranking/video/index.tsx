@@ -13,14 +13,17 @@ import RequestRankCard from "../../../components/ranking/requestRankCard";
 
 export default function VideoRankingPage() {
   const [lang, setLang] = useState<string>();
-  const [sortBy, setSortBy] = useState({ by: "request", order: true });
-  const sortOptions = [
-    "조회수 (높은 순)",
-    "조회수 (낮은 순)",
-    "요청 포인트 (높은 순)",
-    "요청 포인트 (낮은 순)",
-    "자막 게이지 (높은 순)",
-    "자막 게이지 (낮은 순",
+  const [sortOption, setSortOption] = useState({
+    name: "요청수 (높은 순)",
+    sortBy: { by: "request", order: true },
+  });
+  const sortOptionArray = [
+    { name: "요청수 (높은 순)", sortBy: { by: "request", order: true } },
+    { name: "요청수 (낮은 순)", sortBy: { by: "request", order: false } },
+    { name: "요청 포인트 (높은 순)", sortBy: { by: "point", order: true } },
+    { name: "요청 포인트 (낮은 순)", sortBy: { by: "point", order: false } },
+    { name: "자막 게이지 (높은 순)", sortBy: { by: "gauge", order: true } },
+    { name: "자막 게이지 (낮은 순)", sortBy: { by: "gauge", order: false } },
   ];
   const pageSize = 15;
   const fetcher = async (url: string) => {
@@ -36,10 +39,10 @@ export default function VideoRankingPage() {
 
   const { data, error, size, setSize } = useSWRInfinite(
     (index) =>
-      `/api/public/ranking/video/${sortBy.by}?start=${pageSize * index}&end=${
-        pageSize * (index + 1)
-      }&lang=${lang ?? "All Lang"}&order=${
-        sortBy.order === true ? "desc" : "asc"
+      `/api/public/ranking/video/${sortOption.sortBy.by}?start=${
+        pageSize * index
+      }&end=${pageSize * (index + 1)}&lang=${lang ?? "All Lang"}&order=${
+        sortOption.sortBy.order === true ? "desc" : "asc"
       }`,
     fetcher
   );
@@ -83,9 +86,9 @@ export default function VideoRankingPage() {
       <GeneralRanking
         lang={lang}
         setLang={setLang}
-        sortOptions={sortOptions}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
+        sortOptionArray={sortOptionArray}
+        sortOption={sortOption}
+        setSortOption={setSortOption}
         onSubmit={onSubmit}
         btnComponent={loadMoreBtn}
       >
@@ -109,11 +112,13 @@ export default function VideoRankingPage() {
                   video.youtubeVideo ? video.youtubeVideo.title : "no title"
                 }
                 videoUrl={video.url}
+                imageUrl={`https://i.ytimg.com/vi/${video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-jCivJl2_ZKjT2GONS3-JWiYk1w`}
                 requestCount={video._count.requests}
                 requestPoint={video._count.points}
                 requestGoal={1500}
-                channelName="냥뇽녕냥"
-                channelImageUrl="https://yt3.ggpht.com/NipIIXfDrjD14WaJJbd4KIKbTpQ2F0hZkBHPpxbuedlK3L4eH4LeqhPSFKKRDwePt_2SzuGf6Ds=s176-c-k-c0x00ffffff-no-rj-mo"
+                channelName={video.youtubeVideo?.channel.title ?? "no name"}
+                channelImageUrl={video.youtubeVideo?.channel.thumbnailUrl ?? ""}
+                channelUrl={video.youtubeVideo?.channel.channelUrl ?? ""}
                 lang={video.langs}
               />
             </GridItem>

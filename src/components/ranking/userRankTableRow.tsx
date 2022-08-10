@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
+import ISO6391, { LanguageCode } from "iso-639-1";
 import { AiFillStar } from "react-icons/ai";
 import { BsEye } from "react-icons/bs";
 import { MdSubtitles } from "react-icons/md";
@@ -20,7 +21,7 @@ type Props = {
   userImageUrl: string;
   totalViewCount: number;
   totalSubCount: number;
-  makedLanguaged: String[];
+  makedLanguaged: LanguageCode[];
   totalRating: number;
 };
 
@@ -79,8 +80,8 @@ export default function UserRankTableRow({
               index <= 1 && (
                 // eslint-disable-next-line react/no-array-index-key
                 <Text key={index}>
-                  {subtitleLanguage}
-                  {index === 0 && ", "}
+                  {index > 0 && ", "}
+                  {ISO6391.getName(subtitleLanguage)}
                 </Text>
               )
           )}

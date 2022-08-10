@@ -19,18 +19,22 @@ type Props = {
   duration: number;
   videoName: string;
   videoUrl: string;
+  imageUrl: string;
   channelName: string;
   channelImageUrl: string;
+  channelUrl: string;
   uploadDate?: Date;
   children: React.ReactNode;
 };
 
 export default function VideoCard({
   duration,
-  videoUrl,
   videoName,
+  videoUrl,
+  imageUrl,
   channelName,
   channelImageUrl,
+  channelUrl,
   uploadDate,
   children,
 }: Props) {
@@ -50,7 +54,7 @@ export default function VideoCard({
     >
       <Box position="relative">
         <Image
-          src="https://i.ytimg.com/vi/TQ8WlA2GXbk/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-jCivJl2_ZKjT2GONS3-JWiYk1w"
+          src={imageUrl}
           alt="thumbnail"
           onClick={() => router.push(videoUrl)}
           cursor="pointer"
@@ -95,7 +99,7 @@ export default function VideoCard({
           {videoName}
         </Text>
         <HStack overflow="hidden" pr="10px">
-          <Link href={`https://www.youtube.com/c/${channelName}`}>
+          <Link href={channelUrl}>
             <Avatar size="sm" name={channelName} src={channelImageUrl} />
           </Link>
           <Text fontWeight="bold">{channelName}</Text>

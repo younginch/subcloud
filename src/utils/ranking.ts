@@ -11,13 +11,25 @@ export async function RankingUser(
   { req, res, prisma }: RouteParams<ResRankingUser>,
   sortBy: (a: UserWithCount, b: UserWithCount) => number
 ) {
-  const { start, end, order } = req.query;
+  const { start, end, order, lang } = req.query;
   if (!start && !end) {
     return res
       .status(400)
       .json({ error: SubErrorType.FormValidation, message: "FormInvalidated" });
   }
+  let where: any = {};
+  const isLang = lang && lang !== "All Lang";
+  if (isLang) {
+    where = {
+      subs: {
+        some: {
+          lang: lang as string,
+        },
+      },
+    };
+  }
   const users = await prisma.user.findMany({
+    where,
     include: {
       subs: {
         include: {
@@ -37,6 +49,15 @@ export async function RankingUser(
     .map((user) => {
       const subs = user.subs.filter((sub) => sub.status === "Approved");
       const ratedSubs = subs.filter((sub) => sub.ratings.length > 0);
+      const langsMap = new Map();
+      for (let i = 0; i < subs.length; i += 1) {
+        const { lang } = subs[i];
+        const num = langsMap.get(lang);
+        if (num) langsMap.set(lang, num + 1);
+        else langsMap.set(lang, 1);
+      }
+      const sortLangsMap = new Map([...langsMap].sort((a, b) => b[1] - a[1]));
+      const langs = [...sortLangsMap.keys()];
       return {
         id: user.id,
         name: user.name,
@@ -79,6 +100,7 @@ export async function RankingUser(
                   0
                 ) / ratedSubs.length
               : 0,
+          langs,
         },
       };
     })
