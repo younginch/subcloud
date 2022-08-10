@@ -71,7 +71,7 @@ export default function RequestCard({
           router.push(`/video/${serviceId}/${videoId}/request/create`)
         }
       >
-        자막 요청하기
+        {t("request_sub")}
       </Button>
     );
   } else if (buttonType === "sub") {
@@ -82,7 +82,7 @@ export default function RequestCard({
         borderRadius={0}
         onClick={() => router.push(`/video/${serviceId}/${videoId}/sub/create`)}
       >
-        자막 업로드
+        {t("upload_sub")}
       </Button>
     );
   }

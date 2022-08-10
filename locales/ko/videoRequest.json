@@ -19,6 +19,8 @@
   "upload_req": "요청하기",
   "check_subtitle_lang_required": "자막 언어를 선택해 주세요",
   "no_info": "정보 없음",
+  "request_sub": "자막 요청하기",
+  "upload_sub": "자막 업로드",
   "request_lang": "요청 언어",
   "status": "제작 현황",
   "request_num": "요청 수"
