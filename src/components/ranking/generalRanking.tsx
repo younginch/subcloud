@@ -25,19 +25,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineSearch } from "react-icons/ai";
 import { VscSettings } from "react-icons/vsc";
 import { RankQueryData } from "../../utils/types";
-
-const codeList: LanguageCode[] = [
-  "en",
-  "fr",
-  "de",
-  "it",
-  "es",
-  "pt",
-  "ru",
-  "ja",
-  "zh",
-  "ko",
-];
+import LanguageCodeList from "../languageCodeList";
 
 function SelectLang({
   lang,
@@ -49,6 +37,8 @@ function SelectLang({
   direction?: string;
 }) {
   const { t } = useTranslation("rankings");
+  const codeList: LanguageCode[] | undefined = LanguageCodeList();
+
   return (
     <Stack
       direction={direction as StackDirection}
@@ -60,16 +50,18 @@ function SelectLang({
         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
           {lang && lang !== "All Lang" ? ISO6391.getName(lang) : t("all lang")}
         </MenuButton>
-        <MenuList>
-          <MenuItem key={t("all lang")} onClick={() => setLang("All Lang")}>
-            {t("all lang")}
-          </MenuItem>
-          {codeList.map((code) => (
-            <MenuItem key={code} onClick={() => setLang(code)}>
-              {`${ISO6391.getName(code)} (${ISO6391.getNativeName(code)})`}
+        {codeList && (
+          <MenuList>
+            <MenuItem key={t("all lang")} onClick={() => setLang("All Lang")}>
+              {t("all lang")}
             </MenuItem>
-          ))}
-        </MenuList>
+            {codeList.map((code) => (
+              <MenuItem key={code} onClick={() => setLang(code)}>
+                {`${ISO6391.getName(code)} (${ISO6391.getNativeName(code)})`}
+              </MenuItem>
+            ))}
+          </MenuList>
+        )}
       </Menu>
     </Stack>
   );

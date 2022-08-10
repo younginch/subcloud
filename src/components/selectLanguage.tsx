@@ -13,6 +13,7 @@ import ISO6391, { LanguageCode } from "iso-639-1";
 import type { FieldError } from "react-hook-form";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import useTranslation from "next-translate/useTranslation";
+import LanguageCodeList from "./languageCodeList";
 
 type Props = {
   lang: string;
@@ -22,19 +23,7 @@ type Props = {
 
 export default function SelectLanguage({ lang, error, setLang }: Props) {
   const { t } = useTranslation("videoRequest");
-
-  const codeList: LanguageCode[] = [
-    "en",
-    "fr",
-    "de",
-    "it",
-    "es",
-    "pt",
-    "ru",
-    "ja",
-    "zh",
-    "ko",
-  ];
+  const codeList: LanguageCode[] | undefined = LanguageCodeList();
 
   return (
     <Menu>
@@ -44,13 +33,17 @@ export default function SelectLanguage({ lang, error, setLang }: Props) {
             {lang ? ISO6391.getName(lang) : t("select_lang")}
           </MenuButton>
           <Portal>
-            <MenuList>
-              {codeList.map((code) => (
-                <MenuItem key={code} onClick={() => setLang(code)}>
-                  {`${ISO6391.getName(code)} (${ISO6391.getNativeName(code)})`}
-                </MenuItem>
-              ))}
-            </MenuList>
+            {codeList && (
+              <MenuList>
+                {codeList.map((code) => (
+                  <MenuItem key={code} onClick={() => setLang(code)}>
+                    {`${ISO6391.getName(code)} (${ISO6391.getNativeName(
+                      code
+                    )})`}
+                  </MenuItem>
+                ))}
+              </MenuList>
+            )}
           </Portal>
         </MenuOptionGroup>
         <FormErrorMessage

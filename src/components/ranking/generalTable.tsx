@@ -23,6 +23,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { AiOutlineSearch } from "react-icons/ai";
 import ISO6391, { LanguageCode } from "iso-639-1";
 import { RankQueryData } from "../../utils/types";
+import LanguageCodeList from "../languageCodeList";
 
 type Props = {
   captions: Array<{
@@ -51,18 +52,8 @@ export default function GeneralTable({
   btnComponent,
 }: Props) {
   const { t } = useTranslation("rankings");
-  const codeList: LanguageCode[] = [
-    "en",
-    "fr",
-    "de",
-    "it",
-    "es",
-    "pt",
-    "ru",
-    "ja",
-    "zh",
-    "ko",
-  ];
+  const codeList: LanguageCode[] | undefined = LanguageCodeList();
+
   const textColor = useColorModeValue("gray.700", "white");
 
   const { handleSubmit, register } = useForm<RankQueryData>();
@@ -78,16 +69,23 @@ export default function GeneralTable({
                 ? ISO6391.getName(lang)
                 : t("all lang")}
             </MenuButton>
-            <MenuList>
-              <MenuItem key={t("all lang")} onClick={() => setLang("All Lang")}>
-                {t("all lang")}
-              </MenuItem>
-              {codeList.map((code) => (
-                <MenuItem key={code} onClick={() => setLang(code)}>
-                  {`${ISO6391.getName(code)} (${ISO6391.getNativeName(code)})`}
+            {codeList && (
+              <MenuList>
+                <MenuItem
+                  key={t("all lang")}
+                  onClick={() => setLang("All Lang")}
+                >
+                  {t("all lang")}
                 </MenuItem>
-              ))}
-            </MenuList>
+                {codeList.map((code) => (
+                  <MenuItem key={code} onClick={() => setLang(code)}>
+                    {`${ISO6391.getName(code)} (${ISO6391.getNativeName(
+                      code
+                    )})`}
+                  </MenuItem>
+                ))}
+              </MenuList>
+            )}
           </Menu>
         )}
         <Spacer />
