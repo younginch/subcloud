@@ -16,5 +16,10 @@
   "req_lang": "Request language",
   "upload_req": "Request",
   "check_subtitle_lang_required": "Please select subtitle language",
-  "no_info": "No information"
+  "no_info": "No information",
+  "request_sub": "Request subtitle",
+  "upload_sub": "Upload subtitle",
+  "request_lang": "Language requested",
+  "statuts": "Production status",
+  "request_num": "Number of requests"
 }
