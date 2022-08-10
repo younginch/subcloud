@@ -37,6 +37,15 @@ export async function UserSearch({
     .map((user) => {
       const subs = user.subs.filter((sub) => sub.status === "Approved");
       const ratedSubs = subs.filter((sub) => sub.ratings.length > 0);
+      const langsMap = new Map();
+      for (let i = 0; i < subs.length; i += 1) {
+        const { lang } = subs[i];
+        const num = langsMap.get(lang);
+        if (num) langsMap.set(lang, num + 1);
+        else langsMap.set(lang, 1);
+      }
+      const sortLangsMap = new Map([...langsMap].sort((a, b) => b[1] - a[1]));
+      const langs = [...sortLangsMap.keys()];
       return {
         id: user.id,
         name: user.name,
@@ -79,6 +88,7 @@ export async function UserSearch({
                   0
                 ) / ratedSubs.length
               : 0,
+          langs,
         },
       };
     });
@@ -99,6 +109,7 @@ export async function UserSearch({
         views: 0,
         fulfilledRequests: 0,
         ratings: 0,
+        langs: [],
       },
       _percentage: {
         fulfilledRequest: 100,

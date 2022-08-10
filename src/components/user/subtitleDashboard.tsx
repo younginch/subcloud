@@ -30,15 +30,6 @@ export default function SubtitleDashboard({ user, subs }: Props) {
     { caption: t("subtitleDashboard_views") },
     { caption: t("subtitleDashboard_uploaded") },
   ];
-  const langsMap = new Map();
-  for (let i = 0; i < subs.length; i += 1) {
-    const { lang } = subs[i];
-    const num = langsMap.get(lang);
-    if (num) langsMap.set(lang, num + 1);
-    else langsMap.set(lang, 1);
-  }
-  const sortLangsMap = new Map([...langsMap].sort((a, b) => b[1] - a[1]));
-  const langs = [...sortLangsMap.keys()];
 
   return (
     <Box
@@ -69,7 +60,7 @@ export default function SubtitleDashboard({ user, subs }: Props) {
                 {t("subtitleDashboard_lang")}
               </Text>
               <Text color={subTextColor} fontSize="sm">
-                Top {langs.length} Language
+                Top {user._count.langs.length} Language
               </Text>
             </Flex>
           </CardHeader>
@@ -82,13 +73,16 @@ export default function SubtitleDashboard({ user, subs }: Props) {
             fontWeight="bold"
           >
             <Text fontSize="60px" mt={5}>
-              {langs[0] && ISO6391.getNativeName(langs[0])}
+              {user._count.langs[0] &&
+                ISO6391.getNativeName(user._count.langs[0])}
             </Text>
             <Text fontSize="30px">
-              {langs[1] && ISO6391.getNativeName(langs[1])}
+              {user._count.langs[1] &&
+                ISO6391.getNativeName(user._count.langs[1])}
             </Text>
             <Text fontSize="15px">
-              {langs[2] && ISO6391.getNativeName(langs[2])}
+              {user._count.langs[2] &&
+                ISO6391.getNativeName(user._count.langs[2])}
             </Text>
           </Flex>
         </Card>

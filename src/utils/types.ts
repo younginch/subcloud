@@ -19,6 +19,7 @@ import {
   PrismaClientUnknownRequestError,
   PrismaClientValidationError,
 } from "@prisma/client/runtime";
+import { LanguageCode } from "iso-639-1";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { Session } from "next-auth";
 import { getSession } from "next-auth/react";
@@ -258,7 +259,7 @@ export type UserWithCount = User & {
     views: number;
     fulfilledRequests: number;
     ratings: number;
-    langs: string[];
+    langs: LanguageCode[];
   };
 };
 
