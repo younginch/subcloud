@@ -160,6 +160,7 @@ model Sub {
   notice       Notice?
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
+  editorFile  EditorFile?
 
   @@unique([serviceId, videoId, lang, userId])
 }
@@ -382,4 +383,12 @@ enum NotifyType {
   Upload
   Review
   StatusChange
+}
+
+model EditorFile {
+  id        String   @id @default(cuid())
+  subId     String   @unique
+  sub       Sub      @relation(fields: [subId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -44,9 +44,6 @@ jest.mock("next/router", () => ({
   },
 }));
 
-import * as mediaQueryHooks from "@chakra-ui/media-query";
-jest.spyOn(mediaQueryHooks, "useBreakpointValue").mockImplementation(() => 2);
-
 global.fetch = jest.fn(() =>
   Promise.resolve({
     json: () => Promise.resolve({}),
@@ -92,6 +89,7 @@ jest.mock("./src/utils/prisma", () => ({
     withdraw: dbActions,
     notice: dbActions,
     notification: dbActions,
+    editorFile: dbActions,
   },
 }));
 

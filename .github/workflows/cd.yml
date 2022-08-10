@@ -20,7 +20,7 @@ jobs:
           instance-ids: i-0c1eee3f7d4276caa
 
           working-directory: /home/ubuntu/subcloud
-          command: git pull && npm ci && npm run build && pm2 start ecosystem.config.js && touch ./success
+          command: git pull && npm ci && npm run build && pm2 start ecosystem.config.js
 
       - name: Get the outputs
         run: echo "The Command id is ${{ steps.ssm.outputs.command-id }}"

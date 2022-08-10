@@ -1,33 +1,30 @@
 import { Role } from "@prisma/client";
 import { handleRoute, RouteParams } from "../../../utils/types";
 
+function getAllPropertyNames(obj: any) {
+  // eslint-disable-next-line prefer-const
+  let names: string[] = [];
+  do {
+    // eslint-disable-next-line prefer-spread
+    names.push.apply(names, Object.getOwnPropertyNames(obj));
+    // eslint-disable-next-line no-param-reassign
+    obj = Object.getPrototypeOf(obj);
+  } while (obj !== Object.prototype);
+  return names.filter(
+    (name) =>
+      name !== "constructor" &&
+      !name.startsWith("_") &&
+      !name.startsWith("$") &&
+      name !== "getEngine"
+  );
+}
+
 async function AdminDelete({ res, prisma }: RouteParams<{}>) {
-  if (process.env.NODE_ENV === "production") {
-    return res.status(401).json({ error: "Unauthorized in production" });
-  }
-  await prisma.account.deleteMany({});
-  await prisma.session.deleteMany({});
-  await prisma.user.deleteMany({});
-  await prisma.verificationToken.deleteMany({});
-  await prisma.video.deleteMany({});
-  await prisma.exampleVideo.deleteMany({});
-  await prisma.youtubeVideo.deleteMany({});
-  await prisma.youtubeChannel.deleteMany({});
-  await prisma.request.deleteMany({});
-  await prisma.file.deleteMany({});
-  await prisma.sub.deleteMany({});
-  await prisma.subHistory.deleteMany({});
-  await prisma.review.deleteMany({});
-  await prisma.rating.deleteMany({});
-  await prisma.order.deleteMany({});
-  await prisma.subscription.deleteMany({});
-  await prisma.coupon.deleteMany({});
-  await prisma.requestPoint.deleteMany({});
-  await prisma.settle.deleteMany({});
-  await prisma.settlePoint.deleteMany({});
-  await prisma.withdraw.deleteMany({});
-  await prisma.notice.deleteMany({});
-  await prisma.notification.deleteMany({});
+  const tables = getAllPropertyNames(prisma);
+  tables.forEach((table) => {
+    // @ts-ignore:next-line
+    prisma[table].deleteMany({});
+  });
   return res.status(200).json({});
 }
 
