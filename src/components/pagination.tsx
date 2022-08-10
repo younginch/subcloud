@@ -10,9 +10,15 @@ type Props = {
   hideArrow?: boolean;
   pageNum: number;
   currentPage: number;
+  setPage: (page: number) => void;
 };
 
-export default function Pagination({ hideArrow, pageNum, currentPage }: Props) {
+export default function Pagination({
+  hideArrow,
+  pageNum,
+  currentPage,
+  setPage,
+}: Props) {
   const [isPc] = useMediaQuery("(min-width: 850px)");
   const pageList = [];
   if (currentPage <= 2) {
@@ -24,18 +30,45 @@ export default function Pagination({ hideArrow, pageNum, currentPage }: Props) {
     for (let i = currentPage - 2; i <= currentPage + 2; i += 1)
       pageList.push(i);
   }
+
+  const leftButton = (
+    <Button
+      disabled={currentPage === 1}
+      onClick={() => setPage(currentPage - 1)}
+    >
+      <ChevronLeftIcon />
+    </Button>
+  );
+
+  const leftMostButton = (
+    <Button disabled={currentPage === 1} onClick={() => setPage(1)}>
+      <ArrowLeftIcon w="50%" />
+    </Button>
+  );
+
+  const rightButton = (
+    <Button
+      disabled={currentPage === pageNum}
+      onClick={() => setPage(currentPage + 1)}
+    >
+      <ChevronRightIcon />
+    </Button>
+  );
+
+  const rightMostButton = (
+    <Button disabled={currentPage === pageNum} onClick={() => setPage(pageNum)}>
+      <ArrowRightIcon w="50%" />
+    </Button>
+  );
+
   if (isPc) {
     return (
       <HStack>
         <Spacer />
         {!hideArrow && (
           <>
-            <Button disabled={currentPage === 1}>
-              <ArrowLeftIcon w="50%" />
-            </Button>
-            <Button disabled={currentPage === 1}>
-              <ChevronLeftIcon />
-            </Button>
+            {leftMostButton}
+            {leftButton}
           </>
         )}
         <Spacer />
@@ -43,6 +76,7 @@ export default function Pagination({ hideArrow, pageNum, currentPage }: Props) {
           <Button
             key={value}
             colorScheme={value === currentPage ? "blue" : "gray"}
+            onClick={() => setPage(value)}
           >
             {value}
           </Button>
@@ -50,12 +84,8 @@ export default function Pagination({ hideArrow, pageNum, currentPage }: Props) {
         <Spacer />
         {!hideArrow && (
           <>
-            <Button disabled={currentPage === pageNum}>
-              <ChevronRightIcon />
-            </Button>
-            <Button disabled={currentPage === pageNum}>
-              <ArrowRightIcon w="50%" />
-            </Button>
+            {rightButton}
+            {rightMostButton}
           </>
         )}
         <Spacer />
@@ -66,26 +96,19 @@ export default function Pagination({ hideArrow, pageNum, currentPage }: Props) {
   return (
     <HStack>
       <Spacer />
-      {!hideArrow && (
-        <Button disabled={currentPage === 1}>
-          <ChevronLeftIcon />
-        </Button>
-      )}
+      {!hideArrow && leftButton}
       <Spacer />
       {pageList.map((value) => (
         <Button
           key={value}
           colorScheme={value === currentPage ? "blue" : "gray"}
+          onClick={() => setPage(value)}
         >
           {value}
         </Button>
       ))}
       <Spacer />
-      {!hideArrow && (
-        <Button disabled={currentPage === pageNum}>
-          <ChevronRightIcon />
-        </Button>
-      )}
+      {!hideArrow && rightButton}
       <Spacer />
     </HStack>
   );

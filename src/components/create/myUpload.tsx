@@ -4,6 +4,7 @@ import useSWR from "swr";
 import ISO6391 from "iso-639-1";
 import { FiBox } from "react-icons/fi";
 import useTranslation from "next-translate/useTranslation";
+import { useState } from "react";
 import { ResSubSearch } from "../../utils/types";
 import Pagination from "../pagination";
 import UploadCard from "../uploadCard";
@@ -56,6 +57,8 @@ export default function MyUpload() {
   const { data: subs } = useSWR<ResSubSearch>(
     `/api/public/search/sub?userId=${session.data?.user.id}`
   );
+  const [page, setPage] = useState<number>(1);
+  // TODO: 한페이지 20개 기준으로 pageNum 계산하고  20개씩만 보여주기
 
   return (
     <Stack p={{ base: 5, lg: 10 }} spacing={10}>
@@ -70,7 +73,7 @@ export default function MyUpload() {
           <Text fontSize="25px">{t("no_up")}</Text>
         </Stack>
       )}
-      <Pagination pageNum={5} currentPage={1} />
+      <Pagination pageNum={5} currentPage={page} setPage={setPage} />
     </Stack>
   );
 }
