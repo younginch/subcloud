@@ -12,6 +12,7 @@ import {
 import { SubStatus } from "@prisma/client";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
+import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import ReviewStatusBadge from "./badges/reviewStatusBadge";
 
@@ -41,6 +42,7 @@ export default function UploadCard({
   subId,
 }: Props) {
   const router = useRouter();
+  const { t } = useTranslation("uploadSub");
   dayjs.extend(duration);
 
   return (
@@ -82,19 +84,19 @@ export default function UploadCard({
         </Text>
         <HStack>
           <Stack>
-            <Text fontWeight="bold">언어</Text>
+            <Text fontWeight="bold">{t("language")}</Text>
             <Badge colorScheme="purple" w="fit-content">
               {lang}
             </Badge>
           </Stack>
           <Spacer />
           <Stack>
-            <Text fontWeight="bold">승인 상태</Text>
+            <Text fontWeight="bold">{t("status")}</Text>
             <ReviewStatusBadge status={status} />
           </Stack>
           <Spacer />
           <Stack spacing={0}>
-            <Text fontWeight="bold">조회수</Text>
+            <Text fontWeight="bold">{t("view")}</Text>
             <Text fontWeight="bold">{viewCount}</Text>
           </Stack>
           <Spacer />
@@ -108,7 +110,7 @@ export default function UploadCard({
         }
         borderRadius={0}
       >
-        자막 수정하기
+        {t("edit_sub")}
       </Button>
     </Stack>
   );

@@ -18,5 +18,9 @@
   "upload_req": "Subir solicitud",
   "fulfilled": "Cumplido",
   "fulfilled_ex": "Se actualizará a medida que pase la revisión.",
-  "check_subtitle_lang_required": "Seleccione el idioma de los subtítulos"
+  "check_subtitle_lang_required": "Seleccione el idioma de los subtítulos",
+  "language": "Idioma",
+  "status": "Estado",
+  "view": "Puntos de vista",
+  "edit_sub": "Editar subtítulo"
 }
