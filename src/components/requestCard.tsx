@@ -13,17 +13,19 @@ import { useRouter } from "next/router";
 import { RequestStatus } from "@prisma/client";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
+import useTranslation from "next-translate/useTranslation";
 
 function RequestBadge({ status }: { status: RequestStatus }) {
+  const { t } = useTranslation("badges");
   if (status === RequestStatus.Uploaded)
     return (
       <Badge colorScheme="green" w="fit-content">
-        업로드 완료
+        {t("complete")}
       </Badge>
     );
   return (
     <Badge colorScheme="red" w="fit-content">
-      대기중
+      {t("waiting")}
     </Badge>
   );
 }
