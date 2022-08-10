@@ -197,7 +197,7 @@ export default function GeneralRanking({
 
   return (
     <Stack>
-      <Wrap justify="space-between" mb="70px">
+      <Wrap justify="space-between" mb={{ base: "20px", md: "70px" }}>
         {onSubmit && (
           <WrapItem>
             <form onSubmit={handleSubmit(onSubmit)}>
