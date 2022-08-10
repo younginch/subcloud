@@ -53,12 +53,14 @@ export default function UploadCard({
       borderRadius="10px"
       overflow="hidden"
       position="relative"
+      boxShadow="base"
     >
       <Image
         src={thumbnail}
         alt="thumbnail"
         onClick={() => router.push(link)}
         cursor="pointer"
+        maxH="169px"
       />
       <Text
         bg="black"

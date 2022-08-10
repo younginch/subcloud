@@ -65,7 +65,7 @@ export default function RequestCard({
     buttonComponent = (
       <Button
         colorScheme={buttonColor}
-        rightIcon={<ChevronRightIcon />}
+        rightIcon={<ChevronRightIcon w="25px" h="25px" />}
         borderRadius={0}
         onClick={() =>
           router.push(`/video/${serviceId}/${videoId}/request/create`)
@@ -95,12 +95,14 @@ export default function RequestCard({
       borderRadius="10px"
       overflow="hidden"
       position="relative"
+      boxShadow="base"
     >
       <Image
         src={thumbnail}
         alt="thumbnail"
         cursor="pointer"
         onClick={() => router.push(link)}
+        maxH="169px"
       />
       <Text
         bg="black"
