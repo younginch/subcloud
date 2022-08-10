@@ -16,5 +16,8 @@
   "req_lang": "Solicitar idioma",
   "upload_req": "Subir solicitud",
   "check_subtitle_lang_required": "Seleccione el idioma de los subtítulos",
-  "no_info": "Sin información"
+  "no_info": "Sin información",
+  "request_lang": "Idioma solicitado",
+  "statuts": "Estado de producción",
+  "request_num": "Número de solicitudes"
 }

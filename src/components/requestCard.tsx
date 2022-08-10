@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { RequestStatus } from "@prisma/client";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
+import useTranslation from "next-translate/useTranslation";
 
 function RequestBadge({ status }: { status: RequestStatus }) {
   if (status === RequestStatus.Uploaded)
@@ -53,6 +54,7 @@ export default function RequestCard({
   serviceId,
   videoId,
 }: Props) {
+  const { t } = useTranslation("videoRequest");
   const router = useRouter();
   dayjs.extend(duration);
   const buttonColor = useColorModeValue("blue", "linkedin");
@@ -123,7 +125,7 @@ export default function RequestCard({
         </Text>
         <HStack>
           <Stack>
-            <Text fontWeight="bold">요청 언어</Text>
+            <Text fontWeight="bold">{t("request_lang")}</Text>
             <Badge colorScheme="purple" w="fit-content">
               {requestLang}
             </Badge>
@@ -131,12 +133,12 @@ export default function RequestCard({
           <Spacer />
           {requestStatus !== undefined ? (
             <Stack>
-              <Text fontWeight="bold">제작 현황</Text>
+              <Text fontWeight="bold">{t("status")}</Text>
               <RequestBadge status={requestStatus} />
             </Stack>
           ) : (
             <Stack spacing={0}>
-              <Text fontWeight="bold">요청 수</Text>
+              <Text fontWeight="bold">{t("request_num")}</Text>
               <Text fontWeight="bold">{requestCount}</Text>
             </Stack>
           )}
