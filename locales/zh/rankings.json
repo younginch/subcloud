@@ -8,7 +8,7 @@
   "name": "名字",
   "total views": "总引用数",
   "total subs": "总字幕数",
-  "fulfilled": "请求满足数",
+  "subtitle_language": "字幕语言",
   "rating": "评价",
   "duration": "视频长度",
   "requests": "请求数",

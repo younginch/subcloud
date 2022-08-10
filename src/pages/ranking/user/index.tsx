@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Box } from "@chakra-ui/react";
+import { Box, Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import useTranslation from "next-translate/useTranslation";
@@ -9,8 +9,8 @@ import {
   ResRankingUser,
 } from "../../../utils/types";
 import UserRankTableRow from "../../../components/ranking/userRankTableRow";
-import GeneralTable from "../../../components/ranking/generalTable";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
+import GeneralRanking from "../../../components/ranking/generalRanking";
 
 export default function UserRankingPage() {
   const { t } = useTranslation("rankings");
@@ -20,11 +20,22 @@ export default function UserRankingPage() {
     { caption: t("name") },
     { caption: t("total views"), sortBy: "view" },
     { caption: t("total subs"), sortBy: "sub" },
-    { caption: t("fulfilled"), sortBy: "fulfilledRequests" },
+    { caption: t("subtitle_language") },
     { caption: t("rating") },
   ];
+
+  const [lang, setLang] = useState<string>();
   const [sortBy, setSortBy] = useState({ by: "view", order: true });
   const pageSize = 15;
+  const sortOptions = [
+    "총 조회수 (높은 순)",
+    "총 조회수 (낮은 순)",
+    "유저 평점 (높은 순)",
+    "유저 평점 (낮은 순)",
+    "총 자막 수 (많은 순)",
+    "총 자막 수 (적은 순)",
+  ];
+
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingUser>(url);
     return res.data;
@@ -71,29 +82,56 @@ export default function UserRankingPage() {
       pt={10}
       pl={{ base: "10px", lg: "30px", xl: "70px" }}
       pr={{ base: "10px", lg: "30px", xl: "70px" }}
-      overflowX={{ sm: "scroll", md: "hidden" }}
+      overflowX={{ base: "scroll", md: "hidden" }}
     >
-      <GeneralTable
-        captions={captions}
+      <GeneralRanking
+        lang={lang}
+        setLang={setLang}
+        sortOptions={sortOptions}
         sortBy={sortBy}
         setSortBy={setSortBy}
         onSubmit={onSubmit}
         btnComponent={loadMoreBtn}
       >
-        {users.map((user, index) => (
-          <UserRankTableRow
-            rank={index + 1}
-            key={user.id}
-            userId={user.id}
-            userName={user.name ? user.name : "Annonymous"}
-            userImageUrl={user.image ? user.image : ""}
-            totalViewCount={user._count.views}
-            totalSubCount={user._count.subs}
-            totalFulfilledRequest={user._count.fulfilledRequests}
-            totalRating={Math.round(user._count.ratings * 10) / 10}
-          />
-        ))}
-      </GeneralTable>
+        <Table variant="simple" mt={5} minW="800px">
+          <Thead>
+            <Tr my=".8rem" ps="0px">
+              {captions.map((data) => (
+                <Th
+                  color="gray.400"
+                  key={data.caption}
+                  fontWeight="bold"
+                  fontSize={{ base: "12px", md: "15px" }}
+                  onClick={() =>
+                    data.sortBy && setSortBy
+                      ? data.sortBy === sortBy?.by
+                        ? setSortBy({ by: data.sortBy, order: !sortBy?.order })
+                        : setSortBy({ by: data.sortBy, order: true })
+                      : undefined
+                  }
+                >
+                  {data.caption}
+                </Th>
+              ))}
+            </Tr>
+          </Thead>
+          <Tbody>
+            {users.map((user, index) => (
+              <UserRankTableRow
+                rank={index + 1}
+                key={user.id}
+                userId={user.id}
+                userName={user.name ? user.name : "Annonymous"}
+                userImageUrl={user.image ? user.image : ""}
+                totalViewCount={user._count.views}
+                totalSubCount={user._count.subs}
+                makedLanguaged={["한국어", "영어", "중국어", "프랑스어"]}
+                totalRating={Math.round(user._count.ratings * 10) / 10}
+              />
+            ))}
+          </Tbody>
+        </Table>
+      </GeneralRanking>
     </Box>
   );
 }

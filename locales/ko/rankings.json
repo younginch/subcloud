@@ -8,7 +8,7 @@
   "name": "이름",
   "total views": "총 조회수",
   "total subs": "총 자막수",
-  "fulfilled": "요청 충족수",
+  "subtitle_language": "자막 언어",
   "rating": "평가",
   "duration": "영상길이",
   "requests": "요청 수",
