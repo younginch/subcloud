@@ -258,6 +258,7 @@ export type UserWithCount = User & {
     views: number;
     fulfilledRequests: number;
     ratings: number;
+    langs: string[];
   };
 };
 

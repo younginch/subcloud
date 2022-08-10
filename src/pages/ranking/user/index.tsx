@@ -18,22 +18,25 @@ export default function UserRankingPage() {
   const captions = [
     { caption: "#" },
     { caption: t("name") },
-    { caption: t("total views"), sortBy: "view" },
-    { caption: t("total subs"), sortBy: "sub" },
+    { caption: t("total views") },
+    { caption: t("total subs") },
     { caption: t("subtitle_language") },
     { caption: t("rating") },
   ];
 
   const [lang, setLang] = useState<string>();
-  const [sortBy, setSortBy] = useState({ by: "view", order: true });
+  const [sortOption, setSortOption] = useState({
+    name: "총 조회수 (높은 순)",
+    sortBy: { by: "view", order: true },
+  });
   const pageSize = 15;
-  const sortOptions = [
-    "총 조회수 (높은 순)",
-    "총 조회수 (낮은 순)",
-    "유저 평점 (높은 순)",
-    "유저 평점 (낮은 순)",
-    "총 자막 수 (많은 순)",
-    "총 자막 수 (적은 순)",
+  const sortOptionArray = [
+    { name: "총 조회수 (높은 순)", sortBy: { by: "view", order: true } },
+    { name: "총 조회수 (낮은 순)", sortBy: { by: "view", order: false } },
+    { name: "유저 평점 (높은 순)", sortBy: { by: "rating", order: true } },
+    { name: "유저 평점 (낮은 순)", sortBy: { by: "rating", order: false } },
+    { name: "총 자막 수 (많은 순)", sortBy: { by: "sub", order: true } },
+    { name: "총 자막 수 (적은 순)", sortBy: { by: "sub", order: false } },
   ];
 
   const fetcher = async (url: string) => {
@@ -49,9 +52,11 @@ export default function UserRankingPage() {
 
   const { data, error, size, setSize, isValidating } = useSWRInfinite(
     (index) =>
-      `/api/public/ranking/user/${sortBy.by}?start=${pageSize * index}&end=${
-        pageSize * (index + 1)
-      }&order=${sortBy.order === true ? "desc" : "asc"}`,
+      `/api/public/ranking/user/${sortOption.sortBy.by}?start=${
+        pageSize * index
+      }&end=${pageSize * (index + 1)}&lang=${lang ?? "All Lang"}&order=${
+        sortOption.sortBy.order === true ? "desc" : "asc"
+      }`,
     fetcher
   );
 
@@ -87,9 +92,9 @@ export default function UserRankingPage() {
       <GeneralRanking
         lang={lang}
         setLang={setLang}
-        sortOptions={sortOptions}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
+        sortOptionArray={sortOptionArray}
+        sortOption={sortOption}
+        setSortOption={setSortOption}
         onSubmit={onSubmit}
         btnComponent={loadMoreBtn}
       >
@@ -102,13 +107,6 @@ export default function UserRankingPage() {
                   key={data.caption}
                   fontWeight="bold"
                   fontSize={{ base: "12px", md: "15px" }}
-                  onClick={() =>
-                    data.sortBy && setSortBy
-                      ? data.sortBy === sortBy?.by
-                        ? setSortBy({ by: data.sortBy, order: !sortBy?.order })
-                        : setSortBy({ by: data.sortBy, order: true })
-                      : undefined
-                  }
                 >
                   {data.caption}
                 </Th>
@@ -125,7 +123,7 @@ export default function UserRankingPage() {
                 userImageUrl={user.image ? user.image : ""}
                 totalViewCount={user._count.views}
                 totalSubCount={user._count.subs}
-                makedLanguaged={["한국어", "영어", "중국어", "프랑스어"]}
+                makedLanguaged={user._count.langs}
                 totalRating={Math.round(user._count.ratings * 10) / 10}
               />
             ))}
