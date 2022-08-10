@@ -37,8 +37,8 @@ export default function SubStatusPreview() {
       })
       .catch(() => {
         toast({
-          title: "오류",
-          description: "자막 목록을 불러오는데 실패했습니다.",
+          title: t("my_sub_error"),
+          description: t("my_sub_error_description"),
           status: "error",
         });
       });
