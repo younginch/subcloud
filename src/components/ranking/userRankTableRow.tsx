@@ -44,7 +44,7 @@ export default function UserRankTableRow({
       <Td w="min" fontSize={mainTextSize}>
         <Text>{rank}</Text>
       </Td>
-      <Td w="30%" minW="200px" pl="0px">
+      <Td w="25%" minW="200px" pl="0px">
         <HStack>
           <Link href={`/user/${userId}`}>
             <Avatar
@@ -73,15 +73,15 @@ export default function UserRankTableRow({
           <Text>{totalSubCount}</Text>
         </HStack>
       </Td>
-      <Td w="15%" pl={paddingLeftBp} fontSize={mainTextSize}>
+      <Td w="20%" pl={paddingLeftBp} fontSize={mainTextSize}>
         <HStack>
           {makedLanguaged.map(
             (subtitleLanguage, index) =>
               index <= 1 && (
                 // eslint-disable-next-line react/no-array-index-key
                 <Text key={index}>
-                  {index > 0 && ", "}
                   {ISO6391.getName(subtitleLanguage)}
+                  {index < subtitleLanguage.length - 1 && ", "}
                 </Text>
               )
           )}
