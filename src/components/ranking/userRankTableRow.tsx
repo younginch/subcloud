@@ -81,7 +81,7 @@ export default function UserRankTableRow({
                 // eslint-disable-next-line react/no-array-index-key
                 <Text key={index}>
                   {ISO6391.getName(subtitleLanguage)}
-                  {index === 0 && ", "}
+                  {index < subtitleLanguage.length - 1 && ", "}
                 </Text>
               )
           )}
