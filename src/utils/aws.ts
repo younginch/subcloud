@@ -2,12 +2,17 @@ import {
   DeleteObjectsCommand,
   GetObjectCommand,
   ListObjectsCommand,
+  ListObjectsCommandOutput,
   S3Client,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import multer, { FileFilterCallback } from "multer";
 import multerS3 from "multer-s3";
 import type e from "express";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(timezone);
 
 const configuredBucket =
   process.env.NODE_ENV === "development"
@@ -30,7 +35,10 @@ const awsStorage = multerS3({
     cb(null, { fieldName: file.fieldname });
   },
   key(req: any, file: any, cb: any) {
-    cb(null, `${Date.now()}_${file.originalname}`);
+    cb(
+      null,
+      `${dayjs(Date.now()).tz("Asia/Seoul").format()}_${file.originalname}`
+    );
   },
 });
 
@@ -68,12 +76,16 @@ export async function getS3Url(key: string) {
   return url;
 }
 
-export async function deleteAllObjects() {
-  const listObjectsParams = {
+export async function getAllObjects(): Promise<ListObjectsCommandOutput> {
+  const listObjectsCommand = new ListObjectsCommand({
     Bucket: configuredBucket,
-  };
-  const listObjectsCommand = new ListObjectsCommand(listObjectsParams);
+  });
   const listObjectsResult = await configuredS3.send(listObjectsCommand);
+  return listObjectsResult;
+}
+
+export async function deleteAllObjects() {
+  const listObjectsResult = await getAllObjects();
   const deleteObjectsParams = {
     Bucket: configuredBucket,
     Delete: {
