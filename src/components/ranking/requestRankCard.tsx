@@ -9,6 +9,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import ISO6391 from "iso-639-1";
 import duration from "dayjs/plugin/duration";
 import VideoCard from "../videoCard";
 
@@ -58,7 +59,7 @@ export default function RequestRankCard({
         <HStack>
           <Text fontWeight="bold">언어</Text>
           <Badge colorScheme="purple" w="fit-content">
-            {lang}
+            {ISO6391.getNativeName(lang)}
           </Badge>
           <Spacer />
           <Text fontWeight="bold">요청 수</Text>
