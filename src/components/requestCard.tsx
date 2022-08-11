@@ -2,7 +2,6 @@ import { ArrowUpIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import {
   Stack,
   Text,
-  Image,
   Badge,
   HStack,
   Spacer,
@@ -14,6 +13,8 @@ import { RequestStatus } from "@prisma/client";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import useTranslation from "next-translate/useTranslation";
+import VideoCard from "./videoCard";
+import PointGauge from "./pointGauge";
 
 function RequestBadge({ status }: { status: RequestStatus }) {
   const { t } = useTranslation("badges");
@@ -38,6 +39,8 @@ type Props = {
   requestLang: string;
   requestStatus?: RequestStatus;
   requestCount?: number;
+  requestPoint: number;
+  requestGoal: number;
   buttonType?: string | string[];
   serviceId: string;
   videoId: string;
@@ -51,6 +54,8 @@ export default function RequestCard({
   requestLang,
   requestStatus,
   requestCount,
+  requestPoint,
+  requestGoal,
   buttonType,
   serviceId,
   videoId,
@@ -88,46 +93,15 @@ export default function RequestCard({
   }
 
   return (
-    <Stack
-      w="300px"
-      h="fit-content"
-      bg={useColorModeValue("gray.100", "gray.700")}
-      borderRadius="10px"
-      overflow="hidden"
-      position="relative"
-      boxShadow="base"
+    <VideoCard
+      duration={time}
+      videoName={title}
+      videoUrl={link}
+      imageUrl={thumbnail}
+      padding={buttonType ? "0px" : undefined}
     >
-      <Image
-        src={thumbnail}
-        alt="thumbnail"
-        cursor="pointer"
-        onClick={() => router.push(link)}
-        maxH="169px"
-        w="100%"
-      />
-      <Text
-        bg="black"
-        color="white"
-        w="fit-content"
-        p="1px 4px 1px 3px"
-        borderRadius="5px"
-        position="absolute"
-        right="8px"
-      >
-        {dayjs.duration(time, "s").format("mm:ss")}
-      </Text>
-      <Stack pl="10px" pb={buttonType === undefined ? "10px" : "0px"}>
-        <Text
-          fontWeight="bold"
-          fontSize="18px"
-          maxW="100%"
-          whiteSpace="nowrap"
-          overflow="hidden"
-          textOverflow="ellipsis"
-        >
-          {title}
-        </Text>
-        <HStack>
+      <Stack p="0px 10px 0px 10px">
+        <HStack pl="10px">
           <Stack>
             <Text fontWeight="bold">{t("request_lang")}</Text>
             <Badge colorScheme="purple" w="fit-content">
@@ -148,8 +122,9 @@ export default function RequestCard({
           )}
           <Spacer />
         </HStack>
+        <PointGauge point={requestPoint} goal={requestGoal} />
       </Stack>
       {buttonComponent}
-    </Stack>
+    </VideoCard>
   );
 }

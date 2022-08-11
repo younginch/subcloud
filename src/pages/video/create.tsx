@@ -194,6 +194,8 @@ export default function VideoCreate() {
                   buttonType={router.query.next}
                   serviceId={video.serviceId}
                   videoId={video.videoId}
+                  requestPoint={0}
+                  requestGoal={1500}
                 />
               </Box>
             ))}
@@ -208,5 +210,4 @@ VideoCreate.options = {
   role: Role.User,
   hideTitle: true,
   hideFooter: true,
-  bgColorLight: "#F7FAFC",
 } as PageOptions;
