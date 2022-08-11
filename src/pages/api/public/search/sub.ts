@@ -26,6 +26,7 @@ async function SubSearch({ req, res, prisma }: RouteParams<ResSubSearch>) {
       video: { include: { youtubeVideo: { include: { channel: true } } } },
       user: true,
       ratings: true,
+      editorFile: true,
     },
     orderBy: {
       createdAt: "desc",

@@ -24,9 +24,7 @@ type Props = {
   lang: string;
   status: SubStatus;
   viewCount: number;
-  serviceId: string;
-  videoId: string;
-  subId: string;
+  editorFileId?: string;
 };
 
 export default function UploadCard({
@@ -37,9 +35,7 @@ export default function UploadCard({
   lang,
   status,
   viewCount,
-  serviceId,
-  videoId,
-  subId,
+  editorFileId,
 }: Props) {
   const router = useRouter();
   const { t } = useTranslation("uploadSub");
@@ -76,9 +72,7 @@ export default function UploadCard({
       <Button
         rightIcon={<EditIcon />}
         colorScheme={useColorModeValue("blackAlpha", "linkedin")}
-        onClick={() =>
-          router.push(`/editor?${serviceId}Id=${videoId}&subId=${subId}`)
-        }
+        onClick={() => router.push(`/editor?id=${editorFileId}`)}
         borderRadius={0}
       >
         {t("edit_sub")}
