@@ -7,27 +7,27 @@ type Product = {
 export const Products: Product[] = [
   {
     title: "Starter pack",
-    point: 80,
+    point: 800,
     price: 1200,
   },
   {
     title: "Small pack",
-    point: 500,
+    point: 5000,
     price: 6900,
   },
   {
     title: "Normal pack",
-    point: 1000,
+    point: 10000,
     price: 12000,
   },
   {
     title: "Large pack",
-    point: 2100,
+    point: 21000,
     price: 23000,
   },
   {
     title: "Point bucket",
-    point: 6500,
+    point: 65000,
     price: 65000,
   },
 ];
