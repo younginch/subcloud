@@ -1,4 +1,4 @@
-import { EditorFile } from "@prisma/client";
+import { EditorFile, Role } from "@prisma/client";
 import { getS3Url } from "../../../utils/aws";
 import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 
@@ -59,6 +59,9 @@ async function createEditor({
   return res.status(201).json(newEditor);
 }
 
+/**
+ * body로 fileId를 받아서 sub에 연결한다.
+ */
 async function updateEditor({
   req,
   res,
@@ -78,7 +81,7 @@ async function updateEditor({
   }
   const updatedEditorFile = await prisma.editorFile.update({
     where: { id: editorFileId },
-    data: {},
+    data: { sub: { update: { fileId: req.body.fileId } } },
   });
   return res.status(200).json(updatedEditorFile);
 }
@@ -106,9 +109,12 @@ async function deleteEditor({
   return res.status(200).json(deletedEditorFile);
 }
 
-export default handleRoute({
-  GET: getEditor,
-  POST: createEditor,
-  PATCH: updateEditor,
-  DELETE: deleteEditor,
-});
+export default handleRoute(
+  {
+    GET: getEditor,
+    POST: createEditor,
+    PATCH: updateEditor,
+    DELETE: deleteEditor,
+  },
+  { role: Role.User }
+);

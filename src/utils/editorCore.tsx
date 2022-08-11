@@ -1,7 +1,21 @@
-import { keyframes } from "@chakra-ui/react";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Button,
+  keyframes,
+  useDisclosure,
+  useToast,
+  Text,
+} from "@chakra-ui/react";
+import { EditorFile } from "@prisma/client";
 import { SRTContent, SRTFile } from "@younginch/subtitle";
 import axios from "axios";
-import { createContext, RefObject, useState } from "react";
+import { useRouter } from "next/router";
+import { createContext, RefObject, useEffect, useRef, useState } from "react";
 import { KeyMap } from "react-hotkeys";
 import { FixedSizeList } from "react-window";
 import { YouTubePlayer } from "react-youtube";
@@ -146,6 +160,7 @@ type EditorProviderProps = {
 };
 
 export function EditorProvider({ children }: EditorProviderProps) {
+  const toast = useToast();
   const [leftTime, setLeftTime] = useState<number>(-20 * 1000);
   const [rightTime, setRightTime] = useState<number>(40 * 1000);
   const [contents, setContents] = useState<SRTContent[]>([]);
@@ -237,6 +252,8 @@ export function EditorProvider({ children }: EditorProviderProps) {
     link.click();
     link.parentNode?.removeChild(link);
   }
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   type CommandHandlers = {
     [key: string]: () => void;
@@ -333,7 +350,71 @@ export function EditorProvider({ children }: EditorProviderProps) {
     GOTO_FOCUSED_CONTENT: () => {
       refArray?.current?.scrollToItem(focusedIndex);
     },
+    CLOUD_OPEN: () => {},
+    CLOUD_SAVE: async () => {
+      try {
+        const srtFile = new SRTFile();
+        srtFile.array = contents;
+        const formData = new FormData();
+        formData.append("file", srtFile.toText());
+        const fileRes = await axios.post("/api/user/file/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        await axios.patch("/api/session/editor", {
+          fileId: fileRes.data.id,
+        });
+      } catch (e: any) {
+        toast({
+          title: "Failed to save file",
+          description: e.toString(),
+          status: "error",
+        });
+      }
+    },
+    CLOUD_FILE_INFO: () => {
+      onOpen();
+    },
   };
+
+  const cancelRef = useRef(null);
+  const router = useRouter();
+  const [editorFile, setEditorFile] = useState<EditorFile>();
+
+  useEffect(() => {
+    if (!router.query.id) {
+      return;
+    }
+    axios
+      .get(`/api/session/editor?id=${router.query.id}`)
+      .then((res) => {
+        setId(res.data.sub.videoId);
+        setEditorFile(res.data);
+        axios
+          .get(res.data.fileUrl, { responseType: "blob" })
+          .then((res) => {
+            res.data.text().then((text: string) => {
+              const srt = SRTFile.fromText(text);
+              setContents(srt.array);
+            });
+          })
+          .catch((err) => {
+            toast({
+              title: "File download failed",
+              description: err.message,
+              status: "error",
+            });
+          });
+      })
+      .catch((err) => {
+        toast({
+          title: "Load info failed",
+          description: err.message,
+          status: "error",
+        });
+      });
+  }, []);
 
   return (
     <EditorContext.Provider
@@ -406,6 +487,36 @@ export function EditorProvider({ children }: EditorProviderProps) {
       }}
     >
       {children}
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              File Infomation
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              <Text fontSize="md">{editorFile?.id}</Text>
+              <Text fontSize="md">{editorFile?.subId}</Text>
+              <Text fontSize="md">
+                {editorFile?.createdAt.toLocaleString()}
+              </Text>
+              <Text fontSize="md">
+                {editorFile?.updatedAt.toLocaleString()}
+              </Text>
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Close
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </EditorContext.Provider>
   );
 }

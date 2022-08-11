@@ -65,7 +65,14 @@ async function SubCreate({ req, res, prisma, session }: RouteParams<ResSub>) {
       status: "Pending",
     },
   });
-  return res.status(201).json(createdSub);
+  if (req.query.editor === "1") {
+    await prisma.editorFile.create({ data: { subId: createdSub.id } });
+  }
+  const finalSub = await prisma.sub.findUniqueOrThrow({
+    where: { id: createdSub.id },
+    include: { editorFile: true },
+  });
+  return res.status(201).json(finalSub);
 }
 
 async function SubUpdate({ req, res, prisma }: RouteParams<ResSub>) {
@@ -90,7 +97,7 @@ async function SubUpdate({ req, res, prisma }: RouteParams<ResSub>) {
       serviceId: value.serviceId,
       videoId: value.videoId,
       lang: value.lang,
-      status: "Pending",
+      status: value.status,
     },
   });
   await prisma.review.create({

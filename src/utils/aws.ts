@@ -10,8 +10,10 @@ import multer, { FileFilterCallback } from "multer";
 import multerS3 from "multer-s3";
 import type e from "express";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 
+dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const configuredBucket =
