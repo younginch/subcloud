@@ -8,6 +8,8 @@ import { useState } from "react";
 import { ResRequestSearch } from "../../utils/types";
 import Pagination from "../pagination";
 import RequestCard from "../requestCard";
+import GoalExpr from "../../utils/goalExpr";
+import PointGoal from "../../utils/pointGoal";
 
 function MyRequestPanel({
   requests,
@@ -21,6 +23,7 @@ function MyRequestPanel({
     "(min-width: 1700px)",
     "(min-width: 2000px)",
   ]);
+  const goalExpr = GoalExpr();
 
   return (
     <Grid
@@ -48,8 +51,15 @@ function MyRequestPanel({
                 requestStatus={request.status}
                 serviceId={request.video.serviceId}
                 videoId={request.video.videoId}
-                requestPoint={0}
-                requestGoal={1500}
+                requestPoint={request.point}
+                requestGoal={
+                  PointGoal(
+                    request.video.youtubeVideo
+                      ? request.video.youtubeVideo.duration
+                      : undefined,
+                    goalExpr
+                  ) ?? 1000000
+                }
               />
             </GridItem>
           )

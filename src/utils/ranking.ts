@@ -136,6 +136,7 @@ export async function RankingVideo(
     },
   });
   const videos = requests
+    .filter((request) => request.users.length > 0)
     .map((request) => ({
       url: request.video.url,
       serviceId: request.video.serviceId,

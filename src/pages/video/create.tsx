@@ -31,6 +31,8 @@ import EventNotice from "../../components/create/eventNotice";
 import RequestCard from "../../components/requestCard";
 import MyRequest from "../../components/create/myRequest";
 import MyUpload from "../../components/create/myUpload";
+import PointGoal from "../../utils/pointGoal";
+import GoalExpr from "../../utils/goalExpr";
 
 type FormData = {
   url: string;
@@ -50,6 +52,7 @@ export default function VideoCreate() {
   const { data: topVideos } = useSWR<ResRankingVideo>(
     `/api/public/ranking/video/request?start=0&end=10&lang=All Lang&order=desc`
   );
+  const goalExpr = GoalExpr();
 
   function onSubmit(values: FormData) {
     return new Promise<void>((resolve, reject) => {
@@ -194,8 +197,15 @@ export default function VideoCreate() {
                   buttonType={router.query.next}
                   serviceId={video.serviceId}
                   videoId={video.videoId}
-                  requestPoint={0}
-                  requestGoal={1500}
+                  requestPoint={video._count.points}
+                  requestGoal={
+                    PointGoal(
+                      video.youtubeVideo
+                        ? video.youtubeVideo.duration
+                        : undefined,
+                      goalExpr
+                    ) ?? 1000000
+                  }
                 />
               </Box>
             ))}

@@ -63,6 +63,21 @@ async function changeSub({ req, res, prisma }: RouteParams<Sub>) {
           },
         });
       });
+    } else {
+      await prisma.request.create({
+        data: {
+          video: {
+            connect: {
+              serviceId_videoId: {
+                serviceId: updatedSub.serviceId,
+                videoId: updatedSub.videoId,
+              },
+            },
+          },
+          lang: updatedSub.lang,
+          status: "Uploaded",
+        },
+      });
     }
   }
   return res.status(200).json(updatedSub);
