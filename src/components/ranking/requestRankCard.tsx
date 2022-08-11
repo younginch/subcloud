@@ -1,17 +1,9 @@
-import {
-  Stack,
-  Text,
-  Badge,
-  HStack,
-  Spacer,
-  Progress,
-  Tooltip,
-  Box,
-} from "@chakra-ui/react";
+import { Stack, Text, Badge, HStack, Spacer } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import ISO6391 from "iso-639-1";
 import duration from "dayjs/plugin/duration";
 import VideoCard from "../videoCard";
+import PointGauge from "../pointGauge";
 
 dayjs.extend(duration);
 
@@ -66,17 +58,7 @@ export default function RequestRankCard({
           <Text fontWeight="bold">{requestCount}</Text>
           <Spacer />
         </HStack>
-        <HStack>
-          <Tooltip label={`자막 게이지: ${requestPoint}/${requestGoal}`}>
-            <Box w="80%">
-              <Progress hasStripe value={(requestPoint / requestGoal) * 100} />
-            </Box>
-          </Tooltip>
-          <Spacer />
-          <Text fontWeight="bold">
-            {Math.round((requestPoint / requestGoal) * 100)}%
-          </Text>
-        </HStack>
+        <PointGauge point={requestPoint} goal={requestGoal} />
       </Stack>
     </VideoCard>
   );

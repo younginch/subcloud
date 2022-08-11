@@ -48,6 +48,8 @@ function MyRequestPanel({
                 requestStatus={request.status}
                 serviceId={request.video.serviceId}
                 videoId={request.video.videoId}
+                requestPoint={0}
+                requestGoal={1500}
               />
             </GridItem>
           )

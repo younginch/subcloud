@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import useTranslation from "next-translate/useTranslation";
 import VideoCard from "./videoCard";
+import PointGauge from "./pointGauge";
 
 function RequestBadge({ status }: { status: RequestStatus }) {
   const { t } = useTranslation("badges");
@@ -38,6 +39,8 @@ type Props = {
   requestLang: string;
   requestStatus?: RequestStatus;
   requestCount?: number;
+  requestPoint: number;
+  requestGoal: number;
   buttonType?: string | string[];
   serviceId: string;
   videoId: string;
@@ -51,6 +54,8 @@ export default function RequestCard({
   requestLang,
   requestStatus,
   requestCount,
+  requestPoint,
+  requestGoal,
   buttonType,
   serviceId,
   videoId,
@@ -95,27 +100,30 @@ export default function RequestCard({
       imageUrl={thumbnail}
       padding={buttonType ? "0px" : undefined}
     >
-      <HStack pl="10px">
-        <Stack>
-          <Text fontWeight="bold">{t("request_lang")}</Text>
-          <Badge colorScheme="purple" w="fit-content">
-            {requestLang}
-          </Badge>
-        </Stack>
-        <Spacer />
-        {requestStatus !== undefined ? (
-          <Stack spacing="5px">
-            <Text fontWeight="bold">{t("status")}</Text>
-            <RequestBadge status={requestStatus} />
+      <Stack p="0px 10px 0px 10px">
+        <HStack pl="10px">
+          <Stack>
+            <Text fontWeight="bold">{t("request_lang")}</Text>
+            <Badge colorScheme="purple" w="fit-content">
+              {requestLang}
+            </Badge>
           </Stack>
-        ) : (
-          <Stack spacing={0}>
-            <Text fontWeight="bold">{t("request_num")}</Text>
-            <Text fontWeight="bold">{requestCount}</Text>
-          </Stack>
-        )}
-        <Spacer />
-      </HStack>
+          <Spacer />
+          {requestStatus !== undefined ? (
+            <Stack spacing="5px">
+              <Text fontWeight="bold">{t("status")}</Text>
+              <RequestBadge status={requestStatus} />
+            </Stack>
+          ) : (
+            <Stack spacing={0}>
+              <Text fontWeight="bold">{t("request_num")}</Text>
+              <Text fontWeight="bold">{requestCount}</Text>
+            </Stack>
+          )}
+          <Spacer />
+        </HStack>
+        <PointGauge point={requestPoint} goal={requestGoal} />
+      </Stack>
       {buttonComponent}
     </VideoCard>
   );

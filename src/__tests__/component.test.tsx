@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import {
   NotifyType,
   RequestStatus,
@@ -212,7 +213,11 @@ describe("Components", () => {
   });
 
   it("render VideoCard", async () => {
-    render(<VideoCard />);
+    render(
+      <VideoCard duration={0} videoName="hi" videoUrl="test" imageUrl="test">
+        <Box />
+      </VideoCard>
+    );
   });
 
   it("render RequestCard Uploaded", async () => {
@@ -224,6 +229,10 @@ describe("Components", () => {
         link="https://www.youtube.com/watch?v=i7muqI90138"
         requestLang="한국어"
         requestStatus={RequestStatus.Uploaded}
+        requestPoint={0}
+        requestGoal={10}
+        serviceId="1"
+        videoId="2"
       />
     );
   });
@@ -237,6 +246,10 @@ describe("Components", () => {
         link="https://www.youtube.com/watch?v=i7muqI90138"
         requestLang="한국어"
         requestStatus={RequestStatus.Waiting}
+        requestPoint={0}
+        requestGoal={10}
+        serviceId="1"
+        videoId="2"
       />
     );
   });
@@ -251,6 +264,10 @@ describe("Components", () => {
         requestLang="한국어"
         requestCount={100}
         buttonType="request"
+        requestPoint={0}
+        requestGoal={10}
+        serviceId="1"
+        videoId="2"
       />
     );
   });
@@ -265,6 +282,10 @@ describe("Components", () => {
         requestLang="한국어"
         requestCount={100}
         buttonType="sub"
+        requestPoint={0}
+        requestGoal={10}
+        serviceId="1"
+        videoId="2"
       />
     );
   });
@@ -279,6 +300,9 @@ describe("Components", () => {
         lang="한국어"
         status={SubStatus.Approved}
         viewCount={100}
+        serviceId="1"
+        videoId="2"
+        subId="3"
       />
     );
   });
