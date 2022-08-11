@@ -10,6 +10,8 @@ import {
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 import GeneralRanking from "../../../components/ranking/generalRanking";
 import RequestRankCard from "../../../components/ranking/requestRankCard";
+import PointGoal from "../../../utils/pointGoal";
+import GoalExpr from "../../../utils/goalExpr";
 
 export default function VideoRankingPage() {
   const [lang, setLang] = useState<string>();
@@ -30,6 +32,7 @@ export default function VideoRankingPage() {
     const res = await axios.get<ResRankingVideo>(url);
     return res.data;
   };
+  const goalExpr = GoalExpr();
 
   function onSubmit(values: RankQueryData) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -115,7 +118,14 @@ export default function VideoRankingPage() {
                 imageUrl={`https://i.ytimg.com/vi/${video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-jCivJl2_ZKjT2GONS3-JWiYk1w`}
                 requestCount={video._count.requests}
                 requestPoint={video._count.points}
-                requestGoal={1500}
+                requestGoal={
+                  PointGoal(
+                    video.youtubeVideo
+                      ? video.youtubeVideo.duration
+                      : undefined,
+                    goalExpr
+                  ) ?? 1000000
+                }
                 channelName={video.youtubeVideo?.channel.title ?? "no name"}
                 channelImageUrl={video.youtubeVideo?.channel.thumbnailUrl ?? ""}
                 channelUrl={video.youtubeVideo?.channel.channelUrl ?? ""}
