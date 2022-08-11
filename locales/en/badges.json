@@ -1,4 +1,5 @@
 {
   "waiting": "waiting",
-  "complete": "completed"
+  "complete": "completed",
+  "gauge": "Subtitle Gauge"
 }

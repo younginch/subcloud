@@ -9,6 +9,7 @@
   "require_file": "请选择字幕的文件",
   "basic_lang": "保存为基本语言",
   "point": "点数",
+  "direct": "直接输入",
   "point_reset": "取消",
   "req_summary": "总结请求",
   "vid_title": "视频的题目",
@@ -23,5 +24,8 @@
   "upload_sub": "上载字幕",
   "request_lang": "请求语言",
   "status": "制作情况",
-  "request_num": "请求数"
+  "request_num": "请求数",
+  "funding": "Funding",
+  "default": "Default",
+  "bonus": "bonus"
 }

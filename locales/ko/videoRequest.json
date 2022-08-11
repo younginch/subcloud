@@ -9,6 +9,7 @@
   "require_file": "자막 파일을 선택해 주세요",
   "basic_lang": "기본 요청 언어로 저장",
   "point": "포인트",
+  "direct": "직접 입력",
   "point_reset": "취소",
   "req_summary": "요청 요약",
   "vid_title": "영상 제목",
@@ -23,5 +24,8 @@
   "upload_sub": "자막 업로드",
   "request_lang": "요청 언어",
   "status": "제작 현황",
-  "request_num": "요청 수"
+  "request_num": "요청 수",
+  "funding": "펀딩",
+  "default": "기본",
+  "bonus": "보너스"
 }

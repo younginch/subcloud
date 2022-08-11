@@ -15,6 +15,7 @@ import {
   Checkbox,
   Box,
   keyframes,
+  Badge,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -36,6 +37,7 @@ import { PageOptions, ResVideo } from "../../../../../utils/types";
 import VideoInfo from "../../../../../components/create/videoInfo";
 import { RequestCreateSchema } from "../../../../../utils/schema";
 import SelectLanguage from "../../../../../components/selectLanguage";
+import PointGauge from "../../../../../components/pointGauge";
 
 type FormData = {
   serviceId: string;
@@ -49,6 +51,9 @@ type PointElement = {
   hoverColor: string;
   icon: React.ReactElement;
 };
+
+const defaultPoint = Math.floor(Math.random() * 4) + 7;
+const bonusPoint = 10;
 
 export default function RequestCreate() {
   const { t } = useTranslation("videoRequest");
@@ -68,32 +73,32 @@ export default function RequestCreate() {
   } = useForm<FormData>({ resolver: joiResolver(RequestCreateSchema) });
   const points: Array<PointElement> = [
     {
-      amount: 10,
+      amount: 100,
       hoverColor: useColorModeValue("#C0F3F8", "#19BFD1"),
       icon: <CgShapeTriangle size="100%" />,
     },
     {
-      amount: 50,
+      amount: 500,
       hoverColor: useColorModeValue("green.200", "green.800"),
       icon: <TbDiamonds size="100%" />,
     },
     {
-      amount: 100,
+      amount: 1000,
       hoverColor: useColorModeValue("blue.200", "blue.800"),
       icon: <TbDiamond size="100%" />,
     },
     {
-      amount: 500,
+      amount: 5000,
       hoverColor: useColorModeValue("#F4B183", "#B74B09"),
       icon: <HiOutlineFire size="100%" />,
     },
     {
-      amount: 1000,
+      amount: 10000,
       hoverColor: useColorModeValue("#D8BEEC", "#7330A6"),
       icon: <BiRocket size="100%" />,
     },
     {
-      amount: 5000,
+      amount: 50000,
       hoverColor: useColorModeValue("#FFE699", "#A29A00"),
       icon: <BsLightningCharge size="100%" strokeWidth="0.2px" />,
     },
@@ -158,7 +163,7 @@ export default function RequestCreate() {
           serviceId,
           videoId,
           lang: values.lang,
-          point: values.point,
+          point: defaultPoint + bonusPoint + values.point,
         })
         .then(() => {
           toast({
@@ -275,6 +280,15 @@ export default function RequestCreate() {
             ))}
           </Wrap>
           <HStack pt={5}>
+            <Text
+              minW="110px "
+              textAlign="end"
+              fontWeight="bold"
+              fontSize="18px"
+              mr="10px"
+            >
+              {t("direct")}
+            </Text>
             <FormControl isInvalid={errors.point !== undefined}>
               <Input
                 id="point"
@@ -298,15 +312,15 @@ export default function RequestCreate() {
           maxW="calc(100vw - 40px)"
         >
           <CardHeader mb="24px">
-            <Text color={textColor} fontSize="20px" fontWeight="bold" mb="4px">
+            <Text color={textColor} fontSize="25px" fontWeight="bold" mb="4px">
               {t("req_summary")}
             </Text>
           </CardHeader>
-          <Text fontSize="18px">{t("vid_title")}</Text>
+          <Text fontSize="20px">{t("vid_title")}</Text>
           <Text fontWeight="bold" fontSize="20px">
             {video?.youtubeVideo?.title ?? "unknown"}
           </Text>
-          <Text fontSize="18px" mt="20px">
+          <Text fontSize="20px" mt="20px">
             {t("vid_length")}
           </Text>
           <Text fontWeight="bold" fontSize="20px">
@@ -316,14 +330,14 @@ export default function RequestCreate() {
                 }${t("sec")}`
               : "unknown"}
           </Text>
-          <Text fontSize="18px" mt="20px">
+          <Text fontSize="20px" mt="20px">
             {t("req_lang")}
           </Text>
           <Text fontWeight="bold" fontSize="20px">
             {ISO6391.getName(watch().lang)}
           </Text>
           <HStack mt="20px !important">
-            <Text fontSize="18px">{t("point")}</Text>
+            <Text fontSize="20px">{t("point")}</Text>
             {getLevel(watch().point) >= 0 && (
               <Box
                 as="div"
@@ -357,9 +371,25 @@ export default function RequestCreate() {
               </Box>
             )}
           </HStack>
-          <Text fontWeight="bold" fontSize="20px">
-            {watch().point}
+          <Text fontWeight="bold" fontSize="30px" ml="5px">
+            {defaultPoint + watch().point + bonusPoint}
           </Text>
+          <HStack mt="5px !important" mb="10px !important">
+            <Badge colorScheme="green" fontSize="15px">
+              {t("funding")} {watch().point}
+            </Badge>
+            <Badge colorScheme="blue" fontSize="15px">
+              {t("default")} {defaultPoint}
+            </Badge>
+            <Badge colorScheme="purple" fontSize="15px">
+              {t("bonus")} {bonusPoint}
+            </Badge>
+          </HStack>
+          <PointGauge
+            point={100}
+            delta={defaultPoint + watch().point + bonusPoint}
+            goal={1500}
+          />
           <Button
             colorScheme="blue"
             mt="20px"

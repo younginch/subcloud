@@ -7,6 +7,7 @@
   "select_lang": "Seleccione el idioma",
   "basic_lang": "Guardar como idioma básico",
   "point": "Point",
+  "direct": "Valor",
   "point_reset": "Reiniciar",
   "req_summary": "Resumen de la solicitud",
   "vid_title": "Titulo del Video",
@@ -21,5 +22,8 @@
   "upload_sub": "Subir subtítulo",
   "request_lang": "Idioma solicitado",
   "statuts": "Estado de producción",
-  "request_num": "Solicitudes"
+  "request_num": "Solicitudes",
+  "funding": "Funding",
+  "default": "Default",
+  "bonus": "bonus"
 }
