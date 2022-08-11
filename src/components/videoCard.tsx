@@ -20,10 +20,11 @@ type Props = {
   videoName: string;
   videoUrl: string;
   imageUrl: string;
-  channelName: string;
-  channelImageUrl: string;
-  channelUrl: string;
+  channelName?: string;
+  channelImageUrl?: string;
+  channelUrl?: string;
   uploadDate?: Date;
+  padding?: string;
   children: React.ReactNode;
 };
 
@@ -36,6 +37,7 @@ export default function VideoCard({
   channelImageUrl,
   channelUrl,
   uploadDate,
+  padding,
   children,
 }: Props) {
   const router = useRouter();
@@ -47,7 +49,7 @@ export default function VideoCard({
       bg={useColorModeValue("gray.50", "gray.700")}
       borderRadius="10px"
       overflow="hidden"
-      pb="10px"
+      p={padding || "0px 0px 10px 0px"}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       boxShadow="base"
@@ -99,12 +101,14 @@ export default function VideoCard({
         >
           {videoName}
         </Text>
-        <HStack overflow="hidden" pr="10px">
-          <Link href={channelUrl}>
-            <Avatar size="sm" name={channelName} src={channelImageUrl} />
-          </Link>
-          <Text fontWeight="bold">{channelName}</Text>
-        </HStack>
+        {channelName && channelUrl && channelImageUrl && (
+          <HStack overflow="hidden" pr="10px">
+            <Link href={channelUrl}>
+              <Avatar size="sm" name={channelName} src={channelImageUrl} />
+            </Link>
+            <Text fontWeight="bold">{channelName}</Text>
+          </HStack>
+        )}
       </Stack>
       {children}
     </Stack>

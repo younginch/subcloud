@@ -208,5 +208,4 @@ VideoCreate.options = {
   role: Role.User,
   hideTitle: true,
   hideFooter: true,
-  bgColorLight: "#F7FAFC",
 } as PageOptions;
