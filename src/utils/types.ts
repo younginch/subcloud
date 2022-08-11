@@ -11,6 +11,7 @@ import {
   Role,
   Rating,
   SubHistory,
+  EditorFile,
 } from "@prisma/client";
 import {
   PrismaClientInitializationError,
@@ -292,7 +293,7 @@ export type ResRequest = Request;
 export type ResRequestSearch = RequestWithUserCountAndYoutube[];
 export type ResSub = Sub;
 export type ResSubRead = SubWithFileUrl;
-export type ResSubSearch = SubWithVideo[];
+export type ResSubSearch = (SubWithVideo & { editorFile: EditorFile | null })[];
 export type ResSubView = Sub;
 export type ResUser = User;
 export type ResUserSearch = UserWithPercentage;

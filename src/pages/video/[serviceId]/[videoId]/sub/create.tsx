@@ -26,7 +26,6 @@ import { CheckCircleIcon, EditIcon, WarningIcon } from "@chakra-ui/icons";
 import { Role } from "@prisma/client";
 import ISO6391 from "iso-639-1";
 import { AiOutlineInfoCircle, AiOutlineUser } from "react-icons/ai";
-import Link from "next/link";
 import useTranslation from "next-translate/useTranslation";
 import { joiResolver } from "@hookform/resolvers/joi";
 import SelectLanguage from "../../../../../components/selectLanguage";
@@ -52,9 +51,40 @@ export default function SubCreate() {
     handleSubmit,
     watch,
     setValue,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({ resolver: joiResolver(UploadCreateSchema) });
   const [file, setFile] = useState<string | Blob>();
+
+  async function editOnCloud() {
+    const formData = new FormData();
+    formData.append("file", file ?? "");
+    try {
+      const newFile = await axios.post("/api/user/file/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const subRes = await axios.post("/api/user/sub?editor=1", {
+        fileId: newFile.data.id,
+        serviceId,
+        videoId,
+        lang: getValues("lang"),
+      });
+      toast({
+        title: "클라우드 파일 생성 성공",
+        description: "편집기로 이동합니다.",
+        status: "success",
+      });
+      router.push(`/editor?id=${subRes.data.editorFile.id}`);
+    } catch (e) {
+      toast({
+        title: t("error"),
+        description: t("error-upload"),
+        status: "error",
+      });
+    }
+  }
 
   function onSubmit(values: FormData) {
     // eslint-disable-next-line no-async-promise-executor
@@ -226,15 +256,14 @@ export default function SubCreate() {
                 {t("upload_sub")}
               </Text>
               <Spacer />
-              <Link href={`/editor/?youtubeId=${video?.videoId}`} passHref>
-                <Button
-                  leftIcon={<EditIcon />}
-                  colorScheme="teal"
-                  variant="solid"
-                >
-                  {t("edit")}
-                </Button>
-              </Link>
+              <Button
+                leftIcon={<EditIcon />}
+                colorScheme="teal"
+                variant="solid"
+                onClick={editOnCloud}
+              >
+                {t("edit")}
+              </Button>
             </HStack>
           </CardHeader>
           <FormControl>

@@ -269,6 +269,26 @@ export default function Menus() {
           },
         ]}
       />
+      <EditorMenu
+        title="Cloud"
+        items={[
+          {
+            title: "Open",
+            icon: <EditIcon />,
+            command: "CLOUD_OPEN",
+          },
+          {
+            title: "Save",
+            icon: <EditIcon />,
+            command: "CLOUD_SAVE",
+          },
+          {
+            title: "Show file info",
+            icon: <EditIcon />,
+            command: "CLOUD_FILE_INFO",
+          },
+        ]}
+      />
     </HStack>
   );
 }
