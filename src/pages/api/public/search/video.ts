@@ -21,9 +21,9 @@ async function VideoSearchGet({ req, res, prisma }: RouteParams<any>) {
     },
   });
   const newVideos = videos.map((video) => {
-    const filterSubs = video.subs.filter((sub) => sub.lang === lang);
+    const filterSubs = video.subs.filter((sub) => !lang || sub.lang === lang);
     const filterRequests = video.requests.filter(
-      (request) => request.lang === lang
+      (request) => !lang || request.lang === lang
     );
 
     return {

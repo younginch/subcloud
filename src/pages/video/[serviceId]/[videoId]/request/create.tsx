@@ -33,11 +33,18 @@ import useTranslation from "next-translate/useTranslation";
 import InViewProvider from "../../../../../components/inviewProvider";
 import CardHeader from "../../../../../components/user/card/cardHeader";
 import Card from "../../../../../components/user/card/card";
-import { PageOptions, ResVideo } from "../../../../../utils/types";
+import {
+  PageOptions,
+  VideoWithCount,
+  ResVideoSearch,
+} from "../../../../../utils/types";
 import VideoInfo from "../../../../../components/create/videoInfo";
 import { RequestCreateSchema } from "../../../../../utils/schema";
 import SelectLanguage from "../../../../../components/selectLanguage";
 import PointGauge from "../../../../../components/pointGauge";
+import GoalExpr from "../../../../../utils/goalExpr";
+import PointGoal from "../../../../../utils/pointGoal";
+import PointBonus from "../../../../../utils/pointBonus";
 
 type FormData = {
   serviceId: string;
@@ -51,9 +58,6 @@ type PointElement = {
   hoverColor: string;
   icon: React.ReactElement;
 };
-
-const defaultPoint = Math.floor(Math.random() * 4) + 7;
-const bonusPoint = 10;
 
 export default function RequestCreate() {
   const { t } = useTranslation("videoRequest");
@@ -71,6 +75,15 @@ export default function RequestCreate() {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({ resolver: joiResolver(RequestCreateSchema) });
+  const [video, setVideo] = useState<VideoWithCount>();
+  const [defaultPoint, setDefaultPoint] = useState<number>(0);
+  const goalExpr = GoalExpr();
+  const goalPoint =
+    PointGoal(
+      video?.youtubeVideo ? video?.youtubeVideo.duration : undefined,
+      goalExpr
+    ) ?? 1000000;
+  const bonusPoint = PointBonus(goalPoint, video?._count.requests) ?? 0;
   const points: Array<PointElement> = [
     {
       amount: 100,
@@ -184,13 +197,15 @@ export default function RequestCreate() {
         });
     });
   }
-  const [video, setVideo] = useState<ResVideo>();
   useEffect(() => {
     axios
-      .get<ResVideo>(`/api/user/video`, { params: { serviceId, videoId } })
+      .get<ResVideoSearch>(`/api/public/search/video`, {
+        params: { serviceId, videoId },
+      })
       .then(({ data }) => {
-        setVideo(data);
+        setVideo(data[0]);
       });
+    setDefaultPoint(Math.floor(Math.random() * 4) + 7);
   }, [serviceId, videoId]);
   useEffect(() => {
     setValue("point", 0);
@@ -386,9 +401,9 @@ export default function RequestCreate() {
             </Badge>
           </HStack>
           <PointGauge
-            point={100}
+            point={video?._count.points ?? 0}
             delta={defaultPoint + watch().point + bonusPoint}
-            goal={1500}
+            goal={goalPoint}
           />
           <Button
             colorScheme="blue"
