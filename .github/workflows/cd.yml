@@ -3,12 +3,12 @@ name: CD
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
   deploy:
+    name: Deploy to ec2
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node
@@ -38,17 +38,32 @@ jobs:
           AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
 
       - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@main
+        uses: easingthemes/ssh-deploy@v2.2.11
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-          REMOTE_HOST: 43.200.123.132
+          REMOTE_HOST: 13.124.205.28
           REMOTE_USER: ubuntu
           TARGET: /home/ubuntu/subcloud
+
+      - name: Configure SSH
         run: |
-          cd /home/ubuntu/subcloud
-          git stash
-          git pull origin main
-          pm2 start ecosystem.config.js
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/staging.key
+          chmod 600 ~/.ssh/staging.key
+          cat >>~/.ssh/config <<END
+          Host staging
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/staging.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_HOST: 13.124.205.28
+          SSH_USER: ubuntu
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+
+      - name: Restart pm2
+        run: ssh staging 'cd /home/ubuntu/subcloud && pm2 start ecosystem.config.js'
 
       - name: Remove Github Actions IP from security group
         run: |
