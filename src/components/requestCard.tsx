@@ -11,6 +11,7 @@ import {
 import { useRouter } from "next/router";
 import { RequestStatus } from "@prisma/client";
 import dayjs from "dayjs";
+import ISO6391 from "iso-639-1";
 import duration from "dayjs/plugin/duration";
 import useTranslation from "next-translate/useTranslation";
 import VideoCard from "./videoCard";
@@ -73,7 +74,9 @@ export default function RequestCard({
         rightIcon={<ChevronRightIcon w="25px" h="25px" />}
         borderRadius={0}
         onClick={() =>
-          router.push(`/video/${serviceId}/${videoId}/request/create`)
+          router.push(
+            `/video/${serviceId}/${videoId}/request/create?lang=${requestLang}`
+          )
         }
       >
         {t("request_sub")}
@@ -85,7 +88,11 @@ export default function RequestCard({
         colorScheme={buttonColor}
         rightIcon={<ArrowUpIcon />}
         borderRadius={0}
-        onClick={() => router.push(`/video/${serviceId}/${videoId}/sub/create`)}
+        onClick={() =>
+          router.push(
+            `/video/${serviceId}/${videoId}/sub/create?lang=${requestLang}`
+          )
+        }
       >
         {t("upload_sub")}
       </Button>
@@ -105,7 +112,7 @@ export default function RequestCard({
           <Stack>
             <Text fontWeight="bold">{t("request_lang")}</Text>
             <Badge colorScheme="purple" w="fit-content">
-              {requestLang}
+              {ISO6391.getNativeName(requestLang)}
             </Badge>
           </Stack>
           <Spacer />

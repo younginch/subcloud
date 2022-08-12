@@ -1,5 +1,5 @@
 export default function PointGoal(duration?: number, goalExpr?: any) {
-  if (!duration || !goalExpr) return undefined;
+  if (duration === undefined || goalExpr === undefined) return undefined;
   const goalKeys = Object.keys(goalExpr);
   const key =
     goalKeys.find((e) => duration <= Number(e)) ?? goalKeys.reverse()[0];
@@ -8,5 +8,5 @@ export default function PointGoal(duration?: number, goalExpr?: any) {
   for (let j = 0; j < expr.length; j += 1) {
     goal += expr[j][1] * duration ** expr[j][0];
   }
-  return goal;
+  return Math.round(goal);
 }

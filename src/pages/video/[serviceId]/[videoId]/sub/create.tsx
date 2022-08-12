@@ -183,7 +183,8 @@ export default function SubCreate() {
 
   useEffect(() => {
     setValue("file", file as File);
-  }, [file, setValue]);
+    setValue("lang", router.query.lang as string);
+  }, [file, router.query.lang, setValue]);
 
   const acceptedFileItems = acceptedFiles.map((file) => (
     <HStack key={file.name} w="100%">
