@@ -398,7 +398,12 @@ export default function RequestCreate() {
               </Box>
             )}
           </HStack>
-          <Text fontWeight="bold" fontSize="30px" ml="5px">
+          <Text
+            fontWeight="bold"
+            fontSize="50px"
+            ml="5px"
+            color={useColorModeValue("blue.400", "blue.200")}
+          >
             {defaultPoint + watch().fundPoint + bonusPoint}
           </Text>
           <HStack mt="5px !important" mb="10px !important">
