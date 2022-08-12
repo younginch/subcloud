@@ -38,7 +38,7 @@ jobs:
           AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
 
       - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@2
+        uses: easingthemes/ssh-deploy@v2.2.11
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
           REMOTE_HOST: 43.200.123.132
