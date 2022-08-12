@@ -18,6 +18,7 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import axios from "axios";
+import useSWR from "swr";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -50,7 +51,7 @@ type FormData = {
   serviceId: string;
   videoId: string;
   lang: string;
-  point: number;
+  fundPoint: number;
 };
 
 type PointElement = {
@@ -78,12 +79,18 @@ export default function RequestCreate() {
   const [video, setVideo] = useState<VideoWithCount>();
   const [defaultPoint, setDefaultPoint] = useState<number>(0);
   const goalExpr = GoalExpr();
+  const { data: isBonus } = useSWR(
+    `/api/user/request/bonus?serviceId=${serviceId}&videoId=${videoId}&lang=${
+      watch().lang
+    }`
+  );
   const goalPoint =
     PointGoal(
       video?.youtubeVideo ? video?.youtubeVideo.duration : undefined,
       goalExpr
     ) ?? 1000000;
-  const bonusPoint = PointBonus(goalPoint, video?._count.requests) ?? 0;
+  const bonusPoint =
+    PointBonus(goalPoint, video?._count.requests, isBonus) ?? 0;
   const points: Array<PointElement> = [
     {
       amount: 100,
@@ -176,7 +183,8 @@ export default function RequestCreate() {
           serviceId,
           videoId,
           lang: values.lang,
-          point: defaultPoint + bonusPoint + values.point,
+          requestPoint: defaultPoint + bonusPoint + values.fundPoint,
+          fundPoint: values.fundPoint,
         })
         .then(() => {
           toast({
@@ -198,21 +206,25 @@ export default function RequestCreate() {
     });
   }
   useEffect(() => {
+    setDefaultPoint(Math.floor(Math.random() * 4) + 7);
+  }, []);
+  useEffect(() => {
     axios
       .get<ResVideoSearch>(`/api/public/search/video`, {
-        params: { serviceId, videoId },
+        params: { serviceId, videoId, lang: watch().lang },
       })
       .then(({ data }) => {
         setVideo(data[0]);
       });
-    setDefaultPoint(Math.floor(Math.random() * 4) + 7);
-  }, [serviceId, videoId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [serviceId, videoId, watch().lang]);
   useEffect(() => {
-    setValue("point", 0);
+    setValue("fundPoint", 0);
     axios.get("/api/user/lang").then(({ data }) => {
-      setValue("lang", data.requestLangs[0]);
+      if (router.query.lang) setValue("lang", router.query.lang as string);
+      else setValue("lang", data.requestLangs[0]);
     });
-  }, [setValue]);
+  }, [router.query.lang, setValue]);
 
   const pointBg = useColorModeValue("gray.100", "gray.800");
 
@@ -273,8 +285,8 @@ export default function RequestCreate() {
                     bg={pointBg}
                     onClick={() =>
                       setValue(
-                        "point",
-                        Number(element.amount) + Number(watch().point)
+                        "fundPoint",
+                        Number(element.amount) + Number(watch().fundPoint)
                       )
                     }
                     _hover={{
@@ -304,18 +316,18 @@ export default function RequestCreate() {
             >
               {t("direct")}
             </Text>
-            <FormControl isInvalid={errors.point !== undefined}>
+            <FormControl isInvalid={errors.fundPoint !== undefined}>
               <Input
                 id="point"
                 value={router.query.point}
                 type="number"
-                {...register("point")}
+                {...register("fundPoint")}
               />
               <FormErrorMessage>
-                {errors.point && errors.point.message}
+                {errors.fundPoint && errors.fundPoint.message}
               </FormErrorMessage>
             </FormControl>
-            <Button colorScheme="blue" onClick={() => setValue("point", 0)}>
+            <Button colorScheme="blue" onClick={() => setValue("fundPoint", 0)}>
               {t("point_reset")}
             </Button>
           </HStack>
@@ -353,7 +365,7 @@ export default function RequestCreate() {
           </Text>
           <HStack mt="20px !important">
             <Text fontSize="20px">{t("point")}</Text>
-            {getLevel(watch().point) >= 0 && (
+            {getLevel(watch().fundPoint) >= 0 && (
               <Box
                 as="div"
                 w="20px"
@@ -369,7 +381,7 @@ export default function RequestCreate() {
                   marginLeft: "-125%",
                   marginTop: "-125%",
                   borderRadius: "50%",
-                  bgColor: points[getLevel(watch().point)].hoverColor,
+                  bgColor: points[getLevel(watch().fundPoint)].hoverColor,
                   animation: `3s ${pulseRing} cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.7s infinite`,
                 }}
               >
@@ -381,17 +393,17 @@ export default function RequestCreate() {
                   mt="-225%"
                   position="absolute"
                 >
-                  {points[getLevel(watch().point)].icon}
+                  {points[getLevel(watch().fundPoint)].icon}
                 </Box>
               </Box>
             )}
           </HStack>
           <Text fontWeight="bold" fontSize="30px" ml="5px">
-            {defaultPoint + watch().point + bonusPoint}
+            {defaultPoint + watch().fundPoint + bonusPoint}
           </Text>
           <HStack mt="5px !important" mb="10px !important">
             <Badge colorScheme="green" fontSize="15px">
-              {t("funding")} {watch().point}
+              {t("funding")} {watch().fundPoint}
             </Badge>
             <Badge colorScheme="blue" fontSize="15px">
               {t("default")} {defaultPoint}
@@ -402,7 +414,7 @@ export default function RequestCreate() {
           </HStack>
           <PointGauge
             point={video?._count.points ?? 0}
-            delta={defaultPoint + watch().point + bonusPoint}
+            delta={defaultPoint + watch().fundPoint + bonusPoint}
             goal={goalPoint}
           />
           <Button

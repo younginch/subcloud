@@ -13,7 +13,8 @@ export const RequestCreateSchema = joi.object({
   serviceId: joi.string().required(),
   videoId: joi.string().required(),
   lang: joi.string().required(),
-  point: joi.number().integer().required(),
+  requestPoint: joi.number().integer(),
+  fundPoint: joi.number().integer().required(),
 });
 
 export const UploadCreateSchema = joi

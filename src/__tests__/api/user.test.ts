@@ -184,7 +184,13 @@ describe("/api/user/request", () => {
 
   it("POST should return 200", async () => {
     const { req, res } = mockRequestResponse("POST");
-    req.body = { serviceId: "1", videoId: "1", lang: "ko", point: "0" };
+    req.body = {
+      serviceId: "1",
+      videoId: "1",
+      lang: "ko",
+      requestPoint: "0",
+      fundPoint: "0",
+    };
     // @ts-ignore
     jest
       .spyOn(prisma.request, "findUnique")
@@ -196,7 +202,13 @@ describe("/api/user/request", () => {
 
   it("POST should return 201", async () => {
     const { req, res } = mockRequestResponse("POST");
-    req.body = { serviceId: "1", videoId: "1", lang: "ko", point: "0" };
+    req.body = {
+      serviceId: "1",
+      videoId: "1",
+      lang: "ko",
+      requestPoint: "0",
+      fundPoint: "0",
+    };
     jest.spyOn(prisma.request, "findUnique").mockResolvedValueOnce(null);
     await requestRoute(req, res);
     expect(res.statusCode).toBe(201);
@@ -210,7 +222,13 @@ describe("/api/user/request", () => {
 
   it("POST should return 409", async () => {
     const { req, res } = mockRequestResponse("POST");
-    req.body = { serviceId: "1", videoId: "1", lang: "ko", point: "0" };
+    req.body = {
+      serviceId: "1",
+      videoId: "1",
+      lang: "ko",
+      requestPoint: "0",
+      fundPoint: "0",
+    };
     // @ts-ignore
     jest
       .spyOn(prisma.request, "findUnique")
