@@ -44,9 +44,6 @@ jobs:
           REMOTE_HOST: 43.200.123.132
           REMOTE_USER: ubuntu
           TARGET: /home/ubuntu/subcloud
-        run: |
-          cd /home/ubuntu/subcloud
-          pm2 start ecosystem.config.js
 
       - name: Configure SSH
         run: |
