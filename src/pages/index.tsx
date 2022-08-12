@@ -21,24 +21,25 @@ import ExtensionButton from "../components/extensionButton";
 import { PageOptions } from "../utils/types";
 import { DottedBox } from "../components/icons/customIcons";
 import Features from "../components/features";
+import NewRequestRow from "../components/newRequestRow";
 
 export default function Home() {
   const { t } = useTranslation("landing");
   return (
-    <Box
-      backgroundImage={useColorModeValue(
-        "https://user-images.githubusercontent.com/17401630/177977272-7e7b91c9-c172-4bd0-a759-1318d8ebdd4e.PNG",
-        undefined
-      )}
-      backgroundSize="cover"
-    >
+    <Box>
       <Stack
         direction={{ base: "column", md: "row" }}
         spacing={{ base: 0, md: 20 }}
         justifyContent="center"
         p={10}
-        pt={{ base: "100px", md: "150px" }}
+        pt={{ base: "100px", md: "50px" }}
         alignItems="center"
+        backgroundImage={useColorModeValue(
+          "https://user-images.githubusercontent.com/17401630/177977272-7e7b91c9-c172-4bd0-a759-1318d8ebdd4e.PNG",
+          undefined
+        )}
+        backgroundSize="cover"
+        minH="100vh"
       >
         <Stack
           direction="column"
@@ -120,172 +121,264 @@ export default function Home() {
           />
         </Box>
       </Stack>
-      <Box maxW="1340px" margin="auto" p={10}>
-        <InViewProvider initialScale={0.95}>
-          <Stack
-            mt="150px"
-            direction={{ base: "column", lg: "row" }}
-            spacing={10}
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Stack>
-              <Heading color="blue.400" size="md">
-                {t("free_request")}
-              </Heading>
-              <Text
-                fontSize={{ base: "3xl", md: "4xl" }}
-                fontWeight="bold"
-                maxW="500px"
-                wordBreak="keep-all"
-              >
-                {t("free_request_ex_front")}
-              </Text>
-              <Text fontSize={{ base: "xl", md: "2xl" }} wordBreak="keep-all">
-                {t("free_request_ex_back")}
-              </Text>
-            </Stack>
-            <Box
-              bg={useColorModeValue(
-                "rgba( 255, 255, 255, 0.4 )",
-                "rgba( 85, 85, 85, 0.2 )"
-              )}
-              borderRadius="24px"
-              border={useColorModeValue(
-                "2px solid rgba( 255, 255, 255, 0.5 )",
-                "2px solid rgba( 105, 105, 105, 0.5 )"
-              )}
-              boxShadow="2xl"
-              w="420px"
-              h="280px"
-              maxW="80vw"
-              padding="24px"
+      <Stack
+        alignItems="center"
+        h="100vh"
+        justifyContent="center"
+        pl="15px"
+        pr="15px"
+      >
+        <Text
+          fontWeight="bold"
+          fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
+        >
+          우리 모두를 위한 자막 플랫폼.
+        </Text>
+        <Text fontSize={{ base: "18px", md: "2xl" }} wordBreak="keep-all">
+          지금도 전 세계 유저들이 필요한 자막을 마음껏 요청하고 사용하고
+          있습니다.
+        </Text>
+        <Stack>
+          <NewRequestRow />
+          <NewRequestRow />
+          <NewRequestRow />
+          <NewRequestRow />
+          <NewRequestRow />
+        </Stack>
+      </Stack>
+      <Stack alignItems="center" bg={useColorModeValue("#f8f8fa", undefined)}>
+        <Box maxW="1340px" margin="auto" p={10}>
+          <InViewProvider initialScale={0.95}>
+            <Stack
+              mt="150px"
+              direction={{ base: "column", lg: "row" }}
+              spacing={10}
+              justifyContent="space-between"
+              alignItems="center"
             >
-              <Center flexDir="column">
-                <CheckCircleIcon w={14} h={14} color="blue.400" marginTop={8} />
-                <Heading marginTop={6} size="lg">
-                  {t("request_sent_complete")}
+              <Stack>
+                <Heading color="blue.400" size="md">
+                  {t("free_request")}
                 </Heading>
-                <Text color="blue.400" marginTop={7}>
-                  {t("n_people")}
+                <Text
+                  fontSize={{ base: "3xl", md: "4xl" }}
+                  fontWeight="bold"
+                  maxW="500px"
+                  wordBreak="keep-all"
+                >
+                  {t("free_request_ex_front")}
                 </Text>
-              </Center>
-            </Box>
-          </Stack>
-        </InViewProvider>
-        <InViewProvider initialScale={0.95}>
-          <Stack
-            marginY="200px"
-            direction={{ base: "column-reverse", lg: "row" }}
-            alignItems="center"
-            justifyContent="space-between"
-            spacing={10}
-          >
-            <Box
-              bg={useColorModeValue(
-                "rgba( 255, 255, 255, 0.4 )",
-                "rgba( 85, 85, 85, 0.2 )"
-              )}
-              borderRadius="24px"
-              border={useColorModeValue(
-                "2px solid rgba( 255, 255, 255, 0.5 )",
-                "2px solid rgba( 105, 105, 105, 0.5 )"
-              )}
-              boxShadow="2xl"
-              w="420px"
-              h="300px"
-              maxW="80vw"
-              padding="24px"
-            >
-              <Center flexDir="column">
-                <Box w={14} h={14} mt={8} color="red.400">
-                  <IconContext.Provider
-                    // eslint-disable-next-line react/jsx-no-constructed-context-values
-                    value={{ color: "inherit", className: "global-class-name" }}
-                  >
-                    <div>
-                      <AiFillHeart size="100%" />
-                    </div>
-                  </IconContext.Provider>
-                </Box>
-                <Heading marginTop={6} size="lg">
-                  {t("use_sub_front")}
-                </Heading>
-                <Heading marginTop={1} size="md">
-                  {t("use_sub_back")}
-                </Heading>
-                <Text color="blue.400" marginTop={7}>
-                  {t("top_maker")}
+                <Text fontSize={{ base: "xl", md: "2xl" }} wordBreak="keep-all">
+                  {t("free_request_ex_back")}
                 </Text>
-              </Center>
-            </Box>
-            <Stack>
-              <Heading color="blue.400" size="md">
-                {t("unconstrained_sub_production")}
-              </Heading>
-              <Text
-                fontSize={{ base: "3xl", md: "4xl" }}
-                fontWeight="bold"
-                maxW="500px"
-                wordBreak="keep-all"
+              </Stack>
+              <Box
+                bg={useColorModeValue(
+                  "rgba( 255, 255, 255, 0.4 )",
+                  "rgba( 85, 85, 85, 0.2 )"
+                )}
+                borderRadius="24px"
+                border={useColorModeValue(
+                  "2px solid rgba( 255, 255, 255, 0.5 )",
+                  "2px solid rgba( 105, 105, 105, 0.5 )"
+                )}
+                boxShadow="2xl"
+                w="420px"
+                h="280px"
+                maxW="80vw"
+                padding="24px"
               >
-                {t("unconstrained_sub_production_ex_front")}
-              </Text>
-              <Text fontSize={{ base: "xl", md: "2xl" }} wordBreak="keep-all">
-                {t("unconstrained_sub_production_ex_back")}
-              </Text>
+                <Center flexDir="column">
+                  <CheckCircleIcon
+                    w={14}
+                    h={14}
+                    color="blue.400"
+                    marginTop={8}
+                  />
+                  <Heading marginTop={6} size="lg">
+                    {t("request_sent_complete")}
+                  </Heading>
+                  <Text color="blue.400" marginTop={7}>
+                    {t("n_people")}
+                  </Text>
+                </Center>
+              </Box>
             </Stack>
-          </Stack>
-        </InViewProvider>
-        <InViewProvider initialScale={0.95}>
-          <Stack
-            mb="80px"
-            direction={{ base: "column-reverse", lg: "row" }}
-            alignItems="center"
-          >
-            <Stack>
-              <Heading color="blue.400" size="md">
-                {t("simple_view")}
-              </Heading>
-              <Text
-                fontSize={{ base: "3xl", md: "4xl" }}
-                fontWeight="bold"
-                maxW="500px"
-                wordBreak="keep-all"
-              >
-                {t("without_moving_front")}
-              </Text>
-              <Text fontSize={{ base: "xl", md: "2xl" }} wordBreak="keep-all">
-                {t("without_moving_back")}
-              </Text>
-            </Stack>
-            <Spacer />
-            <Box
-              maxW="80vw"
-              w="500px"
-              bg={useColorModeValue("rgba( 255, 255, 255, 0.2 )", "gray.900")}
-              boxShadow={useColorModeValue(
-                "0 0 24px 0 rgba( 31, 38, 135, 0.37 )",
-                "0 8px 32px 0 rgba( 31, 38, 135, 0.37 )"
-              )}
-              borderRadius="15px"
-              border={useColorModeValue(
-                "2px solid rgba( 255, 255, 255, 0.5 )",
-                "2px solid rgba( 105, 105, 105, 0.5 )"
-              )}
-              overflow="hidden"
+          </InViewProvider>
+          <InViewProvider initialScale={0.95}>
+            <Stack
+              mt="150px"
+              direction={{ base: "column", lg: "row-reverse" }}
+              spacing={10}
+              justifyContent="space-between"
+              alignItems="center"
             >
-              <object
-                type="image/svg+xml"
-                data="tutorial_popup_sub.svg"
-                width="100%"
+              <Stack>
+                <Heading color="blue.400" size="md">
+                  {t("free_request")}
+                </Heading>
+                <Text
+                  fontSize={{ base: "3xl", md: "4xl" }}
+                  fontWeight="bold"
+                  maxW="500px"
+                  wordBreak="keep-all"
+                >
+                  {t("free_request_ex_front")}
+                </Text>
+                <Text fontSize={{ base: "xl", md: "2xl" }} wordBreak="keep-all">
+                  {t("free_request_ex_back")}
+                </Text>
+              </Stack>
+              <Box
+                bg={useColorModeValue(
+                  "rgba( 255, 255, 255, 0.4 )",
+                  "rgba( 85, 85, 85, 0.2 )"
+                )}
+                borderRadius="24px"
+                border={useColorModeValue(
+                  "2px solid rgba( 255, 255, 255, 0.5 )",
+                  "2px solid rgba( 105, 105, 105, 0.5 )"
+                )}
+                boxShadow="2xl"
+                w="420px"
+                h="280px"
+                maxW="80vw"
+                padding="24px"
               >
-                svg-animation
-              </object>
-            </Box>
-          </Stack>
-        </InViewProvider>
-      </Box>
+                <Center flexDir="column">
+                  <CheckCircleIcon
+                    w={14}
+                    h={14}
+                    color="blue.400"
+                    marginTop={8}
+                  />
+                  <Heading marginTop={6} size="lg">
+                    {t("request_sent_complete")}
+                  </Heading>
+                  <Text color="blue.400" marginTop={7}>
+                    {t("n_people")}
+                  </Text>
+                </Center>
+              </Box>
+            </Stack>
+          </InViewProvider>
+          <InViewProvider initialScale={0.95}>
+            <Stack
+              marginY="200px"
+              direction={{ base: "column-reverse", lg: "row-reverse" }}
+              alignItems="center"
+              justifyContent="space-between"
+              spacing={10}
+            >
+              <Box
+                bg={useColorModeValue(
+                  "rgba( 255, 255, 255, 0.4 )",
+                  "rgba( 85, 85, 85, 0.2 )"
+                )}
+                borderRadius="24px"
+                border={useColorModeValue(
+                  "2px solid rgba( 255, 255, 255, 0.5 )",
+                  "2px solid rgba( 105, 105, 105, 0.5 )"
+                )}
+                boxShadow="2xl"
+                w="420px"
+                h="300px"
+                maxW="80vw"
+                padding="24px"
+              >
+                <Center flexDir="column">
+                  <Box w={14} h={14} mt={8} color="red.400">
+                    <IconContext.Provider
+                      // eslint-disable-next-line react/jsx-no-constructed-context-values
+                      value={{
+                        color: "inherit",
+                        className: "global-class-name",
+                      }}
+                    >
+                      <div>
+                        <AiFillHeart size="100%" />
+                      </div>
+                    </IconContext.Provider>
+                  </Box>
+                  <Heading marginTop={6} size="lg">
+                    {t("use_sub_front")}
+                  </Heading>
+                  <Heading marginTop={1} size="md">
+                    {t("use_sub_back")}
+                  </Heading>
+                  <Text color="blue.400" marginTop={7}>
+                    {t("top_maker")}
+                  </Text>
+                </Center>
+              </Box>
+              <Stack>
+                <Heading color="blue.400" size="md">
+                  {t("unconstrained_sub_production")}
+                </Heading>
+                <Text
+                  fontSize={{ base: "3xl", md: "4xl" }}
+                  fontWeight="bold"
+                  maxW="500px"
+                  wordBreak="keep-all"
+                >
+                  {t("unconstrained_sub_production_ex_front")}
+                </Text>
+                <Text fontSize={{ base: "xl", md: "2xl" }} wordBreak="keep-all">
+                  {t("unconstrained_sub_production_ex_back")}
+                </Text>
+              </Stack>
+            </Stack>
+          </InViewProvider>
+          <InViewProvider initialScale={0.95}>
+            <Stack
+              mb="80px"
+              direction={{ base: "column-reverse", lg: "row" }}
+              alignItems="center"
+            >
+              <Stack>
+                <Heading color="blue.400" size="md">
+                  {t("simple_view")}
+                </Heading>
+                <Text
+                  fontSize={{ base: "3xl", md: "4xl" }}
+                  fontWeight="bold"
+                  maxW="500px"
+                  wordBreak="keep-all"
+                >
+                  {t("without_moving_front")}
+                </Text>
+                <Text fontSize={{ base: "xl", md: "2xl" }} wordBreak="keep-all">
+                  {t("without_moving_back")}
+                </Text>
+              </Stack>
+              <Spacer />
+              <Box
+                maxW="80vw"
+                w="500px"
+                bg={useColorModeValue("rgba( 255, 255, 255, 0.2 )", "gray.900")}
+                boxShadow={useColorModeValue(
+                  "0 0 24px 0 rgba( 31, 38, 135, 0.37 )",
+                  "0 8px 32px 0 rgba( 31, 38, 135, 0.37 )"
+                )}
+                borderRadius="15px"
+                border={useColorModeValue(
+                  "2px solid rgba( 255, 255, 255, 0.5 )",
+                  "2px solid rgba( 105, 105, 105, 0.5 )"
+                )}
+                overflow="hidden"
+              >
+                <object
+                  type="image/svg+xml"
+                  data="tutorial_popup_sub.svg"
+                  width="100%"
+                >
+                  svg-animation
+                </object>
+              </Box>
+            </Stack>
+          </InViewProvider>
+        </Box>
+      </Stack>
       <Features />
       <InViewProvider initialScale={0.95}>
         <Stack alignItems="center" p={10} mt="100px">
