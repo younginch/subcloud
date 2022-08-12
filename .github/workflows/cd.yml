@@ -8,7 +8,9 @@ on:
 
 jobs:
   deploy:
+    name: Deploy to ec2
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node
@@ -63,7 +65,7 @@ jobs:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
       - name: Restart pm2
-        run: ssh staging 'cd /home/ubuntu/subcloud && pm2 start ecosystem.config.js'
+        run: ssh staging 'cd /home/ubuntu/subcloud && /home/ubuntu/.nvm/versions/node/v16.16.0/bin/pm2 start ecosystem.config.js'
 
       - name: Remove Github Actions IP from security group
         run: |
