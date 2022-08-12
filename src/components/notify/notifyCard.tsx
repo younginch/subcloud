@@ -22,6 +22,7 @@ type Props = {
   content: string;
   href: string | undefined;
   onRemove: () => void;
+  isRead: boolean;
 };
 
 export default function NotifyCard({
@@ -32,6 +33,7 @@ export default function NotifyCard({
   content,
   href,
   onRemove,
+  isRead,
 }: Props) {
   let labelColor;
   let timeColor;
@@ -67,6 +69,7 @@ export default function NotifyCard({
   }
 
   const handleRemove = (link?: string) => {
+    if (isRead) return;
     controls.start((event: string) => {
       if (event === id) {
         return {

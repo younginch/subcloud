@@ -134,6 +134,7 @@ export default function Notify() {
                 content={notify.content}
                 href={notify.href}
                 onRemove={() => changeItem(notify.id)}
+                isRead={false}
               />
             ))}
           </Stack>
@@ -167,6 +168,7 @@ export default function Notify() {
                 content={notify.content}
                 href={notify.href}
                 onRemove={() => deleteItem(notify.id)}
+                isRead
               />
             ))}
           </Stack>
