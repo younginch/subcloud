@@ -77,15 +77,6 @@ async function RequestCreate({
     include: { users: { where: { id: session?.user.id } } },
   });
   if (request) {
-    if (
-      request.users.find((user) => user.id === session?.user.id) &&
-      value.point === 0
-    ) {
-      return res.status(409).json({
-        error: SubErrorType.InvalidRequest,
-        message: "You already requested this video",
-      });
-    }
     const updatedRequest = await prisma.request.update({
       where: { serviceId_videoId_lang: { serviceId, videoId, lang } },
       data: {

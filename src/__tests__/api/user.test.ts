@@ -220,24 +220,6 @@ describe("/api/user/request", () => {
     expect(res.statusCode).toBe(400);
   });
 
-  it("POST should return 409", async () => {
-    const { req, res } = mockRequestResponse("POST");
-    req.body = {
-      serviceId: "1",
-      videoId: "1",
-      lang: "ko",
-      requestPoint: "0",
-      fundPoint: "0",
-    };
-    // @ts-ignore
-    jest
-      .spyOn(prisma.request, "findUnique")
-      // @ts-ignore
-      .mockResolvedValueOnce({ users: [{ id: "2" }] });
-    await requestRoute(req, res);
-    expect(res.statusCode).toBe(409);
-  });
-
   it("DELETE should return 200", async () => {
     const { req, res } = mockRequestResponse("DELETE");
     req.query.id = "1";
