@@ -6,9 +6,9 @@ import {
   ResRequest,
   RouteParams,
   SubErrorType,
-} from "../../../utils/types";
-import { RequestCreateSchema } from "../../../utils/schema";
-import prisma from "../../../utils/prisma";
+} from "../../../../utils/types";
+import { RequestCreateSchema } from "../../../../utils/schema";
+import prisma from "../../../../utils/prisma";
 
 async function RequestRead({ req, res, prisma }: RouteParams<ResRequest>) {
   if (!req.query.id) {
@@ -31,22 +31,23 @@ async function updatePointAndResponse(
   session: Session | undefined,
   res: NextApiResponse,
   request: Request,
-  requestedPoint: number = 0
+  requestPoint: number = 0,
+  fundPoint: number = 0
 ): Promise<void> {
-  if (requestedPoint !== 0) {
+  if (requestPoint !== 0) {
     await prisma.user.update({
       where: { id: session?.user.id },
-      data: { point: session?.user.point ?? 0 - requestedPoint },
+      data: { point: session?.user.point ?? 0 - fundPoint },
     });
     await prisma.request.update({
       where: { id: request.id },
-      data: { point: request.point + requestedPoint },
+      data: { point: request.point + requestPoint },
     });
     await prisma.requestPoint.create({
       data: {
         userId: session?.user.id!,
         requestId: request.id,
-        point: requestedPoint,
+        point: fundPoint,
       },
     });
   }
@@ -64,8 +65,8 @@ async function RequestCreate({
       .status(400)
       .json({ error: SubErrorType.FormValidation, message: error.message });
   }
-  const { serviceId, videoId, lang, point } = value;
-  if (session?.user.point! < point) {
+  const { serviceId, videoId, lang, requestPoint, fundPoint } = value;
+  if (session?.user.point! < fundPoint) {
     return res.status(400).json({
       error: SubErrorType.InvalidRequest,
       message: "Insufficient Point",
@@ -76,15 +77,6 @@ async function RequestCreate({
     include: { users: { where: { id: session?.user.id } } },
   });
   if (request) {
-    if (
-      request.users.find((user) => user.id === session?.user.id) &&
-      value.point === 0
-    ) {
-      return res.status(409).json({
-        error: SubErrorType.InvalidRequest,
-        message: "You already requested this video",
-      });
-    }
     const updatedRequest = await prisma.request.update({
       where: { serviceId_videoId_lang: { serviceId, videoId, lang } },
       data: {
@@ -95,7 +87,7 @@ async function RequestCreate({
         },
       },
     });
-    updatePointAndResponse(session, res, updatedRequest, point);
+    updatePointAndResponse(session, res, updatedRequest, requestPoint);
     const finalRequest = await prisma.request.findUnique({
       where: { id: updatedRequest.id },
     });
@@ -108,7 +100,7 @@ async function RequestCreate({
       users: { connect: { id: session?.user?.id } },
     },
   });
-  updatePointAndResponse(session, res, createdRequest, point);
+  updatePointAndResponse(session, res, createdRequest, requestPoint);
   const finalRequest = await prisma.request.findUnique({
     where: { id: createdRequest.id },
   });

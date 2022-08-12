@@ -300,9 +300,7 @@ describe("Components", () => {
         lang="한국어"
         status={SubStatus.Approved}
         viewCount={100}
-        serviceId="1"
-        videoId="2"
-        subId="3"
+        editorFileId="1"
       />
     );
   });

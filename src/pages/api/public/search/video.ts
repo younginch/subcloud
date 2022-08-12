@@ -17,7 +17,7 @@ async function VideoSearchGet({ req, res, prisma }: RouteParams<any>) {
     include: {
       youtubeVideo: { include: { channel: true } },
       subs: true,
-      requests: true,
+      requests: { include: { users: true } },
     },
   });
   const newVideos = videos.map((video) => {
@@ -33,7 +33,10 @@ async function VideoSearchGet({ req, res, prisma }: RouteParams<any>) {
       youtubeVideoId: video.youtubeVideoId,
       youtubeVideo: video.youtubeVideo,
       _count: {
-        requests: filterRequests.length,
+        requests: filterRequests.reduce(
+          (prev, curr) => prev + curr.users.length,
+          0
+        ),
         subs: filterSubs.length,
         points: filterRequests.reduce((prev, curr) => prev + curr.point, 0),
       },
