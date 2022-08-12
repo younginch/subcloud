@@ -17,6 +17,6 @@
   "url_error": "URL link should contain http or https",
   "my_req": "Video I requested from SubCloud",
   "my_up": "Video I uploaded to SubCloud",
-  "no_req": "There are no requests. Request a video that requires subtitles.",
+  "no_req": "There are no requests. Request a video that needs subtitles",
   "no_up": "There are no subtitles uploaded."
 }

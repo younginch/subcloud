@@ -5,6 +5,7 @@ import {
   Center,
   ChakraProvider,
   CircularProgress,
+  extendTheme,
   useToast,
 } from "@chakra-ui/react";
 import { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -95,6 +96,12 @@ function getCustomLayout(
     props.children;
 }
 
+const config = {
+  initialColorMode: "dark",
+  useSystemColorMode: false,
+};
+const theme = extendTheme({ config });
+
 export default function MyApp({
   Component,
   pageProps: { session, ...pageProps },
@@ -124,7 +131,7 @@ export default function MyApp({
       }}
     >
       <SessionProvider session={session}>
-        <ChakraProvider portalZIndex={2000}>
+        <ChakraProvider portalZIndex={2000} theme={theme}>
           {isClient ? (
             <Layout options={options}>
               <CustomLayout>
