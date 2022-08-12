@@ -1,7 +1,6 @@
 import { Stack, Text, useMediaQuery, Grid, GridItem } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
-import ISO6391 from "iso-639-1";
 import { FiBox } from "react-icons/fi";
 import useTranslation from "next-translate/useTranslation";
 import { useState } from "react";
@@ -47,7 +46,7 @@ function MyRequestPanel({
                 time={request.video.youtubeVideo?.duration ?? 0}
                 link={request.video.url ?? ""}
                 thumbnail={`https://i.ytimg.com/vi/${request.video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
-                requestLang={ISO6391.getNativeName(request.lang)}
+                requestLang={request.lang}
                 requestStatus={request.status}
                 serviceId={request.video.serviceId}
                 videoId={request.video.videoId}
@@ -60,6 +59,7 @@ function MyRequestPanel({
                     goalExpr
                   ) ?? 1000000
                 }
+                buttonType="request"
               />
             </GridItem>
           )

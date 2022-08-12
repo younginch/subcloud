@@ -46,6 +46,7 @@ import PointGauge from "../../../../../components/pointGauge";
 import GoalExpr from "../../../../../utils/goalExpr";
 import PointGoal from "../../../../../utils/pointGoal";
 import PointBonus from "../../../../../utils/pointBonus";
+import LanguageCodeList from "../../../../../components/languageCodeList";
 
 type FormData = {
   serviceId: string;
@@ -69,6 +70,7 @@ export default function RequestCreate() {
   const videoId = router.query.videoId as string;
   const toast = useToast();
   const [check, setCheck] = useState(false);
+  const langList = LanguageCodeList();
   const {
     handleSubmit,
     register,
@@ -189,10 +191,10 @@ export default function RequestCreate() {
         .then(() => {
           toast({
             title: "Success",
-            description: "Request created",
+            description: "Requested",
             status: "success",
           });
-          router.push(`/user/my/request`);
+          router.push(`/video/create?next=request`);
           resolve();
         })
         .catch((err) => {
@@ -220,11 +222,16 @@ export default function RequestCreate() {
   }, [serviceId, videoId, watch().lang]);
   useEffect(() => {
     setValue("fundPoint", 0);
-    axios.get("/api/user/lang").then(({ data }) => {
-      if (router.query.lang) setValue("lang", router.query.lang as string);
+    axios.get("/api/user/lang").then(async ({ data }) => {
+      if (
+        router.query.lang &&
+        langList &&
+        langList.includes(router.query.lang as string)
+      )
+        setValue("lang", router.query.lang as string);
       else setValue("lang", data.requestLangs[0]);
     });
-  }, [router.query.lang, setValue]);
+  }, [langList, router.query.lang, setValue]);
 
   const pointBg = useColorModeValue("gray.100", "gray.800");
 
