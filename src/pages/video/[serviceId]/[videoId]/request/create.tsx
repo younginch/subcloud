@@ -411,7 +411,7 @@ export default function RequestCreate() {
             ml="5px"
             color={useColorModeValue("blue.400", "blue.200")}
           >
-            {defaultPoint + watch().fundPoint + bonusPoint}
+            {defaultPoint + Number(watch().fundPoint) + bonusPoint}
           </Text>
           <HStack mt="5px !important" mb="10px !important">
             <Badge colorScheme="green" fontSize="15px">
@@ -426,7 +426,7 @@ export default function RequestCreate() {
           </HStack>
           <PointGauge
             point={video?._count.points ?? 0}
-            delta={defaultPoint + watch().fundPoint + bonusPoint}
+            delta={defaultPoint + Number(watch().fundPoint) + bonusPoint}
             goal={goalPoint}
           />
           <Button
