@@ -21,8 +21,8 @@ import ExtensionButton from "../components/extensionButton";
 import { PageOptions } from "../utils/types";
 import { DottedBox } from "../components/icons/customIcons";
 import Features from "../components/features";
-import NewRequestRow from "../components/newRequestRow";
 import PointGauge from "../components/pointGauge";
+import RequestMarquee from "../components/requestMarquee";
 
 export default function Home() {
   const { t } = useTranslation("landing");
@@ -122,41 +122,31 @@ export default function Home() {
           />
         </Box>
       </Stack>
-      <Stack
-        alignItems="center"
-        h="100vh"
-        justifyContent="center"
-        pl="15px"
-        pr="15px"
-      >
-        <Text
-          fontWeight="bold"
-          fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
-        >
-          우리 모두를 위한 자막 플랫폼.
-        </Text>
-        <Text
-          fontSize={{ base: "18px", md: "2xl" }}
-          wordBreak="keep-all"
-          mb="25px !important"
-        >
-          지금도 전 세계 유저들이 필요한 자막을 마음껏 요청하고 사용하고
-          있습니다.
-        </Text>
-        <Stack>
-          <NewRequestRow />
-          <NewRequestRow />
-          <NewRequestRow />
-          <NewRequestRow />
-          <NewRequestRow />
+      <Stack alignItems="center" justifyContent="center" h="100vh" w="100vw">
+        <Stack pl="15px" pr="15px">
+          <Text
+            fontWeight="bold"
+            fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
+          >
+            우리 모두를 위한 자막 플랫폼.
+          </Text>
+          <Text
+            fontSize={{ base: "18px", md: "2xl" }}
+            wordBreak="keep-all"
+            mb="25px !important"
+          >
+            지금도 전 세계 유저들이 필요한 자막을 마음껏 요청하고 사용하고
+            있습니다.
+          </Text>
         </Stack>
+        <RequestMarquee videos={undefined} />
       </Stack>
       <Stack alignItems="center" bg={useColorModeValue("#f8f8fa", undefined)}>
         <Box maxW="1340px" margin="auto" p={10}>
           <InViewProvider initialScale={0.95}>
             <Stack
               mt="150px"
-              direction={{ base: "column", lg: "row" }}
+              direction={{ base: "column", lg: "row-reverse" }}
               spacing={10}
               justifyContent="space-between"
               alignItems="center"
@@ -213,7 +203,7 @@ export default function Home() {
           <InViewProvider initialScale={0.95}>
             <Stack
               mt="150px"
-              direction={{ base: "column", lg: "row-reverse" }}
+              direction={{ base: "column", lg: "row" }}
               spacing={10}
               justifyContent="space-between"
               alignItems="center"
@@ -267,7 +257,7 @@ export default function Home() {
           <InViewProvider initialScale={0.95}>
             <Stack
               marginY="200px"
-              direction={{ base: "column-reverse", lg: "row-reverse" }}
+              direction={{ base: "column-reverse", lg: "row" }}
               alignItems="center"
               justifyContent="space-between"
               spacing={10}
