@@ -46,7 +46,7 @@ export default function Features() {
     },
   ];
   return (
-    <Container maxW="6xl" p={{ base: 5, md: 10 }}>
+    <Container maxW="6xl" p="120px 20px 50px 20px">
       <Heading
         fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
         fontWeight="bold"
