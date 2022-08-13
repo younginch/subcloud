@@ -37,7 +37,7 @@ async function updatePointAndResponse(
   if (requestPoint !== 0) {
     await prisma.user.update({
       where: { id: session?.user.id },
-      data: { point: session?.user.point ?? 0 - fundPoint },
+      data: { point: (session?.user.point ?? 0) - fundPoint },
     });
     await prisma.request.update({
       where: { id: request.id },
@@ -87,7 +87,13 @@ async function RequestCreate({
         },
       },
     });
-    updatePointAndResponse(session, res, updatedRequest, requestPoint);
+    updatePointAndResponse(
+      session,
+      res,
+      updatedRequest,
+      requestPoint,
+      fundPoint
+    );
     const finalRequest = await prisma.request.findUnique({
       where: { id: updatedRequest.id },
     });
@@ -100,7 +106,7 @@ async function RequestCreate({
       users: { connect: { id: session?.user?.id } },
     },
   });
-  updatePointAndResponse(session, res, createdRequest, requestPoint);
+  updatePointAndResponse(session, res, createdRequest, requestPoint, fundPoint);
   const finalRequest = await prisma.request.findUnique({
     where: { id: createdRequest.id },
   });

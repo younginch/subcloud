@@ -5,18 +5,16 @@ import {
   HStack,
   Divider,
   Spacer,
-  useColorModeValue,
   DrawerHeader,
   DrawerContent,
   DrawerBody,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { NotifyType, Notice, Notification } from "@prisma/client";
 import axios from "axios";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
+import { mutate } from "swr";
 import useTranslation from "next-translate/useTranslation";
 import { FiBox } from "react-icons/fi";
-import useSWR from "swr";
+import { NotifyType } from "@prisma/client";
 import NotifyCard from "./notifyCard";
 
 type NotificationType = {
@@ -28,62 +26,28 @@ type NotificationType = {
   href: string | undefined;
 };
 
-export default function Notify() {
-  const { t } = useTranslation("notify");
-  dayjs.extend(relativeTime);
+type Props = {
+  unreadNotifications: NotificationType[];
+  readNotifications: NotificationType[];
+};
+
+export default function Notify({
+  unreadNotifications,
+  readNotifications,
+}: Props) {
   const titleColor = useColorModeValue("gray.600", "gray.300");
-  const { data: notices, mutate } = useSWR<
-    (Notification & {
-      notice: Notice;
-    })[]
-  >("/api/user/notice");
-  const readNotifications: NotificationType[] = [];
-  const unreadNotifications: NotificationType[] = [];
+  const { t } = useTranslation("notify");
+
   const deleteItem = (id: string) => {
     axios.delete(`/api/user/notice`, { data: { id } }).then(() => {
-      mutate();
+      mutate("/api/user/notice");
     });
   };
   const changeItem = (id: string) => {
     axios.patch(`/api/user/notice`, { id }).then(() => {
-      mutate();
+      mutate("/api/user/notice");
     });
   };
-  if (notices) {
-    for (let i = 0; i < notices.length; i += 1) {
-      const notification = notices[i];
-      let title = "";
-      switch (notification.notice.type) {
-        case NotifyType.Announce:
-          title = t("notifyType_announce");
-          break;
-        case NotifyType.Upload:
-          title = t("notifyType_newSubtitle");
-          break;
-        case NotifyType.Review:
-          title = t("notifyType_review");
-          break;
-        case NotifyType.StatusChange:
-          title = t("notifyType_statusChange");
-          break;
-        default:
-          title = "";
-      }
-      const e = {
-        id: notification.id,
-        notifyType: notification.notice.type,
-        title,
-        time: dayjs(notification.notice.createdAt).fromNow(),
-        content: notification.notice.message ?? "",
-        href: notification.notice.url ?? undefined,
-      };
-      if (notification.checked) {
-        readNotifications.push(e);
-      } else {
-        unreadNotifications.push(e);
-      }
-    }
-  }
 
   if (unreadNotifications.length === 0 && readNotifications.length === 0) {
     return (
