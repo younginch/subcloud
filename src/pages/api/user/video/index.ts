@@ -132,7 +132,9 @@ async function VideoCreate({ req, res, prisma }: RouteParams<ResVideo>) {
     include: { youtubeVideo: { include: { channel: true } } },
   });
   if (video) {
-    return res.status(200).json(video);
+    if (video.youtubeVideo) return res.status(200).json(video);
+    const videoFromYoutube = await addYoutubeInfo(video.videoId);
+    return res.status(200).json(videoFromYoutube);
   }
   try {
     const createdVideo = await prisma.video.create({
@@ -149,7 +151,9 @@ async function VideoCreate({ req, res, prisma }: RouteParams<ResVideo>) {
       include: { youtubeVideo: { include: { channel: true } } },
     });
     if (video) {
-      return res.status(200).json(video);
+      if (video.youtubeVideo) return res.status(200).json(video);
+      const videoFromYoutube = await addYoutubeInfo(video.videoId);
+      return res.status(200).json(videoFromYoutube);
     }
   }
 }

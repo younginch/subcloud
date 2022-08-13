@@ -1,3 +1,4 @@
+import PointGoal from "./pointGoal";
 import {
   ResRankingUser,
   ResRankingVideo,
@@ -117,7 +118,8 @@ export async function RankingVideo(
   { req, res, prisma }: RouteParams<ResRankingVideo>,
   sortBy: (a: VideoWithRequest, b: VideoWithRequest) => number
 ) {
-  const { lang, start, end, order } = req.query;
+  const { lang, start, end, order, goalExpr } = req.query;
+  const goalObject = goalExpr ? JSON.parse(goalExpr as string) : undefined;
   if (!start && !end) {
     return res
       .status(400)
@@ -146,6 +148,16 @@ export async function RankingVideo(
       _count: {
         requests: request.users.length,
         points: request.point,
+        gauge:
+          request.point /
+          (goalObject
+            ? PointGoal(
+                request.video.youtubeVideo
+                  ? request.video.youtubeVideo.duration
+                  : undefined,
+                goalObject
+              ) ?? 1000000
+            : 1000000),
       },
       langs: request.lang,
     }))
