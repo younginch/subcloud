@@ -9,29 +9,23 @@ import {
   useColorModeValue,
   useToast,
   Text,
-  HStack,
-  Link,
   useMediaQuery,
 } from "@chakra-ui/react";
-import NextLink from "next/link";
-import axios from "axios";
 import { useRouter } from "next/router";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { Role } from "@prisma/client";
 import { FiSend, FiUpload } from "react-icons/fi";
 import useTranslation from "next-translate/useTranslation";
-import Marquee from "react-fast-marquee";
 import useSWR from "swr";
+import axios from "axios";
 import { VideoCreateSchema } from "../../utils/schema";
 import CreateHeader from "../../components/create/createHeader";
 import { PageOptions, ResRankingVideo } from "../../utils/types";
 import SwingProvider from "../../components/swingProvider";
 import EventNotice from "../../components/create/eventNotice";
-import RequestCard from "../../components/requestCard";
 import MyRequest from "../../components/create/myRequest";
 import MyUpload from "../../components/create/myUpload";
-import PointGoal from "../../utils/pointGoal";
-import GoalExpr from "../../utils/goalExpr";
+import RequestMarquee from "../../components/requestMarquee";
 
 type FormData = {
   url: string;
@@ -51,7 +45,6 @@ export default function VideoCreate() {
   const { data: topVideos } = useSWR<ResRankingVideo>(
     `/api/public/ranking/video/request?start=0&end=10&lang=All Lang&order=desc`
   );
-  const goalExpr = GoalExpr();
 
   function onSubmit(values: FormData) {
     return new Promise<void>((resolve, reject) => {
@@ -167,49 +160,7 @@ export default function VideoCreate() {
           {router.query.next === "sub" && isEvent && <EventNotice />}
         </Stack>
         {router.query.next === "request" ? <MyRequest /> : <MyUpload />}
-        <Stack
-          spacing={10}
-          p="50px 12px 80px 12px"
-          bg={useColorModeValue("blue.50", "gray.900")}
-          mt="50px !important"
-        >
-          <HStack pl="30px" alignItems="flex-end">
-            <Text fontWeight="bold" fontSize={{ base: "25px", md: "30px" }}>
-              {t("top10")}🔥
-            </Text>
-            <NextLink href="/ranking/video" passHref>
-              <Link fontSize="lg" ml="15px !important" color="gray.400">
-                {t("more")}
-              </Link>
-            </NextLink>
-          </HStack>
-          <Marquee gradient={false} pauseOnHover>
-            {topVideos?.map((video) => (
-              <Box mr="30px" key={video.videoId}>
-                <RequestCard
-                  title={video.youtubeVideo?.title ?? ""}
-                  time={video.youtubeVideo?.duration ?? 0}
-                  thumbnail={`https://i.ytimg.com/vi/${video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
-                  link={video.url}
-                  requestLang={video.langs}
-                  requestCount={video._count.requests}
-                  buttonType={router.query.next}
-                  serviceId={video.serviceId}
-                  videoId={video.videoId}
-                  requestPoint={video._count.points}
-                  requestGoal={
-                    PointGoal(
-                      video.youtubeVideo
-                        ? video.youtubeVideo.duration
-                        : undefined,
-                      goalExpr
-                    ) ?? 1000000
-                  }
-                />
-              </Box>
-            ))}
-          </Marquee>
-        </Stack>
+        <RequestMarquee videos={topVideos} />
       </Stack>
     </Box>
   );

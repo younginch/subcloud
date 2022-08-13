@@ -99,11 +99,11 @@ export default function Links({ width, onClick }: LinksProps) {
           <Link href="/ranking/sub">
             <MenuItem onClick={onClick}>{t("/ranking/sub")}</MenuItem>
           </Link>
-          <Link href="/ranking/user">
-            <MenuItem onClick={onClick}>{t("/ranking/user")}</MenuItem>
-          </Link>
           <Link href="/ranking/video">
             <MenuItem onClick={onClick}>{t("/ranking/video")}</MenuItem>
+          </Link>
+          <Link href="/ranking/user">
+            <MenuItem onClick={onClick}>{t("/ranking/user")}</MenuItem>
           </Link>
         </MenuList>
       </Menu>
