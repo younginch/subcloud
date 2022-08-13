@@ -151,7 +151,7 @@ export default function Home() {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Stack>
+              <Stack maxW="500px">
                 <Heading color="blue.400" size="md">
                   {t("free_request")}
                 </Heading>
