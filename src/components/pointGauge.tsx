@@ -53,7 +53,9 @@ export default function PointGauge({ point, delta, goal }: Props) {
         </HStack>
       </Tooltip>
       <Spacer />
-      <Text fontWeight="bold">{Math.round((point / goal) * 100)}%</Text>
+      <Text fontWeight="bold">
+        {Math.round(((point + delta) / goal) * 100)}%
+      </Text>
     </HStack>
   );
 }

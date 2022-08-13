@@ -22,6 +22,7 @@ import { PageOptions } from "../utils/types";
 import { DottedBox } from "../components/icons/customIcons";
 import Features from "../components/features";
 import NewRequestRow from "../components/newRequestRow";
+import PointGauge from "../components/pointGauge";
 
 export default function Home() {
   const { t } = useTranslation("landing");
@@ -134,7 +135,11 @@ export default function Home() {
         >
           우리 모두를 위한 자막 플랫폼.
         </Text>
-        <Text fontSize={{ base: "18px", md: "2xl" }} wordBreak="keep-all">
+        <Text
+          fontSize={{ base: "18px", md: "2xl" }}
+          wordBreak="keep-all"
+          mb="25px !important"
+        >
           지금도 전 세계 유저들이 필요한 자막을 마음껏 요청하고 사용하고
           있습니다.
         </Text>
@@ -215,7 +220,7 @@ export default function Home() {
             >
               <Stack>
                 <Heading color="blue.400" size="md">
-                  {t("free_request")}
+                  자막 보장 제도
                 </Heading>
                 <Text
                   fontSize={{ base: "3xl", md: "4xl" }}
@@ -223,10 +228,10 @@ export default function Home() {
                   maxW="500px"
                   wordBreak="keep-all"
                 >
-                  {t("free_request_ex_front")}
+                  자막 목표치를 100% 채우면 반드시 자막을 제작해드려요
                 </Text>
                 <Text fontSize={{ base: "xl", md: "2xl" }} wordBreak="keep-all">
-                  {t("free_request_ex_back")}
+                  무료 요청으로도 충분히 채울 수 있어요
                 </Text>
               </Stack>
               <Box
@@ -246,17 +251,14 @@ export default function Home() {
                 padding="24px"
               >
                 <Center flexDir="column">
-                  <CheckCircleIcon
-                    w={14}
-                    h={14}
-                    color="blue.400"
-                    marginTop={8}
-                  />
+                  <Box w="300px" h="80px" pt="30px" maxW="85%">
+                    <PointGauge point={400} goal={1500} delta={380} />
+                  </Box>
                   <Heading marginTop={6} size="lg">
-                    {t("request_sent_complete")}
+                    380포인트로 요청했어요
                   </Heading>
                   <Text color="blue.400" marginTop={7}>
-                    {t("n_people")}
+                    자막까지 한걸음 더 가까워졌어요
                   </Text>
                 </Center>
               </Box>
