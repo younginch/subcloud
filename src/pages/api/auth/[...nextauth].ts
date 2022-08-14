@@ -8,6 +8,7 @@ import FacebookProvider from "next-auth/providers/facebook";
 import KakaoProvider from "next-auth/providers/kakao";
 import GitHubProvider from "next-auth/providers/github";
 import { JWT } from "next-auth/jwt";
+import axios from "axios";
 import prisma from "../../../utils/prisma";
 
 const providers = [
@@ -87,6 +88,17 @@ export default NextAuth({
       if (new URL(url).origin === baseUrl) return url;
 
       return `${baseUrl}/auth/callback?open=${encodeURIComponent(url)}`;
+    },
+  },
+  events: {
+    createUser: async ({ user }) => {
+      const res = await axios.get(
+        "https://strapi.subcloud.app/api/first-user-config"
+      );
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { point: res.data.data.attributes.point },
+      });
     },
   },
 });
