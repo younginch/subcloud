@@ -68,7 +68,7 @@ export default function NotifyCard({
       notifyIcon = <AiOutlineBug size="30px" stroke={strokeColor} />;
   }
 
-  const handleRemove = (link?: string) => {
+  const handleRemove = (link?: string, isRead?: boolean) => {
     if (isRead) return;
     controls.start((event: string) => {
       if (event === id) {
@@ -136,7 +136,7 @@ export default function NotifyCard({
             h="100% !important"
             justifyContent="center"
             onClick={() => {
-              handleRemove(href);
+              handleRemove(href, isRead);
             }}
             cursor="pointer"
           >

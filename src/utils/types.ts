@@ -224,7 +224,7 @@ export type VideoWithCount = Video & {
 };
 
 export type VideoWithRequest = VideoWithInfo & {
-  _count: { requests: number; points: number };
+  _count: { requests: number; points: number; gauge: number };
   langs: string;
 };
 

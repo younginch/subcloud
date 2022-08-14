@@ -14,11 +14,12 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import NextLink from "next/link";
+import useSWR from "swr";
 import useTranslation from "next-translate/useTranslation";
 import TitleImage from "../../public/title.png";
 import InViewProvider from "../components/inviewProvider";
 import ExtensionButton from "../components/extensionButton";
-import { PageOptions } from "../utils/types";
+import { PageOptions, ResRankingVideo } from "../utils/types";
 import { DottedBox } from "../components/icons/customIcons";
 import Features from "../components/features";
 import PointGauge from "../components/pointGauge";
@@ -26,6 +27,10 @@ import RequestMarquee from "../components/requestMarquee";
 
 export default function Home() {
   const { t } = useTranslation("landing");
+  const { data: topVideos } = useSWR<ResRankingVideo>(
+    `/api/public/ranking/video/request?start=0&end=10&lang=All Lang&order=desc`
+  );
+
   return (
     <Box>
       <Stack
@@ -140,7 +145,7 @@ export default function Home() {
             {t("marquee_content")}
           </Text>
         </Stack>
-        <RequestMarquee videos={undefined} />
+        <RequestMarquee videos={topVideos} />
       </Stack>
       <Stack alignItems="center" bg={useColorModeValue("#f8f8fa", undefined)}>
         <Box maxW="1340px" margin="auto" p={10}>

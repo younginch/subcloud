@@ -16,15 +16,72 @@ import {
   DrawerOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import dayjs from "dayjs";
+import useSWR from "swr";
+import relativeTime from "dayjs/plugin/relativeTime";
+import useTranslation from "next-translate/useTranslation";
+import { NotifyType, Notice, Notification } from "@prisma/client";
 import { signIn, useSession } from "next-auth/react";
 import Notify from "../notify/notify";
 import ProfileModal from "./profileModal";
+
+type NotificationType = {
+  id: string;
+  notifyType: NotifyType;
+  title: string;
+  time: string;
+  content: string;
+  href: string | undefined;
+};
 
 export default function ToolBar(): JSX.Element {
   const { data: session, status } = useSession();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const bellColor = useColorModeValue("#6688cc", "#aaaaff");
-  const notifyCount = 0;
+  const { t } = useTranslation("notify");
+  dayjs.extend(relativeTime);
+  const { data: notices } = useSWR<
+    (Notification & {
+      notice: Notice;
+    })[]
+  >("/api/user/notice");
+  const readNotifications: NotificationType[] = [];
+  const unreadNotifications: NotificationType[] = [];
+  if (notices) {
+    for (let i = 0; i < notices.length; i += 1) {
+      const notification = notices[i];
+      let title = "";
+      switch (notification.notice.type) {
+        case NotifyType.Announce:
+          title = t("notifyType_announce");
+          break;
+        case NotifyType.Upload:
+          title = t("notifyType_newSubtitle");
+          break;
+        case NotifyType.Review:
+          title = t("notifyType_review");
+          break;
+        case NotifyType.StatusChange:
+          title = t("notifyType_statusChange");
+          break;
+        default:
+          title = "";
+      }
+      const e = {
+        id: notification.id,
+        notifyType: notification.notice.type,
+        title,
+        time: dayjs(notification.notice.createdAt).fromNow(),
+        content: notification.notice.message ?? "",
+        href: notification.notice.url ?? undefined,
+      };
+      if (notification.checked) {
+        readNotifications.push(e);
+      } else {
+        unreadNotifications.push(e);
+      }
+    }
+  }
 
   if (status === "authenticated") {
     return (
@@ -38,7 +95,7 @@ export default function ToolBar(): JSX.Element {
             cursor="pointer"
             onClick={onOpen}
           />
-          {notifyCount > 0 && (
+          {unreadNotifications.length > 0 && (
             <Text
               bg="red"
               fontSize="12px"
@@ -51,13 +108,16 @@ export default function ToolBar(): JSX.Element {
               color="white"
               textAlign="center"
             >
-              10
+              {unreadNotifications.length}
             </Text>
           )}
         </Box>
         <Drawer placement="right" onClose={onClose} isOpen={isOpen} size="lg">
           <DrawerOverlay />
-          <Notify />
+          <Notify
+            unreadNotifications={unreadNotifications}
+            readNotifications={readNotifications}
+          />
         </Drawer>
         <Popover placement="bottom-start">
           <PopoverTrigger>
