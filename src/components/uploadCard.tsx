@@ -9,8 +9,6 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { SubStatus } from "@prisma/client";
-import dayjs from "dayjs";
-import duration from "dayjs/plugin/duration";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import ReviewStatusBadge from "./badges/reviewStatusBadge";
@@ -39,7 +37,6 @@ export default function UploadCard({
 }: Props) {
   const router = useRouter();
   const { t } = useTranslation("uploadSub");
-  dayjs.extend(duration);
 
   return (
     <VideoCard

@@ -32,7 +32,7 @@ import { SubStatus } from "@prisma/client";
 import axios from "axios";
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { AiOutlineMenu } from "react-icons/ai";
+import { AiFillEdit, AiOutlineMenu } from "react-icons/ai";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import useTranslation from "next-translate/useTranslation";
@@ -152,84 +152,86 @@ export default function SubPanel({ initialSubs }: SubPanelProps) {
               </Td>
               <Td>{dayjs(sub.createdAt).format("YYYY-MM-DD")}</Td>
               <Td>
-                <Popover placement="bottom-end" isLazy>
-                  <PopoverTrigger>
-                    <Button>
-                      <AiOutlineMenu />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent w={width - 100} h="370px">
-                    <PopoverArrow />
-                    <PopoverCloseButton />
-                    <PopoverBody>
-                      <Tabs>
-                        <TabList>
-                          <Tab>{t("dash_sub_view")}</Tab>
-                          <Tab>{t("my_sub_review")}</Tab>
-                          <Tab>편집</Tab>
-                        </TabList>
-                        <TabPanels>
-                          <TabPanel>
-                            <DetailViewGraph subId={sub.id} p={0} />
-                          </TabPanel>
-                          <TabPanel>
-                            <BreifReviews subId={sub.id} />
-                          </TabPanel>
-                          <TabPanel>
-                            <HStack>
-                              <Button marginEnd="6px" isDisabled>
-                                {t("my_sub_edit")}
-                              </Button>
-                              <CopyToClipboard text={sub.id}>
-                                <Button>{t("my_sub_copy")}</Button>
-                              </CopyToClipboard>
-                              <Button
-                                onClick={() => {
-                                  axios
-                                    .get<ResFileRead>(`/api/user/file`, {
-                                      params: { id: sub.fileId },
-                                    })
-                                    .then((res) => {
-                                      window.open(res.data.url);
-                                    });
-                                }}
-                              >
-                                {t("my_sub_download")}
-                              </Button>
-                              <Button
-                                colorScheme="red"
-                                onClick={() => {
-                                  axios
-                                    .delete(`/api/user/sub`, {
-                                      params: { id: sub.id },
-                                    })
-                                    .then(() => {
-                                      toast({
-                                        title: "성공",
-                                        description: "자막을 삭제했습니다.",
-                                        status: "success",
+                <HStack>
+                  <Button marginEnd="6px" isDisabled colorScheme="teal">
+                    <AiFillEdit />
+                  </Button>
+                  <Popover placement="bottom-end" isLazy>
+                    <PopoverTrigger>
+                      <Button>
+                        <AiOutlineMenu />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent w={width - 100} h="370px">
+                      <PopoverArrow />
+                      <PopoverCloseButton />
+                      <PopoverBody>
+                        <Tabs>
+                          <TabList>
+                            <Tab>{t("dash_sub_view")}</Tab>
+                            <Tab>{t("my_sub_review")}</Tab>
+                            <Tab>{t("my_sub_edit")}</Tab>
+                          </TabList>
+                          <TabPanels>
+                            <TabPanel>
+                              <DetailViewGraph subId={sub.id} p={0} />
+                            </TabPanel>
+                            <TabPanel>
+                              <BreifReviews subId={sub.id} />
+                            </TabPanel>
+                            <TabPanel>
+                              <HStack>
+                                <CopyToClipboard text={sub.id}>
+                                  <Button>{t("my_sub_copy")}</Button>
+                                </CopyToClipboard>
+                                <Button
+                                  onClick={() => {
+                                    axios
+                                      .get<ResFileRead>(`/api/user/file`, {
+                                        params: { id: sub.fileId },
+                                      })
+                                      .then((res) => {
+                                        window.open(res.data.url);
                                       });
-                                      getSubs();
-                                    })
-                                    .catch(() => {
-                                      toast({
-                                        title: "오류",
-                                        description:
-                                          "자막을 삭제하는데 실패했습니다.",
-                                        status: "error",
+                                  }}
+                                >
+                                  {t("my_sub_download")}
+                                </Button>
+                                <Button
+                                  colorScheme="red"
+                                  onClick={() => {
+                                    axios
+                                      .delete(`/api/user/sub`, {
+                                        params: { id: sub.id },
+                                      })
+                                      .then(() => {
+                                        toast({
+                                          title: "성공",
+                                          description: "자막을 삭제했습니다.",
+                                          status: "success",
+                                        });
+                                        getSubs();
+                                      })
+                                      .catch(() => {
+                                        toast({
+                                          title: "오류",
+                                          description:
+                                            "자막을 삭제하는데 실패했습니다.",
+                                          status: "error",
+                                        });
                                       });
-                                    });
-                                }}
-                              >
-                                {t("delete")}
-                              </Button>
-                            </HStack>
-                          </TabPanel>
-                        </TabPanels>
-                      </Tabs>
-                    </PopoverBody>
-                  </PopoverContent>
-                </Popover>
+                                  }}
+                                >
+                                  {t("delete")}
+                                </Button>
+                              </HStack>
+                            </TabPanel>
+                          </TabPanels>
+                        </Tabs>
+                      </PopoverBody>
+                    </PopoverContent>
+                  </Popover>
+                </HStack>
               </Td>
             </Tr>
           ))}

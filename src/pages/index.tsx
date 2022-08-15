@@ -132,16 +132,17 @@ export default function Home() {
           <Text
             fontWeight="bold"
             fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
+            textAlign="center"
           >
-            우리 모두를 위한 자막 플랫폼.
+            {t("marquee_title")}
           </Text>
           <Text
             fontSize={{ base: "18px", md: "2xl" }}
             wordBreak="keep-all"
             mb="25px !important"
+            textAlign="center"
           >
-            지금도 전 세계 유저들이 필요한 자막을 마음껏 요청하고 사용하고
-            있습니다.
+            {t("marquee_content")}
           </Text>
         </Stack>
         <RequestMarquee videos={topVideos} />
@@ -156,7 +157,7 @@ export default function Home() {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Stack maxW="500px">
+              <Stack>
                 <Heading color="blue.400" size="md">
                   {t("free_request")}
                 </Heading>
@@ -168,7 +169,11 @@ export default function Home() {
                 >
                   {t("free_request_ex_front")}
                 </Text>
-                <Text fontSize={{ base: "xl", md: "2xl" }} wordBreak="keep-all">
+                <Text
+                  fontSize={{ base: "xl", md: "2xl" }}
+                  wordBreak="keep-all"
+                  maxW="500px"
+                >
                   {t("free_request_ex_back")}
                 </Text>
               </Stack>
@@ -215,7 +220,7 @@ export default function Home() {
             >
               <Stack>
                 <Heading color="blue.400" size="md">
-                  자막 보장 제도
+                  {t("gauge_title")}
                 </Heading>
                 <Text
                   fontSize={{ base: "3xl", md: "4xl" }}
@@ -223,10 +228,10 @@ export default function Home() {
                   maxW="500px"
                   wordBreak="keep-all"
                 >
-                  자막 목표치를 100% 채우면 반드시 자막을 제작해드려요
+                  {t("gauge_content")}
                 </Text>
                 <Text fontSize={{ base: "xl", md: "2xl" }} wordBreak="keep-all">
-                  무료 요청으로도 충분히 채울 수 있어요
+                  {t("gauge_message")}
                 </Text>
               </Stack>
               <Box
@@ -250,10 +255,10 @@ export default function Home() {
                     <PointGauge point={400} goal={1500} delta={380} />
                   </Box>
                   <Heading marginTop={6} size="lg">
-                    380포인트로 요청했어요
+                    {t("gauge_card_title")}
                   </Heading>
                   <Text color="blue.400" marginTop={7}>
-                    자막까지 한걸음 더 가까워졌어요
+                    {t("gauge_card_content")}
                   </Text>
                 </Center>
               </Box>
