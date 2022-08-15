@@ -12,9 +12,12 @@ import Link from "next/link";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { FaYoutube } from "react-icons/fa";
+import { useSession } from "next-auth/react";
+import getAuthLink from "../../utils/getAuthLink";
 
 type LinkButtonProps = {
   route: string;
+  routeWithAuth?: string;
   width?: string;
   onClick?: () => void;
   highlighted?: boolean;
@@ -25,6 +28,7 @@ const highlightedColorDark = "#99aaff";
 
 function LinkButton({
   route,
+  routeWithAuth,
   width,
   onClick,
   highlighted,
@@ -36,7 +40,7 @@ function LinkButton({
     highlightedColorDark
   );
   return (
-    <Link href={`${route}`} passHref>
+    <Link href={routeWithAuth ?? route} passHref>
       <Button
         as="a"
         variant="ghost"
@@ -77,16 +81,20 @@ export default function Links({ width, onClick }: LinksProps) {
     highlightedColorDark
   );
 
+  const { status } = useSession();
+
   return (
     <>
       <LinkButton
         route="/video/create?next=request"
+        routeWithAuth={getAuthLink(status, "/video/create?next=request")}
         width={width}
         onClick={onClick}
         highlighted={highlighted[0]}
       />
       <LinkButton
         route="/video/create?next=sub"
+        routeWithAuth={getAuthLink(status, "/video/create?next=sub")}
         width={width}
         onClick={onClick}
         highlighted={highlighted[1]}

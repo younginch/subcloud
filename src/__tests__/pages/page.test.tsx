@@ -46,7 +46,7 @@ describe("Pages (pages)", () => {
   });
 
   it("renders Index", () => {
-    renderWithTheme(<Home />);
+    renderWithThemeAndSession(<Home />);
   });
 
   it("renders Qna", () => {
