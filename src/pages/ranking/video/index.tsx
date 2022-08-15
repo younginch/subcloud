@@ -46,7 +46,7 @@ export default function VideoRankingPage() {
         pageSize * index
       }&end=${pageSize * (index + 1)}&lang=${lang ?? "All Lang"}&order=${
         sortOption.sortBy.order === true ? "desc" : "asc"
-      }&goalExpr=${JSON.stringify(goalExpr)}`,
+      }${goalExpr ? `&goalExpr=${JSON.stringify(goalExpr)}` : ""}`,
     fetcher
   );
 
