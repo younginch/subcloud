@@ -40,10 +40,7 @@ export default function Home() {
         p={10}
         pt={{ base: "100px", md: "50px" }}
         alignItems="center"
-        backgroundImage={useColorModeValue(
-          "https://user-images.githubusercontent.com/17401630/177977272-7e7b91c9-c172-4bd0-a759-1318d8ebdd4e.PNG",
-          undefined
-        )}
+        backgroundColor={useColorModeValue("#f8f8fa", "none")}
         backgroundSize="cover"
         minH="100vh"
       >
