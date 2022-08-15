@@ -92,13 +92,18 @@ export default NextAuth({
   },
   events: {
     createUser: async ({ user }) => {
-      const res = await axios.get(
-        "https://strapi.subcloud.app/api/first-user-config"
-      );
-      await prisma.user.update({
-        where: { id: user.id },
-        data: { point: res.data.data.attributes.point },
-      });
+      let point = 0;
+      try {
+        const res = await axios.get(
+          "https://strapi.subcloud.app/api/first-user-config"
+        );
+        point = res.data.data.attributes.point;
+      } finally {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { point },
+        });
+      }
     },
   },
 });
