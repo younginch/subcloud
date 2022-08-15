@@ -27,12 +27,13 @@ export default function VideoInfo({ video }: Props) {
       alignItems="center"
     >
       <Image
-        maxW="28em"
+        maxW="100%"
+        w="28em"
         src={`https://img.youtube.com/vi/${video?.videoId}/maxresdefault.jpg`}
         alt="Video thumbnail"
       />
       {video?.youtubeVideo ? (
-        <Box padding="12px">
+        <Box padding="12px" maxW="100%">
           <Heading
             size="md"
             overflow="hidden"

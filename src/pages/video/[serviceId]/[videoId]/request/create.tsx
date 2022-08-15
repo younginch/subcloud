@@ -16,6 +16,7 @@ import {
   Box,
   keyframes,
   Badge,
+  Spacer,
 } from "@chakra-ui/react";
 import axios from "axios";
 import useSWR from "swr";
@@ -252,30 +253,49 @@ export default function RequestCreate() {
           <VideoInfo video={video} />
         </Card>
         <Card w="850px" mt={5} zIndex={2} maxW="calc(100vw - 40px)">
-          <CardHeader mb="24px">
-            <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
-              {t("select_lang")}
-            </Text>
-          </CardHeader>
-          <SelectLanguage
-            lang={watch().lang}
-            error={errors.lang}
-            setLang={(lang: string) => setValue("lang", lang)}
-          />
-          <Checkbox
-            mt={5}
-            size="lg"
-            defaultChecked={check}
-            onChange={changeLang}
+          <Stack
+            direction={{ base: "column", md: "row" }}
+            alignItems={{ base: "start", md: "center" }}
           >
-            {t("basic_lang")}
-          </Checkbox>
+            <Box w="200px" h="fit-content">
+              <Text
+                color={textColor}
+                fontSize="lg"
+                fontWeight="bold"
+                w="200px"
+                minW="199px"
+              >
+                {t("select_lang")}
+              </Text>
+            </Box>
+            <Spacer />
+            <SelectLanguage
+              lang={watch().lang}
+              error={errors.lang}
+              setLang={(lang: string) => setValue("lang", lang)}
+            />
+            <Stack
+              w="600px"
+              maxW="100%"
+              alignItems={{ base: "start", md: "end" }}
+            >
+              <Checkbox size="lg" defaultChecked={check} onChange={changeLang}>
+                {t("basic_lang")}
+              </Checkbox>
+            </Stack>
+          </Stack>
         </Card>
         <Card w="850px" mt={5} maxW="calc(100vw - 40px)">
           <CardHeader mb="24px">
-            <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
-              {t("point")}
-            </Text>
+            <HStack>
+              <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
+                {t("point")}
+              </Text>
+              <Spacer />
+              <Text color={textColor} fontSize="xl" fontWeight="bold" mb="4px">
+                {t("current_point")}: 3000
+              </Text>
+            </HStack>
           </CardHeader>
           <Wrap p={5} justify="space-evenly">
             {points.map((element) => (
