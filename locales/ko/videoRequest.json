@@ -9,6 +9,7 @@
   "require_file": "자막 파일을 선택해 주세요",
   "basic_lang": "기본 요청 언어로 저장",
   "point": "포인트",
+  "current_point": "보유 포인트",
   "direct": "직접 입력",
   "point_reset": "취소",
   "req_summary": "요청 요약",
