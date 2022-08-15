@@ -16,6 +16,7 @@ import Image from "next/image";
 import NextLink from "next/link";
 import useSWR from "swr";
 import useTranslation from "next-translate/useTranslation";
+import { useSession } from "next-auth/react";
 import TitleImage from "../../public/title.png";
 import InViewProvider from "../components/inviewProvider";
 import ExtensionButton from "../components/extensionButton";
@@ -24,12 +25,15 @@ import { DottedBox } from "../components/icons/customIcons";
 import Features from "../components/features";
 import PointGauge from "../components/pointGauge";
 import RequestMarquee from "../components/requestMarquee";
+import getAuthLink from "../utils/getAuthLink";
 
 export default function Home() {
   const { t } = useTranslation("landing");
   const { data: topVideos } = useSWR<ResRankingVideo>(
     `/api/public/ranking/video/request?start=0&end=10&lang=All Lang&order=desc`
   );
+
+  const { status } = useSession();
 
   return (
     <Box>
@@ -77,7 +81,7 @@ export default function Home() {
             pt={{ base: 0, md: 10 }}
             color="white"
           >
-            <NextLink href="/video/create?next=request">
+            <NextLink href={getAuthLink(status, "/video/create?next=request")}>
               <Button
                 w={{ base: "100%", sm: "auto" }}
                 h={10}
@@ -92,7 +96,7 @@ export default function Home() {
                 <Text>{t("request_sub")}</Text>
               </Button>
             </NextLink>
-            <NextLink href="/video/create?next=upload">
+            <NextLink href={getAuthLink(status, "/video/create?next=upload")}>
               <Button
                 w={{ base: "100%", sm: "auto" }}
                 h={10}
