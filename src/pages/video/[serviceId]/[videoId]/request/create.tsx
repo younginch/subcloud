@@ -48,6 +48,9 @@ import GoalExpr from "../../../../../utils/goalExpr";
 import PointGoal from "../../../../../utils/pointGoal";
 import PointBonus from "../../../../../utils/pointBonus";
 import LanguageCodeList from "../../../../../components/languageCodeList";
+import CoupangText, {
+  CoupangDynamic,
+} from "../../../../../components/advertisements/coupang";
 
 type FormData = {
   serviceId: string;
@@ -359,6 +362,12 @@ export default function RequestCreate() {
             </Button>
           </HStack>
         </Card>
+        <Stack alignItems="center" w="850px" maxW="calc(100vw - 40px)">
+          <Box w="680px" h="120px" maxW="100%">
+            <CoupangDynamic />
+          </Box>
+          <CoupangText />
+        </Stack>
         <Card
           w="400px"
           className={summaryToggle ? "requestFixed" : "requestBottom"}

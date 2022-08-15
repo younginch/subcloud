@@ -29,5 +29,7 @@ module.exports = {
     "rgx:^/info/dmca": ["dmca"],
 
     "rgx:^/ranking": ["rankings"],
+
+    "rgx:^/video": ["advertisement", "videoRequest"],
   },
 };
