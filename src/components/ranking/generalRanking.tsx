@@ -231,7 +231,7 @@ export default function GeneralRanking({
         </WrapItem>
       </Wrap>
       <Collapse in={isOpen} animateOpacity>
-        <HStack p="15px">
+        <HStack p="15px" pt="0px">
           {setLang && (
             <>
               <SelectLang lang={lang} setLang={setLang} />
