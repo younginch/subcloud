@@ -1,5 +1,5 @@
 import { Box, Text } from "@chakra-ui/react";
-import router from "next/router";
+import Link from "next/link";
 import { MenuItem } from "react-pro-sidebar";
 
 type MyMenuItemProps = {
@@ -12,14 +12,16 @@ type MyMenuItemProps = {
 export default function MyMenuItem({
   active,
   icon,
-  href,
+  href, // internal link
   text,
 }: MyMenuItemProps) {
   return (
     <Box color={active ? "white" : ""}>
-      <MenuItem icon={icon} onClick={() => router.push(href)}>
-        <Text fontWeight={active ? "bold" : "normal"}>{text}</Text>
-      </MenuItem>
+      <Link href={href}>
+        <MenuItem icon={icon}>
+          <Text fontWeight={active ? "bold" : "normal"}>{text}</Text>
+        </MenuItem>
+      </Link>
     </Box>
   );
 }

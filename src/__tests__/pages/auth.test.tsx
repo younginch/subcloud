@@ -4,6 +4,7 @@ import Error from "../../pages/auth/error";
 import SignIn from "../../pages/auth/signin";
 import SignOut from "../../pages/auth/signout";
 import VerifyRequest from "../../pages/auth/verify-request";
+import { renderWithSession } from "../jest";
 
 describe("Pages (auth)", () => {
   it("renders Callback", () => {
@@ -19,7 +20,7 @@ describe("Pages (auth)", () => {
   });
 
   it("renders Signin", () => {
-    render(<SignIn />);
+    renderWithSession(<SignIn />);
   });
 
   it("renders VerifyRequest", () => {

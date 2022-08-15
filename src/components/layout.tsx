@@ -42,6 +42,13 @@ export default function Layout({ options, children }: Props) {
       </Box>
       {!options.hideFooter && <Footer />}
       <Script
+        id="Adsense-id"
+        data-ad-client="ca-pub-2139523136699662"
+        async
+        strategy="afterInteractive"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+      />
+      <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-HW4MKMPX9Y"
         strategy="afterInteractive"
       />

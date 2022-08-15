@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
 dayjs.extend(duration);
@@ -40,7 +39,6 @@ export default function VideoCard({
   padding,
   children,
 }: Props) {
-  const router = useRouter();
   const [hover, setHover] = useState<boolean>(false);
   return (
     <Stack
@@ -55,14 +53,15 @@ export default function VideoCard({
       boxShadow="base"
     >
       <Box position="relative">
-        <Image
-          src={imageUrl}
-          alt="thumbnail"
-          onClick={() => router.push(videoUrl)}
-          cursor="pointer"
-          maxH="169px"
-          w="100%"
-        />
+        <Link href={videoUrl}>
+          <Image
+            src={imageUrl}
+            alt="thumbnail"
+            cursor="pointer"
+            maxH="169px"
+            w="100%"
+          />
+        </Link>
         <Text
           bg="black"
           color="white"

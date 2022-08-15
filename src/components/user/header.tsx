@@ -7,8 +7,9 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { PublicProfileTab } from "../../utils/enums";
 
 type Tabs = {
@@ -130,62 +131,57 @@ function Header({
             w={{ base: "100%", md: "50%", lg: "auto" }}
           >
             {tabs.map((tab, index) => (
-              <Button
+              <Link
                 key={tab.name}
-                p="0px"
-                bg="transparent"
-                _hover={{ bg: "none" }}
-                onClick={() => {
-                  router.push(
-                    `/user/${router.query.userId}${
-                      index > 0 ? `/${tab.router}` : ""
-                    }`
-                  );
-                }}
+                href={`/user/${router.query.userId}${
+                  index > 0 ? `/${tab.router}` : ""
+                }`}
               >
-                {tab.router === currentTab ? (
-                  <Flex
-                    align="center"
-                    w={{ base: "100%", lg: "135px" }}
-                    bg="hsla(0,0%,100%,.3)"
-                    borderRadius="15px"
-                    justifyContent="center"
-                    py="10px"
-                    boxShadow="inset 0 0 1px 1px hsl(0deg 0% 100% / 90%), 0 20px 27px 0 rgb(0 0 0 / 5%)"
-                    border="1px solid gray.200"
-                    cursor="pointer"
-                  >
-                    {tab.icon}
-                    <Text
-                      fontSize={tabTextSize}
-                      color={textColor}
-                      fontWeight="bold"
-                      ms="6px"
+                <Button as="a" p="0px" bg="transparent" _hover={{ bg: "none" }}>
+                  {tab.router === currentTab ? (
+                    <Flex
+                      align="center"
+                      w={{ base: "100%", lg: "135px" }}
+                      bg="hsla(0,0%,100%,.3)"
+                      borderRadius="15px"
+                      justifyContent="center"
+                      py="10px"
+                      boxShadow="inset 0 0 1px 1px hsl(0deg 0% 100% / 90%), 0 20px 27px 0 rgb(0 0 0 / 5%)"
+                      border="1px solid gray.200"
+                      cursor="pointer"
                     >
-                      {tab.name}
-                    </Text>
-                  </Flex>
-                ) : (
-                  <Flex
-                    align="center"
-                    w={{ lg: "135px" }}
-                    borderRadius="15px"
-                    justifyContent="center"
-                    py="10px"
-                    cursor="pointer"
-                  >
-                    {tab.icon}
-                    <Text
-                      fontSize={tabTextSize}
-                      color={textColor}
-                      fontWeight="bold"
-                      ms="6px"
+                      {tab.icon}
+                      <Text
+                        fontSize={tabTextSize}
+                        color={textColor}
+                        fontWeight="bold"
+                        ms="6px"
+                      >
+                        {tab.name}
+                      </Text>
+                    </Flex>
+                  ) : (
+                    <Flex
+                      align="center"
+                      w={{ lg: "135px" }}
+                      borderRadius="15px"
+                      justifyContent="center"
+                      py="10px"
+                      cursor="pointer"
                     >
-                      {tab.name}
-                    </Text>
-                  </Flex>
-                )}
-              </Button>
+                      {tab.icon}
+                      <Text
+                        fontSize={tabTextSize}
+                        color={textColor}
+                        fontWeight="bold"
+                        ms="6px"
+                      >
+                        {tab.name}
+                      </Text>
+                    </Flex>
+                  )}
+                </Button>
+              </Link>
             ))}
           </Flex>
         </Flex>
