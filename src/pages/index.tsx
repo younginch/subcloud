@@ -80,19 +80,6 @@ export default function Home() {
             pt={{ base: 0, md: 10 }}
             color="white"
           >
-            <Button
-              w={{ base: "100%", sm: "auto" }}
-              h={10}
-              rounded="md"
-              mb={{ base: 2, sm: 0 }}
-              bgGradient="linear(to-l, #0ea5e9,#25c3cb)"
-              _hover={{
-                bgGradient: "linear(to-l, #25a3cb,#0fcdb9)",
-              }}
-              fontSize="xl"
-            >
-              <Text>{t("how_to_use")}</Text>
-            </Button>
             <NextLink href="/video/create?next=request">
               <Button
                 w={{ base: "100%", sm: "auto" }}
@@ -106,6 +93,21 @@ export default function Home() {
                 fontSize="xl"
               >
                 <Text>{t("request_sub")}</Text>
+              </Button>
+            </NextLink>
+            <NextLink href="/video/create?next=upload">
+              <Button
+                w={{ base: "100%", sm: "auto" }}
+                h={10}
+                rounded="md"
+                mb={{ base: 2, sm: 0 }}
+                bgGradient="linear(to-l, #0ea5e9,#25c3cb)"
+                _hover={{
+                  bgGradient: "linear(to-l, #25a3cb,#0fcdb9)",
+                }}
+                fontSize="xl"
+              >
+                <Text>{t("upload_sub")}</Text>
               </Button>
             </NextLink>
             <Spacer />
