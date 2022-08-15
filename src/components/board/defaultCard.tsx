@@ -1,5 +1,6 @@
-import { Stack, Box, Image, useColorModeValue, Link } from "@chakra-ui/react";
+import { Stack, Box, Image, useColorModeValue } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 type CardProps = {
   disabled?: boolean;

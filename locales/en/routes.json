@@ -22,6 +22,7 @@
   "/404": "Page Not found",
   "/500": "Server error",
   "/": "Home",
+  "/channel": "Channels",
   "/editor": "Editor",
   "/qna": "QnA",
   "/ranking": "Ranking",
