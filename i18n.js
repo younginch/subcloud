@@ -2,7 +2,15 @@ module.exports = {
   locales: ["ko", "en", "es", "ja", "zh"],
   defaultLocale: "en",
   pages: {
-    "*": ["common", "marginals", "routes", "notify", "profileModal", "badges"],
+    "*": [
+      "common",
+      "marginals",
+      "routes",
+      "notify",
+      "profileModal",
+      "badges",
+      "advertisement",
+    ],
 
     "/": ["landing", "create", "videoRequest"],
 
@@ -29,7 +37,5 @@ module.exports = {
     "rgx:^/info/dmca": ["dmca"],
 
     "rgx:^/ranking": ["rankings"],
-
-    "rgx:^/video": ["advertisement", "videoRequest"],
   },
 };
