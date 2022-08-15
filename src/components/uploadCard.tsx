@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { SubStatus } from "@prisma/client";
 import useTranslation from "next-translate/useTranslation";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import ReviewStatusBadge from "./badges/reviewStatusBadge";
 import VideoCard from "./videoCard";
 
@@ -22,6 +22,7 @@ type Props = {
   lang: string;
   status: SubStatus;
   viewCount: number;
+  subId: string;
   editorFileId?: string;
 };
 
@@ -33,9 +34,9 @@ export default function UploadCard({
   lang,
   status,
   viewCount,
+  subId,
   editorFileId,
 }: Props) {
-  const router = useRouter();
   const { t } = useTranslation("uploadSub");
 
   return (
@@ -66,14 +67,20 @@ export default function UploadCard({
         </Stack>
         <Spacer />
       </HStack>
-      <Button
-        rightIcon={<EditIcon />}
-        colorScheme={useColorModeValue("blackAlpha", "linkedin")}
-        onClick={() => router.push(`/editor?id=${editorFileId}`)}
-        borderRadius={0}
+      <Link
+        href={`/editor?${
+          editorFileId ? `id=${editorFileId}` : `subId=${subId}`
+        }`}
       >
-        {t("edit_sub")}
-      </Button>
+        <Button
+          rightIcon={<EditIcon />}
+          colorScheme={useColorModeValue("blackAlpha", "linkedin")}
+          borderRadius={0}
+          as="a"
+        >
+          {t("edit_sub")}
+        </Button>
+      </Link>
     </VideoCard>
   );
 }

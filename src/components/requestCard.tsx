@@ -8,14 +8,16 @@ import {
   useColorModeValue,
   Button,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { RequestStatus } from "@prisma/client";
 import dayjs from "dayjs";
 import ISO6391 from "iso-639-1";
 import duration from "dayjs/plugin/duration";
 import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
 import VideoCard from "./videoCard";
 import PointGauge from "./pointGauge";
+
+dayjs.extend(duration);
 
 function RequestBadge({ status }: { status: RequestStatus }) {
   const { t } = useTranslation("badges");
@@ -62,40 +64,38 @@ export default function RequestCard({
   videoId,
 }: Props) {
   const { t } = useTranslation("videoRequest");
-  const router = useRouter();
-  dayjs.extend(duration);
   const buttonColor = useColorModeValue("blue", "linkedin");
 
   let buttonComponent;
   if (buttonType === "request") {
     buttonComponent = (
-      <Button
-        colorScheme={buttonColor}
-        rightIcon={<ChevronRightIcon w="25px" h="25px" />}
-        borderRadius={0}
-        onClick={() =>
-          router.push(
-            `/video/${serviceId}/${videoId}/request/create?lang=${requestLang}`
-          )
-        }
+      <Link
+        href={`/video/${serviceId}/${videoId}/request/create?lang=${requestLang}`}
       >
-        {t("request_sub")}
-      </Button>
+        <Button
+          colorScheme={buttonColor}
+          rightIcon={<ChevronRightIcon w="25px" h="25px" />}
+          borderRadius={0}
+          as="a"
+        >
+          {t("request_sub")}
+        </Button>
+      </Link>
     );
   } else if (buttonType === "sub") {
     buttonComponent = (
-      <Button
-        colorScheme={buttonColor}
-        rightIcon={<ArrowUpIcon />}
-        borderRadius={0}
-        onClick={() =>
-          router.push(
-            `/video/${serviceId}/${videoId}/sub/create?lang=${requestLang}`
-          )
-        }
+      <Link
+        href={`/video/${serviceId}/${videoId}/sub/create?lang=${requestLang}`}
       >
-        {t("upload_sub")}
-      </Button>
+        <Button
+          colorScheme={buttonColor}
+          rightIcon={<ArrowUpIcon />}
+          borderRadius={0}
+          as="a"
+        >
+          {t("upload_sub")}
+        </Button>
+      </Link>
     );
   }
 
