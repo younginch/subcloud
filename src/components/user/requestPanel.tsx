@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
@@ -80,18 +81,16 @@ export default function RequestPanel({
         <Tbody>
           {requests.map((request) => (
             <Tr key={request.id}>
-              <Td
-                onClick={() => {
-                  router.push(`/video/${request.serviceId}/${request.videoId}`);
-                }}
-              >
-                <HStack>
-                  <YoutubeIcon size="36px" />
-                  <Text maxW={480} noOfLines={1}>
-                    {request.video?.youtubeVideo?.title ?? "Invalid video"}
-                  </Text>
-                </HStack>
-              </Td>
+              <Link href={`/video/${request.serviceId}/${request.videoId}`}>
+                <Td>
+                  <HStack>
+                    <YoutubeIcon size="36px" />
+                    <Text maxW={480} noOfLines={1}>
+                      {request.video?.youtubeVideo?.title ?? "Invalid video"}
+                    </Text>
+                  </HStack>
+                </Td>
+              </Link>
               <Td>
                 <AvatarWithName
                   imageUrl={request.video?.youtubeVideo?.channel.thumbnailUrl}

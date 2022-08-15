@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { Role } from "@prisma/client";
 import axios from "axios";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import AvatarWithName from "../../components/badges/avatarWithName";
 import ReviewStatusBadge from "../../components/badges/reviewStatusBadge";
@@ -21,7 +21,6 @@ import { PageOptions, ResSubSearch } from "../../utils/types";
 
 export default function Review() {
   const [subs, setSubs] = useState<ResSubSearch>([]);
-  const router = useRouter();
 
   useEffect(() => {
     axios.get<ResSubSearch>("/api/public/search/sub").then((res) => {
@@ -45,18 +44,16 @@ export default function Review() {
         <Tbody>
           {subs.map((sub) => (
             <Tr key={sub.id}>
-              <Td
-                onClick={() => {
-                  router.push(`/video/${sub.serviceId}/${sub.videoId}`);
-                }}
-              >
-                <HStack>
-                  <YoutubeIcon size="32px" />
-                  <Text maxW={480} noOfLines={1}>
-                    {sub.video?.youtubeVideo?.title ?? "비디오 정보없음"}
-                  </Text>
-                </HStack>
-              </Td>
+              <Link href={`/video/${sub.serviceId}/${sub.videoId}`}>
+                <Td>
+                  <HStack>
+                    <YoutubeIcon size="32px" />
+                    <Text maxW={480} noOfLines={1}>
+                      {sub.video?.youtubeVideo?.title ?? "비디오 정보없음"}
+                    </Text>
+                  </HStack>
+                </Td>
+              </Link>
               <Td>
                 <AvatarWithName
                   imageUrl={sub.video?.youtubeVideo?.channel.thumbnailUrl}
@@ -76,15 +73,11 @@ export default function Review() {
               <Td>
                 <ReviewStatusBadge status={sub.status} />
               </Td>
-              <Td>
-                <Button
-                  onClick={() => {
-                    router.push(`/review/${sub.id}`);
-                  }}
-                >
-                  검토하기
-                </Button>
-              </Td>
+              <Link href={`/review/${sub.id}`}>
+                <Td>
+                  <Button>검토하기</Button>
+                </Td>
+              </Link>
             </Tr>
           ))}
         </Tbody>

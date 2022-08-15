@@ -41,6 +41,7 @@ function MyUploadPanel({ subs }: { subs: ResSubSearch | undefined }) {
             lang={ISO6391.getNativeName(sub.lang)}
             status={sub.status}
             viewCount={sub.views}
+            subId={sub.id}
             editorFileId={sub.editorFile?.id}
           />
         </GridItem>

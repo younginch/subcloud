@@ -10,7 +10,6 @@ import Link from "next/link";
 import React from "react";
 import { BiCoin } from "react-icons/bi";
 import { MdSubtitles } from "react-icons/md";
-import router from "next/router";
 import { YoutubeIcon } from "../icons/customIcons";
 
 type Props = {
@@ -51,23 +50,20 @@ export default function SearchTableRow({
           lg: "calc(85vw - 500px)",
         }}
       >
-        <HStack
-          w="inherit"
-          onClick={() => {
-            router.push(`/video/${platform}/${videoId}`);
-          }}
-        >
-          <YoutubeIcon size={30} cursor="pointer" />
-          <Text
-            fontWeight="bold"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-            overflow="hidden"
-            cursor="pointer"
-          >
-            {videoName}
-          </Text>
-        </HStack>
+        <Link href={`/video/${platform}/${videoId}`}>
+          <HStack w="inherit">
+            <YoutubeIcon size={30} cursor="pointer" />
+            <Text
+              fontWeight="bold"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+              overflow="hidden"
+              cursor="pointer"
+            >
+              {videoName}
+            </Text>
+          </HStack>
+        </Link>
       </Td>
       <Td w={{ md: "160px", lg: "200px" }}>
         <HStack>
