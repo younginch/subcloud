@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import useSWR from "swr";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -79,6 +80,7 @@ export default function RequestCreate() {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({ resolver: joiResolver(RequestCreateSchema) });
+  const session = useSession();
   const [video, setVideo] = useState<VideoWithCount>();
   const [defaultPoint, setDefaultPoint] = useState<number>(0);
   const goalExpr = GoalExpr();
@@ -293,7 +295,8 @@ export default function RequestCreate() {
               </Text>
               <Spacer />
               <Text color={textColor} fontSize="xl" fontWeight="bold" mb="4px">
-                {t("current_point")}: 3000
+                {t("current_point")}
+                {`: ${session.data?.user.point}`}
               </Text>
             </HStack>
           </CardHeader>
