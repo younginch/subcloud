@@ -16,7 +16,7 @@ import { PointGoal, GoalExpr } from "../../../utils/etc";
 export default function VideoRankingPage() {
   const [lang, setLang] = useState<string>();
   const [sortOption, setSortOption] = useState({
-    name: "요청수 (높은 순)",
+    name: "자막 게이지 (높은 순)",
     sortBy: { by: "gauge", order: true },
   });
   const sortOptionArray = [
