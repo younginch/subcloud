@@ -12,7 +12,9 @@ const channelIndex = client.initIndex("channel");
 export function saveVideoToAlgolia(video: ResVideo) {
   videoIndex.saveObject(
     {
-      objectID: `${video.serviceId}/${video.videoId}`,
+      objectID: `${video.url}`,
+      servicdId: video.serviceId,
+      videoId: video.videoId,
       title: video.youtubeVideo?.title,
       description: video.youtubeVideo?.description,
       channelTitle: video.youtubeVideo?.channel.title,

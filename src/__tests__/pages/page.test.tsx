@@ -96,7 +96,7 @@ describe("Pages (ranking)", () => {
 
 describe("Pages (review)", () => {
   it("renders ReviewDetail", () => {
-    // render(<ReviewDetail />);
+    render(<ReviewDetail />);
   });
 
   it("renders Review", () => {
