@@ -12,9 +12,12 @@ export default function Search() {
 
   const [videos, setVideos] = useState<ResVideoSearch>([]);
   useEffect(() => {
+    if (!router.query.query || !toast) {
+      return;
+    }
     axios
-      .get<ResVideoSearch>("/api/public/search/video", {
-        params: { query: router.query.q },
+      .get<ResVideoSearch>("/api/public/algolia/video", {
+        params: { query: router.query.query },
       })
       .then((res) => {
         setVideos(res.data);
@@ -27,7 +30,7 @@ export default function Search() {
           isClosable: true,
         });
       });
-  }, [router.query.q, toast]);
+  }, [router.query.query, toast]);
 
   const captions = [
     { caption: "영상 제목" },
@@ -39,7 +42,7 @@ export default function Search() {
   const titleComponent = (
     <Center>
       <Text fontSize="22px" fontWeight="bold" mb={5}>
-        &quot;{router.query.q}&quot; 검색 결과
+        &quot;{router.query.query}&quot; 검색 결과
       </Text>
     </Center>
   );
@@ -51,7 +54,7 @@ export default function Search() {
       overflowX={{ sm: "scroll", xl: "hidden" }}
     >
       <GeneralTable captions={captions} title={titleComponent}>
-        {videos.map((video) => (
+        {videos?.map((video) => (
           <SearchTableRow
             key={video.videoId}
             videoId={video.videoId}
@@ -66,9 +69,9 @@ export default function Search() {
             channelUrl={
               video?.youtubeVideo?.channel.channelUrl ?? "채널 정보없음"
             }
-            totalRequests={video._count.requests}
-            totalSubtitles={video._count.subs}
-            totalPoints={video._count.points}
+            totalRequests={video._count?.requests ?? 0}
+            totalSubtitles={video._count?.subs ?? 0}
+            totalPoints={video._count?.points ?? 0}
           />
         ))}
       </GeneralTable>

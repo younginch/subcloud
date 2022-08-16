@@ -1,5 +1,6 @@
 import { Role, Video } from "@prisma/client";
 import axios from "axios";
+import { saveVideoToAlgolia } from "../../../../utils/algolia";
 import prisma from "../../../../utils/prisma";
 import { VideoCreateSchema } from "../../../../utils/schema";
 import {
@@ -142,6 +143,7 @@ async function VideoCreate({ req, res, prisma }: RouteParams<ResVideo>) {
     });
     if (createdVideo.serviceId === "youtube") {
       const videoFromYoutube = await addYoutubeInfo(createdVideo.videoId);
+      saveVideoToAlgolia(videoFromYoutube);
       return res.status(201).json(videoFromYoutube);
     }
     return res.status(201).json(createdVideo);
@@ -151,6 +153,7 @@ async function VideoCreate({ req, res, prisma }: RouteParams<ResVideo>) {
       include: { youtubeVideo: { include: { channel: true } } },
     });
     if (video) {
+      saveVideoToAlgolia(video);
       if (video.youtubeVideo) return res.status(200).json(video);
       const videoFromYoutube = await addYoutubeInfo(video.videoId);
       return res.status(200).json(videoFromYoutube);

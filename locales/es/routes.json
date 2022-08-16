@@ -22,6 +22,7 @@
   "/404": "Not found",
   "/500": "Error del Servidor",
   "/": "Hogar",
+  "/channel": "Channels",
   "/editor": "Editor",
   "/qna": "QnA",
   "/ranking": "clasificación",

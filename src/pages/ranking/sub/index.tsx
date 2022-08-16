@@ -2,6 +2,7 @@ import axios from "axios";
 import { Box, Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
+import { useRouter } from "next/router";
 import {
   PageOptions,
   RankQueryData,
@@ -13,6 +14,7 @@ import GeneralRanking from "../../../components/ranking/generalRanking";
 
 export default function SubRankingPage() {
   const [isPc] = useMediaQuery("(min-width: 950px)");
+  const router = useRouter();
 
   const [lang, setLang] = useState<string>();
   const [sortOption, setSortOption] = useState({
@@ -33,9 +35,8 @@ export default function SubRankingPage() {
   };
 
   function onSubmit(values: RankQueryData) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { keyword } = values;
-    // Todo: search keyword
+    router.push(`/search?query=${keyword}`);
   }
 
   const { data, error, size, setSize, isValidating } = useSWRInfinite(

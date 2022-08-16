@@ -160,9 +160,8 @@ export default function GeneralRanking({
                           message: "Minimum length should be 2",
                         },
                       })}
-                      disabled
                     />
-                    <Button type="submit" disabled>
+                    <Button type="submit">
                       <AiOutlineSearch />
                     </Button>
                   </HStack>
@@ -207,9 +206,8 @@ export default function GeneralRanking({
                         message: "Minimum length should be 2",
                       },
                     })}
-                    disabled
                   />
-                  <Button type="submit" disabled>
+                  <Button type="submit">
                     <AiOutlineSearch />
                   </Button>
                 </HStack>
@@ -231,7 +229,7 @@ export default function GeneralRanking({
         </WrapItem>
       </Wrap>
       <Collapse in={isOpen} animateOpacity>
-        <HStack p="15px">
+        <HStack p="15px" pt="0px">
           {setLang && (
             <>
               <SelectLang lang={lang} setLang={setLang} />

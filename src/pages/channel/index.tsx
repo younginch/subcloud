@@ -2,30 +2,30 @@ import { Box, Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
-import { useRouter } from "next/router";
-import {
-  PageOptions,
-  RankQueryData,
-  ResRankingVideo,
-} from "../../../utils/types";
-import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
-import GeneralRanking from "../../../components/ranking/generalRanking";
-import RequestRankCard from "../../../components/ranking/requestRankCard";
-import { PointGoal, GoalExpr } from "../../../utils/etc";
+import { PageOptions, RankQueryData, ResRankingVideo } from "../../utils/types";
+import { GoalExpr } from "../../utils/etc";
+import LoadMoreBtn from "../../components/ranking/loadMoreBtn";
+import GeneralRanking from "../../components/ranking/generalRanking";
+import ChannelCard from "../../components/channelCard";
 
-export default function VideoRankingPage() {
-  const [lang, setLang] = useState<string>();
+export default function ChannelRankingPage() {
   const [sortOption, setSortOption] = useState({
-    name: "요청수 (높은 순)",
+    name: "자막 수 (많은 순)",
     sortBy: { by: "gauge", order: true },
   });
   const sortOptionArray = [
-    { name: "요청수 (높은 순)", sortBy: { by: "request", order: true } },
-    { name: "요청수 (낮은 순)", sortBy: { by: "request", order: false } },
-    { name: "요청 포인트 (높은 순)", sortBy: { by: "point", order: true } },
-    { name: "요청 포인트 (낮은 순)", sortBy: { by: "point", order: false } },
-    { name: "자막 게이지 (높은 순)", sortBy: { by: "gauge", order: true } },
-    { name: "자막 게이지 (낮은 순)", sortBy: { by: "gauge", order: false } },
+    { name: "자막 수 (많은 순)", sortBy: { by: "point", order: true } },
+    { name: "자막 수 (적은 순)", sortBy: { by: "point", order: false } },
+    { name: "구독자 수 (많은 순)", sortBy: { by: "request", order: true } },
+    { name: "구독자 수 (적은 순)", sortBy: { by: "request", order: false } },
+    {
+      name: "진행중인 펀딩 수 (많은 순)",
+      sortBy: { by: "gauge", order: true },
+    },
+    {
+      name: "진행중인 펀딩 수 (적은 순)",
+      sortBy: { by: "gauge", order: false },
+    },
   ];
   const pageSize = 15;
   const fetcher = async (url: string) => {
@@ -33,23 +33,25 @@ export default function VideoRankingPage() {
     return res.data;
   };
   const goalExpr = GoalExpr();
-  const router = useRouter();
 
   function onSubmit(values: RankQueryData) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { keyword } = values;
-    router.push(`/search?query=${keyword}`);
+    // Todo: search keyword
   }
 
   const { data, error, size, setSize } = useSWRInfinite(
     (index) =>
       `/api/public/ranking/video/${sortOption.sortBy.by}?start=${
         pageSize * index
-      }&end=${pageSize * (index + 1)}&lang=${lang ?? "All Lang"}&order=${
+      }&end=${pageSize * (index + 1)}&lang=${"All Lang"}&order=${
         sortOption.sortBy.order === true ? "desc" : "asc"
       }${goalExpr ? `&goalExpr=${JSON.stringify(goalExpr)}` : ""}`,
     fetcher
   );
 
+  // TODO: remove below comment
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const videos = data
     ? data.reduce(
         (accumulator, currentValue) => accumulator.concat(currentValue),
@@ -79,6 +81,10 @@ export default function VideoRankingPage() {
     "(min-width: 2000px)",
   ]);
 
+  const dummy = Array(15)
+    .fill(null)
+    .map((_, i) => i);
+
   return (
     <Box
       pt={10}
@@ -87,8 +93,6 @@ export default function VideoRankingPage() {
       overflowX={{ sm: "scroll", md: "hidden" }}
     >
       <GeneralRanking
-        lang={lang}
-        setLang={setLang}
         sortOptionArray={sortOptionArray}
         sortOption={sortOption}
         setSortOption={setSortOption}
@@ -107,30 +111,9 @@ export default function VideoRankingPage() {
           gap={5}
           justifyItems="center"
         >
-          {videos.map((video) => (
-            <GridItem key={video.videoId}>
-              <RequestRankCard
-                duration={video.youtubeVideo ? video.youtubeVideo.duration : 0}
-                videoName={
-                  video.youtubeVideo ? video.youtubeVideo.title : "no title"
-                }
-                videoUrl={video.url}
-                imageUrl={`https://i.ytimg.com/vi/${video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-jCivJl2_ZKjT2GONS3-JWiYk1w`}
-                requestCount={video._count.requests}
-                requestPoint={video._count.points}
-                requestGoal={
-                  PointGoal(
-                    video.youtubeVideo
-                      ? video.youtubeVideo.duration
-                      : undefined,
-                    goalExpr
-                  ) ?? 1000000
-                }
-                channelName={video.youtubeVideo?.channel.title ?? "no name"}
-                channelImageUrl={video.youtubeVideo?.channel.thumbnailUrl ?? ""}
-                channelUrl={video.youtubeVideo?.channel.channelUrl ?? ""}
-                lang={video.langs}
-              />
+          {dummy.map((key) => (
+            <GridItem key={key}>
+              <ChannelCard />
             </GridItem>
           ))}
         </Grid>
@@ -139,7 +122,7 @@ export default function VideoRankingPage() {
   );
 }
 
-VideoRankingPage.options = {
+ChannelRankingPage.options = {
   auth: false,
   width: "100%",
   hideTitle: true,

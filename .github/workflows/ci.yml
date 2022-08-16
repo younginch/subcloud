@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
@@ -21,7 +21,7 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-  
+
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -33,7 +33,7 @@ jobs:
           node-version: 16
           cache: npm
       - name: Install npm dependencies
-        run: npm ci    
+        run: npm ci
       - name: Code Climate Coverage Action
         uses: paambaati/codeclimate-action@v3.0.0
         env:
@@ -42,7 +42,3 @@ jobs:
           coverageCommand: npm run coverage
           coverageLocations: |
             ${{github.workspace}}/coverage/lcov.info:lcov
-      - uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: false
