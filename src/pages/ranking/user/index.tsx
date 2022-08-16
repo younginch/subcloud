@@ -3,6 +3,7 @@ import { Box, Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import useTranslation from "next-translate/useTranslation";
+import { useRouter } from "next/router";
 import {
   PageOptions,
   RankQueryData,
@@ -14,6 +15,7 @@ import GeneralRanking from "../../../components/ranking/generalRanking";
 
 export default function UserRankingPage() {
   const { t } = useTranslation("rankings");
+  const router = useRouter();
 
   const captions = [
     { caption: "#" },
@@ -45,9 +47,8 @@ export default function UserRankingPage() {
   };
 
   function onSubmit(values: RankQueryData) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { keyword } = values;
-    // Todo: search keyword
+    router.push(`/search?query=${keyword}`);
   }
 
   const { data, error, size, setSize, isValidating } = useSWRInfinite(

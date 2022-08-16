@@ -43,6 +43,25 @@ export default function Admin() {
       .finally(onClose);
   }
 
+  async function handleIndexVideo() {
+    axios
+      .post("/api/admin/algolia/video")
+      .then(() => {
+        toast({
+          title: "Success",
+          description: "All videos have been indexed",
+          status: "success",
+        });
+      })
+      .catch((err) => {
+        toast({
+          title: "Error",
+          description: err.message,
+          status: "error",
+        });
+      });
+  }
+
   return (
     <>
       <Button colorScheme="red" onClick={onOpen}>
@@ -74,6 +93,7 @@ export default function Admin() {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
+      <Button onClick={handleIndexVideo}>전체 비디오 검색 인덱스 재생성</Button>
     </>
   );
 }

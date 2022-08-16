@@ -2,6 +2,7 @@ import { Box, Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
+import { useRouter } from "next/router";
 import {
   PageOptions,
   RankQueryData,
@@ -32,11 +33,11 @@ export default function VideoRankingPage() {
     return res.data;
   };
   const goalExpr = GoalExpr();
+  const router = useRouter();
 
   function onSubmit(values: RankQueryData) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { keyword } = values;
-    // Todo: search keyword
+    router.push(`/search?query=${keyword}`);
   }
 
   const { data, error, size, setSize } = useSWRInfinite(
