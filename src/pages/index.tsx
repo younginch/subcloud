@@ -132,6 +132,7 @@ export default function Home() {
             fontWeight="bold"
             fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
             textAlign="center"
+            textColor="teal"
           >
             {t("marquee_title")}
           </Text>
