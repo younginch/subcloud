@@ -44,9 +44,7 @@ import VideoInfo from "../../../../../components/create/videoInfo";
 import { RequestCreateSchema } from "../../../../../utils/schema";
 import SelectLanguage from "../../../../../components/selectLanguage";
 import PointGauge from "../../../../../components/pointGauge";
-import GoalExpr from "../../../../../utils/goalExpr";
-import PointGoal from "../../../../../utils/pointGoal";
-import PointBonus from "../../../../../utils/pointBonus";
+import { GoalExpr, PointGoal, PointBonus } from "../../../../../utils/etc";
 import LanguageCodeList from "../../../../../components/languageCodeList";
 import CoupangText, {
   CoupangDynamic,

@@ -3,7 +3,7 @@ import axios from "axios";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import { PageOptions, RankQueryData, ResRankingVideo } from "../../utils/types";
-import GoalExpr from "../../utils/goalExpr";
+import { GoalExpr } from "../../utils/etc";
 import LoadMoreBtn from "../../components/ranking/loadMoreBtn";
 import GeneralRanking from "../../components/ranking/generalRanking";
 import ChannelCard from "../../components/channelCard";

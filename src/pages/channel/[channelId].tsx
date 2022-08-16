@@ -6,8 +6,7 @@ import useSWRInfinite from "swr/infinite";
 import GeneralRanking from "../../components/ranking/generalRanking";
 import LoadMoreBtn from "../../components/ranking/loadMoreBtn";
 import RequestRankCard from "../../components/ranking/requestRankCard";
-import GoalExpr from "../../utils/goalExpr";
-import PointGoal from "../../utils/pointGoal";
+import { GoalExpr, PointGoal } from "../../utils/etc";
 import { PageOptions, RankQueryData, ResRankingVideo } from "../../utils/types";
 
 export default function ChannelDetail() {

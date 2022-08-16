@@ -10,8 +10,7 @@ import {
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 import GeneralRanking from "../../../components/ranking/generalRanking";
 import RequestRankCard from "../../../components/ranking/requestRankCard";
-import PointGoal from "../../../utils/pointGoal";
-import GoalExpr from "../../../utils/goalExpr";
+import { PointGoal, GoalExpr } from "../../../utils/etc";
 
 export default function VideoRankingPage() {
   const [lang, setLang] = useState<string>();

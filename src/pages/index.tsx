@@ -25,7 +25,7 @@ import { DottedBox } from "../components/icons/customIcons";
 import Features from "../components/features";
 import PointGauge from "../components/pointGauge";
 import RequestMarquee from "../components/requestMarquee";
-import getAuthLink from "../utils/getAuthLink";
+import { getAuthLink } from "../utils/etc";
 
 export default function Home() {
   const { t } = useTranslation("landing");

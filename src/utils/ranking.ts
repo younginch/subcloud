@@ -1,4 +1,4 @@
-import PointGoal from "./pointGoal";
+import { PointGoal } from "./etc";
 import {
   ResRankingUser,
   ResRankingVideo,

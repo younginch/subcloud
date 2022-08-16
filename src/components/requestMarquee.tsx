@@ -10,8 +10,7 @@ import useTranslation from "next-translate/useTranslation";
 import NextLink from "next/link";
 import router from "next/router";
 import Marquee from "react-fast-marquee";
-import GoalExpr from "../utils/goalExpr";
-import PointGoal from "../utils/pointGoal";
+import { GoalExpr, PointGoal } from "../utils/etc";
 import { ResRankingVideo } from "../utils/types";
 import RequestCard from "./requestCard";
 
