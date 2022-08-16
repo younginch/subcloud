@@ -11,9 +11,10 @@ import { PageOptions, RankQueryData, ResRankingVideo } from "../../utils/types";
 
 export default function ChannelDetail() {
   const router = useRouter();
+  const { channelId, title } = router.query;
   const [lang, setLang] = useState<string>();
   const [sortOption, setSortOption] = useState({
-    name: "요청수 (높은 순)",
+    name: "자막 게이지 (높은 순)",
     sortBy: { by: "gauge", order: true },
   });
   const sortOptionArray = [
@@ -43,7 +44,8 @@ export default function ChannelDetail() {
         pageSize * index
       }&end=${pageSize * (index + 1)}&lang=${lang ?? "All Lang"}&order=${
         sortOption.sortBy.order === true ? "desc" : "asc"
-      }${goalExpr ? `&goalExpr=${JSON.stringify(goalExpr)}` : ""}`,
+      }${goalExpr ? `&goalExpr=${JSON.stringify(goalExpr)}` : ""}
+      ${channelId ? `&channelId=${channelId}` : ""}`,
     fetcher
   );
 
@@ -84,7 +86,7 @@ export default function ChannelDetail() {
       overflowX={{ sm: "scroll", md: "hidden" }}
     >
       <Text fontWeight="bold" fontSize="30px">
-        {router.query.channelId} 의 채널 랭킹
+        {title} 의 채널 랭킹
       </Text>
       <GeneralRanking
         lang={lang}

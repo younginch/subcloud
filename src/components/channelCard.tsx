@@ -15,10 +15,30 @@ import { RiFundsFill } from "react-icons/ri";
 import NextLink from "next/link";
 import { YoutubeIcon } from "./icons/customIcons";
 
-export default function ChannelCard() {
+type Props = {
+  channelId: string;
+  title: string;
+  thumbnailUrl: string;
+  subscriberCount: number;
+  channelUrl: string;
+  bannerUrl: string;
+  subCount: number;
+  requestCount: number;
+};
+
+export default function ChannelCard({
+  channelId,
+  title,
+  thumbnailUrl,
+  subscriberCount,
+  channelUrl,
+  bannerUrl,
+  subCount,
+  requestCount,
+}: Props) {
   return (
     <motion.div whileHover={{ translateY: -5 }}>
-      <NextLink href="/channel/channelId">
+      <NextLink href={`/channel/${channelId}?title=${title}`}>
         <Stack
           w="300px"
           h="fit-content"
@@ -31,7 +51,7 @@ export default function ChannelCard() {
         >
           <Box position="relative">
             <Image
-              src="https://yt3.ggpht.com/_wKeBj-JSLYSMyRf2XL7Vkywuw5F3T3pz5UKbpOcmbG5fqvAMSlYZqmNhjHrCmFWjmI6f5JRn8U=w2120-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj"
+              src={`${bannerUrl}=w2120-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj`}
               alt="channel background"
               maxH="169px"
               w="100%"
@@ -39,7 +59,7 @@ export default function ChannelCard() {
             <Avatar
               size="lg"
               name="하창봉"
-              src="https://yt3.ggpht.com/S89f3rBGh0uzSlJkZIyEimQM-bYqCbaU1LhAlMQuMDr8r6lhnBQj8kD3NpPEMy_jDwflHDx101I=s176-c-k-c0x00ffffff-no-rj"
+              src={thumbnailUrl}
               position="absolute"
               top="16px"
               left="50%"
@@ -57,13 +77,13 @@ export default function ChannelCard() {
               overflow="hidden"
               textOverflow="ellipsis"
             >
-              하창봉
+              {title}
             </Text>
             <HStack mt="0px !important">
-              <Link href="https://www.youtube.com/c/PongTV" isExternal>
+              <Link href={channelUrl} isExternal>
                 <YoutubeIcon size="25px" cursor="pointer" />
               </Link>
-              <Text>구독자 311000명</Text>
+              <Text>구독자 {subscriberCount}</Text>
             </HStack>
             <Grid
               templateColumns="repeat(2, 1fr)"
@@ -73,11 +93,11 @@ export default function ChannelCard() {
               <Text fontWeight="bold">진행중인 펀딩 수</Text>
               <HStack>
                 <MdSubtitles />
-                <Text fontWeight="bold">10</Text>
+                <Text fontWeight="bold">{subCount}</Text>
               </HStack>
               <HStack>
                 <RiFundsFill />
-                <Text fontWeight="bold">510</Text>
+                <Text fontWeight="bold">{requestCount}</Text>
               </HStack>
             </Grid>
           </Stack>

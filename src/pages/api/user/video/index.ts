@@ -77,7 +77,7 @@ async function addYoutubeInfo(videoId: string): Promise<ResVideo> {
   });
   if (!channel) {
     const channelRes = await axios.get(
-      `https://www.googleapis.com/youtube/v3/channels?id=${channelId}&key=${process.env.YOUTUBE_API_KEY}&part=snippet,statistics`
+      `https://www.googleapis.com/youtube/v3/channels?id=${channelId}&key=${process.env.YOUTUBE_API_KEY}&part=snippet,statistics,brandingSettings`
     );
     if (!channelRes.data.items) {
       throw new Error("No channel found");
@@ -94,6 +94,7 @@ async function addYoutubeInfo(videoId: string): Promise<ResVideo> {
           10
         ),
         channelUrl: `https://www.youtube.com/channel/${channelId}`,
+        bannerUrl: channelData.brandingSettings.image.bannerExternalUrl,
       },
     });
   }
