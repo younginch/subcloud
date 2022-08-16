@@ -13,7 +13,7 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { FaYoutube } from "react-icons/fa";
 import { useSession } from "next-auth/react";
-import getAuthLink from "../../utils/getAuthLink";
+import { getAuthLink } from "../../utils/etc";
 
 type LinkButtonProps = {
   route: string;

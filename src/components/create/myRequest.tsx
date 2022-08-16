@@ -7,8 +7,7 @@ import { useState } from "react";
 import { ResRequestSearch } from "../../utils/types";
 import Pagination from "../pagination";
 import RequestCard from "../requestCard";
-import GoalExpr from "../../utils/goalExpr";
-import PointGoal from "../../utils/pointGoal";
+import { GoalExpr, PointGoal } from "../../utils/etc";
 
 function MyRequestPanel({
   requests,
