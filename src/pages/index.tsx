@@ -16,6 +16,7 @@ import Image from "next/image";
 import NextLink from "next/link";
 import useSWR from "swr";
 import useTranslation from "next-translate/useTranslation";
+import { useSession } from "next-auth/react";
 import TitleImage from "../../public/title.png";
 import InViewProvider from "../components/inviewProvider";
 import ExtensionButton from "../components/extensionButton";
@@ -24,12 +25,15 @@ import { DottedBox } from "../components/icons/customIcons";
 import Features from "../components/features";
 import PointGauge from "../components/pointGauge";
 import RequestMarquee from "../components/requestMarquee";
+import { getAuthLink } from "../utils/etc";
 
 export default function Home() {
   const { t } = useTranslation("landing");
   const { data: topVideos } = useSWR<ResRankingVideo>(
     `/api/public/ranking/video/request?start=0&end=10&lang=All Lang&order=desc`
   );
+
+  const { status } = useSession();
 
   return (
     <Box>
@@ -40,10 +44,7 @@ export default function Home() {
         p={10}
         pt={{ base: "100px", md: "50px" }}
         alignItems="center"
-        backgroundImage={useColorModeValue(
-          "https://user-images.githubusercontent.com/17401630/177977272-7e7b91c9-c172-4bd0-a759-1318d8ebdd4e.PNG",
-          undefined
-        )}
+        backgroundColor={useColorModeValue("#f8f8fa", "none")}
         backgroundSize="cover"
         minH="100vh"
       >
@@ -80,20 +81,7 @@ export default function Home() {
             pt={{ base: 0, md: 10 }}
             color="white"
           >
-            <Button
-              w={{ base: "100%", sm: "auto" }}
-              h={10}
-              rounded="md"
-              mb={{ base: 2, sm: 0 }}
-              bgGradient="linear(to-l, #0ea5e9,#25c3cb)"
-              _hover={{
-                bgGradient: "linear(to-l, #25a3cb,#0fcdb9)",
-              }}
-              fontSize="xl"
-            >
-              <Text>{t("how_to_use")}</Text>
-            </Button>
-            <NextLink href="/video/create?next=request">
+            <NextLink href={getAuthLink(status, "/video/create?next=request")}>
               <Button
                 w={{ base: "100%", sm: "auto" }}
                 h={10}
@@ -106,6 +94,21 @@ export default function Home() {
                 fontSize="xl"
               >
                 <Text>{t("request_sub")}</Text>
+              </Button>
+            </NextLink>
+            <NextLink href={getAuthLink(status, "/video/create?next=upload")}>
+              <Button
+                w={{ base: "100%", sm: "auto" }}
+                h={10}
+                rounded="md"
+                mb={{ base: 2, sm: 0 }}
+                bgGradient="linear(to-l, #0ea5e9,#25c3cb)"
+                _hover={{
+                  bgGradient: "linear(to-l, #25a3cb,#0fcdb9)",
+                }}
+                fontSize="xl"
+              >
+                <Text>{t("upload_sub")}</Text>
               </Button>
             </NextLink>
             <Spacer />

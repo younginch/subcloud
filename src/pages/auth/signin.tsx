@@ -1,11 +1,21 @@
 import { Heading, Stack, Center } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import useTranslation from "next-translate/useTranslation";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 import OAuthButtonGroup from "../../components/signin/oAuthButtonGroup";
 import { PageOptions } from "../../utils/types";
 
 export default function SignIn() {
   const { t } = useTranslation("auth");
+  const { status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/user/my");
+    }
+  }, [router, status]);
 
   return (
     <Stack

@@ -25,11 +25,11 @@ import UploadCard from "../components/uploadCard";
 import UserLayout from "../components/user/my/userLayout";
 import RequestPanel from "../components/user/requestPanel";
 import VideoCard from "../components/videoCard";
-import { renderWithThemeAndSession } from "./jest";
+import { renderWithSession, renderWithThemeAndSession } from "./jest";
 
 describe("Components", () => {
-  it("renders a Footer", () => {
-    render(<Links />);
+  it("renders a Links", () => {
+    renderWithSession(<Links />);
   });
 
   it("renders a Search", () => {

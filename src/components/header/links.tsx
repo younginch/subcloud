@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import {
   Button,
   Menu,
@@ -11,32 +11,44 @@ import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
+import { FaYoutube } from "react-icons/fa";
+import { useSession } from "next-auth/react";
+import { getAuthLink } from "../../utils/etc";
 
 type LinkButtonProps = {
   route: string;
+  routeWithAuth?: string;
   width?: string;
   onClick?: () => void;
   highlighted?: boolean;
+  leftIcon?: ReactElement;
 };
 const highlightedColorLight = "#3E3EEE";
 const highlightedColorDark = "#99aaff";
 
-function LinkButton({ route, width, onClick, highlighted }: LinkButtonProps) {
+function LinkButton({
+  route,
+  routeWithAuth,
+  width,
+  onClick,
+  highlighted,
+  leftIcon,
+}: LinkButtonProps) {
   const { t } = useTranslation("routes");
   const highlightedColor = useColorModeValue(
     highlightedColorLight,
     highlightedColorDark
   );
   return (
-    <Link href={`${route}`} passHref>
+    <Link href={routeWithAuth ?? route} passHref>
       <Button
         as="a"
         variant="ghost"
-        flexDirection="column"
-        alignItems="start"
+        justifyContent="start"
         width={width}
         onClick={onClick}
         color={highlighted ? highlightedColor : ""}
+        leftIcon={leftIcon}
       >
         {t(`${route}`)}
       </Button>
@@ -61,7 +73,7 @@ export default function Links({ width, onClick }: LinksProps) {
     highlighted[2] = true;
   } else if (router.pathname === "/buy") {
     highlighted[3] = true;
-  } else if (router.pathname === "/editor") {
+  } else if (router.pathname === "/channel") {
     highlighted[4] = true;
   }
   const highlightedColor = useColorModeValue(
@@ -69,16 +81,20 @@ export default function Links({ width, onClick }: LinksProps) {
     highlightedColorDark
   );
 
+  const { status } = useSession();
+
   return (
     <>
       <LinkButton
         route="/video/create?next=request"
+        routeWithAuth={getAuthLink(status, "/video/create?next=request")}
         width={width}
         onClick={onClick}
         highlighted={highlighted[0]}
       />
       <LinkButton
         route="/video/create?next=sub"
+        routeWithAuth={getAuthLink(status, "/video/create?next=sub")}
         width={width}
         onClick={onClick}
         highlighted={highlighted[1]}
@@ -114,10 +130,11 @@ export default function Links({ width, onClick }: LinksProps) {
         highlighted={highlighted[3]}
       />
       <LinkButton
-        route="/editor"
+        route="/channel"
         width={width}
         onClick={onClick}
         highlighted={highlighted[4]}
+        leftIcon={<FaYoutube fill="#ff5b5b" size={20} />}
       />
     </>
   );

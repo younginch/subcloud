@@ -1,9 +1,9 @@
 {
-  "subcloud_aim": "SubCloud는 자막을 통해 웹 상의 언어 장벽을 극복하는 것을 목표로 합니다",
+  "subcloud_aim": "SubCloud에서는 누구나 자막을 요청하고, 업로드하고, 사용할 수 있습니다.",
   "watch_sub_free": "무료 자막은",
   "in_sub": "SubCloud에서",
-  "how_to_use": "사용법 보기",
   "request_sub": "자막 요청하기",
+  "upload_sub": "자막 업로드하기",
   "marquee_title": "우리 모두를 위한 자막 플랫폼",
   "marquee_content": "지금도 전 세계 유저들이 필요한 자막을 마음껏 요청하고 사용하고 있습니다.",
   "free_request": "무료 자막 요청",

@@ -1,18 +1,16 @@
-import { Box, Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Text, useMediaQuery } from "@chakra-ui/react";
 import axios from "axios";
-import useSWRInfinite from "swr/infinite";
+import { useRouter } from "next/router";
 import { useState } from "react";
-import {
-  PageOptions,
-  RankQueryData,
-  ResRankingVideo,
-} from "../../../utils/types";
-import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
-import GeneralRanking from "../../../components/ranking/generalRanking";
-import RequestRankCard from "../../../components/ranking/requestRankCard";
-import { PointGoal, GoalExpr } from "../../../utils/etc";
+import useSWRInfinite from "swr/infinite";
+import GeneralRanking from "../../components/ranking/generalRanking";
+import LoadMoreBtn from "../../components/ranking/loadMoreBtn";
+import RequestRankCard from "../../components/ranking/requestRankCard";
+import { GoalExpr, PointGoal } from "../../utils/etc";
+import { PageOptions, RankQueryData, ResRankingVideo } from "../../utils/types";
 
-export default function VideoRankingPage() {
+export default function ChannelDetail() {
+  const router = useRouter();
   const [lang, setLang] = useState<string>();
   const [sortOption, setSortOption] = useState({
     name: "요청수 (높은 순)",
@@ -85,6 +83,9 @@ export default function VideoRankingPage() {
       pr={{ base: "10px", lg: "30px", xl: "70px" }}
       overflowX={{ sm: "scroll", md: "hidden" }}
     >
+      <Text fontWeight="bold" fontSize="30px">
+        {router.query.channelId} 의 채널 랭킹
+      </Text>
       <GeneralRanking
         lang={lang}
         setLang={setLang}
@@ -138,7 +139,7 @@ export default function VideoRankingPage() {
   );
 }
 
-VideoRankingPage.options = {
+ChannelDetail.options = {
   auth: false,
   width: "100%",
   hideTitle: true,

@@ -25,6 +25,7 @@
     "@prisma/client": "^4.2.1",
     "@tosspayments/payment-sdk": "^1.1.1",
     "@younginch/subtitle": "^0.4.1",
+    "algoliasearch": "^4.14.2",
     "apexcharts": "^3.35.4",
     "axios": "^0.27.2",
     "dayjs": "^1.11.4",

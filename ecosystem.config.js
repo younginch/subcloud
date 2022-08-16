@@ -14,6 +14,8 @@ module.exports = {
         CHROME_EXTENSION_ID: "jekpacppociidhmfenohpnajdmjdddel",
         S3_ACCESS_KEY_ID: "AKIAYG6VFG2RQ4CV2NFO",
         S3_SECRET_ACCESS_KEY: "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",
+        ALGOLIA_ID: "D9GXQNSIWX",
+        ALGOLIA_ADMIN_KEY: "240bcd0e7ac9677c838bee23b4069b9a",
         GITHUB_ID: "1b47f3c7bec692352e38",
         GITHUB_SECRET: "c9d1534485070f49482e96170ce1984170c852b0",
         GOOGLE_ID:
