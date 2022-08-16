@@ -160,9 +160,8 @@ export default function GeneralRanking({
                           message: "Minimum length should be 2",
                         },
                       })}
-                      disabled
                     />
-                    <Button type="submit" disabled>
+                    <Button type="submit">
                       <AiOutlineSearch />
                     </Button>
                   </HStack>
@@ -207,9 +206,8 @@ export default function GeneralRanking({
                         message: "Minimum length should be 2",
                       },
                     })}
-                    disabled
                   />
-                  <Button type="submit" disabled>
+                  <Button type="submit">
                     <AiOutlineSearch />
                   </Button>
                 </HStack>
