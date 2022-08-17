@@ -26,6 +26,7 @@ type Props = {
   lang: string;
   status: SubStatus;
   viewCount: number;
+  uploadDate: Date;
   subId: string;
   editorFileId?: string;
 };
@@ -38,6 +39,7 @@ export default function UploadCard({
   lang,
   status,
   viewCount,
+  uploadDate,
   subId,
   editorFileId,
 }: Props) {
@@ -53,7 +55,7 @@ export default function UploadCard({
       left="6px"
       top="128px"
     >
-      자막 업로드: {dayjs(new Date()).format("YYYY-MM-DD")}
+      자막 업로드: {dayjs(uploadDate).format("YYYY-MM-DD")}
     </Text>
   );
 

@@ -1,4 +1,12 @@
-import { Stack, Text, Badge, HStack, Spacer, Button } from "@chakra-ui/react";
+import {
+  Stack,
+  Text,
+  Badge,
+  HStack,
+  Spacer,
+  Button,
+  Link,
+} from "@chakra-ui/react";
 import dayjs from "dayjs";
 import ISO6391 from "iso-639-1";
 import duration from "dayjs/plugin/duration";
@@ -12,6 +20,8 @@ dayjs.extend(duration);
 type Props = {
   duration: number;
   videoName: string;
+  serviceId: string;
+  videoId: string;
   videoUrl: string;
   imageUrl: string;
   requestCount: number;
@@ -26,6 +36,8 @@ type Props = {
 export default function RequestRankCard({
   duration,
   videoName,
+  serviceId,
+  videoId,
   videoUrl,
   imageUrl,
   requestCount,
@@ -38,12 +50,16 @@ export default function RequestRankCard({
 }: Props) {
   const hoverComponent = (
     <Stack position="absolute" left="10px" top="5px">
-      <Button leftIcon={<FiSend />} colorScheme="blue">
-        요청하기
-      </Button>
-      <Button leftIcon={<GoCloudUpload />} colorScheme="purple">
-        업로드하기
-      </Button>
+      <Link href={`/video/${serviceId}/${videoId}/request/create?lang=${lang}`}>
+        <Button leftIcon={<FiSend />} colorScheme="blue">
+          요청하기
+        </Button>
+      </Link>
+      <Link href={`/video/${serviceId}/${videoId}/sub/create?lang=${lang}`}>
+        <Button leftIcon={<GoCloudUpload />} colorScheme="purple">
+          업로드하기
+        </Button>
+      </Link>
     </Stack>
   );
   return (
