@@ -44,7 +44,7 @@ export default function UploadCard({
   editorFileId,
 }: Props) {
   const { t } = useTranslation("uploadSub");
-  const durationHover = (
+  const uploadDateHover = (
     <Text
       bg="black"
       color="white"
@@ -66,7 +66,7 @@ export default function UploadCard({
       videoUrl={link}
       imageUrl={thumbnail}
       padding="0px"
-      hoverComponent={durationHover}
+      hoverComponent={uploadDateHover}
     >
       <HStack pl="10px">
         <Stack>
