@@ -1,7 +1,9 @@
-import { Stack, Text, Badge, HStack, Spacer } from "@chakra-ui/react";
+import { Stack, Text, Badge, HStack, Spacer, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import ISO6391 from "iso-639-1";
 import duration from "dayjs/plugin/duration";
+import { GoCloudUpload } from "react-icons/go";
+import { FiSend } from "react-icons/fi";
 import VideoCard from "../videoCard";
 import PointGauge from "../pointGauge";
 
@@ -19,7 +21,6 @@ type Props = {
   channelImageUrl: string;
   channelUrl: string;
   lang: string;
-  uploadDate?: Date;
 };
 
 export default function RequestRankCard({
@@ -34,8 +35,17 @@ export default function RequestRankCard({
   channelImageUrl,
   channelUrl,
   lang,
-  uploadDate,
 }: Props) {
+  const hoverComponent = (
+    <Stack position="absolute" left="10px" top="5px">
+      <Button leftIcon={<FiSend />} colorScheme="blue">
+        요청하기
+      </Button>
+      <Button leftIcon={<GoCloudUpload />} colorScheme="purple">
+        업로드하기
+      </Button>
+    </Stack>
+  );
   return (
     <VideoCard
       duration={duration}
@@ -45,7 +55,7 @@ export default function RequestRankCard({
       channelName={channelName}
       channelImageUrl={channelImageUrl}
       channelUrl={channelUrl}
-      uploadDate={uploadDate}
+      hoverComponent={hoverComponent}
     >
       <Stack pl="10px" pr="10px">
         <HStack>

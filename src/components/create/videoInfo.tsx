@@ -28,7 +28,8 @@ export default function VideoInfo({ video }: Props) {
     >
       <Image
         maxW="100%"
-        w="28em"
+        w="20em"
+        maxH="11.25em"
         src={`https://img.youtube.com/vi/${video?.videoId}/maxresdefault.jpg`}
         alt="Video thumbnail"
       />
@@ -37,7 +38,7 @@ export default function VideoInfo({ video }: Props) {
           <Heading
             size="md"
             overflow="hidden"
-            maxW="75%"
+            maxW="100%"
             textOverflow="ellipsis"
             whiteSpace="nowrap"
           >

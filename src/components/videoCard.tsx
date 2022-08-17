@@ -10,10 +10,7 @@ import {
   Skeleton,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import duration from "dayjs/plugin/duration";
 import { useState } from "react";
-
-dayjs.extend(duration);
 
 type Props = {
   duration: number;
@@ -23,9 +20,9 @@ type Props = {
   channelName?: string;
   channelImageUrl?: string;
   channelUrl?: string;
-  uploadDate?: Date;
   padding?: string;
   children: React.ReactNode;
+  hoverComponent?: React.ReactNode;
 };
 
 export default function VideoCard({
@@ -36,9 +33,9 @@ export default function VideoCard({
   channelName,
   channelImageUrl,
   channelUrl,
-  uploadDate,
   padding,
   children,
+  hoverComponent,
 }: Props) {
   const [hover, setHover] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
@@ -54,8 +51,9 @@ export default function VideoCard({
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       boxShadow="base"
+      position="relative"
     >
-      <Box position="relative">
+      <Box>
         <Link href={videoUrl}>
           <Skeleton isLoaded={loaded}>
             <Image
@@ -80,20 +78,6 @@ export default function VideoCard({
         >
           {dayjs.duration(duration, "s").format("mm:ss")}
         </Text>
-        {hover && uploadDate && (
-          <Text
-            bg="black"
-            color="white"
-            w="fit-content"
-            p="1px 4px 1px 3px"
-            borderRadius="5px"
-            position="absolute"
-            left="8px"
-            bottom="5px"
-          >
-            자막 업로드: {dayjs(uploadDate).format("YYYY-MM-DD")}
-          </Text>
-        )}
       </Box>
       <Stack pl="10px">
         <Text
@@ -116,6 +100,7 @@ export default function VideoCard({
         )}
       </Stack>
       {children}
+      {hover && hoverComponent}
     </Stack>
   );
 }
