@@ -94,7 +94,7 @@ async function addYoutubeInfo(videoId: string): Promise<ResVideo> {
           10
         ),
         channelUrl: `https://www.youtube.com/channel/${channelId}`,
-        bannerUrl: channelData.brandingSettings.image.bannerExternalUrl,
+        bannerUrl: channelData.brandingSettings.image?.bannerExternalUrl,
       },
     });
   }

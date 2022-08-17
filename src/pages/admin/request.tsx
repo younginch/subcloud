@@ -16,6 +16,7 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 import { Role } from "@prisma/client";
+import axios from "axios";
 import { useState } from "react";
 import { PageOptions } from "../../utils/types";
 
@@ -26,8 +27,14 @@ export default function AdminRequest() {
   const [countList, setCountList] = useState<number[]>([]);
   const [langList, setLangList] = useState<string[]>();
 
-  const excuteRequest = () => {
-    console.log(userList, videoList, countList, langList);
+  const excuteRequest = async () => {
+    const videos = await axios.post("/api/admin/request", {
+      userList,
+      videoList,
+      countList,
+      langList,
+    });
+    console.log(videos);
   };
 
   return (
@@ -93,7 +100,6 @@ export default function AdminRequest() {
                 영상에 요청을 진행하며, <br />총 요청 횟수는{" "}
                 {countList.reduce((sum, currValue) => sum + currValue, 0)}
                 회 입니다. <br />
-                들어가는 총 포인트는 1000P입니다.
               </Text>
             </Stack>
           </ModalBody>
