@@ -55,7 +55,7 @@ export default function VideoCard({
     >
       <Box>
         <Link href={videoUrl}>
-          <Skeleton isLoaded={loaded}>
+          <Skeleton isLoaded={loaded} w="100%" h="169px">
             <Image
               src={imageUrl}
               alt="thumbnail"
