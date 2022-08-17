@@ -272,6 +272,13 @@ type UserWithPercentage = UserWithCount & {
   };
 };
 
+export type ChannelWithCount = YoutubeChannel & {
+  _count: {
+    subs: number;
+    requests: number;
+  };
+};
+
 export type RankQueryData = {
   keyword: string;
 };
@@ -302,5 +309,6 @@ export type ResVideoSearch = VideoWithCount[];
 export type ResRankingSub = SubWithVideoWithUser[];
 export type ResRankingVideo = VideoWithRequest[];
 export type ResRankingUser = UserWithCount[];
+export type ResRankingChannel = ChannelWithCount[];
 export type ResRatingSearch = RatingWithUser[];
 export type ResHistory = HistoryWithSub[];

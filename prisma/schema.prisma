@@ -114,6 +114,7 @@ model YoutubeChannel {
   thumbnailUrl    String
   subscriberCount Int
   channelUrl      String
+  bannerUrl       String?
 }
 
 model Request {

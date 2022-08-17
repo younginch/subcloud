@@ -2,10 +2,12 @@ import { PointGoal } from "./etc";
 import {
   ResRankingUser,
   ResRankingVideo,
+  ResRankingChannel,
   RouteParams,
   SubErrorType,
   UserWithCount,
   VideoWithRequest,
+  ChannelWithCount,
 } from "./types";
 
 export async function RankingUser(
@@ -118,17 +120,24 @@ export async function RankingVideo(
   { req, res, prisma }: RouteParams<ResRankingVideo>,
   sortBy: (a: VideoWithRequest, b: VideoWithRequest) => number
 ) {
-  const { lang, start, end, order, goalExpr } = req.query;
+  const { lang, start, end, order, goalExpr, channelId } = req.query;
   const goalObject = goalExpr ? JSON.parse(goalExpr as string) : undefined;
   if (!start && !end) {
     return res
       .status(400)
       .json({ error: SubErrorType.FormValidation, message: "FormInvalidated" });
   }
-  let where: any = {};
+  const where: any = {};
   const isLang = lang && lang !== "All Lang";
   if (isLang) {
-    where = { lang: lang as string };
+    where.lang = lang as string;
+  }
+  if (channelId) {
+    where.video = {
+      youtubeVideo: {
+        channelId: channelId as string,
+      },
+    };
   }
   const requests = await prisma.request.findMany({
     where,
@@ -173,4 +182,58 @@ export async function RankingVideo(
       .json(videos.reverse().slice(Number(start), Number(end)));
   }
   return res.status(200).json(videos.slice(Number(start), Number(end)));
+}
+
+export async function RankingChannel(
+  { req, res, prisma }: RouteParams<ResRankingChannel>,
+  sortBy: (a: ChannelWithCount, b: ChannelWithCount) => number
+) {
+  const { start, end, order } = req.query;
+  if (!start && !end) {
+    return res
+      .status(400)
+      .json({ error: SubErrorType.FormValidation, message: "FormInvalidated" });
+  }
+  const channels = await prisma.youtubeChannel.findMany({
+    include: {
+      videos: {
+        include: {
+          video: { include: { requests: true, subs: true } },
+        },
+      },
+    },
+  });
+  if (!channels) {
+    return res
+      .status(404)
+      .json({ error: SubErrorType.NotFound, message: "RankingChannel" });
+  }
+  const newChannels = channels
+    .map((channel) => ({
+      id: channel.id,
+      title: channel.title,
+      description: channel.description,
+      thumbnailUrl: channel.thumbnailUrl,
+      subscriberCount: channel.subscriberCount,
+      channelUrl: channel.channelUrl,
+      bannerUrl: channel.bannerUrl,
+      _count: {
+        subs: channel.videos.reduce(
+          (prev, curr) => prev + (curr.video?.subs.length ?? 0),
+          0
+        ),
+        requests: channel.videos.reduce(
+          (prev, curr) => prev + (curr.video?.requests.length ?? 0),
+          0
+        ),
+      },
+    }))
+    .filter((channel) => channel._count.requests > 0)
+    .sort(sortBy);
+  if ((order as string) === "asc") {
+    return res
+      .status(200)
+      .json(newChannels.reverse().slice(Number(start), Number(end)));
+  }
+  return res.status(200).json(newChannels.slice(Number(start), Number(end)));
 }
