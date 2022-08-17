@@ -7,6 +7,7 @@ import {
   Avatar,
   Link,
   Box,
+  Skeleton,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
@@ -40,6 +41,8 @@ export default function VideoCard({
   children,
 }: Props) {
   const [hover, setHover] = useState<boolean>(false);
+  const [loaded, setLoaded] = useState<boolean>(false);
+
   return (
     <Stack
       w="300px"
@@ -54,13 +57,16 @@ export default function VideoCard({
     >
       <Box position="relative">
         <Link href={videoUrl}>
-          <Image
-            src={imageUrl}
-            alt="thumbnail"
-            cursor="pointer"
-            maxH="169px"
-            w="100%"
-          />
+          <Skeleton isLoaded={loaded}>
+            <Image
+              src={imageUrl}
+              alt="thumbnail"
+              cursor="pointer"
+              maxH="169px"
+              w="100%"
+              onLoad={() => setLoaded(true)}
+            />
+          </Skeleton>
         </Link>
         <Text
           bg="black"
