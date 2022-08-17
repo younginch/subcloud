@@ -1,0 +1,19 @@
+{
+  "request_num_high": "Requests(highest)",
+  "request_num_low": "Requests(lowest)",
+  "request_point_high": "Requests points(highest)",
+  "request_point_low": "Requests points(lowest)",
+  "gauge_high": "Subtitle gauge(highest)",
+  "gauge_low": "Subtitle gauge(lowest)",
+  "title_channel_ko": "",
+  "title_channel_other": "Channel ranking of ",
+  "funding_num_high": "Ongoing fundings(more)",
+  "funding_num_low": "Ongoing fundings(less)",
+  "sub_num_highest": "Subtitles(more)",
+  "sub_num_lowest": "Subtitles(less)",
+  "subscriber_num_highest": "Subscribers(more)",
+  "subscriber_num_lowest": "Subscribers(less)",
+  "channel_component_subscriber": "Subscribers ",
+  "channel_component_subtitle": "Subtitles",
+  "channel_component_funding": "Ongoing fundings"
+}

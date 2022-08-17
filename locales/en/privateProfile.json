@@ -10,7 +10,7 @@
   "dashboard": "Dashboard",
   "dash_public_profile": "My public profile",
   "dashboard_head_request": "Total subtitle requests",
-  "dashboard_head_views": "Total views",
+  "dashboard_head_views": "total_views",
   "dashboard_head_points": "Total points",
   "dash_activityHeader_view": "View all",
   "dash_activityHeader_charge": "Charge points",

@@ -22,7 +22,7 @@
   "userRatingComponent_user": "From all users",
   "userActivity_stat": "Subtitle Production Statistics",
   "userActivity_sub": "Number of subtitles",
-  "userActivity_view": "Total views",
+  "userActivity_view": "total_views",
   "userActivity_length": "Viewing time",
   "userActivity_subscriber": "Subscribers"
 }

@@ -60,7 +60,7 @@ export default function Features() {
         fontSize={{ base: "18px", md: "2xl" }}
         wordBreak="keep-all"
       >
-        SubCloud가 제공하는 다양한 기능들을 사용하세요
+        {t("tools")}
       </Text>
       <SimpleGrid
         columns={{ base: 1, md: 2 }}
