@@ -3,6 +3,7 @@ import axios from "axios";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
 import {
   PageOptions,
   RankQueryData,
@@ -14,18 +15,19 @@ import RequestRankCard from "../../../components/ranking/requestRankCard";
 import { PointGoal, GoalExpr } from "../../../utils/etc";
 
 export default function VideoRankingPage() {
+  const { t } = useTranslation("rankings");
   const [lang, setLang] = useState<string>();
   const [sortOption, setSortOption] = useState({
-    name: "자막 게이지 (높은 순)",
+    name: t("gauge_high"),
     sortBy: { by: "gauge", order: true },
   });
   const sortOptionArray = [
-    { name: "요청수 (높은 순)", sortBy: { by: "request", order: true } },
-    { name: "요청수 (낮은 순)", sortBy: { by: "request", order: false } },
-    { name: "요청 포인트 (높은 순)", sortBy: { by: "point", order: true } },
-    { name: "요청 포인트 (낮은 순)", sortBy: { by: "point", order: false } },
-    { name: "자막 게이지 (높은 순)", sortBy: { by: "gauge", order: true } },
-    { name: "자막 게이지 (낮은 순)", sortBy: { by: "gauge", order: false } },
+    { name: t("requests_high"), sortBy: { by: "request", order: true } },
+    { name: t("requests_low"), sortBy: { by: "request", order: false } },
+    { name: t("points_most"), sortBy: { by: "point", order: true } },
+    { name: t("points_least"), sortBy: { by: "point", order: false } },
+    { name: t("gauge_high"), sortBy: { by: "gauge", order: true } },
+    { name: t("gauge_low"), sortBy: { by: "gauge", order: false } },
   ];
   const pageSize = 15;
   const fetcher = async (url: string) => {

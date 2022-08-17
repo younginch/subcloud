@@ -2,6 +2,7 @@ import { Box, Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
+import useTranslation from "next-translate/useTranslation";
 import {
   PageOptions,
   RankQueryData,
@@ -12,21 +13,28 @@ import GeneralRanking from "../../components/ranking/generalRanking";
 import ChannelCard from "../../components/channelCard";
 
 export default function ChannelRankingPage() {
+  const { t } = useTranslation("channel");
   const [sortOption, setSortOption] = useState({
-    name: "진행중인 펀딩 수 (많은 순)",
+    name: t("funding_num_high"),
     sortBy: { by: "request", order: true },
   });
   const sortOptionArray = [
-    { name: "자막 수 (많은 순)", sortBy: { by: "sub", order: true } },
-    { name: "자막 수 (적은 순)", sortBy: { by: "sub", order: false } },
-    { name: "구독자 수 (많은 순)", sortBy: { by: "subscriber", order: true } },
-    { name: "구독자 수 (적은 순)", sortBy: { by: "subscriber", order: false } },
+    { name: t("sub_num_highest"), sortBy: { by: "sub", order: true } },
+    { name: t("sub_num_lowest"), sortBy: { by: "sub", order: false } },
     {
-      name: "진행중인 펀딩 수 (많은 순)",
+      name: t("subscriber_num_highest"),
+      sortBy: { by: "subscriber", order: true },
+    },
+    {
+      name: t("subscriber_num_lowest"),
+      sortBy: { by: "subscriber", order: false },
+    },
+    {
+      name: t("funding_num_high"),
       sortBy: { by: "request", order: true },
     },
     {
-      name: "진행중인 펀딩 수 (적은 순)",
+      name: t("funding_num_low"),
       sortBy: { by: "request", order: false },
     },
   ];

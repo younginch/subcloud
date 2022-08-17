@@ -3,6 +3,7 @@ import { Box, Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
 import {
   PageOptions,
   RankQueryData,
@@ -13,19 +14,20 @@ import VideoRankCard from "../../../components/ranking/videoRankCard";
 import GeneralRanking from "../../../components/ranking/generalRanking";
 
 export default function SubRankingPage() {
+  const { t } = useTranslation("rankings");
   const [isPc] = useMediaQuery("(min-width: 950px)");
   const router = useRouter();
 
   const [lang, setLang] = useState<string>();
   const [sortOption, setSortOption] = useState({
-    name: "조회수 (높은 순)",
+    name: t("view_many"),
     sortBy: { by: "view", order: true },
   });
   const sortOptionArray = [
-    { name: "조회수 (높은 순)", sortBy: { by: "view", order: true } },
-    { name: "조회수 (낮은 순)", sortBy: { by: "view", order: false } },
-    { name: "업로드 날짜 (최신 순)", sortBy: { by: "date", order: true } },
-    { name: "업로드 날짜 (오래된 순)", sortBy: { by: "date", order: false } },
+    { name: t("view_many"), sortBy: { by: "view", order: true } },
+    { name: t("view_less"), sortBy: { by: "view", order: false } },
+    { name: t("upload_recent"), sortBy: { by: "date", order: true } },
+    { name: t("upload_old"), sortBy: { by: "date", order: false } },
   ];
 
   const pageSize = isPc ? 20 : 8;
