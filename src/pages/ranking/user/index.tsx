@@ -35,8 +35,8 @@ export default function UserRankingPage() {
   const sortOptionArray = [
     { name: t("total_views_high"), sortBy: { by: "view", order: true } },
     { name: t("total_views_low"), sortBy: { by: "view", order: false } },
-    { name: "유저 평점 (높은 순)", sortBy: { by: "rating", order: true } },
-    { name: "유저 평점 (낮은 순)", sortBy: { by: "rating", order: false } },
+    { name: t("rating_high"), sortBy: { by: "rating", order: true } },
+    { name: t("rating_low"), sortBy: { by: "rating", order: false } },
     { name: t("total_subs_high"), sortBy: { by: "sub", order: true } },
     { name: t("total_subs_low"), sortBy: { by: "sub", order: false } },
   ];

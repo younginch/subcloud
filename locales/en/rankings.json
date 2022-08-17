@@ -14,6 +14,8 @@
   "total_subs_low": "Total subs(lowest)",
   "subtitle_language": "Language",
   "rating": "Rating",
+  "rating_high": "Rating(highest)",
+  "rating_low": "Rating(lowest)",
   "duration": "Video length",
   "requests": "Requests",
   "requests_high": "Requests(most)",

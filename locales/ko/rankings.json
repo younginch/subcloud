@@ -14,6 +14,8 @@
   "total_subs_low": "총 자막수(낮은 순)",
   "subtitle_language": "자막 언어",
   "rating": "평가",
+  "rating_high": "유저 평점 (높은 순)",
+  "rating_low": "유저 평점 (낮은 순)",
   "duration": "영상길이",
   "requests": "요청 수",
   "requests_high": "요청 수(높은 순)",

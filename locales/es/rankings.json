@@ -14,6 +14,8 @@
   "total_subs_low": "total_subs(El mas bajo)",
   "subtitle_language": "Idioma",
   "rating": "Calificación",
+  "rating_high": "Calificación(Mas alto)",
+  "rating_low": "Calificación(El mas bajo)",
   "duration": "Duración",
   "requests": "Solicituds",
   "requests_high": "Solicituds(muchos)",
