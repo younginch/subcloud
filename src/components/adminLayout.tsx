@@ -15,10 +15,16 @@ import {
   SidebarFooter,
 } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
-import { MdAttachMoney } from "react-icons/md";
+import { MdAttachMoney, MdOutlineAnnouncement } from "react-icons/md";
 import { useState } from "react";
-import { RiAdminFill, RiSlideshow3Fill } from "react-icons/ri";
+import { RiAdminFill } from "react-icons/ri";
 import { FaDatabase, FaUserCog } from "react-icons/fa";
+import {
+  AiFillFileText,
+  AiFillFire,
+  AiTwotoneExperiment,
+} from "react-icons/ai";
+import { IoSend } from "react-icons/io5";
 import { SubcloudIcon } from "./icons/customIcons";
 import { PageOptions } from "../utils/types";
 import MyMenuItem from "./user/my/myMenuItem";
@@ -38,14 +44,19 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     },
     { icon: <FaUserCog />, href: "/admin/user", text: "사용자" },
     { icon: <MdAttachMoney />, href: "/admin/settle", text: "수익정산" },
-    { icon: <RiSlideshow3Fill />, href: "/admin/example", text: "예시영상" },
+    { icon: <AiTwotoneExperiment />, href: "/admin/example", text: "예시영상" },
     {
-      icon: <RiSlideshow3Fill />,
+      icon: <IoSend />,
       href: "/admin/withdraw",
       text: "포인트 송금",
     },
-    { icon: <RiSlideshow3Fill />, href: "/admin/notice", text: "공지하기" },
-    { icon: <RiSlideshow3Fill />, href: "/admin/file", text: "파일" },
+    {
+      icon: <MdOutlineAnnouncement />,
+      href: "/admin/notice",
+      text: "공지하기",
+    },
+    { icon: <AiFillFileText />, href: "/admin/file", text: "파일" },
+    { icon: <AiFillFire />, href: "/admin/request", text: "요청관리" },
   ];
   return (
     <HStack h="100%" overflowX="auto">
