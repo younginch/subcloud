@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import { WarningTwoIcon } from "@chakra-ui/icons";
 import {
   Text,
@@ -18,23 +19,30 @@ import {
 import { Role } from "@prisma/client";
 import axios from "axios";
 import { useState } from "react";
-import { PageOptions } from "../../utils/types";
+import { PageOptions, ResVideo } from "../../utils/types";
 
 export default function AdminRequest() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [userList, setUserList] = useState<string[]>();
-  const [videoList, setVideoList] = useState<string[]>();
+  const [videoList, setVideoList] = useState<string[]>([]);
   const [countList, setCountList] = useState<number[]>([]);
-  const [langList, setLangList] = useState<string[]>();
+  const [langList, setLangList] = useState<string[]>([]);
 
   const excuteRequest = async () => {
-    const videos = await axios.post("/api/admin/request", {
-      userList,
-      videoList,
-      countList,
-      langList,
-    });
-    console.log(videos);
+    if (countList.length !== langList.length) {
+      console.log(countList, langList);
+      return;
+    }
+    // eslint-disable-next-line no-restricted-syntax
+    for (const [i, url] of videoList.entries()) {
+      const video = await axios.post<ResVideo>("/api/user/video", { url });
+      await axios.post("/api/admin/request", {
+        userList,
+        videoId: video.data.videoId,
+        count: countList[i],
+        language: langList[i],
+      });
+    }
   };
 
   return (

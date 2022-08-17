@@ -90,7 +90,7 @@ async function addYoutubeInfo(videoId: string): Promise<ResVideo> {
         description: channelData.snippet.description,
         thumbnailUrl: channelData.snippet.thumbnails.medium.url,
         subscriberCount: Number.parseInt(
-          channelData.statistics.subscriberCount,
+          channelData.statistics.subscriberCount ?? 0,
           10
         ),
         channelUrl: `https://www.youtube.com/channel/${channelId}`,
@@ -106,8 +106,8 @@ async function addYoutubeInfo(videoId: string): Promise<ResVideo> {
       title: video.snippet.title,
       description: video.snippet.description,
       duration: youtubeDurationToSeconds(video.contentDetails.duration),
-      viewCount: Number.parseInt(video.statistics.viewCount, 10),
-      likeCount: Number.parseInt(video.statistics.likeCount, 10),
+      viewCount: Number.parseInt(video.statistics.viewCount ?? 0, 10),
+      likeCount: Number.parseInt(video.statistics.likeCount ?? 0, 10),
     },
   });
   await prisma.video.update({
