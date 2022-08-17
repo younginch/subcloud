@@ -26,7 +26,7 @@ export default function RequestMarquee({ videos }: Props) {
     <Stack
       spacing={10}
       p="50px 12px 80px 12px"
-      bg={useColorModeValue("blue.50", "gray.900")}
+      bg={useColorModeValue("none", "gray.900")}
       mt="50px !important"
       w="100%"
     >
