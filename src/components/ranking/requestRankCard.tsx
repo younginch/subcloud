@@ -1,17 +1,10 @@
-import {
-  Stack,
-  Text,
-  Badge,
-  HStack,
-  Spacer,
-  Button,
-  Link,
-} from "@chakra-ui/react";
+import { Stack, Text, Badge, HStack, Spacer, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import ISO6391 from "iso-639-1";
 import duration from "dayjs/plugin/duration";
 import { GoCloudUpload } from "react-icons/go";
 import { FiSend } from "react-icons/fi";
+import { useRouter } from "next/router";
 import VideoCard from "../videoCard";
 import PointGauge from "../pointGauge";
 
@@ -48,18 +41,29 @@ export default function RequestRankCard({
   channelUrl,
   lang,
 }: Props) {
+  const router = useRouter();
   const hoverComponent = (
     <Stack position="absolute" left="10px" top="5px">
-      <Link href={`/video/${serviceId}/${videoId}/request/create?lang=${lang}`}>
-        <Button leftIcon={<FiSend />} colorScheme="blue">
-          요청하기
-        </Button>
-      </Link>
-      <Link href={`/video/${serviceId}/${videoId}/sub/create?lang=${lang}`}>
-        <Button leftIcon={<GoCloudUpload />} colorScheme="purple">
-          업로드하기
-        </Button>
-      </Link>
+      <Button
+        leftIcon={<FiSend />}
+        colorScheme="blue"
+        onClick={() =>
+          router.push(
+            `/video/${serviceId}/${videoId}/request/create?lang=${lang}`
+          )
+        }
+      >
+        요청하기
+      </Button>
+      <Button
+        leftIcon={<GoCloudUpload />}
+        colorScheme="purple"
+        onClick={() =>
+          router.push(`/video/${serviceId}/${videoId}/sub/create?lang=${lang}`)
+        }
+      >
+        업로드하기
+      </Button>
     </Stack>
   );
   return (
