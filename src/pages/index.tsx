@@ -6,7 +6,6 @@ import {
   Button,
   Center,
   Heading,
-  HStack,
   Spacer,
   Stack,
   Text,
@@ -74,11 +73,12 @@ export default function Home() {
           >
             {t("subcloud_aim")}
           </Text>
-          <HStack
+          <Stack
+            w="100%"
+            direction={{ base: "column", sm: "row" }}
             spacing={{ base: 0, sm: 10 }}
-            mb={{ base: "3rem !important", sm: 0 }}
-            flexWrap="wrap"
-            pt={{ base: 0, md: 10 }}
+            mb={{ base: "4rem !important", sm: 0 }}
+            pt={{ base: 0, md: 6 }}
             color="white"
           >
             <NextLink href={getAuthLink(status, "/video/create?next=request")}>
@@ -86,6 +86,7 @@ export default function Home() {
                 w={{ base: "100%", sm: "auto" }}
                 h={10}
                 p={3}
+                mb={{ base: 3, sm: 0 }}
                 rounded="md"
                 bgGradient="linear(to-l, #008686,#3386a0)"
                 _hover={{
@@ -101,7 +102,6 @@ export default function Home() {
                 w={{ base: "100%", sm: "auto" }}
                 h={10}
                 rounded="md"
-                mb={{ base: 2, sm: 0 }}
                 bgGradient="linear(to-l, #0ea5e9,#25c3cb)"
                 _hover={{
                   bgGradient: "linear(to-l, #25a3cb,#0fcdb9)",
@@ -112,7 +112,7 @@ export default function Home() {
               </Button>
             </NextLink>
             <Spacer />
-          </HStack>
+          </Stack>
         </Stack>
         <Box
           ml={{ base: 0, md: 5 }}

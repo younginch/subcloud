@@ -25,7 +25,10 @@ async function UserGet({
     });
     return res.status(200).json(user);
   }
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({
+    where: { NOT: { role: Role.Test } },
+    orderBy: { createdAt: "desc" },
+  });
   return res.json(users);
 }
 

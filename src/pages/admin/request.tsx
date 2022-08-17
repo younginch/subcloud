@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import { WarningTwoIcon } from "@chakra-ui/icons";
 import {
   Text,
@@ -16,18 +17,32 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 import { Role } from "@prisma/client";
+import axios from "axios";
 import { useState } from "react";
-import { PageOptions } from "../../utils/types";
+import { PageOptions, ResVideo } from "../../utils/types";
 
 export default function AdminRequest() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [userList, setUserList] = useState<string[]>();
-  const [videoList, setVideoList] = useState<string[]>();
+  const [videoList, setVideoList] = useState<string[]>([]);
   const [countList, setCountList] = useState<number[]>([]);
-  const [langList, setLangList] = useState<string[]>();
+  const [langList, setLangList] = useState<string[]>([]);
 
-  const excuteRequest = () => {
-    console.log(userList, videoList, countList, langList);
+  const excuteRequest = async () => {
+    if (countList.length !== langList.length) {
+      console.log(countList, langList);
+      return;
+    }
+    // eslint-disable-next-line no-restricted-syntax
+    for (const [i, url] of videoList.entries()) {
+      const video = await axios.post<ResVideo>("/api/user/video", { url });
+      await axios.post("/api/admin/request", {
+        userList,
+        videoId: video.data.videoId,
+        count: countList[i],
+        language: langList[i],
+      });
+    }
   };
 
   return (
@@ -93,7 +108,6 @@ export default function AdminRequest() {
                 영상에 요청을 진행하며, <br />총 요청 횟수는{" "}
                 {countList.reduce((sum, currValue) => sum + currValue, 0)}
                 회 입니다. <br />
-                들어가는 총 포인트는 1000P입니다.
               </Text>
             </Stack>
           </ModalBody>
