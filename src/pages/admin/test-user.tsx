@@ -53,4 +53,5 @@ export default function AdminTestUser() {
 
 AdminTestUser.options = {
   role: Role.Admin,
+  hideTitle: true,
 } as PageOptions;
