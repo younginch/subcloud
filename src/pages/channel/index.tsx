@@ -82,7 +82,6 @@ export default function ChannelRankingPage() {
     "(min-width: 1700px)",
     "(min-width: 2000px)",
   ]);
-  console.log(channels);
 
   return (
     <Box
