@@ -118,7 +118,7 @@ export default function SubRankingPage() {
                     : "no title"
                 }
                 videoUrl={sub.video.url}
-                imageUrl={`https://i.ytimg.com/vi/${sub.video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-jCivJl2_ZKjT2GONS3-JWiYk1w`}
+                imageUrl={`http://img.youtube.com/vi/${sub.video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
                 viewCount={sub.views}
                 channelName={sub.video.youtubeVideo?.channel.title ?? "no name"}
                 channelImageUrl={

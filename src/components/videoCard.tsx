@@ -53,14 +53,15 @@ export default function VideoCard({
       boxShadow="base"
       position="relative"
     >
-      <Box>
+      <Box h="169px" maxH="169px" overflow="hidden">
         <Link href={videoUrl}>
           <Skeleton isLoaded={loaded} w="100%" h="169px">
             <Image
               src={imageUrl}
               alt="thumbnail"
               cursor="pointer"
-              maxH="169px"
+              h="228px"
+              mt="-29px"
               w="100%"
               onLoad={() => setLoaded(true)}
             />

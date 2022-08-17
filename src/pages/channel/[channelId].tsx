@@ -119,7 +119,7 @@ export default function ChannelDetail() {
                 videoUrl={video.url}
                 serviceId={video.serviceId}
                 videoId={video.videoId}
-                imageUrl={`https://i.ytimg.com/vi/${video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-jCivJl2_ZKjT2GONS3-JWiYk1w`}
+                imageUrl={`http://img.youtube.com/vi/${video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
                 requestCount={video._count.requests}
                 requestPoint={video._count.points}
                 requestGoal={
