@@ -11,8 +11,8 @@ async function getTestUsers({ res, prisma }: RouteParams<User[]>) {
 }
 
 async function createTestUsers({ req, res, prisma }: RouteParams<number>) {
-  const min = Number(req.query.min);
-  const max = Number(req.query.max);
+  const min = Number(req.query.start);
+  const max = Number(req.query.end);
   const range = Array.from({ length: max - min + 1 }, (_, k) => k + min);
 
   const array = range.map((id) => ({
@@ -26,22 +26,15 @@ async function createTestUsers({ req, res, prisma }: RouteParams<number>) {
 }
 
 async function deleteTestUsers({ req, res, prisma }: RouteParams<number>) {
-  await prisma.user.findMany({
-    where: {
-      id: {
-        in: req.body.ids,
-      },
-    },
+  const min = Number(req.query.start);
+  const max = Number(req.query.end);
+  const range = Array.from({ length: max - min + 1 }, (_, k) => k + min);
+
+  const emails = range.map((id) => `test-${id}@younginch.com`);
+  const users = await prisma.user.deleteMany({
+    where: { email: { in: emails } },
   });
-  // TODO: check if the user is a test user
-  const deletedUsers = await prisma.user.deleteMany({
-    where: {
-      id: {
-        in: req.body.ids,
-      },
-    },
-  });
-  return res.status(200).json(deletedUsers.count);
+  return res.status(200).json(users.count);
 }
 
 export default handleRoute(
