@@ -23,7 +23,7 @@ export default function AdminRequest() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [userList, setUserList] = useState<string[]>();
   const [videoList, setVideoList] = useState<string[]>();
-  const [countList, setCountList] = useState<number[]>();
+  const [countList, setCountList] = useState<number[]>([]);
 
   const excuteRequest = () => {
     console.log(userList, videoList, countList);
@@ -79,8 +79,9 @@ export default function AdminRequest() {
               <Text>요청을 진행합니다</Text>
               <Text>
                 총 {userList?.length}명의 유저들이 {videoList?.length}개의
-                영상에 요청을 진행하며, <br />총 요청 횟수는 500회 입니다.{" "}
-                <br />
+                영상에 요청을 진행하며, <br />총 요청 횟수는{" "}
+                {countList.reduce((sum, currValue) => sum + currValue, 0)}
+                회 입니다. <br />
                 들어가는 총 포인트는 1000P입니다.
               </Text>
             </Stack>
