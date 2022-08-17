@@ -24,9 +24,10 @@ export default function AdminRequest() {
   const [userList, setUserList] = useState<string[]>();
   const [videoList, setVideoList] = useState<string[]>();
   const [countList, setCountList] = useState<number[]>([]);
+  const [langList, setLangList] = useState<string[]>();
 
   const excuteRequest = () => {
-    console.log(userList, videoList, countList);
+    console.log(userList, videoList, countList, langList);
   };
 
   return (
@@ -58,6 +59,16 @@ export default function AdminRequest() {
             onChange={(e) =>
               setCountList(e.target.value.split("\n").map((x) => Number(x)))
             }
+          />
+        </Stack>
+        <Stack>
+          <Heading fontSize="2xl" w="400px">
+            영상들의 요청 언어 입력
+          </Heading>
+          <Textarea
+            placeholder="영상들의 요청 언어를 순서 맞춰서 한줄에 하나씩 입력"
+            h="200px"
+            onChange={(e) => setLangList(e.target.value.split("\n"))}
           />
         </Stack>
       </HStack>
