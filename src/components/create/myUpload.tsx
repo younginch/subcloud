@@ -17,7 +17,6 @@ function MyUploadPanel({ subs }: { subs: ResSubSearch | undefined }) {
     "(min-width: 1700px)",
     "(min-width: 2000px)",
   ]);
-
   return (
     <Grid
       templateColumns={`repeat(${
@@ -41,6 +40,7 @@ function MyUploadPanel({ subs }: { subs: ResSubSearch | undefined }) {
             lang={ISO6391.getNativeName(sub.lang)}
             status={sub.status}
             viewCount={sub.views}
+            uploadDate={sub.createdAt}
             subId={sub.id}
             editorFileId={sub.editorFile?.id}
           />

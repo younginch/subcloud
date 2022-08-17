@@ -117,6 +117,8 @@ export default function ChannelDetail() {
                   video.youtubeVideo ? video.youtubeVideo.title : "no title"
                 }
                 videoUrl={video.url}
+                serviceId={video.serviceId}
+                videoId={video.videoId}
                 imageUrl={`https://i.ytimg.com/vi/${video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-jCivJl2_ZKjT2GONS3-JWiYk1w`}
                 requestCount={video._count.requests}
                 requestPoint={video._count.points}

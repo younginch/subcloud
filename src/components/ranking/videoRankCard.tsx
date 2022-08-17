@@ -31,6 +31,21 @@ export default function VideoRankCard({
   lang,
   uploadDate,
 }: Props) {
+  const uploadDateHover = uploadDate && (
+    <Text
+      bg="black"
+      color="white"
+      w="fit-content"
+      p="1px 4px 1px 3px"
+      borderRadius="5px"
+      position="absolute"
+      left="6px"
+      top="128px"
+    >
+      자막 업로드: {dayjs(uploadDate).format("YYYY-MM-DD")}
+    </Text>
+  );
+
   return (
     <VideoCard
       duration={duration}
@@ -40,7 +55,7 @@ export default function VideoRankCard({
       channelName={channelName}
       channelImageUrl={channelImageUrl}
       channelUrl={channelUrl}
-      uploadDate={uploadDate}
+      hoverComponent={uploadDateHover}
     >
       <Stack pl="10px">
         <HStack>

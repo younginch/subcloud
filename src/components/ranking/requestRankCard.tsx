@@ -1,7 +1,10 @@
-import { Stack, Text, Badge, HStack, Spacer } from "@chakra-ui/react";
+import { Stack, Text, Badge, HStack, Spacer, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import ISO6391 from "iso-639-1";
 import duration from "dayjs/plugin/duration";
+import { GoCloudUpload } from "react-icons/go";
+import { FiSend } from "react-icons/fi";
+import { useRouter } from "next/router";
 import VideoCard from "../videoCard";
 import PointGauge from "../pointGauge";
 
@@ -10,6 +13,8 @@ dayjs.extend(duration);
 type Props = {
   duration: number;
   videoName: string;
+  serviceId: string;
+  videoId: string;
   videoUrl: string;
   imageUrl: string;
   requestCount: number;
@@ -19,12 +24,13 @@ type Props = {
   channelImageUrl: string;
   channelUrl: string;
   lang: string;
-  uploadDate?: Date;
 };
 
 export default function RequestRankCard({
   duration,
   videoName,
+  serviceId,
+  videoId,
   videoUrl,
   imageUrl,
   requestCount,
@@ -34,8 +40,32 @@ export default function RequestRankCard({
   channelImageUrl,
   channelUrl,
   lang,
-  uploadDate,
 }: Props) {
+  const router = useRouter();
+  const hoverComponent = (
+    <Stack position="absolute" left="10px" top="5px">
+      <Button
+        leftIcon={<FiSend />}
+        colorScheme="blue"
+        onClick={() =>
+          router.push(
+            `/video/${serviceId}/${videoId}/request/create?lang=${lang}`
+          )
+        }
+      >
+        요청하기
+      </Button>
+      <Button
+        leftIcon={<GoCloudUpload />}
+        colorScheme="purple"
+        onClick={() =>
+          router.push(`/video/${serviceId}/${videoId}/sub/create?lang=${lang}`)
+        }
+      >
+        업로드하기
+      </Button>
+    </Stack>
+  );
   return (
     <VideoCard
       duration={duration}
@@ -45,7 +75,7 @@ export default function RequestRankCard({
       channelName={channelName}
       channelImageUrl={channelImageUrl}
       channelUrl={channelUrl}
-      uploadDate={uploadDate}
+      hoverComponent={hoverComponent}
     >
       <Stack pl="10px" pr="10px">
         <HStack>

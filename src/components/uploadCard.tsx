@@ -11,8 +11,12 @@ import {
 import { SubStatus } from "@prisma/client";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
+import duration from "dayjs/plugin/duration";
+import dayjs from "dayjs";
 import ReviewStatusBadge from "./badges/reviewStatusBadge";
 import VideoCard from "./videoCard";
+
+dayjs.extend(duration);
 
 type Props = {
   title: string;
@@ -22,6 +26,7 @@ type Props = {
   lang: string;
   status: SubStatus;
   viewCount: number;
+  uploadDate: Date;
   subId: string;
   editorFileId?: string;
 };
@@ -34,10 +39,25 @@ export default function UploadCard({
   lang,
   status,
   viewCount,
+  uploadDate,
   subId,
   editorFileId,
 }: Props) {
   const { t } = useTranslation("uploadSub");
+  const uploadDateHover = (
+    <Text
+      bg="black"
+      color="white"
+      w="fit-content"
+      p="1px 4px 1px 3px"
+      borderRadius="5px"
+      position="absolute"
+      left="6px"
+      top="128px"
+    >
+      자막 업로드: {dayjs(uploadDate).format("YYYY-MM-DD")}
+    </Text>
+  );
 
   return (
     <VideoCard
@@ -45,8 +65,8 @@ export default function UploadCard({
       videoName={title}
       videoUrl={link}
       imageUrl={thumbnail}
-      uploadDate={new Date()}
       padding="0px"
+      hoverComponent={uploadDateHover}
     >
       <HStack pl="10px">
         <Stack>
