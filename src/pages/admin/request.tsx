@@ -30,7 +30,6 @@ export default function AdminRequest() {
 
   const excuteRequest = async () => {
     if (countList.length !== langList.length) {
-      console.log(countList, langList);
       return;
     }
     // eslint-disable-next-line no-restricted-syntax
