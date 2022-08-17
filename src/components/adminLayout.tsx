@@ -57,6 +57,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     },
     { icon: <AiFillFileText />, href: "/admin/file", text: "파일" },
     { icon: <AiFillFire />, href: "/admin/request", text: "요청관리" },
+    {
+      icon: <AiFillFire />,
+      href: "/admin/test-user",
+      text: "테스트 유저 관리",
+    },
   ];
   return (
     <HStack h="100%" overflowX="auto">
