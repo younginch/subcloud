@@ -152,6 +152,7 @@ describe("Components", () => {
         href="google.com"
         onRemove={jest.fn()}
         id="hello"
+        isRead={false}
       />
     );
   });
@@ -166,6 +167,7 @@ describe("Components", () => {
         href="google.com"
         onRemove={jest.fn()}
         id="hello"
+        isRead={false}
       />
     );
   });
@@ -180,6 +182,7 @@ describe("Components", () => {
         href="google.com"
         onRemove={jest.fn()}
         id="hello"
+        isRead
       />
     );
   });
@@ -194,6 +197,7 @@ describe("Components", () => {
         href="google.com"
         onRemove={jest.fn()}
         id="hello"
+        isRead={false}
       />
     );
   });
@@ -208,6 +212,7 @@ describe("Components", () => {
         href="google.com"
         onRemove={jest.fn()}
         id="hello"
+        isRead
       />
     );
   });
@@ -301,6 +306,8 @@ describe("Components", () => {
         status={SubStatus.Approved}
         viewCount={100}
         editorFileId="1"
+        uploadDate={new Date()}
+        subId="dsf"
       />
     );
   });

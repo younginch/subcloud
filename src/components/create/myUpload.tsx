@@ -36,7 +36,7 @@ function MyUploadPanel({ subs }: { subs: ResSubSearch | undefined }) {
             title={sub.video.youtubeVideo?.title ?? ""}
             time={sub.video.youtubeVideo?.duration ?? 0}
             link={sub.video.url ?? ""}
-            thumbnail={`https://i.ytimg.com/vi/${sub.video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
+            thumbnail={`http://img.youtube.com/vi/${sub.video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
             lang={ISO6391.getNativeName(sub.lang)}
             status={sub.status}
             viewCount={sub.views}
