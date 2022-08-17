@@ -44,7 +44,7 @@ function MyRequestPanel({
                 title={request.video.youtubeVideo?.title ?? ""}
                 time={request.video.youtubeVideo?.duration ?? 0}
                 link={request.video.url ?? ""}
-                thumbnail={`https://i.ytimg.com/vi/${request.video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
+                thumbnail={`http://img.youtube.com/vi/${request.video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
                 requestLang={request.lang}
                 requestStatus={request.status}
                 serviceId={request.video.serviceId}
