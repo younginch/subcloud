@@ -27,6 +27,7 @@ async function UserGet({
   }
   const users = await prisma.user.findMany({
     where: { NOT: { role: Role.Test } },
+    orderBy: { createdAt: "desc" },
   });
   return res.json(users);
 }

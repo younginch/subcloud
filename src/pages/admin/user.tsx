@@ -67,7 +67,7 @@ function DetailButton({ id }: { id: string }) {
 
   return (
     <>
-      <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
+      <Button ref={btnRef} colorScheme="teal" onClick={onOpen} size="sm">
         Open
       </Button>
       <Drawer
@@ -276,7 +276,7 @@ function UpdateButton({ user, mutate }: UpdateButtonProps) {
 
   return (
     <>
-      <Button colorScheme="blue" onClick={onOpen}>
+      <Button colorScheme="blue" onClick={onOpen} size="sm">
         수정
       </Button>
       <Drawer
@@ -376,7 +376,7 @@ function DeleteButton({ id }: DeleteButtonProps) {
 
   return (
     <>
-      <Button colorScheme="red" onClick={onDialogOpen}>
+      <Button colorScheme="red" onClick={onDialogOpen} size="sm">
         삭제
       </Button>
       <AlertDialog
@@ -466,12 +466,12 @@ export default function AdminUser() {
                 <Td>{user.point}</Td>
                 <Td>{user.createdAt.toString()}</Td>
                 <Td>{user.updatedAt?.toString()}</Td>
-                <Td>
+                <Td p={0}>
                   <DetailButton id={user.id} />
                   <UpdateButton user={user} mutate={mutate} />
                   <DeleteButton id={user.id} />
                   <CopyToClipboard text={user.id}>
-                    <Button>Copy ID</Button>
+                    <Button size="sm">Copy ID</Button>
                   </CopyToClipboard>
                 </Td>
               </Tr>
