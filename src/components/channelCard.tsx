@@ -58,7 +58,12 @@ export default function ChannelCard({
                 w="100%"
               />
             ) : (
-              <Box w="300px" h="50px" bg="gray.500" />
+              <Box
+                backgroundImage={thumbnailUrl}
+                backgroundSize="cover"
+                w="100%"
+                h="50px"
+              />
             )}
             <Avatar
               size="lg"
