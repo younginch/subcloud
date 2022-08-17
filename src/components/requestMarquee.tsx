@@ -53,7 +53,7 @@ export default function RequestMarquee({ videos }: Props) {
             <RequestCard
               title={video.youtubeVideo?.title ?? ""}
               time={video.youtubeVideo?.duration ?? 0}
-              thumbnail={`https://i.ytimg.com/vi/${video.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
+              thumbnail={`http://img.youtube.com/vi/${video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
               link={video.url}
               requestLang={video.langs}
               requestCount={video._count.requests}
