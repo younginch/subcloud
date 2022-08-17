@@ -21,7 +21,7 @@ type Props = {
   thumbnailUrl: string;
   subscriberCount: number;
   channelUrl: string;
-  bannerUrl: string;
+  bannerUrl?: string;
   subCount: number;
   requestCount: number;
 };
@@ -50,12 +50,16 @@ export default function ChannelCard({
           cursor="pointer"
         >
           <Box position="relative">
-            <Image
-              src={`${bannerUrl}=w2120-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj`}
-              alt="channel background"
-              maxH="169px"
-              w="100%"
-            />
+            {bannerUrl ? (
+              <Image
+                src={`${bannerUrl}=w2120-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj`}
+                alt="channel background"
+                maxH="169px"
+                w="100%"
+              />
+            ) : (
+              <Box w="300px" h="50px" bg="gray.500" />
+            )}
             <Avatar
               size="lg"
               name="하창봉"
