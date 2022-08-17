@@ -20,25 +20,25 @@ export default function UserRankingPage() {
   const captions = [
     { caption: "#" },
     { caption: t("name") },
-    { caption: t("total views") },
-    { caption: t("total subs") },
+    { caption: t("total_views") },
+    { caption: t("total_subs") },
     { caption: t("subtitle_language") },
     { caption: t("rating") },
   ];
 
   const [lang, setLang] = useState<string>();
   const [sortOption, setSortOption] = useState({
-    name: "총 조회수 (높은 순)",
+    name: t("total_views_high"),
     sortBy: { by: "view", order: true },
   });
   const pageSize = 15;
   const sortOptionArray = [
-    { name: "총 조회수 (높은 순)", sortBy: { by: "view", order: true } },
-    { name: "총 조회수 (낮은 순)", sortBy: { by: "view", order: false } },
-    { name: "유저 평점 (높은 순)", sortBy: { by: "rating", order: true } },
-    { name: "유저 평점 (낮은 순)", sortBy: { by: "rating", order: false } },
-    { name: "총 자막 수 (많은 순)", sortBy: { by: "sub", order: true } },
-    { name: "총 자막 수 (적은 순)", sortBy: { by: "sub", order: false } },
+    { name: t("total_views_high"), sortBy: { by: "view", order: true } },
+    { name: t("total_views_low"), sortBy: { by: "view", order: false } },
+    { name: t("rating_high"), sortBy: { by: "rating", order: true } },
+    { name: t("rating_low"), sortBy: { by: "rating", order: false } },
+    { name: t("total_subs_high"), sortBy: { by: "sub", order: true } },
+    { name: t("total_subs_low"), sortBy: { by: "sub", order: false } },
   ];
 
   const fetcher = async (url: string) => {

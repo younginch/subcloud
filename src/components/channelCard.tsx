@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import { MdSubtitles } from "react-icons/md";
 import { RiFundsFill } from "react-icons/ri";
 import NextLink from "next/link";
+import useTranslation from "next-translate/useTranslation";
 import { YoutubeIcon } from "./icons/customIcons";
 
 type Props = {
@@ -36,6 +37,8 @@ export default function ChannelCard({
   subCount,
   requestCount,
 }: Props) {
+  const { t } = useTranslation("channel");
+
   return (
     <motion.div whileHover={{ translateY: -5 }}>
       <NextLink href={`/channel/${channelId}?title=${title}`}>
@@ -67,7 +70,7 @@ export default function ChannelCard({
             )}
             <Avatar
               size="lg"
-              name="하창봉"
+              name={title}
               src={thumbnailUrl}
               position="absolute"
               top="16px"
@@ -92,14 +95,17 @@ export default function ChannelCard({
               <Link href={channelUrl} isExternal>
                 <YoutubeIcon size="25px" cursor="pointer" />
               </Link>
-              <Text>구독자 {subscriberCount}</Text>
+              <Text>
+                {t("channel_component_subscriber")}
+                {subscriberCount}
+              </Text>
             </HStack>
             <Grid
               templateColumns="repeat(2, 1fr)"
               templateRows="repeat(2, 1fr)"
             >
-              <Text fontWeight="bold">자막 수</Text>
-              <Text fontWeight="bold">진행중인 펀딩 수</Text>
+              <Text fontWeight="bold">{t("channel_component_subtitle")}</Text>
+              <Text fontWeight="bold">{t("channel_component_funding")}</Text>
               <HStack>
                 <MdSubtitles />
                 <Text fontWeight="bold">{subCount}</Text>

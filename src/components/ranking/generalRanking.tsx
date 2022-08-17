@@ -45,7 +45,7 @@ function SelectLang({
       alignItems={direction === "row" ? "center" : "flex-start"}
       spacing={direction === "row" ? "15px" : "10px"}
     >
-      <Text h="fit-content">언어</Text>
+      <Text h="fit-content">{t("lang")}</Text>
       <Menu>
         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
           {lang && lang !== "All Lang" ? ISO6391.getName(lang) : t("all lang")}
@@ -86,13 +86,14 @@ function SelectPriority({
   setSortOption?: (sortOption: SortOption) => void;
   direction?: string;
 }) {
+  const { t } = useTranslation("rankings");
   return (
     <Stack
       direction={direction as StackDirection}
       alignItems={direction === "row" ? "center" : "flex-start"}
       spacing={direction === "row" ? "15px" : "10px"}
     >
-      <Text>정렬 기준</Text>
+      <Text>{t("generalRanking_standard")}</Text>
       <Menu>
         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
           {sortOption.name}
@@ -223,7 +224,7 @@ export default function GeneralRanking({
             onClick={onToggle}
             ml="5px"
           >
-            <Text fontSize="20px">필터</Text>
+            <Text fontSize="20px">{t("filter")}</Text>
             <VscSettings size={20} strokeWidth="inherit" />
           </HStack>
         </WrapItem>

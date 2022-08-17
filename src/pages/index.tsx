@@ -204,7 +204,7 @@ export default function Home() {
                     color="blue.400"
                     marginTop={8}
                   />
-                  <Heading marginTop={6} size="lg">
+                  <Heading marginTop={6} size="lg" textAlign="center">
                     {t("request_sent_complete")}
                   </Heading>
                   <Text color="blue.400" marginTop={7}>

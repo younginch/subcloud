@@ -1,5 +1,6 @@
 import { Box, Grid, GridItem, Text, useMediaQuery } from "@chakra-ui/react";
 import axios from "axios";
+import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import useSWRInfinite from "swr/infinite";
@@ -10,20 +11,21 @@ import { GoalExpr, PointGoal } from "../../utils/etc";
 import { PageOptions, RankQueryData, ResRankingVideo } from "../../utils/types";
 
 export default function ChannelDetail() {
+  const { t } = useTranslation("channel");
   const router = useRouter();
   const { channelId, title } = router.query;
   const [lang, setLang] = useState<string>();
   const [sortOption, setSortOption] = useState({
-    name: "자막 게이지 (높은 순)",
+    name: t("gauge_high"),
     sortBy: { by: "gauge", order: true },
   });
   const sortOptionArray = [
-    { name: "요청수 (높은 순)", sortBy: { by: "request", order: true } },
-    { name: "요청수 (낮은 순)", sortBy: { by: "request", order: false } },
-    { name: "요청 포인트 (높은 순)", sortBy: { by: "point", order: true } },
-    { name: "요청 포인트 (낮은 순)", sortBy: { by: "point", order: false } },
-    { name: "자막 게이지 (높은 순)", sortBy: { by: "gauge", order: true } },
-    { name: "자막 게이지 (낮은 순)", sortBy: { by: "gauge", order: false } },
+    { name: t("request_num_high"), sortBy: { by: "request", order: true } },
+    { name: t("request_num_low"), sortBy: { by: "request", order: false } },
+    { name: t("request_point_high"), sortBy: { by: "point", order: true } },
+    { name: t("request_point_low"), sortBy: { by: "point", order: false } },
+    { name: t("gauge_high"), sortBy: { by: "gauge", order: true } },
+    { name: t("gauge_low"), sortBy: { by: "gauge", order: false } },
   ];
   const pageSize = 15;
   const fetcher = async (url: string) => {
@@ -86,7 +88,7 @@ export default function ChannelDetail() {
       overflowX={{ sm: "scroll", md: "hidden" }}
     >
       <Text fontWeight="bold" fontSize="30px">
-        {title} 의 채널 랭킹
+        {t("title_channel_other")} {title} {t("title_channel_ko")}
       </Text>
       <GeneralRanking
         lang={lang}

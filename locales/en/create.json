@@ -15,8 +15,8 @@
   "explain_box_upload_2": "Uploaded subtitles will be published after approval",
   "explain_box_upload_3": "Receive user responses as notifications",
   "url_error": "URL link should contain http or https",
-  "my_req": "Video I requested from SubCloud",
-  "my_up": "Video I uploaded to SubCloud",
+  "my_req": "Video requested",
+  "my_up": "Video uploaded",
   "no_req": "There are no requests. Request a video that needs subtitles",
   "no_up": "There are no subtitles uploaded."
 }
