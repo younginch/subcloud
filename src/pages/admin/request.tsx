@@ -23,12 +23,16 @@ import { PageOptions, ResVideo } from "../../utils/types";
 
 export default function AdminRequest() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [userList, setUserList] = useState<string[]>();
+  const [userList, setUserList] = useState<string[]>([]);
   const [videoList, setVideoList] = useState<string[]>([]);
   const [countList, setCountList] = useState<number[]>([]);
   const [langList, setLangList] = useState<string[]>([]);
+  const [pointList, setPointList] = useState<number[]>([]);
 
   const excuteRequest = async () => {
+    // TODO: remove this console log
+    console.log(pointList);
+
     if (countList.length !== langList.length) {
       return;
     }
@@ -46,7 +50,7 @@ export default function AdminRequest() {
 
   return (
     <Stack w="1000px">
-      <Heading>요청할 유저 아이디 리스트</Heading>
+      <Heading>요청할 유저 아이디 리스트 ({userList?.length}명)</Heading>
       <Textarea
         placeholder="유저들의 정보를 한줄에 하나씩 입력"
         h="200px"
@@ -55,7 +59,7 @@ export default function AdminRequest() {
       <HStack>
         <Stack>
           <Heading fontSize="2xl" w="400px">
-            요청받을 영상 링크 입력
+            영상 링크 입력 ({videoList.length}개)
           </Heading>
           <Textarea
             placeholder="영상들의 url을 한줄에 하나씩 입력"
@@ -64,8 +68,8 @@ export default function AdminRequest() {
           />
         </Stack>
         <Stack>
-          <Heading fontSize="2xl" w="400px">
-            영상들의 요청받을 회수 입력
+          <Heading fontSize="lg" w="200px">
+            요청횟수 입력 ({countList.length}개)
           </Heading>
           <Textarea
             placeholder="영상들의 요청될 횟수를 순서 맞춰서 한줄에 하나씩 입력"
@@ -76,13 +80,25 @@ export default function AdminRequest() {
           />
         </Stack>
         <Stack>
-          <Heading fontSize="2xl" w="400px">
-            영상들의 요청 언어 입력
+          <Heading fontSize="lg" w="200px">
+            요청 언어 입력 ({langList.length}개)
           </Heading>
           <Textarea
             placeholder="영상들의 요청 언어를 순서 맞춰서 한줄에 하나씩 입력"
             h="200px"
             onChange={(e) => setLangList(e.target.value.split("\n"))}
+          />
+        </Stack>
+        <Stack>
+          <Heading fontSize="lg" w="200px">
+            요청 포인트 입력 ({langList.length}개)
+          </Heading>
+          <Textarea
+            placeholder="영상들의 요청 포인트를 순서 맞춰서 한줄에 하나씩 입력"
+            h="200px"
+            onChange={(e) =>
+              setPointList(e.target.value.split("\n").map((x) => Number(x)))
+            }
           />
         </Stack>
       </HStack>
