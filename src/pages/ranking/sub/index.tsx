@@ -113,7 +113,7 @@ export default function SubRankingPage() {
             <GridItem key={sub.id}>
               <VideoRankCard
                 key={sub.id}
-                duration={350}
+                duration={sub.video.youtubeVideo?.duration ?? 0}
                 videoName={
                   sub.video.youtubeVideo
                     ? sub.video.youtubeVideo.title

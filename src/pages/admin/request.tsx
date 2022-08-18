@@ -19,6 +19,7 @@ import {
 import { Role } from "@prisma/client";
 import axios from "axios";
 import { useState } from "react";
+import { GoalExpr, PointGoal } from "../../utils/etc";
 import { PageOptions, ResVideo } from "../../utils/types";
 
 export default function AdminRequest() {
@@ -27,13 +28,14 @@ export default function AdminRequest() {
   const [videoList, setVideoList] = useState<string[]>([]);
   const [countList, setCountList] = useState<number[]>([]);
   const [langList, setLangList] = useState<string[]>([]);
-  const [pointList, setPointList] = useState<number[]>([]);
+  const [percentList, setPercentList] = useState<number[]>([]);
+  const goalExpr = GoalExpr();
 
   const excuteRequest = async () => {
-    // TODO: remove this console log
-    console.log(pointList);
-
-    if (countList.length !== langList.length) {
+    if (
+      countList.length !== langList.length ||
+      countList.length !== percentList.length
+    ) {
       return;
     }
     // eslint-disable-next-line no-restricted-syntax
@@ -44,6 +46,8 @@ export default function AdminRequest() {
         videoId: video.data.videoId,
         count: countList[i],
         language: langList[i],
+        percent: percentList[i],
+        totalPoint: PointGoal(video.data.youtubeVideo?.duration, goalExpr),
       });
     }
   };
@@ -97,7 +101,7 @@ export default function AdminRequest() {
             placeholder="영상들의 요청 포인트를 순서 맞춰서 한줄에 하나씩 입력"
             h="200px"
             onChange={(e) =>
-              setPointList(e.target.value.split("\n").map((x) => Number(x)))
+              setPercentList(e.target.value.split("\n").map((x) => Number(x)))
             }
           />
         </Stack>
