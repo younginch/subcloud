@@ -198,7 +198,9 @@ export async function RankingChannel(
     include: {
       videos: {
         include: {
-          video: { include: { requests: true, subs: true } },
+          video: {
+            include: { requests: { include: { users: true } }, subs: true },
+          },
         },
       },
     },
@@ -223,7 +225,10 @@ export async function RankingChannel(
           0
         ),
         requests: channel.videos.reduce(
-          (prev, curr) => prev + (curr.video?.requests.length ?? 0),
+          (prev, curr) =>
+            prev +
+            (curr.video?.requests.filter((request) => request.users.length > 0)
+              .length ?? 0),
           0
         ),
       },
