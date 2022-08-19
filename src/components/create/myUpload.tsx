@@ -53,11 +53,15 @@ function MyUploadPanel({ subs }: { subs: ResSubSearch | undefined }) {
 export default function MyUpload() {
   const { t } = useTranslation("create");
   const session = useSession();
+  const [page, setPage] = useState<number>(1);
+  const pageSize = 12;
+
   const { data: subs } = useSWR<ResSubSearch>(
     `/api/public/search/sub?userId=${session.data?.user.id}`
   );
-  const [page, setPage] = useState<number>(1);
-  // TODO: 한페이지 20개 기준으로 pageNum 계산하고  20개씩만 보여주기
+  const start = pageSize * (page - 1);
+  const end = pageSize * page;
+  const num = Math.ceil((subs?.length ?? 0) / pageSize);
 
   return (
     <Stack p={{ base: 5, lg: 10 }} spacing={10}>
@@ -65,14 +69,14 @@ export default function MyUpload() {
         {t("my_up")}
       </Text>
       {subs?.length ? (
-        <MyUploadPanel subs={subs} />
+        <MyUploadPanel subs={subs.slice(start, end)} />
       ) : (
         <Stack alignItems="center" spacing={5} h="100%" pt="3%" pb="2%">
           <FiBox size={150} />
           <Text fontSize="25px">{t("no_up")}</Text>
         </Stack>
       )}
-      <Pagination pageNum={5} currentPage={page} setPage={setPage} />
+      <Pagination pageNum={num} currentPage={page} setPage={setPage} />
     </Stack>
   );
 }
