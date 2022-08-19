@@ -1,3 +1,4 @@
+import { Role } from "@prisma/client";
 import { handleRoute, RouteParams } from "../../../../utils/types";
 import { getYoutubeVideoData } from "../../../../utils/youtube";
 
@@ -16,4 +17,4 @@ async function updateVideos({ req, res, prisma }: RouteParams<number>) {
   return res.status(200).json(youtubeVideos.length);
 }
 
-export default handleRoute({ PATCH: updateVideos });
+export default handleRoute({ PATCH: updateVideos }, { role: Role.Admin });
