@@ -1,4 +1,12 @@
-import { Box, Grid, GridItem, Text, useMediaQuery } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  GridItem,
+  Stack,
+  Text,
+  useColorModeValue,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import axios from "axios";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
@@ -81,72 +89,96 @@ export default function ChannelDetail() {
   ]);
 
   return (
-    <Box
-      pt={10}
-      pl={{ base: "10px", lg: "30px", xl: "70px" }}
-      pr={{ base: "10px", lg: "30px", xl: "70px" }}
-      overflowX={{ sm: "scroll", md: "hidden" }}
-    >
-      <Text fontWeight="bold" fontSize="30px">
-        {t("title_channel_other")} {title} {t("title_channel_ko")}
-      </Text>
-      <GeneralRanking
-        lang={lang}
-        setLang={setLang}
-        sortOptionArray={sortOptionArray}
-        sortOption={sortOption}
-        setSortOption={setSortOption}
-        onSubmit={onSubmit}
-        btnComponent={loadMoreBtn}
+    <Box overflowX={{ sm: "scroll", md: "hidden" }}>
+      <Box
+        w="100%"
+        h="220px"
+        backgroundImage="url(https://yt3.ggpht.com/a6vhvFo9rk1UnQeurV-fh37wl67vUwuDj3Xq7FfVuXWHiJD0Pcy7KkfK8l2d6t_MKTNFUiam=w1060-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj)"
+        backgroundSize="cover"
+        position="relative"
       >
-        <Grid
-          templateColumns={`repeat(${
-            1 +
-            Number(col2) +
-            Number(col3) +
-            Number(col4) +
-            Number(col5) +
-            Number(col6)
-          }, 1fr)`}
-          gap={5}
-          justifyItems="center"
+        <Text
+          fontWeight="bold"
+          fontSize={{ base: "20px", md: "30px" }}
+          position="absolute"
+          mt="-45px"
+          left="0px"
+          bottom="0px"
+          backgroundColor={useColorModeValue("white", "gray.800")}
+          borderTopRightRadius="10px"
+          pl="30px"
+          pr="20px"
+          pt="10px"
         >
-          {videos.map((video) => (
-            <GridItem key={video.videoId}>
-              <RequestRankCard
-                duration={video.youtubeVideo ? video.youtubeVideo.duration : 0}
-                videoName={
-                  video.youtubeVideo ? video.youtubeVideo.title : "no title"
-                }
-                videoUrl={video.url}
-                serviceId={video.serviceId}
-                videoId={video.videoId}
-                imageUrl={`http://img.youtube.com/vi/${video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
-                requestCount={video._count.requests}
-                requestPoint={video._count.points}
-                requestGoal={
-                  PointGoal(
-                    video.youtubeVideo
-                      ? video.youtubeVideo.duration
-                      : undefined,
-                    goalExpr
-                  ) ?? 1000000
-                }
-                channelName={video.youtubeVideo?.channel.title ?? "no name"}
-                channelImageUrl={video.youtubeVideo?.channel.thumbnailUrl ?? ""}
-                channelUrl={video.youtubeVideo?.channel.channelUrl ?? ""}
-                lang={video.langs}
-              />
-            </GridItem>
-          ))}
-        </Grid>
-      </GeneralRanking>
+          {t("title_channel_other")} {title} {t("title_channel_ko")}
+        </Text>
+      </Box>
+      <Stack
+        pt="40px"
+        pl={{ base: "10px", lg: "30px", xl: "70px" }}
+        pr={{ base: "10px", lg: "30px", xl: "70px" }}
+      >
+        <GeneralRanking
+          lang={lang}
+          setLang={setLang}
+          sortOptionArray={sortOptionArray}
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+          onSubmit={onSubmit}
+          btnComponent={loadMoreBtn}
+        >
+          <Grid
+            templateColumns={`repeat(${
+              1 +
+              Number(col2) +
+              Number(col3) +
+              Number(col4) +
+              Number(col5) +
+              Number(col6)
+            }, 1fr)`}
+            gap={5}
+            justifyItems="center"
+          >
+            {videos.map((video) => (
+              <GridItem key={video.videoId}>
+                <RequestRankCard
+                  duration={
+                    video.youtubeVideo ? video.youtubeVideo.duration : 0
+                  }
+                  videoName={
+                    video.youtubeVideo ? video.youtubeVideo.title : "no title"
+                  }
+                  videoUrl={video.url}
+                  serviceId={video.serviceId}
+                  videoId={video.videoId}
+                  imageUrl={`http://img.youtube.com/vi/${video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
+                  requestCount={video._count.requests}
+                  requestPoint={video._count.points}
+                  requestGoal={
+                    PointGoal(
+                      video.youtubeVideo
+                        ? video.youtubeVideo.duration
+                        : undefined,
+                      goalExpr
+                    ) ?? 1000000
+                  }
+                  channelName={video.youtubeVideo?.channel.title ?? "no name"}
+                  channelImageUrl={
+                    video.youtubeVideo?.channel.thumbnailUrl ?? ""
+                  }
+                  channelUrl={video.youtubeVideo?.channel.channelUrl ?? ""}
+                  lang={video.langs}
+                />
+              </GridItem>
+            ))}
+          </Grid>
+        </GeneralRanking>
+      </Stack>
     </Box>
   );
 }
 
 ChannelDetail.options = {
   auth: false,
-  width: "100%",
   hideTitle: true,
 } as PageOptions;
