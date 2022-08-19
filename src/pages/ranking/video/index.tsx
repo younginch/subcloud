@@ -60,6 +60,10 @@ export default function VideoRankingPage() {
         target: ".rankGrid :nth-child(1) .pointGauge",
         content: <h2>자막을 요청하고 게이지를 전부 채워 자막을 받아보세요</h2>,
       },
+      {
+        target: ".helpButton",
+        content: <h2>궁금할땐 언제든지 도움말 버튼을 눌러서 확인해보세요</h2>,
+      },
     ],
   });
   const sortOptionArray = [
@@ -153,7 +157,7 @@ export default function VideoRankingPage() {
             </HStack>
             <Text>
               전 세계 유저가 요청한 자막을 확인하세요. 자막 게이지를 다 채우면
-              자막 생성을 보장합니다.
+              자막을 만들어드릴게요.
             </Text>
           </Stack>
           <Spacer />
@@ -162,6 +166,7 @@ export default function VideoRankingPage() {
             onClick={() => {
               setJoyride({ run: true, steps });
             }}
+            className="helpButton"
           >
             <QuestionOutlineIcon />
           </Button>
