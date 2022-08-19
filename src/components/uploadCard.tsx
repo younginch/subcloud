@@ -55,7 +55,7 @@ export default function UploadCard({
       left="6px"
       top="128px"
     >
-      자막 업로드: {dayjs(uploadDate).format("YYYY-MM-DD")}
+      {t("upload_sub")}: {dayjs(uploadDate).format("YYYY-MM-DD")}
     </Text>
   );
 

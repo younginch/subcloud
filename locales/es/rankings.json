@@ -1,6 +1,7 @@
 {
   "search": "búsqueda...",
   "title": "Título",
+  "subUploaded": "Subtítulo subido",
   "language": "Idioma",
   "views": "Puntos de vista",
   "madeby": "Hecho por",
@@ -24,7 +25,6 @@
   "points_most": "Solicitar puntos(la mayoría)",
   "points_least": "Solicitar puntos(el menos)",
   "all lang": "Todos los idiomas",
-  "lang": "Idiomas",
   "generalRanking_standard": "Ordenar por",
   "filter": "Filtrar",
   "view_many": "Vistas(muchos)",
@@ -32,5 +32,8 @@
   "upload_recent": "Fecha de carga(más reciente)",
   "upload_old": "Fecha de carga(más antigua)",
   "gauge_high": "Medidor de subtítulos(Mas alto)",
-  "gauge_low": "Medidor de subtítulos(El mas bajo)"
+  "gauge_low": "Medidor de subtítulos(El mas bajo)",
+  "noRating": "vacío",
+  "req": "Solicitud",
+  "up": "Subido"
 }
