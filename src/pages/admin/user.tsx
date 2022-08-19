@@ -42,7 +42,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { joiResolver } from "@hookform/resolvers/joi";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import useSWR, { KeyedMutator } from "swr";
 import { UserUpdateSchema } from "../../utils/schema";
 import { PageOptions } from "../../utils/types";
@@ -241,11 +241,11 @@ function UpdateButton({ user, mutate }: UpdateButtonProps) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const firstField = useRef<HTMLInputElement>(null);
-  const [role, setRole] = useState<Role>(user.role);
 
   const {
     handleSubmit,
     register,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<UserUpdateForm>({ resolver: joiResolver(UserUpdateSchema) });
 
@@ -303,25 +303,20 @@ function UpdateButton({ user, mutate }: UpdateButtonProps) {
                 </FormControl>
                 <FormControl isInvalid={errors.role !== undefined}>
                   <FormLabel>Role</FormLabel>
-                  <Input
-                    id="role"
-                    defaultValue={user.id}
-                    value={role}
-                    hidden
-                    {...register("role")}
+                  <Controller
+                    name="role"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <RadioGroup onChange={onChange} value={value}>
+                        <Stack direction="column">
+                          <Radio value={Role.Admin}>Admin</Radio>
+                          <Radio value={Role.Reviewer}>Reviewer</Radio>
+                          <Radio value={Role.User}>User</Radio>
+                          <Radio value={Role.Restricted}>Restricted</Radio>
+                        </Stack>
+                      </RadioGroup>
+                    )}
                   />
-                  <RadioGroup
-                    onChange={(value: string) => {
-                      setRole(value as Role);
-                    }}
-                    value={role}
-                  >
-                    <Stack>
-                      <Radio value="ADMIN">Admin</Radio>
-                      <Radio value="REVIEWER">Reviewer</Radio>
-                      <Radio value="USER">User</Radio>
-                    </Stack>
-                  </RadioGroup>
                   <FormErrorMessage>
                     {errors.role && errors.role.message}
                   </FormErrorMessage>
