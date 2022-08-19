@@ -1,6 +1,7 @@
 {
   "search": "검색...",
   "title": "제목",
+  "subUploaded": "자막 업로드",
   "language": "언어",
   "views": "조회수",
   "madeby": "제작자",
@@ -24,7 +25,6 @@
   "points_most": "요청 포인트 (높은 순)",
   "points_least": "요청 포인트 (낮은 순)",
   "all lang": "모든 언어",
-  "lang": "언어",
   "generalRanking_standard": "정렬 기준",
   "filter": "필터",
   "view_many": "조회수(높은 순)",
@@ -32,5 +32,8 @@
   "upload_recent": "업로드 날짜(최신 순)",
   "upload_old": "업로드 날짜(오래된 순)",
   "gauge_high": "자막 게이지 (높은 순)",
-  "gauge_low": "자막 게이지 (낮은 순)"
+  "gauge_low": "자막 게이지 (낮은 순)",
+  "noRating": "평점 없음",
+  "req": "요청하기",
+  "up": "업로드하기"
 }

@@ -13,6 +13,7 @@ import ISO6391, { LanguageCode } from "iso-639-1";
 import { AiFillStar } from "react-icons/ai";
 import { BsEye } from "react-icons/bs";
 import { MdSubtitles } from "react-icons/md";
+import useTranslation from "next-translate/useTranslation";
 
 type Props = {
   rank: number;
@@ -35,6 +36,7 @@ export default function UserRankTableRow({
   makedLanguaged,
   totalRating,
 }: Props) {
+  const { t } = useTranslation("rankings");
   const textColor = useColorModeValue("gray.700", "gray.300");
   const paddingLeftBp = { base: "7px", md: "15px", lg: "24px" };
   const mainTextSize = { base: "15px", md: "18px" };
@@ -90,7 +92,7 @@ export default function UserRankTableRow({
       </Td>
       <Td w="15%" pl={paddingLeftBp} fontSize={mainTextSize}>
         {totalRating === 0 ? (
-          <Text>평점 없음</Text>
+          <Text>{t("noRating")}</Text>
         ) : (
           <HStack>
             <Box color="yellow.400">
