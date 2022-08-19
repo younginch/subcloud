@@ -45,7 +45,7 @@ function SelectLang({
       alignItems={direction === "row" ? "center" : "flex-start"}
       spacing={direction === "row" ? "15px" : "10px"}
     >
-      <Text h="fit-content">{t("lang")}</Text>
+      <Text h="fit-content">{t("language")}</Text>
       <Menu>
         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
           {lang && lang !== "All Lang" ? ISO6391.getName(lang) : t("all lang")}

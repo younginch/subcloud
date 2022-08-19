@@ -2,6 +2,7 @@ import { Stack, Text, Badge, HStack, Spacer } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import ISO6391 from "iso-639-1";
 import duration from "dayjs/plugin/duration";
+import useTranslation from "next-translate/useTranslation";
 import VideoCard from "../videoCard";
 
 dayjs.extend(duration);
@@ -31,6 +32,7 @@ export default function VideoRankCard({
   lang,
   uploadDate,
 }: Props) {
+  const { t } = useTranslation("rankings");
   const uploadDateHover = uploadDate && (
     <Text
       bg="black"
@@ -42,7 +44,7 @@ export default function VideoRankCard({
       left="6px"
       top="128px"
     >
-      자막 업로드: {dayjs(uploadDate).format("YYYY-MM-DD")}
+      {t("subUploaded")}: {dayjs(uploadDate).format("YYYY-MM-DD")}
     </Text>
   );
 
@@ -60,14 +62,14 @@ export default function VideoRankCard({
       <Stack pl="10px">
         <HStack>
           <Stack>
-            <Text fontWeight="bold">언어</Text>
+            <Text fontWeight="bold">{t("language")}</Text>
             <Badge colorScheme="purple" w="fit-content">
               {ISO6391.getNativeName(lang)}
             </Badge>
           </Stack>
           <Spacer />
           <Stack spacing={0}>
-            <Text fontWeight="bold">조회수</Text>
+            <Text fontWeight="bold">{t("views")}</Text>
             <Text fontWeight="bold">{viewCount}</Text>
           </Stack>
           <Spacer />

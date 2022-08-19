@@ -5,6 +5,7 @@ import duration from "dayjs/plugin/duration";
 import { GoCloudUpload } from "react-icons/go";
 import { FiSend } from "react-icons/fi";
 import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
 import VideoCard from "../videoCard";
 import PointGauge from "../pointGauge";
 
@@ -41,6 +42,7 @@ export default function RequestRankCard({
   channelUrl,
   lang,
 }: Props) {
+  const { t } = useTranslation("rankings");
   const router = useRouter();
   const hoverComponent = (
     <Stack position="absolute" left="10px" top="5px">
@@ -53,7 +55,7 @@ export default function RequestRankCard({
           )
         }
       >
-        요청하기
+        {t("req")}
       </Button>
       <Button
         leftIcon={<GoCloudUpload />}
@@ -62,7 +64,7 @@ export default function RequestRankCard({
           router.push(`/video/${serviceId}/${videoId}/sub/create?lang=${lang}`)
         }
       >
-        업로드하기
+        {t("up")}
       </Button>
     </Stack>
   );
@@ -79,12 +81,12 @@ export default function RequestRankCard({
     >
       <Stack pl="10px" pr="10px">
         <HStack>
-          <Text fontWeight="bold">언어</Text>
+          <Text fontWeight="bold">{t("language")}</Text>
           <Badge colorScheme="purple" w="fit-content">
             {ISO6391.getNativeName(lang)}
           </Badge>
           <Spacer />
-          <Text fontWeight="bold">요청 수</Text>
+          <Text fontWeight="bold">{t("requests")}</Text>
           <Text fontWeight="bold">{requestCount}</Text>
           <Spacer />
         </HStack>

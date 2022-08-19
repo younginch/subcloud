@@ -1,6 +1,7 @@
 {
   "search": "Search...",
   "title": "Title",
+  "subUploaded": "Subtitle uploaded",
   "language": "Language",
   "views": "Views",
   "madeby": "Maker",
@@ -24,7 +25,6 @@
   "points_most": "Request points(most)",
   "points_least": "Request points(least)",
   "all lang": "All Languages",
-  "lang": "Language",
   "generalRanking_standard": "Sort by",
   "filter": "Filter",
   "view_many": "Views(many)",
@@ -32,5 +32,8 @@
   "upload_recent": "Upload Date(Newest)",
   "upload_old": "Upload Date(Oldest)",
   "gauge_high": "Subtitle gauge(highest)",
-  "gauge_low": "Subtitle gauge(lowest)"
+  "gauge_low": "Subtitle gauge(lowest)",
+  "noRating": "empty",
+  "req": "Request",
+  "up": "Upload"
 }
