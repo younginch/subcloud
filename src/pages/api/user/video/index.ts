@@ -1,5 +1,4 @@
 import { Role, Video } from "@prisma/client";
-import axios from "axios";
 import { saveVideoToAlgolia } from "../../../../utils/algolia";
 import prisma from "../../../../utils/prisma";
 import { VideoCreateSchema } from "../../../../utils/schema";
@@ -9,18 +8,10 @@ import {
   RouteParams,
   SubErrorType,
 } from "../../../../utils/types";
-
-function youtubeDurationToSeconds(duration: string): number {
-  const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
-  const regexResult = regex.exec(duration);
-  if (!regexResult) {
-    return 0;
-  }
-  const hours = parseInt(regexResult[1] || "0", 10);
-  const minutes = parseInt(regexResult[2] || "0", 10);
-  const seconds = parseInt(regexResult[3] || "0", 10);
-  return hours * 60 * 60 + minutes * 60 + seconds;
-}
+import {
+  getYoutubeChannelData,
+  getYoutubeVideoData,
+} from "../../../../utils/youtube";
 
 function getYoutubeVideo(url: URL): Video {
   if (url.pathname !== "/watch") {
@@ -61,53 +52,24 @@ function getVideoFromUrl(urlString: string): Video {
 }
 
 async function addYoutubeInfo(videoId: string): Promise<ResVideo> {
-  const videoRes =
-    await axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${process.env.YOUTUBE_API_KEY}
-      &part=snippet,contentDetails,statistics,liveStreamingDetails`);
-  if (!videoRes.data.items) {
-    throw new Error("No video found");
-  }
-  const video = videoRes.data.items[0];
-  if (video.snippet.liveBroadcastContent !== "none") {
-    throw new Error("Video is a live broadcast");
-  }
-  const { channelId } = video.snippet;
+  const videoData = await getYoutubeVideoData(videoId);
+  const { channelId } = videoData;
   const channel = await prisma.youtubeChannel.findUnique({
-    where: { id: channelId },
+    where: { id: videoData.channelId },
   });
   if (!channel) {
-    const channelRes = await axios.get(
-      `https://www.googleapis.com/youtube/v3/channels?id=${channelId}&key=${process.env.YOUTUBE_API_KEY}&part=snippet,statistics,brandingSettings`
-    );
-    if (!channelRes.data.items) {
-      throw new Error("No channel found");
-    }
-    const channelData = channelRes.data.items[0];
+    const channelData = await getYoutubeChannelData(channelId);
     await prisma.youtubeChannel.create({
       data: {
         id: channelId,
-        title: channelData.snippet.title,
-        description: channelData.snippet.description,
-        thumbnailUrl: channelData.snippet.thumbnails.medium.url,
-        subscriberCount: Number.parseInt(
-          channelData.statistics.subscriberCount ?? 0,
-          10
-        ),
-        channelUrl: `https://www.youtube.com/channel/${channelId}`,
-        bannerUrl: channelData.brandingSettings.image?.bannerExternalUrl,
+        ...channelData,
       },
     });
   }
   await prisma.youtubeVideo.create({
     data: {
       id: videoId,
-      publishedAt: video.snippet.publishedAt,
-      channelId,
-      title: video.snippet.title,
-      description: video.snippet.description,
-      duration: youtubeDurationToSeconds(video.contentDetails.duration),
-      viewCount: Number.parseInt(video.statistics.viewCount ?? 0, 10),
-      likeCount: Number.parseInt(video.statistics.likeCount ?? 0, 10),
+      ...videoData,
     },
   });
   await prisma.video.update({

@@ -4,7 +4,7 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 model Account {
@@ -48,7 +48,7 @@ model User {
   baseLangs      String[]
   requestLangs   String[]
   createdAt      DateTime        @default(now())
-  updatedAt      DateTime?       @updatedAt
+  updatedAt      DateTime        @updatedAt
   settlePoints   SettlePoint[]
   accounts       Account[]
   sessions       Session[]
@@ -103,6 +103,9 @@ model YoutubeVideo {
   duration    Int
   viewCount   Int
   likeCount   Int
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
 }
 
 model YoutubeChannel {
@@ -114,6 +117,9 @@ model YoutubeChannel {
   subscriberCount Int
   channelUrl      String
   bannerUrl       String?
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
 }
 
 model Request {
@@ -126,7 +132,7 @@ model Request {
   point         Int            @default(0)
   requestPoints RequestPoint[]
   createdAt     DateTime       @default(now())
-  updatedAt     DateTime?      @updatedAt
+  updatedAt     DateTime       @updatedAt
   status        RequestStatus  @default(Waiting)
 
   @@unique([serviceId, videoId, lang])
@@ -160,7 +166,7 @@ model Sub {
   notice       Notice?
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
-  editorFile  EditorFile?
+  editorFile   EditorFile?
 
   @@unique([serviceId, videoId, lang, userId])
 }
