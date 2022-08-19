@@ -41,7 +41,7 @@ export default function ChannelCard({
 
   return (
     <motion.div whileHover={{ translateY: -5 }}>
-      <NextLink href={`/channel/${channelId}?title=${title}`}>
+      <NextLink href={`/channel/${channelId}`}>
         <Stack
           w="300px"
           h="fit-content"
