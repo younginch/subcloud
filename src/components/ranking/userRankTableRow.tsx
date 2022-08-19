@@ -42,7 +42,12 @@ export default function UserRankTableRow({
   const mainTextSize = { base: "15px", md: "18px" };
   const subTextSize = { base: "12px", md: "15px" };
   return (
-    <Tr color={textColor}>
+    <Tr
+      color={textColor}
+      _hover={{
+        bg: useColorModeValue("white", "gray.700"),
+      }}
+    >
       <Td w="min" fontSize={mainTextSize}>
         <Text>{rank}</Text>
       </Td>

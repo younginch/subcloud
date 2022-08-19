@@ -1,4 +1,14 @@
-import { Box, Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  GridItem,
+  useColorModeValue,
+  useMediaQuery,
+  HStack,
+  Stack,
+  Text,
+  Divider,
+} from "@chakra-ui/react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
@@ -11,6 +21,8 @@ import {
 import LoadMoreBtn from "../../components/ranking/loadMoreBtn";
 import GeneralRanking from "../../components/ranking/generalRanking";
 import ChannelCard from "../../components/channelCard";
+import RankingController from "../../components/ranking/rankingController";
+import { YoutubeIcon } from "../../components/icons/customIcons";
 
 export default function ChannelRankingPage() {
   const { t } = useTranslation("channel");
@@ -60,8 +72,6 @@ export default function ChannelRankingPage() {
     fetcher
   );
 
-  // TODO: remove below comment
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const channels = data
     ? data.reduce(
         (accumulator, currentValue) => accumulator.concat(currentValue),
@@ -93,52 +103,84 @@ export default function ChannelRankingPage() {
 
   return (
     <Box
-      pt={10}
-      pl={{ base: "10px", lg: "30px", xl: "70px" }}
-      pr={{ base: "10px", lg: "30px", xl: "70px" }}
       overflowX={{ sm: "scroll", md: "hidden" }}
+      bg={useColorModeValue("gray.50", undefined)}
     >
-      <GeneralRanking
-        sortOptionArray={sortOptionArray}
-        sortOption={sortOption}
-        setSortOption={setSortOption}
-        onSubmit={onSubmit}
-        btnComponent={loadMoreBtn}
+      <Stack
+        bg={useColorModeValue("white", "gray.900")}
+        pt={30}
+        pb={5}
+        pl={{ base: "10px", lg: "30px", xl: "70px" }}
+        pr={{ base: "10px", lg: "30px", xl: "70px" }}
+        boxShadow="md"
+        borderBottomWidth="2px"
       >
-        <Grid
-          templateColumns={`repeat(${
-            1 +
-            Number(col2) +
-            Number(col3) +
-            Number(col4) +
-            Number(col5) +
-            Number(col6)
-          }, 1fr)`}
-          gap={5}
-          justifyItems="center"
-        >
-          {channels.map((channel) => (
-            <GridItem key={channel.id}>
-              <ChannelCard
-                channelId={channel.id}
-                title={channel.title}
-                thumbnailUrl={channel.thumbnailUrl}
-                subscriberCount={channel.subscriberCount}
-                channelUrl={channel.channelUrl}
-                bannerUrl={channel.bannerUrl ?? ""}
-                subCount={channel._count.subs}
-                requestCount={channel._count.requests}
-              />
-            </GridItem>
-          ))}
-        </Grid>
-      </GeneralRanking>
+        <HStack>
+          <Stack>
+            <HStack>
+              <Text fontWeight="bold" fontSize={{ base: "20px", sm: "30px" }}>
+                인기 채널 리스트
+              </Text>
+              <Stack
+                minW={{ base: "30px", sm: "40px" }}
+                minH={{ base: "30px", sm: "40px" }}
+                w={{ base: "30px", sm: "40px" }}
+                h={{ base: "30px", sm: "40px" }}
+              >
+                <YoutubeIcon size="100%" />
+              </Stack>
+            </HStack>
+            <Text>좋아하는 유튜버의 자막 현황을 확인해보세요</Text>
+          </Stack>
+        </HStack>
+        <Divider mb="10px !important" />
+        <RankingController
+          sortOptionArray={sortOptionArray}
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+          onSubmit={onSubmit}
+        />
+      </Stack>
+      <Box
+        pt={10}
+        pl={{ base: "10px", lg: "30px", xl: "70px" }}
+        pr={{ base: "10px", lg: "30px", xl: "70px" }}
+      >
+        <GeneralRanking btnComponent={loadMoreBtn}>
+          <Grid
+            templateColumns={`repeat(${
+              1 +
+              Number(col2) +
+              Number(col3) +
+              Number(col4) +
+              Number(col5) +
+              Number(col6)
+            }, 1fr)`}
+            gap={5}
+            justifyItems="center"
+          >
+            {channels.map((channel) => (
+              <GridItem key={channel.id}>
+                <ChannelCard
+                  channelId={channel.id}
+                  title={channel.title}
+                  thumbnailUrl={channel.thumbnailUrl}
+                  subscriberCount={channel.subscriberCount}
+                  channelUrl={channel.channelUrl}
+                  bannerUrl={channel.bannerUrl ?? ""}
+                  subCount={channel._count.subs}
+                  requestCount={channel._count.requests}
+                />
+              </GridItem>
+            ))}
+          </Grid>
+        </GeneralRanking>
+      </Box>
     </Box>
   );
 }
 
 ChannelRankingPage.options = {
   auth: false,
-  width: "100%",
   hideTitle: true,
 } as PageOptions;

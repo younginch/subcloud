@@ -1,5 +1,17 @@
 import axios from "axios";
-import { Box, Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+  Box,
+  Divider,
+  HStack,
+  Stack,
+  Table,
+  Tbody,
+  Th,
+  Thead,
+  Tr,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import useTranslation from "next-translate/useTranslation";
@@ -12,6 +24,8 @@ import {
 import UserRankTableRow from "../../../components/ranking/userRankTableRow";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 import GeneralRanking from "../../../components/ranking/generalRanking";
+import RankingController from "../../../components/ranking/rankingController";
+import { YoutubeIcon } from "../../../components/icons/customIcons";
 
 export default function UserRankingPage() {
   const { t } = useTranslation("rankings");
@@ -85,52 +99,86 @@ export default function UserRankingPage() {
 
   return (
     <Box
-      pt={10}
-      pl={{ base: "10px", lg: "30px", xl: "70px" }}
-      pr={{ base: "10px", lg: "30px", xl: "70px" }}
-      overflowX={{ base: "scroll", md: "hidden" }}
+      overflowX={{ sm: "scroll", md: "hidden" }}
+      bg={useColorModeValue("gray.50", undefined)}
+      minH="100vh"
     >
-      <GeneralRanking
-        lang={lang}
-        setLang={setLang}
-        sortOptionArray={sortOptionArray}
-        sortOption={sortOption}
-        setSortOption={setSortOption}
-        onSubmit={onSubmit}
-        btnComponent={loadMoreBtn}
+      <Stack
+        bg={useColorModeValue("white", "gray.900")}
+        pt={30}
+        pb={5}
+        pl={{ base: "10px", lg: "30px", xl: "70px" }}
+        pr={{ base: "10px", lg: "30px", xl: "70px" }}
+        boxShadow="md"
+        borderBottomWidth="2px"
       >
-        <Table variant="simple" mt={5} minW="800px">
-          <Thead>
-            <Tr my=".8rem" ps="0px">
-              {captions.map((data) => (
-                <Th
-                  color="gray.400"
-                  key={data.caption}
-                  fontWeight="bold"
-                  fontSize={{ base: "12px", md: "15px" }}
-                >
-                  {data.caption}
-                </Th>
+        <HStack>
+          <Stack>
+            <HStack>
+              <Text fontWeight="bold" fontSize={{ base: "20px", sm: "30px" }}>
+                인기 자막
+              </Text>
+              <Stack
+                minW={{ base: "30px", sm: "40px" }}
+                minH={{ base: "30px", sm: "40px" }}
+                w={{ base: "30px", sm: "40px" }}
+                h={{ base: "30px", sm: "40px" }}
+              >
+                <YoutubeIcon size="100%" />
+              </Stack>
+            </HStack>
+            <Text>전 세계 유저들이 올린 자막을 확인하세요</Text>
+          </Stack>
+        </HStack>
+        <Divider mb="10px !important" />
+        <RankingController
+          lang={lang}
+          setLang={setLang}
+          sortOptionArray={sortOptionArray}
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+          onSubmit={onSubmit}
+        />
+      </Stack>
+      <Box
+        pt={10}
+        pl={{ base: "10px", lg: "30px", xl: "70px" }}
+        pr={{ base: "10px", lg: "30px", xl: "70px" }}
+      >
+        <GeneralRanking btnComponent={loadMoreBtn}>
+          <Table variant="simple" mt={5} minW="800px">
+            <Thead>
+              <Tr my=".8rem" ps="0px">
+                {captions.map((data) => (
+                  <Th
+                    color="gray.400"
+                    key={data.caption}
+                    fontWeight="bold"
+                    fontSize={{ base: "12px", md: "15px" }}
+                  >
+                    {data.caption}
+                  </Th>
+                ))}
+              </Tr>
+            </Thead>
+            <Tbody>
+              {users.map((user, index) => (
+                <UserRankTableRow
+                  rank={index + 1}
+                  key={user.id}
+                  userId={user.id}
+                  userName={user.name ? user.name : "Annonymous"}
+                  userImageUrl={user.image ? user.image : ""}
+                  totalViewCount={user._count.views}
+                  totalSubCount={user._count.subs}
+                  makedLanguaged={user._count.langs}
+                  totalRating={Math.round(user._count.ratings * 10) / 10}
+                />
               ))}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {users.map((user, index) => (
-              <UserRankTableRow
-                rank={index + 1}
-                key={user.id}
-                userId={user.id}
-                userName={user.name ? user.name : "Annonymous"}
-                userImageUrl={user.image ? user.image : ""}
-                totalViewCount={user._count.views}
-                totalSubCount={user._count.subs}
-                makedLanguaged={user._count.langs}
-                totalRating={Math.round(user._count.ratings * 10) / 10}
-              />
-            ))}
-          </Tbody>
-        </Table>
-      </GeneralRanking>
+            </Tbody>
+          </Table>
+        </GeneralRanking>
+      </Box>
     </Box>
   );
 }
@@ -138,5 +186,4 @@ export default function UserRankingPage() {
 UserRankingPage.options = {
   auth: false,
   hideTitle: true,
-  width: "100%",
 } as PageOptions;

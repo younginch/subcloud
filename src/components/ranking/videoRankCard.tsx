@@ -1,4 +1,11 @@
-import { Stack, Text, Badge, HStack, Spacer } from "@chakra-ui/react";
+import {
+  Stack,
+  Text,
+  Badge,
+  HStack,
+  Spacer,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import dayjs from "dayjs";
 import ISO6391 from "iso-639-1";
 import duration from "dayjs/plugin/duration";
@@ -61,17 +68,17 @@ export default function VideoRankCard({
     >
       <Stack pl="10px">
         <HStack>
-          <Stack>
-            <Text fontWeight="bold">{t("language")}</Text>
-            <Badge colorScheme="purple" w="fit-content">
-              {ISO6391.getNativeName(lang)}
-            </Badge>
-          </Stack>
+          <Badge colorScheme="purple" w="fit-content">
+            {ISO6391.getNativeName(lang)}
+          </Badge>
           <Spacer />
-          <Stack spacing={0}>
-            <Text fontWeight="bold">{t("views")}</Text>
-            <Text fontWeight="bold">{viewCount}</Text>
-          </Stack>
+          <Text
+            fontWeight="bold"
+            color={useColorModeValue("gray.500", "gray.400")}
+          >
+            {t("views")}
+          </Text>
+          <Text fontWeight="bold">{viewCount}</Text>
           <Spacer />
         </HStack>
       </Stack>
