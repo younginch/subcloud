@@ -11,6 +11,7 @@ import axios from "axios";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import useSWR from "swr";
 import useSWRInfinite from "swr/infinite";
 import GeneralRanking from "../../components/ranking/generalRanking";
 import LoadMoreBtn from "../../components/ranking/loadMoreBtn";
@@ -22,7 +23,7 @@ import { PageOptions, RankQueryData, ResRankingVideo } from "../../utils/types";
 export default function ChannelDetail() {
   const { t } = useTranslation("channel");
   const router = useRouter();
-  const { channelId, title } = router.query;
+  const { channelId } = router.query;
   const [lang, setLang] = useState<string>();
   const [sortOption, setSortOption] = useState({
     name: t("gauge_high"),
@@ -55,6 +56,10 @@ export default function ChannelDetail() {
       }${goalExpr ? `&goalExpr=${JSON.stringify(goalExpr)}` : ""}
       ${channelId ? `&channelId=${channelId}` : ""}`,
     fetcher
+  );
+
+  const { data: channel } = useSWR(
+    `/api/public/search/channel?channelId=${channelId}`
   );
 
   const videos = data
@@ -91,7 +96,7 @@ export default function ChannelDetail() {
       <Box
         w="100%"
         h="220px"
-        backgroundImage="url(https://yt3.ggpht.com/a6vhvFo9rk1UnQeurV-fh37wl67vUwuDj3Xq7FfVuXWHiJD0Pcy7KkfK8l2d6t_MKTNFUiam=w1060-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj)"
+        backgroundImage={`url(${channel?.bannerUrl}=w1060-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj)`}
         backgroundSize="cover"
         position="relative"
       >
@@ -108,7 +113,7 @@ export default function ChannelDetail() {
           pr="20px"
           pt="10px"
         >
-          {t("title_channel_other")} {title} {t("title_channel_ko")}
+          {t("title_channel_other")} {channel?.title} {t("title_channel_ko")}
         </Text>
       </Box>
       <Stack
