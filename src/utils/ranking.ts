@@ -212,13 +212,6 @@ export async function RankingChannel(
   }
   const newChannels = channels
     .map((channel) => ({
-      id: channel.id,
-      title: channel.title,
-      description: channel.description,
-      thumbnailUrl: channel.thumbnailUrl,
-      subscriberCount: channel.subscriberCount,
-      channelUrl: channel.channelUrl,
-      bannerUrl: channel.bannerUrl,
       _count: {
         subs: channel.videos.reduce(
           (prev, curr) => prev + (curr.video?.subs.length ?? 0),
@@ -232,6 +225,7 @@ export async function RankingChannel(
           0
         ),
       },
+      ...channel,
     }))
     .filter((channel) => channel._count.requests > 0)
     .sort(sortBy);
