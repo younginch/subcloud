@@ -15,7 +15,7 @@ export default function PointGauge({ point, delta, goal }: Props) {
 
   if (!delta || point >= goal) {
     return (
-      <HStack>
+      <HStack className="pointGauge">
         <Tooltip label={`${t("gauge")}: ${point}/${goal}`}>
           <Box w="80%">
             <Progress
@@ -31,7 +31,7 @@ export default function PointGauge({ point, delta, goal }: Props) {
     );
   }
   return (
-    <HStack>
+    <HStack className="pointGauge">
       <Tooltip
         label={`${t("gauge")}: ${point + delta}/${goal} (+${Math.round(
           (delta / goal) * 100

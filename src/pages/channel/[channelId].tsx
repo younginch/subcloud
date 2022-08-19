@@ -14,6 +14,7 @@ import { useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import GeneralRanking from "../../components/ranking/generalRanking";
 import LoadMoreBtn from "../../components/ranking/loadMoreBtn";
+import RankingController from "../../components/ranking/rankingController";
 import RequestRankCard from "../../components/ranking/requestRankCard";
 import { GoalExpr, PointGoal } from "../../utils/etc";
 import { PageOptions, RankQueryData, ResRankingVideo } from "../../utils/types";
@@ -29,11 +30,8 @@ export default function ChannelDetail() {
   });
   const sortOptionArray = [
     { name: t("request_num_high"), sortBy: { by: "request", order: true } },
-    { name: t("request_num_low"), sortBy: { by: "request", order: false } },
     { name: t("request_point_high"), sortBy: { by: "point", order: true } },
-    { name: t("request_point_low"), sortBy: { by: "point", order: false } },
     { name: t("gauge_high"), sortBy: { by: "gauge", order: true } },
-    { name: t("gauge_low"), sortBy: { by: "gauge", order: false } },
   ];
   const pageSize = 15;
   const fetcher = async (url: string) => {
@@ -106,7 +104,7 @@ export default function ChannelDetail() {
           bottom="0px"
           backgroundColor={useColorModeValue("white", "gray.800")}
           borderTopRightRadius="10px"
-          pl="30px"
+          pl={{ base: "20px", md: "70px" }}
           pr="20px"
           pt="10px"
         >
@@ -114,19 +112,25 @@ export default function ChannelDetail() {
         </Text>
       </Box>
       <Stack
-        pt="40px"
-        pl={{ base: "10px", lg: "30px", xl: "70px" }}
-        pr={{ base: "10px", lg: "30px", xl: "70px" }}
+        pl={{ base: "20px", md: "70px" }}
+        pr={{ base: "20px", md: "70px" }}
+        pt="30px"
       >
-        <GeneralRanking
+        <RankingController
           lang={lang}
           setLang={setLang}
           sortOptionArray={sortOptionArray}
           sortOption={sortOption}
           setSortOption={setSortOption}
           onSubmit={onSubmit}
-          btnComponent={loadMoreBtn}
-        >
+        />
+      </Stack>
+      <Stack
+        pt="40px"
+        pl={{ base: "10px", lg: "30px", xl: "70px" }}
+        pr={{ base: "10px", lg: "30px", xl: "70px" }}
+      >
+        <GeneralRanking btnComponent={loadMoreBtn}>
           <Grid
             templateColumns={`repeat(${
               1 +

@@ -1,9 +1,23 @@
-import { Box, Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Grid,
+  GridItem,
+  HStack,
+  Spacer,
+  Stack,
+  useMediaQuery,
+  Text,
+  Divider,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
+import Joyride, { Step } from "react-joyride";
+import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import {
   PageOptions,
   RankQueryData,
@@ -13,13 +27,40 @@ import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 import GeneralRanking from "../../../components/ranking/generalRanking";
 import RequestRankCard from "../../../components/ranking/requestRankCard";
 import { PointGoal, GoalExpr } from "../../../utils/etc";
+import { YoutubeIcon } from "../../../components/icons/customIcons";
+import RankingController from "../../../components/ranking/rankingController";
 
+type JoyrideState = {
+  run: boolean;
+  steps: Step[];
+};
 export default function VideoRankingPage() {
   const { t } = useTranslation("rankings");
   const [lang, setLang] = useState<string>();
   const [sortOption, setSortOption] = useState({
     name: t("gauge_high"),
     sortBy: { by: "gauge", order: true },
+  });
+  const [{ run, steps }, setJoyride] = useState<JoyrideState>({
+    run: false,
+    steps: [
+      {
+        content: (
+          <h2>이곳은 유저들의 자막 요청을 모아볼 수 있는 페이지입니다.</h2>
+        ),
+        locale: { skip: <strong aria-label="skip">S-K-I-P</strong> },
+        placement: "center",
+        target: "body",
+      },
+      {
+        target: ".videoSearch",
+        content: <h2>여기서 원하는 영상을 검색할 수 있어요</h2>,
+      },
+      {
+        target: ".rankGrid :nth-child(1) .pointGauge",
+        content: <h2>자막을 요청하고 게이지를 전부 채워 자막을 받아보세요</h2>,
+      },
+    ],
   });
   const sortOptionArray = [
     { name: t("requests_high"), sortBy: { by: "request", order: true } },
@@ -74,7 +115,7 @@ export default function VideoRankingPage() {
   );
 
   const [col2, col3, col4, col5, col6] = useMediaQuery([
-    "(min-width: 750px)",
+    "(min-width: 710px)",
     "(min-width: 1030px)",
     "(min-width: 1400px)",
     "(min-width: 1700px)",
@@ -83,68 +124,128 @@ export default function VideoRankingPage() {
 
   return (
     <Box
-      pt={10}
-      pl={{ base: "10px", lg: "30px", xl: "70px" }}
-      pr={{ base: "10px", lg: "30px", xl: "70px" }}
       overflowX={{ sm: "scroll", md: "hidden" }}
+      bg={useColorModeValue("gray.50", undefined)}
     >
-      <GeneralRanking
-        lang={lang}
-        setLang={setLang}
-        sortOptionArray={sortOptionArray}
-        sortOption={sortOption}
-        setSortOption={setSortOption}
-        onSubmit={onSubmit}
-        btnComponent={loadMoreBtn}
+      <Stack
+        bg={useColorModeValue("white", "gray.900")}
+        pt={30}
+        pb={5}
+        pl={{ base: "10px", lg: "30px", xl: "70px" }}
+        pr={{ base: "10px", lg: "30px", xl: "70px" }}
+        boxShadow="md"
+        borderBottomWidth="2px"
       >
-        <Grid
-          templateColumns={`repeat(${
-            1 +
-            Number(col2) +
-            Number(col3) +
-            Number(col4) +
-            Number(col5) +
-            Number(col6)
-          }, 1fr)`}
-          gap={5}
-          justifyItems="center"
-        >
-          {videos.map((video) => (
-            <GridItem key={video.videoId}>
-              <RequestRankCard
-                duration={video.youtubeVideo ? video.youtubeVideo.duration : 0}
-                videoName={
-                  video.youtubeVideo ? video.youtubeVideo.title : "no title"
-                }
-                videoUrl={video.url}
-                serviceId={video.serviceId}
-                videoId={video.videoId}
-                imageUrl={`http://img.youtube.com/vi/${video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
-                requestCount={video._count.requests}
-                requestPoint={video._count.points}
-                requestGoal={
-                  PointGoal(
-                    video.youtubeVideo
-                      ? video.youtubeVideo.duration
-                      : undefined,
-                    goalExpr
-                  ) ?? 1000000
-                }
-                channelName={video.youtubeVideo?.channel.title ?? "no name"}
-                channelImageUrl={video.youtubeVideo?.channel.thumbnailUrl ?? ""}
-                channelUrl={video.youtubeVideo?.channel.channelUrl ?? ""}
-                lang={video.langs}
-              />
-            </GridItem>
-          ))}
-        </Grid>
-      </GeneralRanking>
+        <HStack>
+          <Stack>
+            <HStack>
+              <Text fontWeight="bold" fontSize={{ base: "20px", sm: "30px" }}>
+                인기 자막 요청 영상
+              </Text>
+              <Stack
+                minW={{ base: "30px", sm: "40px" }}
+                minH={{ base: "30px", sm: "40px" }}
+                w={{ base: "30px", sm: "40px" }}
+                h={{ base: "30px", sm: "40px" }}
+              >
+                <YoutubeIcon size="100%" />
+              </Stack>
+            </HStack>
+            <Text>
+              전 세계 유저가 요청한 자막을 확인하세요. 자막 게이지를 다 채우면
+              자막 생성을 보장합니다.
+            </Text>
+          </Stack>
+          <Spacer />
+          <Button
+            variant="ghost"
+            onClick={() => {
+              setJoyride({ run: true, steps });
+            }}
+          >
+            <QuestionOutlineIcon />
+          </Button>
+        </HStack>
+        <Divider mb="10px !important" />
+        <RankingController
+          lang={lang}
+          setLang={setLang}
+          sortOptionArray={sortOptionArray}
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+          onSubmit={onSubmit}
+        />
+      </Stack>
+      <Joyride
+        steps={steps}
+        run={run}
+        styles={{
+          options: {
+            zIndex: 10000,
+          },
+        }}
+        continuous
+        scrollOffset={500}
+      />
+      <Box
+        pt={10}
+        pl={{ base: "10px", lg: "30px", xl: "70px" }}
+        pr={{ base: "10px", lg: "30px", xl: "70px" }}
+      >
+        <GeneralRanking btnComponent={loadMoreBtn}>
+          <Grid
+            templateColumns={`repeat(${
+              1 +
+              Number(col2) +
+              Number(col3) +
+              Number(col4) +
+              Number(col5) +
+              Number(col6)
+            }, 1fr)`}
+            gap={5}
+            justifyItems="center"
+            className="rankGrid"
+          >
+            {videos.map((video) => (
+              <GridItem key={video.videoId}>
+                <RequestRankCard
+                  duration={
+                    video.youtubeVideo ? video.youtubeVideo.duration : 0
+                  }
+                  videoName={
+                    video.youtubeVideo ? video.youtubeVideo.title : "no title"
+                  }
+                  videoUrl={video.url}
+                  serviceId={video.serviceId}
+                  videoId={video.videoId}
+                  imageUrl={`http://img.youtube.com/vi/${video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
+                  requestCount={video._count.requests}
+                  requestPoint={video._count.points}
+                  requestGoal={
+                    PointGoal(
+                      video.youtubeVideo
+                        ? video.youtubeVideo.duration
+                        : undefined,
+                      goalExpr
+                    ) ?? 1000000
+                  }
+                  channelName={video.youtubeVideo?.channel.title ?? "no name"}
+                  channelImageUrl={
+                    video.youtubeVideo?.channel.thumbnailUrl ?? ""
+                  }
+                  channelUrl={video.youtubeVideo?.channel.channelUrl ?? ""}
+                  lang={video.langs}
+                />
+              </GridItem>
+            ))}
+          </Grid>
+        </GeneralRanking>
+      </Box>
     </Box>
   );
 }
 
 VideoRankingPage.options = {
   auth: false,
-  width: "100%",
   hideTitle: true,
 } as PageOptions;

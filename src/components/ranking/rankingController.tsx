@@ -124,10 +124,11 @@ export default function RankingController({
   const { isOpen, onToggle } = useDisclosure();
   const { handleSubmit, register } = useForm<RankQueryData>();
   const [isPc] = useMediaQuery("(min-width: 950px)");
+  const hasFilter = setLang;
 
-  if (isPc) {
+  if (isPc || !hasFilter) {
     return (
-      <Stack spacing="10px">
+      <Stack spacing="30px">
         <SelectPriority
           sortOptionArray={sortOptionArray}
           sortOption={sortOption}
@@ -142,6 +143,7 @@ export default function RankingController({
                     <Input
                       placeholder={t("search")}
                       w="300px"
+                      maxW="full"
                       id="keyword"
                       type="keyword"
                       {...register("keyword", {
@@ -169,7 +171,7 @@ export default function RankingController({
   }
 
   return (
-    <Stack>
+    <Stack maxW="100%">
       <SelectPriority
         sortOptionArray={sortOptionArray}
         sortOption={sortOption}
@@ -180,7 +182,7 @@ export default function RankingController({
           <WrapItem>
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl>
-                <HStack>
+                <HStack maxW="calc(100vw - 60px)">
                   <Input
                     placeholder={t("search")}
                     w="300px"

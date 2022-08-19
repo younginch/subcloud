@@ -1,5 +1,15 @@
 import axios from "axios";
-import { Box, Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  GridItem,
+  useColorModeValue,
+  useMediaQuery,
+  Text,
+  HStack,
+  Stack,
+  Divider,
+} from "@chakra-ui/react";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -12,6 +22,8 @@ import {
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 import VideoRankCard from "../../../components/ranking/videoRankCard";
 import GeneralRanking from "../../../components/ranking/generalRanking";
+import { YoutubeIcon } from "../../../components/icons/customIcons";
+import RankingController from "../../../components/ranking/rankingController";
 
 export default function SubRankingPage() {
   const { t } = useTranslation("rankings");
@@ -84,62 +96,97 @@ export default function SubRankingPage() {
 
   return (
     <Box
-      pt={10}
-      pl={{ base: "10px", lg: "30px", xl: "70px" }}
-      pr={{ base: "10px", lg: "30px", xl: "70px" }}
+      overflowX={{ sm: "scroll", md: "hidden" }}
+      bg={useColorModeValue("gray.50", undefined)}
     >
-      <GeneralRanking
-        lang={lang}
-        setLang={setLang}
-        sortOptionArray={sortOptionArray}
-        sortOption={sortOption}
-        setSortOption={setSortOption}
-        onSubmit={onSubmit}
-        btnComponent={loadMoreBtn}
+      <Stack
+        bg={useColorModeValue("white", "gray.900")}
+        pt={30}
+        pb={5}
+        pl={{ base: "10px", lg: "30px", xl: "70px" }}
+        pr={{ base: "10px", lg: "30px", xl: "70px" }}
+        boxShadow="md"
+        borderBottomWidth="2px"
       >
-        <Grid
-          templateColumns={`repeat(${
-            1 +
-            Number(col2) +
-            Number(col3) +
-            Number(col4) +
-            Number(col5) +
-            Number(col6)
-          }, 1fr)`}
-          gap={5}
-          justifyItems="center"
-        >
-          {subs.map((sub) => (
-            <GridItem key={sub.id}>
-              <VideoRankCard
-                key={sub.id}
-                duration={sub.video.youtubeVideo?.duration ?? 0}
-                videoName={
-                  sub.video.youtubeVideo
-                    ? sub.video.youtubeVideo.title
-                    : "no title"
-                }
-                videoUrl={sub.video.url}
-                imageUrl={`http://img.youtube.com/vi/${sub.video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
-                viewCount={sub.views}
-                channelName={sub.video.youtubeVideo?.channel.title ?? "no name"}
-                channelImageUrl={
-                  sub.video.youtubeVideo?.channel.thumbnailUrl ?? ""
-                }
-                channelUrl={sub.video.youtubeVideo?.channel.channelUrl ?? ""}
-                lang={sub.lang}
-                uploadDate={sub.createdAt}
-              />
-            </GridItem>
-          ))}
-        </Grid>
-      </GeneralRanking>
+        <HStack>
+          <Stack>
+            <HStack>
+              <Text fontWeight="bold" fontSize={{ base: "20px", sm: "30px" }}>
+                인기 자막
+              </Text>
+              <Stack
+                minW={{ base: "30px", sm: "40px" }}
+                minH={{ base: "30px", sm: "40px" }}
+                w={{ base: "30px", sm: "40px" }}
+                h={{ base: "30px", sm: "40px" }}
+              >
+                <YoutubeIcon size="100%" />
+              </Stack>
+            </HStack>
+            <Text>전 세계 유저들이 올린 자막을 확인하세요</Text>
+          </Stack>
+        </HStack>
+        <Divider mb="10px !important" />
+        <RankingController
+          lang={lang}
+          setLang={setLang}
+          sortOptionArray={sortOptionArray}
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+          onSubmit={onSubmit}
+        />
+      </Stack>
+      <Box
+        pt={10}
+        pl={{ base: "10px", lg: "30px", xl: "70px" }}
+        pr={{ base: "10px", lg: "30px", xl: "70px" }}
+      >
+        <GeneralRanking btnComponent={loadMoreBtn}>
+          <Grid
+            templateColumns={`repeat(${
+              1 +
+              Number(col2) +
+              Number(col3) +
+              Number(col4) +
+              Number(col5) +
+              Number(col6)
+            }, 1fr)`}
+            gap={5}
+            justifyItems="center"
+          >
+            {subs.map((sub) => (
+              <GridItem key={sub.id}>
+                <VideoRankCard
+                  key={sub.id}
+                  duration={sub.video.youtubeVideo?.duration ?? 0}
+                  videoName={
+                    sub.video.youtubeVideo
+                      ? sub.video.youtubeVideo.title
+                      : "no title"
+                  }
+                  videoUrl={sub.video.url}
+                  imageUrl={`http://img.youtube.com/vi/${sub.video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
+                  viewCount={sub.views}
+                  channelName={
+                    sub.video.youtubeVideo?.channel.title ?? "no name"
+                  }
+                  channelImageUrl={
+                    sub.video.youtubeVideo?.channel.thumbnailUrl ?? ""
+                  }
+                  channelUrl={sub.video.youtubeVideo?.channel.channelUrl ?? ""}
+                  lang={sub.lang}
+                  uploadDate={sub.createdAt}
+                />
+              </GridItem>
+            ))}
+          </Grid>
+        </GeneralRanking>
+      </Box>
     </Box>
   );
 }
 
 SubRankingPage.options = {
   auth: false,
-  width: "100%",
   hideTitle: true,
 } as PageOptions;
