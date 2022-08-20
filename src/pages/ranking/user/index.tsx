@@ -16,6 +16,7 @@ import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
+import { BsTrophy } from "react-icons/bs";
 import {
   PageOptions,
   RankQueryData,
@@ -25,7 +26,6 @@ import UserRankTableRow from "../../../components/ranking/userRankTableRow";
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 import GeneralRanking from "../../../components/ranking/generalRanking";
 import RankingController from "../../../components/ranking/rankingController";
-import { YoutubeIcon } from "../../../components/icons/customIcons";
 
 export default function UserRankingPage() {
   const { t } = useTranslation("rankings");
@@ -48,11 +48,8 @@ export default function UserRankingPage() {
   const pageSize = 15;
   const sortOptionArray = [
     { name: t("total_views_high"), sortBy: { by: "view", order: true } },
-    { name: t("total_views_low"), sortBy: { by: "view", order: false } },
     { name: t("rating_high"), sortBy: { by: "rating", order: true } },
-    { name: t("rating_low"), sortBy: { by: "rating", order: false } },
     { name: t("total_subs_high"), sortBy: { by: "sub", order: true } },
-    { name: t("total_subs_low"), sortBy: { by: "sub", order: false } },
   ];
 
   const fetcher = async (url: string) => {
@@ -101,7 +98,7 @@ export default function UserRankingPage() {
     <Box
       overflowX={{ sm: "scroll", md: "hidden" }}
       bg={useColorModeValue("gray.50", undefined)}
-      minH="100vh"
+      minH="calc(100vh - 54px)"
     >
       <Stack
         bg={useColorModeValue("white", "gray.900")}
@@ -115,19 +112,21 @@ export default function UserRankingPage() {
         <HStack>
           <Stack>
             <HStack>
-              <Text fontWeight="bold" fontSize={{ base: "20px", sm: "30px" }}>
-                인기 자막
+              <Text fontWeight="bold" fontSize={{ base: "25px", sm: "30px" }}>
+                자막 제작자 랭킹
               </Text>
               <Stack
-                minW={{ base: "30px", sm: "40px" }}
-                minH={{ base: "30px", sm: "40px" }}
-                w={{ base: "30px", sm: "40px" }}
-                h={{ base: "30px", sm: "40px" }}
+                minW={{ base: "22px", sm: "26px" }}
+                minH={{ base: "22px", sm: "26px" }}
+                w={{ base: "22px", sm: "26px" }}
+                h={{ base: "22px", sm: "26px" }}
               >
-                <YoutubeIcon size="100%" />
+                <BsTrophy size="full" color="#ccca22" />
               </Stack>
             </HStack>
-            <Text>전 세계 유저들이 올린 자막을 확인하세요</Text>
+            <Text fontSize={{ base: "12px", sm: "15px" }}>
+              전 세계 유저들이 올린 자막을 확인하세요
+            </Text>
           </Stack>
         </HStack>
         <Divider mb="10px !important" />

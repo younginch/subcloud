@@ -30,10 +30,6 @@ import { PointGoal, GoalExpr } from "../../../utils/etc";
 import { YoutubeIcon } from "../../../components/icons/customIcons";
 import RankingController from "../../../components/ranking/rankingController";
 
-type JoyrideState = {
-  run: boolean;
-  steps: Step[];
-};
 export default function VideoRankingPage() {
   const { t } = useTranslation("rankings");
   const [lang, setLang] = useState<string>();
@@ -41,7 +37,10 @@ export default function VideoRankingPage() {
     name: t("gauge_high"),
     sortBy: { by: "gauge", order: true },
   });
-  const [{ run, steps }, setJoyride] = useState<JoyrideState>({
+  const [{ run, steps }, setJoyride] = useState<{
+    run: boolean;
+    steps: Step[];
+  }>({
     run: false,
     steps: [
       {
@@ -67,12 +66,9 @@ export default function VideoRankingPage() {
     ],
   });
   const sortOptionArray = [
-    { name: t("requests_high"), sortBy: { by: "request", order: true } },
-    { name: t("requests_low"), sortBy: { by: "request", order: false } },
-    { name: t("points_most"), sortBy: { by: "point", order: true } },
-    { name: t("points_least"), sortBy: { by: "point", order: false } },
     { name: t("gauge_high"), sortBy: { by: "gauge", order: true } },
-    { name: t("gauge_low"), sortBy: { by: "gauge", order: false } },
+    { name: t("requests_high"), sortBy: { by: "request", order: true } },
+    { name: t("points_most"), sortBy: { by: "point", order: true } },
   ];
   const pageSize = 15;
   const fetcher = async (url: string) => {
@@ -130,6 +126,7 @@ export default function VideoRankingPage() {
     <Box
       overflowX={{ sm: "scroll", md: "hidden" }}
       bg={useColorModeValue("gray.50", undefined)}
+      minH="calc(100vh - 54px)"
     >
       <Stack
         bg={useColorModeValue("white", "gray.900")}
@@ -155,7 +152,7 @@ export default function VideoRankingPage() {
                 <YoutubeIcon size="100%" />
               </Stack>
             </HStack>
-            <Text>
+            <Text fontSize={{ base: "12px", sm: "15px" }}>
               전 세계 유저가 요청한 자막을 확인하세요. 자막 게이지를 다 채우면
               자막을 만들어드릴게요.
             </Text>

@@ -92,7 +92,7 @@ function SelectPriority({
             bg={option.name === sortOption.name ? "purple.500" : "transparent"}
             color={option.name === sortOption.name ? "white" : ""}
             _hover={{ bg: "purple.500", color: "white" }}
-            size="sm"
+            size={{ base: "xs", sm: "sm" }}
             onClick={() => setSortOption && setSortOption(option)}
           >
             {option.name}
@@ -123,7 +123,7 @@ export default function RankingController({
   const { t } = useTranslation("rankings");
   const { isOpen, onToggle } = useDisclosure();
   const { handleSubmit, register } = useForm<RankQueryData>();
-  const [isPc] = useMediaQuery("(min-width: 950px)");
+  const [isPc] = useMediaQuery("(min-width: 620px)");
   const hasFilter = setLang;
 
   if (isPc || !hasFilter) {

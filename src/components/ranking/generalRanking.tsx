@@ -7,7 +7,7 @@ type Props = {
 
 export default function GeneralRanking({ children, btnComponent }: Props) {
   return (
-    <Stack>
+    <Stack pb="20px">
       {children}
       {btnComponent}
     </Stack>
