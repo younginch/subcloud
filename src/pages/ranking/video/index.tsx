@@ -44,24 +44,22 @@ export default function VideoRankingPage() {
     run: false,
     steps: [
       {
-        content: (
-          <h2>이곳은 유저들의 자막 요청을 모아볼 수 있는 페이지입니다.</h2>
-        ),
+        content: <h2>{t("help_h1")}</h2>,
         locale: { skip: <strong aria-label="skip">S-K-I-P</strong> },
         placement: "center",
         target: "body",
       },
       {
         target: ".videoSearch",
-        content: <h2>여기서 원하는 영상을 검색할 수 있어요</h2>,
+        content: <h2>{t("help_h2")}</h2>,
       },
       {
         target: ".rankGrid :nth-child(1) .pointGauge",
-        content: <h2>자막을 요청하고 게이지를 전부 채워 자막을 받아보세요</h2>,
+        content: <h2>{t("help_h3")}</h2>,
       },
       {
         target: ".helpButton",
-        content: <h2>궁금할땐 언제든지 도움말 버튼을 눌러서 확인해보세요</h2>,
+        content: <h2>{t("help_h4")}</h2>,
       },
     ],
   });
@@ -141,7 +139,7 @@ export default function VideoRankingPage() {
           <Stack>
             <HStack>
               <Text fontWeight="bold" fontSize={{ base: "20px", sm: "30px" }}>
-                인기 자막 요청 영상
+                {t("pop_req_sub")}
               </Text>
               <Stack
                 minW={{ base: "30px", sm: "40px" }}
@@ -153,8 +151,7 @@ export default function VideoRankingPage() {
               </Stack>
             </HStack>
             <Text fontSize={{ base: "12px", sm: "15px" }}>
-              전 세계 유저가 요청한 자막을 확인하세요. 자막 게이지를 다 채우면
-              자막을 만들어드릴게요.
+              {t("pop_req_sub_ex")}
             </Text>
           </Stack>
           <Spacer />
