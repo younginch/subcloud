@@ -112,7 +112,7 @@ export default function SubRankingPage() {
           <Stack>
             <HStack>
               <Text fontWeight="bold" fontSize={{ base: "20px", sm: "30px" }}>
-                인기 자막
+                {t("pop_sub")}
               </Text>
               <Stack
                 minW={{ base: "30px", sm: "40px" }}
@@ -124,7 +124,7 @@ export default function SubRankingPage() {
               </Stack>
             </HStack>
             <Text fontSize={{ base: "12px", sm: "15px" }}>
-              전 세계 유저들이 올린 자막을 확인하세요
+              {t("pop_sub_ex")}
             </Text>
           </Stack>
         </HStack>

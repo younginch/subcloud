@@ -113,7 +113,7 @@ export default function UserRankingPage() {
           <Stack>
             <HStack>
               <Text fontWeight="bold" fontSize={{ base: "25px", sm: "30px" }}>
-                자막 제작자 랭킹
+                {t("subtitler_rank")}
               </Text>
               <Stack
                 minW={{ base: "22px", sm: "26px" }}
@@ -125,7 +125,7 @@ export default function UserRankingPage() {
               </Stack>
             </HStack>
             <Text fontSize={{ base: "12px", sm: "15px" }}>
-              전 세계 유저들이 올린 자막을 확인하세요
+              {t("subtitler_rank_ex")}
             </Text>
           </Stack>
         </HStack>

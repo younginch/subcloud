@@ -13,6 +13,8 @@
   "total_subs": "Total subs",
   "total_subs_high": "Total subs(highest)",
   "total_subs_low": "Total subs(lowest)",
+  "pop_sub": "Popular subtitle",
+  "pop_sub_ex": "Check out the subtitles posted by users around the world",
   "subtitle_language": "Language",
   "rating": "Rating",
   "rating_high": "Rating(highest)",
@@ -35,5 +37,13 @@
   "gauge_low": "Subtitle gauge(lowest)",
   "noRating": "empty",
   "req": "Request",
-  "up": "Upload"
+  "up": "Upload",
+  "pop_req_sub": "Popular Subtitle Requested Videos",
+  "pop_req_sub_ex": "Check out the subtitles requested by users around the world. When the subtitle gauge is full, We will make subtitles for you",
+  "help_h1": "This is a page where you can collect subtitle requests from users",
+  "help_h2": "You can search for the video you want here",
+  "help_h3": "Request subtitles and fill the gauge to receive subtitles",
+  "help_h4": "If you have any questions, please check by clicking the help button at any time",
+  "subtitler_rank": "Subtitler Ranking",
+  "subtitler_rank_ex": "Check out the subtitles posted by users around the world"
 }
