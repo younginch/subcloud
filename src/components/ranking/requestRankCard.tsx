@@ -24,6 +24,7 @@ type Props = {
   channelName: string;
   channelImageUrl: string;
   channelUrl: string;
+  hideChannel?: boolean;
   lang: string;
 };
 
@@ -39,6 +40,7 @@ export default function RequestRankCard({
   requestGoal,
   channelName,
   channelImageUrl,
+  hideChannel,
   channelUrl,
   lang,
 }: Props) {
@@ -77,6 +79,7 @@ export default function RequestRankCard({
       channelName={channelName}
       channelImageUrl={channelImageUrl}
       channelUrl={channelUrl}
+      hideChannel={hideChannel}
       hoverComponent={hoverComponent}
     >
       <Stack pl="10px" pr="10px">

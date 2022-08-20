@@ -1,7 +1,9 @@
 import {
+  Avatar,
   Box,
   Grid,
   GridItem,
+  HStack,
   Stack,
   Text,
   useColorModeValue,
@@ -30,9 +32,9 @@ export default function ChannelDetail() {
     sortBy: { by: "gauge", order: true },
   });
   const sortOptionArray = [
+    { name: t("gauge_high"), sortBy: { by: "gauge", order: true } },
     { name: t("request_num_high"), sortBy: { by: "request", order: true } },
     { name: t("request_point_high"), sortBy: { by: "point", order: true } },
-    { name: t("gauge_high"), sortBy: { by: "gauge", order: true } },
   ];
   const pageSize = 15;
   const fetcher = async (url: string) => {
@@ -100,21 +102,29 @@ export default function ChannelDetail() {
         backgroundSize="cover"
         position="relative"
       >
-        <Text
-          fontWeight="bold"
-          fontSize={{ base: "20px", md: "30px" }}
+        <HStack
+          backgroundColor={useColorModeValue("white", "gray.800")}
           position="absolute"
           mt="-45px"
           left="0px"
           bottom="0px"
-          backgroundColor={useColorModeValue("white", "gray.800")}
-          borderTopRightRadius="10px"
+          pt="10px"
           pl={{ base: "20px", md: "70px" }}
           pr="20px"
-          pt="10px"
+          borderTopRightRadius="10px"
         >
-          {t("title_channel_other")} {channel?.title} {t("title_channel_ko")}
-        </Text>
+          <Avatar
+            name={channel?.title}
+            src="https://yt3.ggpht.com/waNps7UFn4AMEe7trG8HJcwWAiu8k0lSeSBMelcytxFf6CkNF6Yr0sdmEBhlThR-c3Nlo8VNeQ=s88-c-k-c0x00ffffff-no-rj"
+            size="sm"
+          />
+          <Text fontWeight="bold" fontSize={{ base: "15px", md: "30px" }}>
+            {t("title_channel_other")} {channel?.title}
+          </Text>
+          <Text fontSize={{ base: "12px", md: "25px" }}>
+            {t("title_channel_ko")}
+          </Text>
+        </HStack>
       </Box>
       <Stack
         pl={{ base: "20px", md: "70px" }}
@@ -177,6 +187,7 @@ export default function ChannelDetail() {
                   }
                   channelUrl={video.youtubeVideo?.channel.channelUrl ?? ""}
                   lang={video.langs}
+                  hideChannel
                 />
               </GridItem>
             ))}

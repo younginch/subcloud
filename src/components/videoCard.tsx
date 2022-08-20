@@ -20,6 +20,7 @@ type Props = {
   channelName?: string;
   channelImageUrl?: string;
   channelUrl?: string;
+  hideChannel?: boolean;
   padding?: string;
   children: React.ReactNode;
   hoverComponent?: React.ReactNode;
@@ -33,6 +34,7 @@ export default function VideoCard({
   channelName,
   channelImageUrl,
   channelUrl,
+  hideChannel,
   padding,
   children,
   hoverComponent,
@@ -91,7 +93,7 @@ export default function VideoCard({
         >
           {videoName}
         </Text>
-        {channelName && channelUrl && channelImageUrl && (
+        {channelName && channelUrl && channelImageUrl && !hideChannel && (
           <HStack overflow="hidden" pr="10px">
             <Link href={channelUrl}>
               <Avatar size="sm" name={channelName} src={channelImageUrl} />
