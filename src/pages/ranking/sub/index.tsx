@@ -10,6 +10,7 @@ import {
   Stack,
   Divider,
 } from "@chakra-ui/react";
+import { MdSubtitles } from "react-icons/md";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -22,7 +23,6 @@ import {
 import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 import VideoRankCard from "../../../components/ranking/videoRankCard";
 import GeneralRanking from "../../../components/ranking/generalRanking";
-import { YoutubeIcon } from "../../../components/icons/customIcons";
 import RankingController from "../../../components/ranking/rankingController";
 
 export default function SubRankingPage() {
@@ -37,7 +37,6 @@ export default function SubRankingPage() {
   });
   const sortOptionArray = [
     { name: t("view_many"), sortBy: { by: "view", order: true } },
-    { name: t("view_less"), sortBy: { by: "view", order: false } },
     { name: t("upload_recent"), sortBy: { by: "date", order: true } },
     { name: t("upload_old"), sortBy: { by: "date", order: false } },
   ];
@@ -98,6 +97,7 @@ export default function SubRankingPage() {
     <Box
       overflowX={{ sm: "scroll", md: "hidden" }}
       bg={useColorModeValue("gray.50", undefined)}
+      minH="calc(100vh - 54px)"
     >
       <Stack
         bg={useColorModeValue("white", "gray.900")}
@@ -120,10 +120,12 @@ export default function SubRankingPage() {
                 w={{ base: "30px", sm: "40px" }}
                 h={{ base: "30px", sm: "40px" }}
               >
-                <YoutubeIcon size="100%" />
+                <MdSubtitles size="full" />
               </Stack>
             </HStack>
-            <Text>전 세계 유저들이 올린 자막을 확인하세요</Text>
+            <Text fontSize={{ base: "12px", sm: "15px" }}>
+              전 세계 유저들이 올린 자막을 확인하세요
+            </Text>
           </Stack>
         </HStack>
         <Divider mb="10px !important" />

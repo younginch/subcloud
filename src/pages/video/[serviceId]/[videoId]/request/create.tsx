@@ -33,6 +33,8 @@ import { BiRocket } from "react-icons/bi";
 import { BsLightningCharge } from "react-icons/bs";
 import { HiOutlineFire } from "react-icons/hi";
 import useTranslation from "next-translate/useTranslation";
+import Joyride, { Step } from "react-joyride";
+import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import InViewProvider from "../../../../../components/inviewProvider";
 import CardHeader from "../../../../../components/user/card/cardHeader";
 import Card from "../../../../../components/user/card/card";
@@ -81,6 +83,52 @@ export default function RequestCreate() {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({ resolver: joiResolver(RequestCreateSchema) });
+  const [{ run, steps }, setJoyride] = useState<{
+    run: boolean;
+    steps: Step[];
+  }>({
+    run: false,
+    steps: [
+      {
+        content: (
+          <h2>
+            이 페이지에서 무료로 자막을 요청하고 게이지를 채울 수 있습니다.
+          </h2>
+        ),
+        locale: { skip: <strong aria-label="skip">S-K-I-P</strong> },
+        placement: "center",
+        target: "body",
+      },
+      {
+        target: ".videoInfo",
+        content: <h2>자막을 요청하려는 영상이에요</h2>,
+      },
+      {
+        target: ".selectLang-wrapper button.chakra-menu__menu-button",
+        content: <h2>자막을 요청할 언어를 골라주세요</h2>,
+      },
+      {
+        target: "div.chakra-wrap",
+        content: (
+          <h2>
+            가입 선물로 200 포인트를 드렸어요. 포인트를 사용하면 게이지를 더
+            빨리 채울 수 있어요
+          </h2>
+        ),
+      },
+      {
+        target: "div.summary",
+        content: <h2>요청에 대한 요약이에요. 이벤트 포인트를 확인해보세요</h2>,
+        placement: "left",
+      },
+      {
+        target: ".helpButton",
+        content: (
+          <h2>궁금할땐 언제든지 도움말 버튼을 눌러서 다시 볼 수 있어요</h2>
+        ),
+      },
+    ],
+  });
   const session = useSession();
   const [video, setVideo] = useState<VideoWithCount>();
   const [defaultPoint, setDefaultPoint] = useState<number>(0);
@@ -247,6 +295,17 @@ export default function RequestCreate() {
         h="fit-content"
         minH="100vh"
       >
+        <Joyride
+          steps={steps}
+          run={run}
+          styles={{
+            options: {
+              zIndex: 10000,
+            },
+          }}
+          continuous
+          scrollOffset={500}
+        />
         <Card w="850px" mt={5} maxW="calc(100vw - 40px)">
           <CardHeader mb="10px">
             <Text color={textColor} fontSize="lg" fontWeight="bold" mb="4px">
@@ -259,6 +318,7 @@ export default function RequestCreate() {
           <Stack
             direction={{ base: "column", md: "row" }}
             alignItems={{ base: "start", md: "center" }}
+            className="selectLang-wrapper"
           >
             <Box w="200px" h="fit-content">
               <Text
@@ -371,14 +431,32 @@ export default function RequestCreate() {
         </Stack>
         <Card
           w="400px"
-          className={summaryToggle ? "requestFixed" : "requestBottom"}
+          className={
+            summaryToggle ? "summary requestFixed" : "summary requestBottom"
+          }
           zIndex={3}
           maxW="calc(100vw - 40px)"
         >
           <CardHeader mb="24px">
-            <Text color={textColor} fontSize="25px" fontWeight="bold" mb="4px">
-              {t("req_summary")}
-            </Text>
+            <HStack>
+              <Text
+                color={textColor}
+                fontSize="25px"
+                fontWeight="bold"
+                mb="4px"
+              >
+                {t("req_summary")}
+              </Text>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setJoyride({ run: true, steps });
+                }}
+                className="helpButton"
+              >
+                <QuestionOutlineIcon />
+              </Button>
+            </HStack>
           </CardHeader>
           <Text fontSize="20px">{t("vid_title")}</Text>
           <Text fontWeight="bold" fontSize="20px">

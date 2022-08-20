@@ -13,6 +13,7 @@ import axios from "axios";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import useTranslation from "next-translate/useTranslation";
+import { TiSocialYoutubeCircular } from "react-icons/ti";
 import {
   PageOptions,
   RankQueryData,
@@ -22,7 +23,6 @@ import LoadMoreBtn from "../../components/ranking/loadMoreBtn";
 import GeneralRanking from "../../components/ranking/generalRanking";
 import ChannelCard from "../../components/channelCard";
 import RankingController from "../../components/ranking/rankingController";
-import { YoutubeIcon } from "../../components/icons/customIcons";
 
 export default function ChannelRankingPage() {
   const { t } = useTranslation("channel");
@@ -32,22 +32,13 @@ export default function ChannelRankingPage() {
   });
   const sortOptionArray = [
     { name: t("sub_num_highest"), sortBy: { by: "sub", order: true } },
-    { name: t("sub_num_lowest"), sortBy: { by: "sub", order: false } },
     {
       name: t("subscriber_num_highest"),
       sortBy: { by: "subscriber", order: true },
     },
     {
-      name: t("subscriber_num_lowest"),
-      sortBy: { by: "subscriber", order: false },
-    },
-    {
       name: t("funding_num_high"),
       sortBy: { by: "request", order: true },
-    },
-    {
-      name: t("funding_num_low"),
-      sortBy: { by: "request", order: false },
     },
   ];
   const pageSize = 15;
@@ -105,6 +96,7 @@ export default function ChannelRankingPage() {
     <Box
       overflowX={{ sm: "scroll", md: "hidden" }}
       bg={useColorModeValue("gray.50", undefined)}
+      minH="calc(100vh - 54px)"
     >
       <Stack
         bg={useColorModeValue("white", "gray.900")}
@@ -127,10 +119,12 @@ export default function ChannelRankingPage() {
                 w={{ base: "30px", sm: "40px" }}
                 h={{ base: "30px", sm: "40px" }}
               >
-                <YoutubeIcon size="100%" />
+                <TiSocialYoutubeCircular size="100%" color="#ff6666" />
               </Stack>
             </HStack>
-            <Text>좋아하는 유튜버의 자막 현황을 확인해보세요</Text>
+            <Text fontSize={{ base: "12px", sm: "15px" }}>
+              좋아하는 유튜버의 자막 현황을 확인해보세요
+            </Text>
           </Stack>
         </HStack>
         <Divider mb="10px !important" />

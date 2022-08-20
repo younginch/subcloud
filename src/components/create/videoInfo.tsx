@@ -25,6 +25,7 @@ export default function VideoInfo({ video }: Props) {
       direction={isLargerThan900 ? "row" : "column"}
       overflow="hidden"
       alignItems="center"
+      className="videoInfo"
     >
       <Image
         maxW="100%"
