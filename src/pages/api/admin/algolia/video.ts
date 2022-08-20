@@ -1,3 +1,4 @@
+import { Role } from "@prisma/client";
 import { saveVideoToAlgolia } from "../../../../utils/algolia";
 import { handleRoute, RouteParams } from "../../../../utils/types";
 
@@ -11,4 +12,4 @@ async function saveVideoIndex({ res, prisma }: RouteParams<void>) {
   res.status(200).json();
 }
 
-export default handleRoute({ POST: saveVideoIndex });
+export default handleRoute({ POST: saveVideoIndex }, { role: Role.Admin });
