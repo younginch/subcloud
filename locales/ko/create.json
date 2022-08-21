@@ -15,8 +15,8 @@
   "explain_box_upload_2": "업로드한 자막은 승인 후 공개됩니다",
   "explain_box_upload_3": "유저들의 반응을 알림으로 받아보세요",
   "url_error": "URL 링크는 http 또는 https를 포함해야 합니다",
-  "my_req": "내가 SubCloud에 요청한 영상",
-  "my_up": "내가 SubCloud에 업로드한 영상",
-  "no_req": "요청이 없습니다. 자막이 필요한 영상에 요청해 보세요.",
+  "my_req": "내가 SubCloud에 요청한 자막",
+  "my_up": "내가 SubCloud에 업로드한 자막",
+  "no_req": "자막 요청 기록이 없습니다. 자막이 필요한 영상에 요청해 보세요.",
   "no_up": "업로드한 자막이 없습니다."
 }

@@ -10,6 +10,13 @@ import {
   Text,
   Divider,
   useColorModeValue,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
 } from "@chakra-ui/react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
@@ -18,6 +25,7 @@ import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import Joyride, { Step } from "react-joyride";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
+import { IoIosAddCircle } from "react-icons/io";
 import {
   PageOptions,
   RankQueryData,
@@ -29,6 +37,8 @@ import RequestRankCard from "../../../components/ranking/requestRankCard";
 import { PointGoal, GoalExpr } from "../../../utils/etc";
 import { YoutubeIcon } from "../../../components/icons/customIcons";
 import RankingController from "../../../components/ranking/rankingController";
+import UrlInput from "../../../components/create/urlInput";
+import NewItemCard from "../../../components/ranking/newItemCard";
 
 export default function VideoRankingPage() {
   const { t } = useTranslation("rankings");
@@ -63,6 +73,8 @@ export default function VideoRankingPage() {
       },
     ],
   });
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const sortOptionArray = [
     { name: t("gauge_high"), sortBy: { by: "gauge", order: true } },
     { name: t("requests_high"), sortBy: { by: "request", order: true } },
@@ -156,6 +168,26 @@ export default function VideoRankingPage() {
           </Stack>
           <Spacer />
           <Button
+            colorScheme="purple"
+            leftIcon={<IoIosAddCircle />}
+            borderRadius="15px"
+            h={{ base: "25px", sm: "40px" }}
+            fontSize={{ base: "12px", sm: "20px" }}
+            onClick={onOpen}
+          >
+            NEW
+          </Button>
+          <Modal isOpen={isOpen} onClose={onClose} size="lg">
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>자막 요청</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <UrlInput />
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+          <Button
             variant="ghost"
             onClick={() => {
               setJoyride({ run: true, steps });
@@ -206,7 +238,7 @@ export default function VideoRankingPage() {
             className="rankGrid"
           >
             {videos.map((video) => (
-              <GridItem key={video.videoId}>
+              <GridItem key={video.videoId + video.langs}>
                 <RequestRankCard
                   duration={
                     video.youtubeVideo ? video.youtubeVideo.duration : 0
@@ -237,6 +269,11 @@ export default function VideoRankingPage() {
                 />
               </GridItem>
             ))}
+            <GridItem>
+              <NewItemCard h="318px">
+                <IoIosAddCircle />
+              </NewItemCard>
+            </GridItem>
           </Grid>
         </GeneralRanking>
       </Box>

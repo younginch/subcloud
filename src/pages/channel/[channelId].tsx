@@ -159,7 +159,7 @@ export default function ChannelDetail() {
             justifyItems="center"
           >
             {videos.map((video) => (
-              <GridItem key={video.videoId}>
+              <GridItem key={video.videoId + video.langs}>
                 <RequestRankCard
                   duration={
                     video.youtubeVideo ? video.youtubeVideo.duration : 0
