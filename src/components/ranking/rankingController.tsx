@@ -18,6 +18,7 @@ import {
   Collapse,
   StackDirection,
   Spacer,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import ISO6391, { LanguageCode } from "iso-639-1";
 import useTranslation from "next-translate/useTranslation";
@@ -84,14 +85,17 @@ function SelectPriority({
   sortOption: SortOption;
   setSortOption?: (sortOption: SortOption) => void;
 }) {
+  const buttonActiveBg = useColorModeValue("purple.400", "purple.600");
   return (
     <Wrap>
       {sortOptionArray.map((option) => (
         <WrapItem key={option.name}>
           <Button
-            bg={option.name === sortOption.name ? "purple.500" : "transparent"}
+            bg={
+              option.name === sortOption.name ? buttonActiveBg : "transparent"
+            }
             color={option.name === sortOption.name ? "white" : ""}
-            _hover={{ bg: "purple.500", color: "white" }}
+            _hover={{ bg: buttonActiveBg, color: "white" }}
             size={{ base: "xs", sm: "sm" }}
             onClick={() => setSortOption && setSortOption(option)}
           >
