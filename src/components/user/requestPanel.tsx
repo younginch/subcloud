@@ -49,7 +49,8 @@ export default function RequestPanel({
   const toast = useToast();
   const [requests, setRequests] = useState<ResRequestSearch>(initialRequests);
 
-  function getRequests() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async function getRequests() {
     axios
       .get<ResRequestSearch>("/api/public/search/request", {
         params: { userId: router.query.userId },
@@ -103,8 +104,8 @@ export default function RequestPanel({
                 <Button
                   leftIcon={<DeleteIcon />}
                   colorScheme="red"
-                  onClick={() => {
-                    axios
+                  onClick={async () => {
+                    await axios
                       .delete(`/api/user/request`, {
                         params: { id: request.id },
                       })
@@ -114,7 +115,7 @@ export default function RequestPanel({
                           description: "자막 요청을 취소했습니다.",
                           status: "success",
                         });
-                        getRequests();
+                        window.location.reload();
                       })
                       .catch(() => {
                         toast({

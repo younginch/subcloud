@@ -41,7 +41,7 @@ export default function ChannelRankingPage() {
       sortBy: { by: "subscriber", order: true },
     },
   ];
-  const pageSize = 15;
+  const pageSize = 12;
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingChannel>(url);
     return res.data;
