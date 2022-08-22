@@ -287,6 +287,8 @@ export default function RequestCreate() {
 
   const pointBg = useColorModeValue("gray.100", "gray.800");
 
+  const selectedLang = ISO6391.getName(watch().lang);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack
@@ -320,17 +322,14 @@ export default function RequestCreate() {
             alignItems={{ base: "start", md: "center" }}
             className="selectLang-wrapper"
           >
-            <Box w="200px" h="fit-content">
-              <Text
-                color={textColor}
-                fontSize="lg"
-                fontWeight="bold"
-                w="200px"
-                minW="199px"
-              >
+            <HStack w="200px" minW="199px" h="fit-content">
+              <Text color={textColor} fontSize="lg" fontWeight="bold">
                 {t("select_lang")}
               </Text>
-            </Box>
+              <Text fontSize="xl" color="red" ml="4px !important">
+                *
+              </Text>
+            </HStack>
             <Spacer />
             <SelectLanguage
               lang={watch().lang}
@@ -475,8 +474,13 @@ export default function RequestCreate() {
           <Text fontSize="20px" mt="20px">
             {t("req_lang")}
           </Text>
-          <Text fontWeight="bold" fontSize="20px">
-            {ISO6391.getName(watch().lang)}
+
+          <Text
+            fontWeight={selectedLang ? "bold" : "normal"}
+            color={selectedLang ? "none" : "red"}
+            fontSize={selectedLang ? "20px" : "15px"}
+          >
+            {selectedLang || t("check_subtitle_lang_required")}
           </Text>
           <HStack mt="20px !important">
             <Text fontSize="20px">{t("point")}</Text>
