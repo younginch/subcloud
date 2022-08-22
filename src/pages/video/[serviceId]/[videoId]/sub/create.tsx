@@ -15,7 +15,6 @@ import {
   Tooltip,
   useMediaQuery,
   Spacer,
-  LinkOverlay,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { SetStateAction, useCallback, useEffect, useState } from "react";
@@ -29,7 +28,6 @@ import { AiOutlineInfoCircle, AiOutlineUser } from "react-icons/ai";
 import useTranslation from "next-translate/useTranslation";
 import { joiResolver } from "@hookform/resolvers/joi";
 import SelectLanguage from "../../../../../components/selectLanguage";
-import { YoutubeIcon } from "../../../../../components/icons/customIcons";
 import CardHeader from "../../../../../components/user/card/cardHeader";
 import Card from "../../../../../components/user/card/card";
 import { PageOptions, ResVideo } from "../../../../../utils/types";
@@ -187,10 +185,11 @@ export default function SubCreate() {
   }, [file, router.query.lang, setValue]);
 
   const acceptedFileItems = acceptedFiles.map((file) => (
-    <HStack key={file.name} w="100%">
+    <HStack key={file.name} w="100%" justifyContent="center">
+      <Text fontSize="18px">{t("upload_success")}</Text>
       <CheckCircleIcon color="green" w="20px" h="20px" />
       <Text
-        fontSize="17px"
+        fontSize="18px"
         maxW="calc(100% - 200px)"
         textOverflow="ellipsis"
         overflow="hidden"
@@ -198,18 +197,6 @@ export default function SubCreate() {
       >
         {file.name} - {file.size} bytes
       </Text>
-      <Spacer />
-      <LinkOverlay href={`https://www.youtube.com/watch?v=${video?.videoId}`}>
-        <Tooltip label={t("preview_tooltip")}>
-          <Button
-            leftIcon={<YoutubeIcon size="20px" />}
-            colorScheme="red"
-            variant="outline"
-          >
-            {t("preview")}
-          </Button>
-        </Tooltip>
-      </LinkOverlay>
     </HStack>
   ));
 
@@ -234,6 +221,8 @@ export default function SubCreate() {
 
   const [uploadToggle] = useMediaQuery("(min-width: 1350px)");
 
+  const selectedLang = ISO6391.getName(watch().lang);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack
@@ -252,23 +241,17 @@ export default function SubCreate() {
         </Card>
         <Card w="850px" mt={5} zIndex={2} maxW="calc(100vw - 40px)">
           <CardHeader mb="24px">
-            <HStack w="full" spacing="15px">
+            <HStack w="full" spacing={1}>
               <Text color={textColor} fontSize="lg" fontWeight="bold">
                 {t("upload_sub")}
               </Text>
-              <Spacer />
-              <Button
-                leftIcon={<EditIcon />}
-                colorScheme="teal"
-                variant="solid"
-                onClick={editOnCloud}
-              >
-                {t("edit")}
-              </Button>
+              <Text fontSize="xl" color="red">
+                *
+              </Text>
             </HStack>
           </CardHeader>
           <FormControl>
-            <Box
+            <Stack
               h="100px"
               borderWidth="1px"
               borderRadius="6px"
@@ -282,16 +265,39 @@ export default function SubCreate() {
               }}
               p="15px"
               cursor="pointer"
+              fontSize="18px"
+              justifyContent="center"
             >
               <input {...getInputProps()} />
               {isDragActive ? (
-                <p>{t("file_drop")}</p>
+                <Text textAlign="center">{t("file_drop")}</Text>
               ) : (
-                <p>{t("click_drag")}</p>
+                <Text textAlign="center">{t("click_drag")}</Text>
               )}
-            </Box>
-            <HStack mt="15px">{acceptedFileItems}</HStack>
-            {errors.file && <Text color="red.400">{t("require_file")}</Text>}
+            </Stack>
+            {errors.file && (
+              <Text color="red.400" mt="10px">
+                {t("require_file")}
+              </Text>
+            )}
+            {acceptedFileItems.length === 0 ? (
+              <HStack mt="13px">
+                <Spacer />
+                <Text fontSize="16px" fontWeight="bold">
+                  {t("no_file")}
+                </Text>
+                <Button
+                  leftIcon={<EditIcon />}
+                  colorScheme="teal"
+                  variant="solid"
+                  onClick={editOnCloud}
+                >
+                  {t("edit")}
+                </Button>
+              </HStack>
+            ) : (
+              <HStack mt="15px">{acceptedFileItems}</HStack>
+            )}
             <FormErrorMessage>
               <List>{fileRejectionItems}</List>
             </FormErrorMessage>
@@ -302,6 +308,9 @@ export default function SubCreate() {
             <HStack>
               <Text color={textColor} fontSize="lg" fontWeight="bold">
                 {t("select_lang")}
+              </Text>
+              <Text fontSize="xl" color="red" ml="4px !important">
+                *
               </Text>
               <Tooltip label={t("select_lang_ex")}>
                 <Box>
@@ -342,20 +351,25 @@ export default function SubCreate() {
             {t("sub_file")}
           </Text>
           <Text
-            fontWeight="bold"
-            fontSize="20px"
+            fontWeight={acceptedFileName ? "bold" : "normal"}
+            color={acceptedFileName ? "none" : "red"}
+            fontSize={acceptedFileName ? "20px" : "15px"}
             overflow="hidden"
             maxW="full"
             textOverflow="ellipsis"
             whiteSpace="nowrap"
           >
-            {acceptedFileName}
+            {acceptedFileName || t("require_file")}
           </Text>
           <Text fontSize="18px" mt="20px">
             {t("sub_lang")}
           </Text>
-          <Text fontWeight="bold" fontSize="20px">
-            {ISO6391.getName(watch().lang)}
+          <Text
+            fontWeight={selectedLang ? "bold" : "normal"}
+            color={selectedLang ? "none" : "red"}
+            fontSize={selectedLang ? "20px" : "15px"}
+          >
+            {selectedLang || t("check_subtitle_lang_required")}
           </Text>
           <HStack mt="20px !important">
             <Text fontSize="18px">{t("point")}</Text>
