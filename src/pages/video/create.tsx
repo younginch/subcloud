@@ -190,5 +190,5 @@ export default function VideoCreate() {
 VideoCreate.options = {
   role: Role.User,
   hideTitle: true,
-  hideFooter: false,
+  hideFooter: true,
 } as PageOptions;
