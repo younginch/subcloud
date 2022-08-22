@@ -31,14 +31,14 @@ export default function ChannelRankingPage() {
     sortBy: { by: "request", order: true },
   });
   const sortOptionArray = [
+    {
+      name: t("funding_num_high"),
+      sortBy: { by: "request", order: true },
+    },
     { name: t("sub_num_highest"), sortBy: { by: "sub", order: true } },
     {
       name: t("subscriber_num_highest"),
       sortBy: { by: "subscriber", order: true },
-    },
-    {
-      name: t("funding_num_high"),
-      sortBy: { by: "request", order: true },
     },
   ];
   const pageSize = 15;
