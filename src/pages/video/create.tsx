@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   FormControl,
-  FormErrorMessage,
   Input,
   Stack,
   useColorModeValue,
@@ -99,29 +98,48 @@ export default function VideoCreate() {
               alignItems="center"
             >
               <HStack spacing={{ base: 2, sm: 5, md: 10 }} position="relative">
-                <Input
-                  id="url"
-                  placeholder={t(`search_box_${router.query.next}`)}
-                  _placeholder={{
-                    color: useColorModeValue("gray.800", "gray.400"),
-                  }}
-                  w={{
-                    base: "calc(90vw - 60px)",
-                    sm: "75vw",
-                    md: "70vw",
-                    lg: "65vw",
-                    xl: "60vw",
-                  }}
-                  maxW="1000px"
-                  h={{ base: "50px", sm: "60px", md: "65px" }}
-                  fontSize={{ base: "15px", sm: "20px", md: "25px" }}
-                  borderRadius="10px"
-                  {...register("url", {
-                    required: "This is required",
-                  })}
-                  textAlign="center"
-                  bg="white"
-                />
+                <Stack position="relative">
+                  <Input
+                    id="url"
+                    placeholder={t(`search_box_${router.query.next}`)}
+                    _placeholder={{
+                      color: useColorModeValue("gray.800", "gray.400"),
+                    }}
+                    w={{
+                      base: "calc(90vw - 60px)",
+                      sm: "75vw",
+                      md: "70vw",
+                      lg: "65vw",
+                      xl: "60vw",
+                    }}
+                    maxW="1000px"
+                    h={{ base: "50px", sm: "60px", md: "65px" }}
+                    fontSize={{ base: "15px", sm: "20px", md: "25px" }}
+                    borderRadius="10px"
+                    {...register("url", {
+                      required: "This is required",
+                    })}
+                    textAlign="center"
+                    bg="white"
+                  />
+                  <Stack
+                    pt={{ base: "0px", md: "10px" }}
+                    position="absolute"
+                    top="60px"
+                    w="100%"
+                    alignItems="center"
+                  >
+                    <Text
+                      m="auto"
+                      fontSize={{ base: "14px", sm: "16px", md: "18px" }}
+                      w="100%"
+                      textAlign="center"
+                      color="red"
+                    >
+                      {errors.url && t("url_error")}
+                    </Text>
+                  </Stack>
+                </Stack>
                 {isPc && (
                   <Stack position="absolute" w="35px" h="35px" left="-17px">
                     <YoutubeIcon size="full" />
@@ -155,11 +173,6 @@ export default function VideoCreate() {
                   </SwingProvider>
                 </Button>
               </HStack>
-              <Box alignItems="center" fontSize="20px">
-                <FormErrorMessage m="auto" fontSize="15px">
-                  {errors.url && t("url_error")}
-                </FormErrorMessage>
-              </Box>
             </FormControl>
           </form>
           {router.query.next === "sub" && isEvent && <EventNotice />}
