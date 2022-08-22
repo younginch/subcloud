@@ -16,9 +16,13 @@ import RequestCard from "./requestCard";
 
 type Props = {
   videos: ResRankingVideo | undefined;
+  mt?: string;
 };
 
-export default function RequestMarquee({ videos }: Props) {
+export default function RequestMarquee({
+  videos,
+  mt = "50px !important",
+}: Props) {
   const { t } = useTranslation("create");
   const goalExpr = GoalExpr();
 
@@ -27,7 +31,7 @@ export default function RequestMarquee({ videos }: Props) {
       spacing={10}
       p="50px 12px 80px 12px"
       bg={useColorModeValue("gray.50", "gray.900")}
-      mt="50px !important"
+      mt={mt}
       w="100%"
     >
       <HStack pl="30px" alignItems="flex-end">
@@ -49,7 +53,7 @@ export default function RequestMarquee({ videos }: Props) {
       </HStack>
       <Marquee gradient={false} pauseOnHover>
         {videos?.map((video) => (
-          <Box mr="30px" key={video.videoId}>
+          <Box mr="30px" key={video.videoId + video.langs}>
             <RequestCard
               title={video.youtubeVideo?.title ?? ""}
               time={video.youtubeVideo?.duration ?? 0}

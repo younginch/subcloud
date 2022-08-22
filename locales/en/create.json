@@ -1,5 +1,5 @@
 {
-  "center_h1": "Request Subtitle",
+  "center_h1": "Funding Subtitle",
   "center_h1_up": "Upload Subtitle",
   "center_below_front": "Select video",
   "center_below_back": "Select language",
@@ -11,9 +11,6 @@
   "event_back": "Award points when uploading subtitle",
   "top10": "Top 10 Most requested videos",
   "more": "more",
-  "explain_box_upload_1": "Upload subtitles for everyone in world",
-  "explain_box_upload_2": "Uploaded subtitles will be published after approval",
-  "explain_box_upload_3": "Receive user responses as notifications",
   "url_error": "URL link should contain http or https",
   "my_req": "Video requested",
   "my_up": "Video uploaded",

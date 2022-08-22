@@ -35,10 +35,9 @@ import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 import GeneralRanking from "../../../components/ranking/generalRanking";
 import RequestRankCard from "../../../components/ranking/requestRankCard";
 import { PointGoal, GoalExpr } from "../../../utils/etc";
-import { YoutubeIcon } from "../../../components/icons/customIcons";
 import RankingController from "../../../components/ranking/rankingController";
 import UrlInput from "../../../components/create/urlInput";
-import NewItemCard from "../../../components/ranking/newItemCard";
+import { YoutubeIcon } from "../../../components/icons/customIcons";
 
 export default function VideoRankingPage() {
   const { t } = useTranslation("rankings");
@@ -149,7 +148,7 @@ export default function VideoRankingPage() {
       >
         <HStack>
           <Stack>
-            <HStack>
+            <HStack spacing={5}>
               <Text fontWeight="bold" fontSize={{ base: "20px", sm: "30px" }}>
                 {t("pop_req_sub")}
               </Text>
@@ -170,9 +169,9 @@ export default function VideoRankingPage() {
           <Button
             colorScheme="purple"
             leftIcon={<IoIosAddCircle />}
-            borderRadius="15px"
-            h={{ base: "25px", sm: "40px" }}
-            fontSize={{ base: "12px", sm: "20px" }}
+            borderRadius={{ base: "8px", sm: "12px" }}
+            h={{ base: "25px", sm: "35px" }}
+            fontSize={{ base: "12px", sm: "18px" }}
             onClick={onOpen}
           >
             NEW
@@ -269,11 +268,6 @@ export default function VideoRankingPage() {
                 />
               </GridItem>
             ))}
-            <GridItem>
-              <NewItemCard h="318px">
-                <IoIosAddCircle />
-              </NewItemCard>
-            </GridItem>
           </Grid>
         </GeneralRanking>
       </Box>
