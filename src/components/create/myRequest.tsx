@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import { BiMessageSquareAdd } from "react-icons/bi";
 import useTranslation from "next-translate/useTranslation";
-import { RefObject, useState } from "react";
+import { useState } from "react";
 import { ResRequestSearch } from "../../utils/types";
 import Pagination from "../pagination";
 import RequestCard from "../requestCard";
@@ -75,11 +75,7 @@ function MyRequestPanel({
   );
 }
 
-type Props = {
-  inputRef: RefObject<HTMLInputElement>;
-};
-
-export default function MyRequest({ inputRef }: Props) {
+export default function MyRequest() {
   const { t } = useTranslation("create");
   const session = useSession();
   const [page, setPage] = useState<number>(1);
@@ -94,9 +90,12 @@ export default function MyRequest({ inputRef }: Props) {
 
   const messageColor = useColorModeValue("black", "white");
   const bgActiveColor = useColorModeValue("gray.200", "gray.700");
+  const bgColor = useColorModeValue("white", "gray.800");
+
+  if (requests?.length === 0) return null;
 
   return (
-    <Stack p={{ base: 5, lg: 10 }} spacing={10}>
+    <Stack p={{ base: 5, lg: 10 }} spacing={10} bg={bgColor}>
       <Text fontWeight="bold" fontSize={{ base: "25px", md: "30px" }}>
         {t("my_req")}
       </Text>
@@ -114,10 +113,6 @@ export default function MyRequest({ inputRef }: Props) {
           borderStyle="dashed"
           borderColor="gray.500"
           borderWidth="3px"
-          onClick={() => {
-            console.log(inputRef);
-            inputRef.current?.focus();
-          }}
         >
           <Box w={{ base: "100px", sm: "150px" }}>
             <BiMessageSquareAdd size="full" />
