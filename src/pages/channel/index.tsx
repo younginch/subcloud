@@ -110,7 +110,10 @@ export default function ChannelRankingPage() {
         <HStack>
           <Stack>
             <HStack>
-              <Text fontWeight="bold" fontSize={{ base: "20px", sm: "30px" }}>
+              <Text
+                fontWeight="bold"
+                fontSize={{ base: "18px", sm: "25px", md: "35px" }}
+              >
                 인기 채널 리스트
               </Text>
               <Stack
@@ -122,12 +125,12 @@ export default function ChannelRankingPage() {
                 <TiSocialYoutubeCircular size="100%" color="#ff6666" />
               </Stack>
             </HStack>
-            <Text fontSize={{ base: "12px", sm: "15px" }}>
+            <Text fontSize={{ base: "12px", sm: "15px", md: "18px" }}>
               좋아하는 유튜버의 자막 현황을 확인해보세요
             </Text>
           </Stack>
         </HStack>
-        <Divider mb="10px !important" />
+        <Divider m="10px 0px 10px 0px !important" />
         <RankingController
           sortOptionArray={sortOptionArray}
           sortOption={sortOption}
