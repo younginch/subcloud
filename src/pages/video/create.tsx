@@ -97,7 +97,7 @@ export default function VideoCreate() {
               flexDir="column"
               alignItems="center"
             >
-              <HStack spacing={{ base: 2, sm: 5, md: 10 }} position="relative">
+              <HStack spacing={{ base: 2, sm: 5, md: 7 }} position="relative">
                 <Stack position="relative">
                   <Input
                     id="url"
