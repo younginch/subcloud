@@ -122,6 +122,8 @@ export default function VideoCreate() {
                     })}
                     textAlign="center"
                     bg="white"
+                    color="black"
+                    fontWeight="bold"
                   />
                   <Stack
                     pt={{ base: "0px", md: "10px" }}
@@ -188,5 +190,5 @@ export default function VideoCreate() {
 VideoCreate.options = {
   role: Role.User,
   hideTitle: true,
-  hideFooter: false,
+  hideFooter: true,
 } as PageOptions;

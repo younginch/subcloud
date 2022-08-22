@@ -112,16 +112,19 @@ export default function UserRankingPage() {
         <HStack>
           <Stack>
             <HStack>
-              <Text fontWeight="bold" fontSize={{ base: "25px", sm: "30px" }}>
+              <Text
+                fontWeight="bold"
+                fontSize={{ base: "18px", sm: "25px", md: "35px" }}
+              >
                 {t("subtitler_rank")}
               </Text>
               <Stack
-                minW={{ base: "22px", sm: "26px" }}
-                minH={{ base: "22px", sm: "26px" }}
-                w={{ base: "22px", sm: "26px" }}
-                h={{ base: "22px", sm: "26px" }}
+                minW={{ base: "22px", sm: "28px" }}
+                minH={{ base: "22px", sm: "28px" }}
+                w={{ base: "22px", sm: "28px" }}
+                h={{ base: "22px", sm: "28px" }}
               >
-                <BsTrophy size="full" color="#ccca22" />
+                <BsTrophy size="full" color="#cfbf22" />
               </Stack>
             </HStack>
             <Text fontSize={{ base: "12px", sm: "15px" }}>
@@ -129,7 +132,7 @@ export default function UserRankingPage() {
             </Text>
           </Stack>
         </HStack>
-        <Divider mb="10px !important" />
+        <Divider m="10px 0px 10px 0px !important" />
         <RankingController
           lang={lang}
           setLang={setLang}

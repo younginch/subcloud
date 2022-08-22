@@ -130,7 +130,13 @@ export default function Home() {
           />
         </Box>
       </Stack>
-      <Stack alignItems="center" justifyContent="center" h="100vh" w="100vw">
+      <Stack
+        alignItems="center"
+        justifyContent="center"
+        minH="100vh"
+        w="100vw"
+        pt="50px"
+      >
         <Stack pl="15px" pr="15px">
           <Text
             fontWeight="bold"

@@ -149,7 +149,10 @@ export default function VideoRankingPage() {
         <HStack>
           <Stack>
             <HStack spacing={5}>
-              <Text fontWeight="bold" fontSize={{ base: "20px", sm: "30px" }}>
+              <Text
+                fontWeight="bold"
+                fontSize={{ base: "18px", sm: "25px", md: "35px" }}
+              >
                 {t("pop_req_sub")}
               </Text>
               <Stack
@@ -161,42 +164,44 @@ export default function VideoRankingPage() {
                 <YoutubeIcon size="100%" />
               </Stack>
             </HStack>
-            <Text fontSize={{ base: "12px", sm: "15px" }}>
+            <Text fontSize={{ base: "12px", sm: "15px", md: "18px" }}>
               {t("pop_req_sub_ex")}
             </Text>
           </Stack>
           <Spacer />
-          <Button
-            colorScheme="purple"
-            leftIcon={<IoIosAddCircle />}
-            borderRadius={{ base: "8px", sm: "12px" }}
-            h={{ base: "25px", sm: "35px" }}
-            fontSize={{ base: "12px", sm: "18px" }}
-            onClick={onOpen}
-          >
-            NEW
-          </Button>
-          <Modal isOpen={isOpen} onClose={onClose} size="lg">
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>자막 요청</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <UrlInput />
-              </ModalBody>
-            </ModalContent>
-          </Modal>
-          <Button
-            variant="ghost"
-            onClick={() => {
-              setJoyride({ run: true, steps });
-            }}
-            className="helpButton"
-          >
-            <QuestionOutlineIcon />
-          </Button>
+          <Stack direction={{ base: "column", sm: "row" }}>
+            <Button
+              colorScheme="purple"
+              leftIcon={<IoIosAddCircle />}
+              borderRadius={{ base: "8px", sm: "12px" }}
+              h={{ base: "25px", sm: "35px" }}
+              fontSize={{ base: "12px", sm: "18px" }}
+              onClick={onOpen}
+            >
+              NEW
+            </Button>
+            <Modal isOpen={isOpen} onClose={onClose} size="lg">
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>자막 요청</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <UrlInput />
+                </ModalBody>
+              </ModalContent>
+            </Modal>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setJoyride({ run: true, steps });
+              }}
+              className="helpButton"
+            >
+              <QuestionOutlineIcon />
+            </Button>
+          </Stack>
         </HStack>
-        <Divider mb="10px !important" />
+        <Divider m="10px 0px 10px 0px !important" />
         <RankingController
           lang={lang}
           setLang={setLang}
