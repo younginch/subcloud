@@ -112,6 +112,7 @@ export default function VideoCreate() {
                       lg: "65vw",
                       xl: "60vw",
                     }}
+                    pl={isPc ? "70px" : "10px"}
                     maxW="1000px"
                     h={{ base: "50px", sm: "60px", md: "65px" }}
                     fontSize={{ base: "15px", sm: "20px", md: "25px" }}
