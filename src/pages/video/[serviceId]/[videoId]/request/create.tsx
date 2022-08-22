@@ -396,6 +396,12 @@ export default function RequestCreate() {
               </WrapItem>
             ))}
           </Wrap>
+          {session.data?.user.point &&
+            session.data?.user.point < watch().fundPoint && (
+              <Text w="100%" textAlign="center" color="red">
+                포인트가 부족합니다.
+              </Text>
+            )}
           <HStack pt={5}>
             <Text
               minW="110px "
