@@ -1,8 +1,11 @@
 {
+  "upload_success": "上传完成",
   "preview": "浏览字幕",
   "preview_tooltip": "使用扩展程序上载，可以在YouTube上预览。",
   "upload_vid": "上载字幕的视频",
   "select_lang": "选择语言",
+  "require_file": "上传一下字幕文件",
+  "no_file": "没有字幕文件？",
   "select_lang_ex": "选择与字幕内容不同的语言时，复查可能会被拒绝。",
   "upload_sub": "上载字幕",
   "edit": "编辑在SubCloud",

@@ -111,7 +111,10 @@ export default function SubRankingPage() {
         <HStack>
           <Stack>
             <HStack>
-              <Text fontWeight="bold" fontSize={{ base: "20px", sm: "30px" }}>
+              <Text
+                fontWeight="bold"
+                fontSize={{ base: "18px", sm: "25px", md: "35px" }}
+              >
                 {t("pop_sub")}
               </Text>
               <Stack
@@ -123,12 +126,12 @@ export default function SubRankingPage() {
                 <MdSubtitles size="full" />
               </Stack>
             </HStack>
-            <Text fontSize={{ base: "12px", sm: "15px" }}>
+            <Text fontSize={{ base: "12px", sm: "15px", md: "18px" }}>
               {t("pop_sub_ex")}
             </Text>
           </Stack>
         </HStack>
-        <Divider mb="10px !important" />
+        <Divider m="10px 0px 10px 0px !important" />
         <RankingController
           lang={lang}
           setLang={setLang}

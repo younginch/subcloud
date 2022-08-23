@@ -1,4 +1,11 @@
-import { Stack, Text, GridItem, Grid, useMediaQuery } from "@chakra-ui/react";
+import {
+  Stack,
+  Text,
+  GridItem,
+  Grid,
+  useMediaQuery,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import ISO6391 from "iso-639-1";
@@ -62,9 +69,12 @@ export default function MyUpload() {
   const start = pageSize * (page - 1);
   const end = pageSize * page;
   const num = Math.ceil((subs?.length ?? 0) / pageSize);
+  const bgColor = useColorModeValue("white", "gray.800");
+
+  if (subs?.length === 0) return null;
 
   return (
-    <Stack p={{ base: 5, lg: 10 }} spacing={10}>
+    <Stack p={{ base: 5, lg: 10 }} spacing={10} bg={bgColor}>
       <Text fontWeight="bold" fontSize={{ base: "25px", md: "30px" }}>
         {t("my_up")}
       </Text>

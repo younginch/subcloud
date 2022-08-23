@@ -61,6 +61,8 @@ export default function Pagination({
     </Button>
   );
 
+  if (pageNum === 0) return null;
+
   if (isPc) {
     return (
       <HStack>

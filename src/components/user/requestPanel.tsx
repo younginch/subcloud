@@ -67,7 +67,7 @@ export default function RequestPanel({
   }
 
   return (
-    <TableContainer p={5}>
+    <TableContainer p={5} overflowY="scroll" maxH="calc(100vh - 54px)">
       <Table variant="simple">
         <Thead>
           <Tr>

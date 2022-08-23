@@ -10,6 +10,13 @@ import {
   Text,
   Divider,
   useColorModeValue,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
 } from "@chakra-ui/react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
@@ -18,6 +25,7 @@ import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 import Joyride, { Step } from "react-joyride";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
+import { IoIosAddCircle } from "react-icons/io";
 import {
   PageOptions,
   RankQueryData,
@@ -27,8 +35,9 @@ import LoadMoreBtn from "../../../components/ranking/loadMoreBtn";
 import GeneralRanking from "../../../components/ranking/generalRanking";
 import RequestRankCard from "../../../components/ranking/requestRankCard";
 import { PointGoal, GoalExpr } from "../../../utils/etc";
-import { YoutubeIcon } from "../../../components/icons/customIcons";
 import RankingController from "../../../components/ranking/rankingController";
+import UrlInput from "../../../components/create/urlInput";
+import { YoutubeIcon } from "../../../components/icons/customIcons";
 
 export default function VideoRankingPage() {
   const { t } = useTranslation("rankings");
@@ -63,6 +72,8 @@ export default function VideoRankingPage() {
       },
     ],
   });
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const sortOptionArray = [
     { name: t("gauge_high"), sortBy: { by: "gauge", order: true } },
     { name: t("requests_high"), sortBy: { by: "request", order: true } },
@@ -137,8 +148,11 @@ export default function VideoRankingPage() {
       >
         <HStack>
           <Stack>
-            <HStack>
-              <Text fontWeight="bold" fontSize={{ base: "20px", sm: "30px" }}>
+            <HStack spacing={5}>
+              <Text
+                fontWeight="bold"
+                fontSize={{ base: "18px", sm: "25px", md: "35px" }}
+              >
                 {t("pop_req_sub")}
               </Text>
               <Stack
@@ -150,22 +164,44 @@ export default function VideoRankingPage() {
                 <YoutubeIcon size="100%" />
               </Stack>
             </HStack>
-            <Text fontSize={{ base: "12px", sm: "15px" }}>
+            <Text fontSize={{ base: "12px", sm: "15px", md: "18px" }}>
               {t("pop_req_sub_ex")}
             </Text>
           </Stack>
           <Spacer />
-          <Button
-            variant="ghost"
-            onClick={() => {
-              setJoyride({ run: true, steps });
-            }}
-            className="helpButton"
-          >
-            <QuestionOutlineIcon />
-          </Button>
+          <Stack direction={{ base: "column", sm: "row" }}>
+            <Button
+              colorScheme="purple"
+              leftIcon={<IoIosAddCircle />}
+              borderRadius={{ base: "8px", sm: "12px" }}
+              h={{ base: "25px", sm: "35px" }}
+              fontSize={{ base: "12px", sm: "18px" }}
+              onClick={onOpen}
+            >
+              NEW
+            </Button>
+            <Modal isOpen={isOpen} onClose={onClose} size="lg">
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>자막 요청</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <UrlInput />
+                </ModalBody>
+              </ModalContent>
+            </Modal>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setJoyride({ run: true, steps });
+              }}
+              className="helpButton"
+            >
+              <QuestionOutlineIcon />
+            </Button>
+          </Stack>
         </HStack>
-        <Divider mb="10px !important" />
+        <Divider m="10px 0px 10px 0px !important" />
         <RankingController
           lang={lang}
           setLang={setLang}
@@ -206,7 +242,7 @@ export default function VideoRankingPage() {
             className="rankGrid"
           >
             {videos.map((video) => (
-              <GridItem key={video.videoId}>
+              <GridItem key={video.videoId + video.langs}>
                 <RequestRankCard
                   duration={
                     video.youtubeVideo ? video.youtubeVideo.duration : 0

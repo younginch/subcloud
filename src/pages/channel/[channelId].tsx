@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import useTranslation from "next-translate/useTranslation";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import useSWR from "swr";
@@ -113,14 +114,23 @@ export default function ChannelDetail() {
           pr="20px"
           borderTopRightRadius="10px"
         >
-          <Avatar
-            name={channel?.title}
-            src="https://yt3.ggpht.com/waNps7UFn4AMEe7trG8HJcwWAiu8k0lSeSBMelcytxFf6CkNF6Yr0sdmEBhlThR-c3Nlo8VNeQ=s88-c-k-c0x00ffffff-no-rj"
-            size="sm"
-          />
-          <Text fontWeight="bold" fontSize={{ base: "15px", md: "30px" }}>
-            {t("title_channel_other")} {channel?.title}
-          </Text>
+          <Link href={channel?.channelUrl || "https://subcloud.app"}>
+            <Avatar
+              name={channel?.title}
+              src={channel?.thumbnailUrl}
+              size="sm"
+              cursor="pointer"
+            />
+          </Link>
+          <Link href={channel?.channelUrl || "https://subcloud.app"}>
+            <Text
+              fontWeight="bold"
+              fontSize={{ base: "15px", md: "30px" }}
+              cursor="pointer"
+            >
+              {t("title_channel_other")} {channel?.title}
+            </Text>
+          </Link>
           <Text fontSize={{ base: "12px", md: "25px" }}>
             {t("title_channel_ko")}
           </Text>
@@ -159,7 +169,7 @@ export default function ChannelDetail() {
             justifyItems="center"
           >
             {videos.map((video) => (
-              <GridItem key={video.videoId}>
+              <GridItem key={video.videoId + video.langs}>
                 <RequestRankCard
                   duration={
                     video.youtubeVideo ? video.youtubeVideo.duration : 0

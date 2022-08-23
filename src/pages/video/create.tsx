@@ -3,13 +3,13 @@ import {
   Box,
   Button,
   FormControl,
-  FormErrorMessage,
   Input,
   Stack,
   useColorModeValue,
   useToast,
   Text,
   useMediaQuery,
+  HStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -26,6 +26,7 @@ import EventNotice from "../../components/create/eventNotice";
 import MyRequest from "../../components/create/myRequest";
 import MyUpload from "../../components/create/myUpload";
 import RequestMarquee from "../../components/requestMarquee";
+import { YoutubeIcon } from "../../components/icons/customIcons";
 
 type FormData = {
   url: string;
@@ -75,9 +76,19 @@ export default function VideoCreate() {
   }
 
   return (
-    <Box alignItems="center" w="100%" pt="4vh">
-      <Stack>
-        <Stack alignItems="center" w="100%" m="auto">
+    <Box alignItems="center" w="100%">
+      <Stack
+        bg={useColorModeValue("gray.50", "gray.900")}
+        minH="calc(100vh - 54px)"
+        spacing={0}
+      >
+        <Stack
+          alignItems="center"
+          w="100%"
+          bg={useColorModeValue("blue.100", "gray.600")}
+          pt="4vh"
+          pb="10vh"
+        >
           <CreateHeader type={router.query.next as "request" | "sub"} />
           <form onSubmit={handleSubmit(onSubmit)}>
             <FormControl
@@ -86,54 +97,69 @@ export default function VideoCreate() {
               flexDir="column"
               alignItems="center"
             >
-              <Box
-                flexDir="column"
-                display="flex"
-                position="relative"
-                alignItems="flex-end"
-                justifyContent="center"
-              >
-                <Input
-                  id="url"
-                  className="create-glassmorphism"
-                  placeholder={t(`search_box_${router.query.next}`)}
-                  _placeholder={{
-                    color: useColorModeValue("gray.800", "gray.400"),
-                  }}
-                  w={{
-                    base: "90vw",
-                    sm: "85vw",
-                    md: "80vw",
-                    lg: "60vw",
-                    xl: "50vw",
-                  }}
-                  bg={useColorModeValue(
-                    "rgba( 255, 255, 255, 0.2 )",
-                    "rgba( 60, 55, 66, 0.7 )"
-                  )}
-                  maxW="800px"
-                  h={{ base: "50px", sm: "60px", md: "65px" }}
-                  fontSize={{ base: "18px", sm: "20px", md: "25px" }}
-                  borderRadius="5em"
-                  pr="70px"
-                  shadow="md"
-                  {...register("url", {
-                    required: "This is required",
-                  })}
-                  textAlign="center"
-                />
+              <HStack spacing={{ base: 2, sm: 5, md: 7 }} position="relative">
+                <Stack position="relative">
+                  <Input
+                    id="url"
+                    placeholder={t(`search_box_${router.query.next}`)}
+                    _placeholder={{
+                      color: useColorModeValue("gray.800", "gray.400"),
+                    }}
+                    w={{
+                      base: "calc(90vw - 60px)",
+                      sm: "75vw",
+                      md: "70vw",
+                      lg: "65vw",
+                      xl: "60vw",
+                    }}
+                    pl={isPc ? "70px" : "10px"}
+                    maxW="1000px"
+                    h={{ base: "50px", sm: "60px", md: "65px" }}
+                    fontSize={{ base: "15px", sm: "20px", md: "25px" }}
+                    borderRadius="10px"
+                    {...register("url", {
+                      required: "This is required",
+                    })}
+                    textAlign="center"
+                    bg="white"
+                    color="black"
+                    fontWeight="bold"
+                  />
+                  <Stack
+                    pt={{ base: "0px", md: "10px" }}
+                    position="absolute"
+                    top="60px"
+                    w="100%"
+                    alignItems="center"
+                  >
+                    <Text
+                      m="auto"
+                      fontSize={{ base: "14px", sm: "16px", md: "18px" }}
+                      w="100%"
+                      textAlign="center"
+                      color="red"
+                    >
+                      {errors.url && t("url_error")}
+                    </Text>
+                  </Stack>
+                </Stack>
+                {isPc && (
+                  <Stack position="absolute" w="35px" h="35px" left="-17px">
+                    <YoutubeIcon size="full" />
+                  </Stack>
+                )}
                 <Button
-                  colorScheme="blue"
+                  bg="black"
+                  _hover={{
+                    bg: "gray.800",
+                  }}
+                  color="white"
                   isLoading={isSubmitting}
                   type="submit"
                   fontSize="20px"
-                  borderRadius="full"
-                  position="absolute"
+                  h={{ base: "50px", sm: "60px", md: "65px" }}
                   minW={{ base: "35px", md: "50px" }}
-                  h={{ base: "35px", md: "50px" }}
                   w="fit-content"
-                  mr="15px"
-                  zIndex={3}
                 >
                   <SwingProvider>
                     {router.query.next === "request" ? (
@@ -149,18 +175,13 @@ export default function VideoCreate() {
                     )}
                   </SwingProvider>
                 </Button>
-              </Box>
-              <Box alignItems="center" fontSize="20px">
-                <FormErrorMessage m="auto" fontSize="15px">
-                  {errors.url && t("url_error")}
-                </FormErrorMessage>
-              </Box>
+              </HStack>
             </FormControl>
           </form>
           {router.query.next === "sub" && isEvent && <EventNotice />}
         </Stack>
         {router.query.next === "request" ? <MyRequest /> : <MyUpload />}
-        <RequestMarquee videos={topVideos} />
+        <RequestMarquee videos={topVideos} mt="0px !important" />
       </Stack>
     </Box>
   );

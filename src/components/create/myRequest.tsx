@@ -1,7 +1,15 @@
-import { Stack, Text, useMediaQuery, Grid, GridItem } from "@chakra-ui/react";
+import {
+  Stack,
+  Text,
+  useMediaQuery,
+  Grid,
+  GridItem,
+  useColorModeValue,
+  Box,
+} from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
-import { FiBox } from "react-icons/fi";
+import { BiMessageSquareAdd } from "react-icons/bi";
 import useTranslation from "next-translate/useTranslation";
 import { useState } from "react";
 import { ResRequestSearch } from "../../utils/types";
@@ -80,17 +88,41 @@ export default function MyRequest() {
   const end = pageSize * page;
   const num = Math.ceil((requests?.length ?? 0) / pageSize);
 
+  const messageColor = useColorModeValue("black", "white");
+  const bgActiveColor = useColorModeValue("gray.200", "gray.700");
+  const bgColor = useColorModeValue("white", "gray.800");
+
+  if (requests?.length === 0) return null;
+
   return (
-    <Stack p={{ base: 5, lg: 10 }} spacing={10}>
+    <Stack p={{ base: 5, lg: 10 }} spacing={10} bg={bgColor}>
       <Text fontWeight="bold" fontSize={{ base: "25px", md: "30px" }}>
         {t("my_req")}
       </Text>
       {requests?.length ? (
         <MyRequestPanel requests={requests.slice(start, end)} />
       ) : (
-        <Stack alignItems="center" spacing={5} h="100%" pt="3%" pb="2%">
-          <FiBox size={150} />
-          <Text fontSize="25px">{t("no_req")}</Text>
+        <Stack
+          alignItems="center"
+          spacing={5}
+          h="100%"
+          p="3%"
+          _hover={{ bg: bgActiveColor, color: "blue.500" }}
+          cursor="pointer"
+          borderRadius="20px"
+          borderStyle="dashed"
+          borderColor="gray.500"
+          borderWidth="3px"
+        >
+          <Box w={{ base: "100px", sm: "150px" }}>
+            <BiMessageSquareAdd size="full" />
+          </Box>
+          <Text
+            color={messageColor}
+            fontSize={{ base: "15px", sm: "20px", md: "25px" }}
+          >
+            {t("no_req")}
+          </Text>
         </Stack>
       )}
       <Pagination pageNum={num} currentPage={page} setPage={setPage} />
