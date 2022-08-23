@@ -1,6 +1,8 @@
 {
   "center_h1": "Funding Subtitle",
+  "center_h1_below": "Participate in subtitle funding and contribute to the globalization of video",
   "center_h1_up": "Upload Subtitle",
+  "center_h1_up_below": "Upload subtitles and make them available to users around the world",
   "center_below_front": "Select video",
   "center_below_back": "Select language",
   "search_box_request": "Type the video link to request...",
@@ -15,5 +17,8 @@
   "my_req": "Video requested",
   "my_up": "Video uploaded",
   "no_req": "There are no requests. Request a video that needs subtitles",
-  "no_up": "There are no subtitles uploaded."
+  "no_up": "There are no subtitles uploaded.",
+  "urlInput_link": "Video link to request",
+  "urlInput_link_below": "By requesting a video, you agree to the rules for using personal information and services.",
+  "urlInput_link_button": "Request"
 }

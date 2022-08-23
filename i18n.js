@@ -36,7 +36,7 @@ module.exports = {
 
     "rgx:^/info/dmca": ["dmca"],
 
-    "rgx:^/ranking": ["rankings"],
+    "rgx:^/ranking": ["rankings", "create"],
 
     "rgx:^/channel": ["channel", "rankings"],
   },
