@@ -59,7 +59,7 @@ export default function UserRankingPage() {
 
   function onSubmit(values: RankQueryData) {
     const { keyword } = values;
-    router.push(`/search?query=${keyword}`);
+    router.push(`/search?query=${keyword}&type=user`);
   }
 
   const { data, error, size, setSize, isValidating } = useSWRInfinite(
