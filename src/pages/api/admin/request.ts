@@ -4,7 +4,7 @@ import { handleRoute, RouteParams, SubErrorType } from "../../../utils/types";
 
 async function RequestCreate({ req, res, prisma }: RouteParams<Video>) {
   const { userList, videoId, count, language, percent, totalPoint } = req.body;
-  if (userList.length < count || percent > 100 || percent < 0) {
+  if (userList.length < count || percent < 0) {
     return res
       .status(404)
       .json({ error: SubErrorType.NotFound, message: "Wrong Input" });

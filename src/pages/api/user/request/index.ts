@@ -132,6 +132,26 @@ async function RequestDelete({
       .status(404)
       .json({ error: SubErrorType.NotFound, message: "Request" });
   }
+  const requestPoints = await prisma.requestPoint.findMany({
+    where: {
+      requestId: request.id,
+      userId: session?.user.id,
+    },
+  });
+  const returnPoint = requestPoints.reduce(
+    (prev, curr) => prev + curr.point,
+    0
+  );
+  await prisma.requestPoint.deleteMany({
+    where: {
+      requestId: request.id,
+      userId: session?.user.id,
+    },
+  });
+  await prisma.user.update({
+    where: { id: session?.user.id },
+    data: { point: (session?.user.point ?? 0) + returnPoint },
+  });
   const updatedRequest = await prisma.request.update({
     where: { id: request.id },
     data: {
@@ -140,6 +160,7 @@ async function RequestDelete({
           id: session?.user.id,
         },
       },
+      point: request.point - returnPoint,
     },
   });
   return res.status(200).json(updatedRequest);
