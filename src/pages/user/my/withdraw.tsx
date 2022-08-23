@@ -45,6 +45,7 @@ type CreateWithdrawFormData = {
 
 function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
   const { t } = useTranslation("privateProfile");
+  const { t: tBanks } = useTranslation("banks");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const {
@@ -61,7 +62,11 @@ function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
     accountNumber,
   }: CreateWithdrawFormData) => {
     axios
-      .post(`/api/user/withdraw`, { point, bankName, accountNumber })
+      .post(`/api/user/withdraw`, {
+        point,
+        bankName: tBanks(bankName),
+        accountNumber,
+      })
       .then(() => {
         mutate();
         toast({
