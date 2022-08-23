@@ -95,10 +95,10 @@ export default function AdminRequest() {
         </Stack>
         <Stack>
           <Heading fontSize="lg" w="200px">
-            요청 포인트 입력 ({langList.length}개)
+            요청 퍼센트 입력 ({langList.length}개)
           </Heading>
           <Textarea
-            placeholder="영상들의 요청 포인트를 순서 맞춰서 한줄에 하나씩 입력"
+            placeholder="영상들의 요청 퍼센트를 순서 맞춰서 한줄에 하나씩 입력"
             h="200px"
             onChange={(e) =>
               setPercentList(e.target.value.split("\n").map((x) => Number(x)))

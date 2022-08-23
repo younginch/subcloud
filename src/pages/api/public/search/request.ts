@@ -27,12 +27,32 @@ async function searchSubtitles({
             },
           },
         },
+        requestPoints: true,
       },
       orderBy: {
         createdAt: "desc",
       },
     });
-    return res.status(200).json(requests);
+    const newRequests = requests.map((request) => {
+      const userPoint = request.requestPoints
+        .filter((rpoint) => rpoint.userId === userId)
+        .reduce((prev, curr) => prev + curr.point, 0);
+      return {
+        id: request.id,
+        serviceId: request.serviceId,
+        videoId: request.videoId,
+        video: request.video,
+        lang: request.lang,
+        point: userPoint,
+        createdAt: request.createdAt,
+        updatedAt: request.updatedAt,
+        status: request.status,
+        _count: {
+          users: request._count.users,
+        },
+      };
+    });
+    return res.status(200).json(newRequests);
   }
   if (serviceId && videoId) {
     const requestsWithUserCount = await prisma.request.findMany({
