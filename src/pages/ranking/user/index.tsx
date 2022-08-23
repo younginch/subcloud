@@ -47,9 +47,9 @@ export default function UserRankingPage() {
   });
   const pageSize = 15;
   const sortOptionArray = [
-    { name: t("total_views"), sortBy: { by: "view", order: true } },
+    { name: t("total_views_most"), sortBy: { by: "view", order: true } },
     { name: t("rating_high"), sortBy: { by: "rating", order: true } },
-    { name: t("total_subs"), sortBy: { by: "sub", order: true } },
+    { name: t("total_subs_most"), sortBy: { by: "sub", order: true } },
   ];
 
   const fetcher = async (url: string) => {
