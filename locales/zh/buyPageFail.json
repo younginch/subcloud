@@ -1,6 +1,6 @@
 {
   "profile_button": "去我的简介",
   "order_fail_error": "支付失败",
-  "order_fail_error_process": "点数购买过程中发现错误",
+  "order_fail_error_process": "积分购买过程中发现错误",
   "order_fail_retry": "重新开始"
 }
