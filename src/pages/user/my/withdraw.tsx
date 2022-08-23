@@ -28,8 +28,9 @@ import { Withdraw } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import useTranslation from "next-translate/useTranslation";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import useSWR, { KeyedMutator } from "swr";
+import BankList from "../../../components/user/bankList";
 import { PageOptions } from "../../../utils/types";
 
 type CreateWithdrawButtonProps = {
@@ -44,12 +45,14 @@ type CreateWithdrawFormData = {
 
 function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
   const { t } = useTranslation("privateProfile");
+  const { t: tBanks } = useTranslation("banks");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<CreateWithdrawFormData>();
 
@@ -59,7 +62,11 @@ function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
     accountNumber,
   }: CreateWithdrawFormData) => {
     axios
-      .post(`/api/user/withdraw`, { point, bankName, accountNumber })
+      .post(`/api/user/withdraw`, {
+        point,
+        bankName: tBanks(bankName),
+        accountNumber,
+      })
       .then(() => {
         mutate();
         toast({
@@ -88,7 +95,7 @@ function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
       >
         {t("withdraws_request")}
       </Button>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="md">
         <DrawerOverlay />
         <DrawerContent>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -118,10 +125,12 @@ function CreateWithdrawButton({ mutate }: CreateWithdrawButtonProps) {
                   <FormLabel htmlFor="bankName">
                     {t("withedraws_bank")}
                   </FormLabel>
-                  <Input
-                    id="bankName"
-                    placeholder=""
-                    {...register("bankName", { required: true })}
+                  <Controller
+                    name="bankName"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <BankList onChange={onChange} value={value} />
+                    )}
                   />
                   <FormErrorMessage>
                     {errors.bankName && errors.bankName.message}

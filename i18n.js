@@ -26,7 +26,7 @@ module.exports = {
 
     "rgx:^/user": ["publicProfile"],
 
-    "rgx:^/user/my": ["privateProfile"],
+    "rgx:^/user/my": ["privateProfile", "banks"],
 
     "/qna": ["qna"],
 
