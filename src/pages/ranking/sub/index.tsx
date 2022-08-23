@@ -49,7 +49,7 @@ export default function SubRankingPage() {
 
   function onSubmit(values: RankQueryData) {
     const { keyword } = values;
-    router.push(`/search?query=${keyword}`);
+    router.push(`/search?query=${keyword}&type=video`);
   }
 
   const { data, error, size, setSize, isValidating } = useSWRInfinite(

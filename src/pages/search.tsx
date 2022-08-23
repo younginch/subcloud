@@ -16,8 +16,8 @@ export default function Search() {
       return;
     }
     axios
-      .get<ResVideoSearch>("/api/public/algolia/video", {
-        params: { query: router.query.query },
+      .get<ResVideoSearch>("/api/public/algolia", {
+        params: { query: router.query.query, type: router.query.type },
       })
       .then((res) => {
         setVideos(res.data);
