@@ -9,12 +9,11 @@
   "title_channel_other": "",
   "title_channel_message": "좋아하는 채널의 영상에 펀딩하고 자막을 받아보세요",
   "funding_num_high": "진행중인 펀딩 수 순위",
-  "funding_num_low": "진행중인 펀딩 수(적은 순)",
   "sub_num_highest": "자막 수 순위",
-  "sub_num_lowest": "자막 수 (적은 순)",
   "subscriber_num_highest": "구독자 수",
-  "subscriber_num_lowest": "구독자 수 (적은 순)",
   "channel_component_subscriber": "구독자 ",
   "channel_component_subtitle": "자막 수 순위",
-  "channel_component_funding": "진행중인 펀딩 수"
+  "channel_component_funding": "진행중인 펀딩 수",
+  "pop_channel_list": "인기 채널 리스트",
+  "pop_channel_list_ex": "좋아하는 유튜버의 자막 현황을 확인해보세요"
 }

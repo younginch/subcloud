@@ -115,7 +115,7 @@ export default function ChannelRankingPage() {
                 fontWeight="bold"
                 fontSize={{ base: "18px", sm: "25px", md: "35px" }}
               >
-                인기 채널 리스트
+                {t("pop_channel_list")}
               </Text>
               <Stack
                 minW={{ base: "30px", sm: "40px" }}
@@ -127,7 +127,7 @@ export default function ChannelRankingPage() {
               </Stack>
             </HStack>
             <Text fontSize={{ base: "12px", sm: "15px", md: "18px" }}>
-              좋아하는 유튜버의 자막 현황을 확인해보세요
+              {t("pop_channel_list_ex")}
             </Text>
           </Stack>
         </HStack>
