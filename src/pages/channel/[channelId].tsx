@@ -34,8 +34,11 @@ export default function ChannelDetail() {
   });
   const sortOptionArray = [
     { name: t("gauge_high"), sortBy: { by: "gauge", order: true } },
+    { name: t("gauge_low"), sortBy: { by: "gauge", order: false } },
     { name: t("request_num_high"), sortBy: { by: "request", order: true } },
+    { name: t("request_num_low"), sortBy: { by: "request", order: false } },
     { name: t("request_point_high"), sortBy: { by: "point", order: true } },
+    { name: t("request_point_low"), sortBy: { by: "point", order: false } },
   ];
   const pageSize = 15;
   const fetcher = async (url: string) => {
@@ -139,8 +142,12 @@ export default function ChannelDetail() {
       <Stack
         pl={{ base: "20px", md: "70px" }}
         pr={{ base: "20px", md: "70px" }}
-        pt="30px"
+        pt="10px"
+        spacing="20px"
       >
+        <Text fontSize={{ base: "12px", sm: "16px", md: "18px" }}>
+          {t("title_channel_message")}
+        </Text>
         <RankingController
           lang={lang}
           setLang={setLang}

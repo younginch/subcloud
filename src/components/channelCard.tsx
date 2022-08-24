@@ -45,7 +45,7 @@ export default function ChannelCard({
         <Stack
           w="300px"
           h="fit-content"
-          bg={useColorModeValue("gray.50", "gray.700")}
+          bg={useColorModeValue("white", "gray.700")}
           borderRadius="10px"
           overflow="hidden"
           p="0px 0px 10px 0px"
