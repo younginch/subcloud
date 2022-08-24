@@ -42,14 +42,14 @@ export default function UserRankingPage() {
 
   const [lang, setLang] = useState<string>();
   const [sortOption, setSortOption] = useState({
-    name: t("total_views_high"),
+    name: t("total_views"),
     sortBy: { by: "view", order: true },
   });
   const pageSize = 15;
   const sortOptionArray = [
-    { name: t("total_views_high"), sortBy: { by: "view", order: true } },
+    { name: t("total_views_most"), sortBy: { by: "view", order: true } },
     { name: t("rating_high"), sortBy: { by: "rating", order: true } },
-    { name: t("total_subs_high"), sortBy: { by: "sub", order: true } },
+    { name: t("total_subs_most"), sortBy: { by: "sub", order: true } },
   ];
 
   const fetcher = async (url: string) => {
@@ -59,7 +59,7 @@ export default function UserRankingPage() {
 
   function onSubmit(values: RankQueryData) {
     const { keyword } = values;
-    router.push(`/search?query=${keyword}`);
+    router.push(`/search?query=${keyword}&type=user`);
   }
 
   const { data, error, size, setSize, isValidating } = useSWRInfinite(

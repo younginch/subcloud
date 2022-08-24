@@ -64,6 +64,25 @@ export default function Admin() {
       });
   }
 
+  async function handleIndexUser() {
+    axios
+      .post("/api/admin/algolia/user")
+      .then(() => {
+        toast({
+          title: "Success",
+          description: "All videos have been indexed",
+          status: "success",
+        });
+      })
+      .catch((err) => {
+        toast({
+          title: "Error",
+          description: err.message,
+          status: "error",
+        });
+      });
+  }
+
   async function handleUpdateYoutubeVideo() {
     axios
       .patch("/api/admin/youtube/video")
@@ -134,6 +153,7 @@ export default function Admin() {
         </AlertDialogOverlay>
       </AlertDialog>
       <Button onClick={handleIndexVideo}>전체 비디오 검색 인덱스 재생성</Button>
+      <Button onClick={handleIndexUser}>전체 유저 검색 인덱스 재생성</Button>
       <Text>주의: 과도한 갱신은 Youtube API 할당량을 넘을 수 있습니다.</Text>
       <Button onClick={handleUpdateYoutubeVideo}>
         가장 오래된 100개의 Youtube Video 정보 갱신

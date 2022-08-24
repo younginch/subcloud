@@ -20,9 +20,7 @@ export default function CreateHeader({ type }: Props) {
         fontSize={{ base: "16px", md: "20px", lg: "25px" }}
         wordBreak="keep-all"
       >
-        {type === "request"
-          ? "자막 펀딩에 참여하고 영상의 글로벌화에 기여하세요"
-          : "자막을 업로드하고 전 세계 유저에게 자막을 제공하세요"}
+        {type === "request" ? t("center_h1_below") : t("center_h1_up_below")}
       </Text>
     </Stack>
   );

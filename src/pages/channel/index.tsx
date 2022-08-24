@@ -14,6 +14,7 @@ import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import { TiSocialYoutubeCircular } from "react-icons/ti";
+import { useRouter } from "next/router";
 import {
   PageOptions,
   RankQueryData,
@@ -26,6 +27,7 @@ import RankingController from "../../components/ranking/rankingController";
 
 export default function ChannelRankingPage() {
   const { t } = useTranslation("channel");
+  const router = useRouter();
   const [sortOption, setSortOption] = useState({
     name: t("funding_num_high"),
     sortBy: { by: "request", order: true },
@@ -48,9 +50,8 @@ export default function ChannelRankingPage() {
   };
 
   function onSubmit(values: RankQueryData) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { keyword } = values;
-    // Todo: search keyword
+    router.push(`/search?query=${keyword}&type=channel`);
   }
 
   const { data, error, size, setSize } = useSWRInfinite(
