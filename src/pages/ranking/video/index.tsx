@@ -183,7 +183,7 @@ export default function VideoRankingPage() {
             <Modal isOpen={isOpen} onClose={onClose} size="lg">
               <ModalOverlay />
               <ModalContent>
-                <ModalHeader>자막 요청</ModalHeader>
+                <ModalHeader>{t("urlInput_request")}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <UrlInput />
