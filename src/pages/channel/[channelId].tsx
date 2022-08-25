@@ -55,7 +55,7 @@ export default function ChannelDetail() {
     Number(col4) +
     Number(col5) +
     Number(col6);
-  const pageSize = colCount * 3;
+  const pageSize = colCount <= 2 ? colCount * 6 : colCount * 3;
 
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingVideo>(url);
