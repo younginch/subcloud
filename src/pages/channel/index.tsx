@@ -43,7 +43,23 @@ export default function ChannelRankingPage() {
       sortBy: { by: "subscriber", order: true },
     },
   ];
-  const pageSize = 12;
+
+  const [col2, col3, col4, col5, col6] = useMediaQuery([
+    "(min-width: 750px)",
+    "(min-width: 1030px)",
+    "(min-width: 1400px)",
+    "(min-width: 1700px)",
+    "(min-width: 2000px)",
+  ]);
+  const colCount =
+    1 +
+    Number(col2) +
+    Number(col3) +
+    Number(col4) +
+    Number(col5) +
+    Number(col6);
+  const pageSize = colCount * 3;
+
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingChannel>(url);
     return res.data;
@@ -84,14 +100,6 @@ export default function ChannelRankingPage() {
       onClick={() => setSize(size + 1)}
     />
   );
-
-  const [col2, col3, col4, col5, col6] = useMediaQuery([
-    "(min-width: 750px)",
-    "(min-width: 1030px)",
-    "(min-width: 1400px)",
-    "(min-width: 1700px)",
-    "(min-width: 2000px)",
-  ]);
 
   return (
     <Box
@@ -146,14 +154,7 @@ export default function ChannelRankingPage() {
       >
         <GeneralRanking btnComponent={loadMoreBtn}>
           <Grid
-            templateColumns={`repeat(${
-              1 +
-              Number(col2) +
-              Number(col3) +
-              Number(col4) +
-              Number(col5) +
-              Number(col6)
-            }, 1fr)`}
+            templateColumns={`repeat(${colCount}, 1fr)`}
             gap={5}
             justifyItems="center"
           >
