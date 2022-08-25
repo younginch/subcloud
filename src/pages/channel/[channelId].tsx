@@ -40,7 +40,23 @@ export default function ChannelDetail() {
     { name: t("request_point_high"), sortBy: { by: "point", order: true } },
     { name: t("request_point_low"), sortBy: { by: "point", order: false } },
   ];
-  const pageSize = 15;
+
+  const [col2, col3, col4, col5, col6] = useMediaQuery([
+    "(min-width: 750px)",
+    "(min-width: 1030px)",
+    "(min-width: 1400px)",
+    "(min-width: 1700px)",
+    "(min-width: 2000px)",
+  ]);
+  const colCount =
+    1 +
+    Number(col2) +
+    Number(col3) +
+    Number(col4) +
+    Number(col5) +
+    Number(col6);
+  const pageSize = colCount <= 2 ? colCount * 6 : colCount * 3;
+
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingVideo>(url);
     return res.data;
@@ -88,14 +104,6 @@ export default function ChannelDetail() {
       onClick={() => setSize(size + 1)}
     />
   );
-
-  const [col2, col3, col4, col5, col6] = useMediaQuery([
-    "(min-width: 750px)",
-    "(min-width: 1030px)",
-    "(min-width: 1400px)",
-    "(min-width: 1700px)",
-    "(min-width: 2000px)",
-  ]);
 
   return (
     <Box overflowX={{ sm: "scroll", md: "hidden" }}>
@@ -164,14 +172,7 @@ export default function ChannelDetail() {
       >
         <GeneralRanking btnComponent={loadMoreBtn}>
           <Grid
-            templateColumns={`repeat(${
-              1 +
-              Number(col2) +
-              Number(col3) +
-              Number(col4) +
-              Number(col5) +
-              Number(col6)
-            }, 1fr)`}
+            templateColumns={`repeat(${colCount}, 1fr)`}
             gap={5}
             justifyItems="center"
           >
