@@ -113,13 +113,31 @@ export default function Links({ width, onClick }: LinksProps) {
         </MenuButton>
         <MenuList>
           <Link href="/ranking/sub">
-            <MenuItem onClick={onClick}>{t("/ranking/sub")}</MenuItem>
+            <MenuItem
+              onClick={onClick}
+              color={paths[2] === "sub" ? highlightedColor : ""}
+              fontWeight={paths[2] === "sub" ? "bold" : "normal"}
+            >
+              {t("/ranking/sub")}
+            </MenuItem>
           </Link>
           <Link href="/ranking/video">
-            <MenuItem onClick={onClick}>{t("/ranking/video")}</MenuItem>
+            <MenuItem
+              onClick={onClick}
+              color={paths[2] === "video" ? highlightedColor : ""}
+              fontWeight={paths[2] === "video" ? "bold" : "normal"}
+            >
+              {t("/ranking/video")}
+            </MenuItem>
           </Link>
           <Link href="/ranking/user">
-            <MenuItem onClick={onClick}>{t("/ranking/user")}</MenuItem>
+            <MenuItem
+              onClick={onClick}
+              color={paths[2] === "user" ? highlightedColor : ""}
+              fontWeight={paths[2] === "user" ? "bold" : "normal"}
+            >
+              {t("/ranking/user")}
+            </MenuItem>
           </Link>
         </MenuList>
       </Menu>
