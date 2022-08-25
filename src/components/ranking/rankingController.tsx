@@ -114,6 +114,7 @@ type Props = {
   sortOption: SortOption;
   setSortOption?: (sortOption: SortOption) => void;
   onSubmit?: SubmitHandler<RankQueryData>;
+  customQueries?: React.ReactNode;
 };
 
 export default function RankingController({
@@ -123,11 +124,12 @@ export default function RankingController({
   sortOption,
   setSortOption,
   onSubmit,
+  customQueries,
 }: Props) {
   const { t } = useTranslation("rankings");
   const { isOpen, onToggle } = useDisclosure();
   const { handleSubmit, register } = useForm<RankQueryData>();
-  const [isPc] = useMediaQuery("(min-width: 620px)");
+  const [isPc] = useMediaQuery("(min-width: 850px)");
   const hasFilter = setLang;
 
   if (isPc || !hasFilter) {
@@ -168,6 +170,7 @@ export default function RankingController({
             </Box>
           )}
           <Spacer />
+          {customQueries}
           {setLang && <SelectLang lang={lang} setLang={setLang} />}
         </HStack>
       </Stack>
@@ -222,7 +225,10 @@ export default function RankingController({
         </WrapItem>
       </Wrap>
       <Collapse in={isOpen} animateOpacity>
-        {setLang && <SelectLang lang={lang} setLang={setLang} />}
+        <Stack alignItems="center">
+          {customQueries}
+          {setLang && <SelectLang lang={lang} setLang={setLang} />}
+        </Stack>
       </Collapse>
     </Stack>
   );

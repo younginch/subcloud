@@ -17,6 +17,8 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
+  Checkbox,
+  useBoolean,
 } from "@chakra-ui/react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
@@ -46,6 +48,7 @@ export default function VideoRankingPage() {
     name: t("gauge_high"),
     sortBy: { by: "gauge", order: true },
   });
+  const [myRequest, toggleMyRequest] = useBoolean(false);
   const [{ run, steps }, setJoyride] = useState<{
     run: boolean;
     steps: Step[];
@@ -139,6 +142,17 @@ export default function VideoRankingPage() {
     />
   );
 
+  const customQueries = (
+    <Checkbox
+      colorScheme="purple"
+      size="lg"
+      onChange={toggleMyRequest.toggle}
+      checked={myRequest}
+    >
+      {t("just_my_request")}
+    </Checkbox>
+  );
+
   return (
     <Box
       overflowX={{ sm: "scroll", md: "hidden" }}
@@ -217,6 +231,7 @@ export default function VideoRankingPage() {
           sortOption={sortOption}
           setSortOption={setSortOption}
           onSubmit={onSubmit}
+          customQueries={customQueries}
         />
       </Stack>
       <Joyride
