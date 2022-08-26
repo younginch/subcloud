@@ -1,0 +1,18 @@
+{
+  "profile_button": "プロフィールにショートカット",
+  "request_button": "字幕を要請する",
+  "payment": "決済金額",
+  "unit": "₩",
+  "copy": "コピーする",
+  "copied": "複写",
+  "order_sucess_error": "注文情報を読み込むのに失敗しました",
+  "order_sucess": "決済が完了しました",
+  "sucess_p1": "ポイントを使用して字幕を要請することができます。 好きな字幕を早く得てみてください。",
+  "sucess_p2": "要請が取り消された場合、ポイントをそのまま返します",
+  "sucess_p3": "プレミアムサービスを購読すると定期的に80ポイントを得ることができます",
+  "order_payment_id": "決済ID",
+  "subscribe_sucess": "決済が完了しました",
+  "subscription_sucess_error": "購読情報を読み込むのに失敗しました",
+  "subscription_sucess_card_info": "カード情報",
+  "subscription_sucess_subcribe_id": "購読ID"
+}
