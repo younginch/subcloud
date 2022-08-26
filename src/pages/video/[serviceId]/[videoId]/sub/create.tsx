@@ -218,6 +218,7 @@ export default function SubCreate() {
     acceptedFiles.length > 0 ? acceptedFiles[0].name : "";
 
   const textColor = useColorModeValue("gray.700", "gray.300");
+  const errorColor = useColorModeValue("red", "red.300");
 
   const [uploadToggle] = useMediaQuery("(min-width: 1350px)");
 
@@ -245,7 +246,7 @@ export default function SubCreate() {
               <Text color={textColor} fontSize="lg" fontWeight="bold">
                 {t("upload_sub")}
               </Text>
-              <Text fontSize="xl" color="red">
+              <Text fontSize="xl" color={errorColor}>
                 *
               </Text>
             </HStack>
@@ -276,7 +277,7 @@ export default function SubCreate() {
               )}
             </Stack>
             {errors.file && (
-              <Text color="red.400" mt="10px">
+              <Text color={errorColor} mt="10px">
                 {t("require_file")}
               </Text>
             )}
@@ -309,7 +310,7 @@ export default function SubCreate() {
               <Text color={textColor} fontSize="lg" fontWeight="bold">
                 {t("select_lang")}
               </Text>
-              <Text fontSize="xl" color="red" ml="4px !important">
+              <Text fontSize="xl" color={errorColor} ml="4px !important">
                 *
               </Text>
               <Tooltip label={t("select_lang_ex")}>
@@ -352,7 +353,7 @@ export default function SubCreate() {
           </Text>
           <Text
             fontWeight={acceptedFileName ? "bold" : "normal"}
-            color={acceptedFileName ? "none" : "red"}
+            color={acceptedFileName ? "none" : errorColor}
             fontSize={acceptedFileName ? "20px" : "15px"}
             overflow="hidden"
             maxW="full"
@@ -366,7 +367,7 @@ export default function SubCreate() {
           </Text>
           <Text
             fontWeight={selectedLang ? "bold" : "normal"}
-            color={selectedLang ? "none" : "red"}
+            color={selectedLang ? "none" : errorColor}
             fontSize={selectedLang ? "20px" : "15px"}
           >
             {selectedLang || t("check_subtitle_lang_required")}

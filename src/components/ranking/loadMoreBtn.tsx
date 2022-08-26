@@ -1,3 +1,4 @@
+import { TriangleDownIcon } from "@chakra-ui/icons";
 import { Button, Center } from "@chakra-ui/react";
 
 type Props = {
@@ -8,7 +9,12 @@ type Props = {
 export default function LoadMoreBtn({ hidden, onClick }: Props) {
   return (
     <Center>
-      <Button hidden={hidden} onClick={onClick}>
+      <Button
+        hidden={hidden}
+        onClick={onClick}
+        colorScheme="purple"
+        rightIcon={<TriangleDownIcon />}
+      >
         load more
       </Button>
     </Center>
