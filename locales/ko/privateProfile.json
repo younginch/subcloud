@@ -72,5 +72,10 @@
   "withdraws_date": "신청 일시",
   "withdraws_status": "처리 상태",
   "withdraws_processing": "처리 일시",
-  "settings": "설정"
+  "settings": "설정",
+  "request_ID": "요청 ID 복사",
+  "success": "성공",
+  "success_ex": "자막 요청을 취소했습니다.",
+  "error": "오류",
+  "error_ex": "자막 요청을 취소하는데 실패했습니다."
 }
