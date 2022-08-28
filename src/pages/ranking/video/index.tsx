@@ -20,6 +20,7 @@ import {
   Checkbox,
   useBoolean,
 } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
@@ -105,6 +106,7 @@ export default function VideoRankingPage() {
   };
   const goalExpr = GoalExpr();
   const router = useRouter();
+  const session = useSession();
 
   function onSubmit(values: RankQueryData) {
     const { keyword } = values;
@@ -115,7 +117,9 @@ export default function VideoRankingPage() {
     (index) =>
       `/api/public/ranking/video/${sortOption.sortBy.by}?start=${
         pageSize * index
-      }&end=${pageSize * (index + 1)}&lang=${lang ?? "All Lang"}&order=${
+      }&end=${pageSize * (index + 1)}${
+        myRequest ? `&userId=${session.data?.user.id}` : ""
+      }&lang=${lang ?? "All Lang"}&order=${
         sortOption.sortBy.order === true ? "desc" : "asc"
       }${goalExpr ? `&goalExpr=${JSON.stringify(goalExpr)}` : ""}`,
     fetcher
