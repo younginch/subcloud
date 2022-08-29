@@ -5,6 +5,8 @@ import {
   Box,
   Button,
   Center,
+  Grid,
+  GridItem,
   Heading,
   Spacer,
   Stack,
@@ -130,19 +132,14 @@ export default function Home() {
           />
         </Box>
       </Stack>
-      <Stack
-        alignItems="center"
-        justifyContent="center"
-        minH="100vh"
-        w="100vw"
-        pt="50px"
-      >
-        <Stack pl="15px" pr="15px">
+      <Stack alignItems="center" justifyContent="center" w="100vw">
+        <Stack pl="15px" pr="15px" pt="50px">
           <Text
             fontWeight="bold"
             fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
             textAlign="center"
             textColor="teal"
+            wordBreak="keep-all"
           >
             {t("marquee_title")}
           </Text>
@@ -156,6 +153,82 @@ export default function Home() {
           </Text>
         </Stack>
         <RequestMarquee videos={topVideos} />
+      </Stack>
+      <Stack alignItems="center" p="80px 20px 100px 20px">
+        <Text
+          fontWeight="bold"
+          fontSize={{ base: "30px", sm: "4xl", md: "5xl", lg: "6xl" }}
+          textAlign="center"
+          wordBreak="keep-all"
+        >
+          Trusted by over 2000+ users
+        </Text>
+        <Text
+          fontSize={{ base: "15px", md: "20px", lg: "25px" }}
+          wordBreak="keep-all"
+          m="15px 0px 30px 0px !important"
+        >
+          Subcloud&apos;s power is spreading all over the world
+        </Text>
+        <Grid
+          gap={10}
+          templateRows={{ base: "repeat(2, 1fr)", md: "repeat(1, 1fr)" }}
+          templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(4, 1fr)" }}
+          w={{ base: "90%", sm: "75%" }}
+        >
+          <GridItem>
+            <Stack alignItems="center">
+              <Text
+                fontWeight="bold"
+                color="blue.400"
+                fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
+              >
+                346
+              </Text>
+              <Text fontSize={{ base: "15px", md: "20px" }}>
+                Total fundding
+              </Text>
+            </Stack>
+          </GridItem>
+          <GridItem>
+            <Stack alignItems="center">
+              <Text
+                fontWeight="bold"
+                color="blue.400"
+                fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
+              >
+                38
+              </Text>
+              <Text fontSize={{ base: "15px", md: "20px" }}>Subtitles</Text>
+            </Stack>
+          </GridItem>
+          <GridItem>
+            <Stack alignItems="center">
+              <Text
+                fontWeight="bold"
+                color="blue.400"
+                fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
+              >
+                106k+
+              </Text>
+              <Text fontSize={{ base: "15px", md: "20px" }}>Funded point</Text>
+            </Stack>
+          </GridItem>
+          <GridItem>
+            <Stack alignItems="center">
+              <Text
+                fontWeight="bold"
+                color="blue.400"
+                fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
+              >
+                23
+              </Text>
+              <Text fontSize={{ base: "15px", md: "20px" }}>
+                Funded channel
+              </Text>
+            </Stack>
+          </GridItem>
+        </Grid>
       </Stack>
       <Stack alignItems="center" bg={useColorModeValue("#f8f8fa", undefined)}>
         <Box maxW="1340px" margin="auto" p={10}>

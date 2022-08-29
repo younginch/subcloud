@@ -2,23 +2,22 @@ import {
   Container,
   Box,
   Text,
-  Icon,
-  SimpleGrid,
   Heading,
+  Wrap,
+  WrapItem,
+  Stack,
 } from "@chakra-ui/react";
-import {
-  MdOutlinePersonPin,
-  MdPermDeviceInformation,
-  MdOutlineFlashlightOn,
-} from "react-icons/md";
-import { SiMinds } from "react-icons/si";
-import { IconType } from "react-icons";
 import useTranslation from "next-translate/useTranslation";
+import Image, { StaticImageData } from "next/image";
+import Custom from "../../public/assets/customize.png";
+import Montage from "../../public/assets/montage.png";
+import Extension from "../../public/assets/extension.png";
+import InViewProvider from "./inviewProvider";
 
 interface IFeature {
   heading: string;
   content: string;
-  icon: IconType;
+  src: StaticImageData;
 }
 
 export default function Features() {
@@ -27,22 +26,17 @@ export default function Features() {
     {
       heading: t("landing_features_first"),
       content: t("landing_features_first_ex"),
-      icon: MdOutlineFlashlightOn,
+      src: Custom,
     },
     {
       heading: t("landing_features_second"),
       content: t("landing_features_second_ex"),
-      icon: SiMinds,
-    },
-    {
-      heading: t("landing_features_third"),
-      content: t("landing_features_third_ex"),
-      icon: MdPermDeviceInformation,
+      src: Montage,
     },
     {
       heading: t("landing_features_fourth"),
       content: t("landing_features_fourth_ex"),
-      icon: MdOutlinePersonPin,
+      src: Extension,
     },
   ];
   return (
@@ -62,29 +56,41 @@ export default function Features() {
       >
         {t("tools")}
       </Text>
-      <SimpleGrid
-        columns={{ base: 1, md: 2 }}
+      <Wrap
         placeItems="center"
         spacing={16}
         mt={12}
         mb={4}
+        justify="space-evenly"
+        overflow="visible"
       >
         {features.map((feature) => (
-          <Box
+          <WrapItem
             key={feature.heading}
             textAlign="center"
             mt={{ base: "0px", md: "40px" }}
+            overflow="visible"
           >
-            <Icon as={feature.icon} w="60px" h="60px" color="blue.400" />
-            <Heading fontWeight="semibold" fontSize="2xl">
-              {feature.heading}
-            </Heading>
-            <Text fontSize="md" wordBreak="keep-all">
-              {feature.content}
-            </Text>
-          </Box>
+            <InViewProvider whileHover={1.05} initialScale={0.95}>
+              <Stack alignItems="center">
+                <Box w="100px" h="100px">
+                  <Image src={feature.src} alt="feature_image" />
+                </Box>
+                <Heading
+                  fontWeight="semibold"
+                  fontSize={{ base: "25px", md: "30px" }}
+                  wordBreak="keep-all"
+                >
+                  {feature.heading}
+                </Heading>
+                <Text fontSize="md" wordBreak="keep-all" maxW="500px">
+                  {feature.content}
+                </Text>
+              </Stack>
+            </InViewProvider>
+          </WrapItem>
         ))}
-      </SimpleGrid>
+      </Wrap>
     </Container>
   );
 }
