@@ -115,8 +115,14 @@ export default function Links({ width, onClick }: LinksProps) {
           <Link href="/ranking/sub">
             <MenuItem
               onClick={onClick}
-              color={paths[2] === "sub" ? highlightedColor : ""}
-              fontWeight={paths[2] === "sub" ? "bold" : "normal"}
+              color={
+                paths[1] === "ranking" && paths[2] === "sub"
+                  ? highlightedColor
+                  : ""
+              }
+              fontWeight={
+                paths[1] === "ranking" && paths[2] === "sub" ? "bold" : "normal"
+              }
             >
               {t("/ranking/sub")}
             </MenuItem>
@@ -124,8 +130,16 @@ export default function Links({ width, onClick }: LinksProps) {
           <Link href="/ranking/video">
             <MenuItem
               onClick={onClick}
-              color={paths[2] === "video" ? highlightedColor : ""}
-              fontWeight={paths[2] === "video" ? "bold" : "normal"}
+              color={
+                paths[1] === "ranking" && paths[2] === "video"
+                  ? highlightedColor
+                  : ""
+              }
+              fontWeight={
+                paths[1] === "ranking" && paths[2] === "video"
+                  ? "bold"
+                  : "normal"
+              }
             >
               {t("/ranking/video")}
             </MenuItem>
@@ -133,8 +147,16 @@ export default function Links({ width, onClick }: LinksProps) {
           <Link href="/ranking/user">
             <MenuItem
               onClick={onClick}
-              color={paths[2] === "user" ? highlightedColor : ""}
-              fontWeight={paths[2] === "user" ? "bold" : "normal"}
+              color={
+                paths[1] === "ranking" && paths[2] === "user"
+                  ? highlightedColor
+                  : ""
+              }
+              fontWeight={
+                paths[1] === "ranking" && paths[2] === "user"
+                  ? "bold"
+                  : "normal"
+              }
             >
               {t("/ranking/user")}
             </MenuItem>
