@@ -1,6 +1,8 @@
 {
   "center_h1": "字幕资助",
+  "center_h1_below": "자막 펀딩에 참여하고 영상의 글로벌화에 기여하세요",
   "center_h1_up": "上载字幕",
+  "center_h1_up_below": "자막을 업로드하고 전 세계 유저에게 자막을 제공하세요",
   "center_below_front": "选择视频",
   "center_below_back": "选择字幕的语言",
   "search_box_request": "输入您想要视频的链接...",
@@ -15,5 +17,8 @@
   "my_req": "我在SubCloud请求的视频",
   "my_up": "我在SubCloud上载的视频",
   "no_req": "没有请求。请求我想要视频的字幕",
-  "no_up": "没有上载的字幕"
+  "no_up": "没有上载的字幕",
+  "urlInput_link": "요청할 영상 링크",
+  "urlInput_link_below": "영상을 요청하면 개인정보 이용 및 서비스 이용규칙에 동의한 것으로 간주합니다.",
+  "urlInput_link_button": "요청"
 }

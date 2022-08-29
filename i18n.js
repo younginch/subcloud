@@ -26,7 +26,7 @@ module.exports = {
 
     "rgx:^/user": ["publicProfile"],
 
-    "rgx:^/user/my": ["privateProfile"],
+    "rgx:^/user/my": ["privateProfile", "banks"],
 
     "/qna": ["qna"],
 
@@ -36,7 +36,7 @@ module.exports = {
 
     "rgx:^/info/dmca": ["dmca"],
 
-    "rgx:^/ranking": ["rankings"],
+    "rgx:^/ranking": ["rankings", "create"],
 
     "rgx:^/channel": ["channel", "rankings"],
   },

@@ -1,6 +1,8 @@
 {
   "center_h1": "Solicitar subtítulo",
+  "center_h1_below": "Participe en la financiación de subtítulos y contribuya a la globalización del video",
   "center_h1_up": "Subir subtítulo",
+  "center_h1_up_below": "Cargue subtítulos y póngalos a disposición de los usuarios de todo el mundo",
   "center_below_front": "Seleccionar vídeo",
   "center_below_back": "Seleccione el idioma",
   "search_box_request": "Escriba el enlace del video para solicitar...",
@@ -15,5 +17,8 @@
   "my_req": "Video que solicité de SubCloud",
   "my_up": "Video que subí a SubCloud",
   "no_req": "No hay solicitudes. Solicita un video que requiera subtítulos.",
-  "no_up": "No hay subtítulos subidos."
+  "no_up": "No hay subtítulos subidos.",
+  "urlInput_link": "Enlace de video para solicitar",
+  "urlInput_link_below": "Al solicitar un video, acepta las reglas para el uso de información y servicios personales.",
+  "urlInput_link_button": "Solicitud"
 }

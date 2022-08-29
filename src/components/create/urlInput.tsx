@@ -61,7 +61,7 @@ export default function UrlInput() {
       >
         <HStack spacing={0}>
           <Text fontWeight="bold" fontSize="17px">
-            요청할 영상 링크
+            {t("urlInput_link")}
           </Text>
           <Text color="red.500">*</Text>
         </HStack>
@@ -75,17 +75,14 @@ export default function UrlInput() {
         <FormErrorMessage m="auto" fontSize="15px">
           {errors.url && t("url_error")}
         </FormErrorMessage>
-        <Text>
-          영상을 요청하면 개인정보 이용 및 서비스 이용규칙에 동의한 것으로
-          간주합니다.
-        </Text>
+        <Text>{t("urlInput_link_below")}</Text>
         <Button
           colorScheme="purple"
           isLoading={isSubmitting}
           type="submit"
           mt="10px"
         >
-          요청
+          {t("urlInput_link_button")}
         </Button>
       </FormControl>
     </form>
