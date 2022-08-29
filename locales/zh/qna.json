@@ -9,9 +9,9 @@
   "accordion_title_unvisible": "为什么看不了刚上载的字幕？",
   "accordion_title_unvisible_ex": "为了提供优质的字幕，SubCloud正在研究所有字幕后进行登记。上载的字幕可以在[简介>视频字幕]中确认复查的进行度。字幕在得到认可的同时向大家公开。如果字幕被退回的话，再上载时将自动重新复查。",
   "accordion_title_legal": "没有法律问题吗？",
-  "accordion_title_legal_ex": "根据韩国的著作权法第102条,SubCloud正在履行保护著作物的标准技术措施。 但流通侵犯著作权的资料时，您的资料可能会在没有警告被删除。",
-  "accordion_title_point": "点数是什么？",
-  "accordion_title_point_ex": "点数是在SubCloud内请求字幕时需要的，制作字幕时收到的财物。可付费购买，可兑换现金取款。如果是高昂用户，每月免费提供一定数量的点数。",
-  "accordion_title_refund": "怎么退款点数？",
-  "accordion_title_refund_ex": "购买的点数在使用前可永久保持。该点数可在购买后1个月内全额退款，1个月后只能退款60%。字幕制作中消耗的点数与时间无关，不能退款。"
+  "accordion_title_legal_ex": "根据韩国的著作权法第102条,SubCloud正在履行保护著作物的标准技术措施。但流通侵犯著作权的资料时，您的资料可能会在没有警告被删除。",
+  "accordion_title_point": "积分是什么？",
+  "accordion_title_point_ex": "积分是在SubCloud内请求字幕时需要的，制作字幕时收到的财物。可付费购买，可兑换现金取款。如果是高昂用户，每月免费提供一定数量的积分。",
+  "accordion_title_refund": "怎么退款积分？",
+  "accordion_title_refund_ex": "购买的积分在使用前可永久保持。该积分可在购买后1个月内全额退款，1个月后只能退款60%。字幕制作中消耗的积分与时间无关，不能退款。"
 }
