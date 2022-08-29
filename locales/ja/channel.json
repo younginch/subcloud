@@ -1,9 +1,9 @@
 {
   "request_num_high": "要請数(高い順)",
   "request_num_low": "要請数(低い順)",
-  "request_point_high": "リクエストポイント(高順)",
+  "request_point_high": "リクエストポイント(高い順)",
   "request_point_low": "リクエストポイント(低い順)",
-  "gauge_high": "字幕ゲージ(高純)",
+  "gauge_high": "字幕ゲージ(高い順)",
   "gauge_low": "字幕ゲージ(低い順)",
   "title_channel_ko": "のチャンネルランキング",
   "title_channel_other": "",
@@ -11,8 +11,8 @@
   "funding_num_low": "進行中のファンディング数(少ない順)",
   "sub_num_highest": "字幕数(多い順)",
   "sub_num_lowest": "字幕数(少ない順)",
-  "subscriber_num_highest": "購読者数(多い順)",
-  "subscriber_num_lowest": "購読者数(少ない順)",
+  "subscriber_num_highest": "購読者の数(多い順)",
+  "subscriber_num_lowest": "購読者の数(少ない順)",
   "channel_component_subscriber": "購読者",
   "channel_component_subtitle": "字幕数",
   "channel_component_funding": "進行中のファンディング数"
