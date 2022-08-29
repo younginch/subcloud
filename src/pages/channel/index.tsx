@@ -1,13 +1,12 @@
 import {
   Box,
-  Grid,
-  GridItem,
   useColorModeValue,
   useMediaQuery,
   HStack,
   Stack,
   Text,
   Divider,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
@@ -153,26 +152,21 @@ export default function ChannelRankingPage() {
         pr={{ base: "10px", lg: "30px", xl: "70px" }}
       >
         <GeneralRanking btnComponent={loadMoreBtn}>
-          <Grid
-            templateColumns={`repeat(${colCount}, 1fr)`}
-            gap={5}
-            justifyItems="center"
-          >
+          <SimpleGrid columns={colCount} gap={5} justifyItems="center">
             {channels.map((channel) => (
-              <GridItem key={channel.id}>
-                <ChannelCard
-                  channelId={channel.id}
-                  title={channel.title}
-                  thumbnailUrl={channel.thumbnailUrl}
-                  subscriberCount={channel.subscriberCount}
-                  channelUrl={channel.channelUrl}
-                  bannerUrl={channel.bannerUrl ?? ""}
-                  subCount={channel._count.subs}
-                  requestCount={channel._count.requests}
-                />
-              </GridItem>
+              <ChannelCard
+                key={channel.id}
+                channelId={channel.id}
+                title={channel.title}
+                thumbnailUrl={channel.thumbnailUrl}
+                subscriberCount={channel.subscriberCount}
+                channelUrl={channel.channelUrl}
+                bannerUrl={channel.bannerUrl ?? ""}
+                subCount={channel._count.subs}
+                requestCount={channel._count.requests}
+              />
             ))}
-          </Grid>
+          </SimpleGrid>
         </GeneralRanking>
       </Box>
     </Box>

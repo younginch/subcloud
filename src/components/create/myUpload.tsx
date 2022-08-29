@@ -1,10 +1,9 @@
 import {
   Stack,
   Text,
-  GridItem,
-  Grid,
   useMediaQuery,
   useColorModeValue,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
@@ -25,35 +24,34 @@ function MyUploadPanel({ subs }: { subs: ResSubSearch | undefined }) {
     "(min-width: 2000px)",
   ]);
   return (
-    <Grid
-      templateColumns={`repeat(${
+    <SimpleGrid
+      columns={
         1 +
         Number(col2) +
         Number(col3) +
         Number(col4) +
         Number(col5) +
         Number(col6)
-      }, 1fr)`}
+      }
       gap={5}
       justifyItems="center"
     >
       {subs?.map((sub) => (
-        <GridItem key={sub.id}>
-          <UploadCard
-            title={sub.video.youtubeVideo?.title ?? ""}
-            time={sub.video.youtubeVideo?.duration ?? 0}
-            link={sub.video.url ?? ""}
-            thumbnail={`http://img.youtube.com/vi/${sub.video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
-            lang={ISO6391.getNativeName(sub.lang)}
-            status={sub.status}
-            viewCount={sub.views}
-            uploadDate={sub.createdAt}
-            subId={sub.id}
-            editorFileId={sub.editorFile?.id}
-          />
-        </GridItem>
+        <UploadCard
+          key={sub.id}
+          title={sub.video.youtubeVideo?.title ?? ""}
+          time={sub.video.youtubeVideo?.duration ?? 0}
+          link={sub.video.url ?? ""}
+          thumbnail={`http://img.youtube.com/vi/${sub.video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
+          lang={ISO6391.getNativeName(sub.lang)}
+          status={sub.status}
+          viewCount={sub.views}
+          uploadDate={sub.createdAt}
+          subId={sub.id}
+          editorFileId={sub.editorFile?.id}
+        />
       ))}
-    </Grid>
+    </SimpleGrid>
   );
 }
 

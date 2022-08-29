@@ -1,9 +1,8 @@
 import {
   Avatar,
   Box,
-  Grid,
-  GridItem,
   HStack,
+  SimpleGrid,
   Stack,
   Text,
   useColorModeValue,
@@ -171,45 +170,40 @@ export default function ChannelDetail() {
         pr={{ base: "10px", lg: "30px", xl: "70px" }}
       >
         <GeneralRanking btnComponent={loadMoreBtn}>
-          <Grid
+          <SimpleGrid
             templateColumns={`repeat(${colCount}, 1fr)`}
             gap={5}
             justifyItems="center"
           >
             {videos.map((video) => (
-              <GridItem key={video.videoId + video.langs}>
-                <RequestRankCard
-                  duration={
-                    video.youtubeVideo ? video.youtubeVideo.duration : 0
-                  }
-                  videoName={
-                    video.youtubeVideo ? video.youtubeVideo.title : "no title"
-                  }
-                  videoUrl={video.url}
-                  serviceId={video.serviceId}
-                  videoId={video.videoId}
-                  imageUrl={`http://img.youtube.com/vi/${video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
-                  requestCount={video._count.requests}
-                  requestPoint={video._count.points}
-                  requestGoal={
-                    PointGoal(
-                      video.youtubeVideo
-                        ? video.youtubeVideo.duration
-                        : undefined,
-                      goalExpr
-                    ) ?? 1000000
-                  }
-                  channelName={video.youtubeVideo?.channel.title ?? "no name"}
-                  channelImageUrl={
-                    video.youtubeVideo?.channel.thumbnailUrl ?? ""
-                  }
-                  channelUrl={video.youtubeVideo?.channel.channelUrl ?? ""}
-                  lang={video.langs}
-                  hideChannel
-                />
-              </GridItem>
+              <RequestRankCard
+                key={video.videoId + video.langs}
+                duration={video.youtubeVideo ? video.youtubeVideo.duration : 0}
+                videoName={
+                  video.youtubeVideo ? video.youtubeVideo.title : "no title"
+                }
+                videoUrl={video.url}
+                serviceId={video.serviceId}
+                videoId={video.videoId}
+                imageUrl={`http://img.youtube.com/vi/${video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
+                requestCount={video._count.requests}
+                requestPoint={video._count.points}
+                requestGoal={
+                  PointGoal(
+                    video.youtubeVideo
+                      ? video.youtubeVideo.duration
+                      : undefined,
+                    goalExpr
+                  ) ?? 1000000
+                }
+                channelName={video.youtubeVideo?.channel.title ?? "no name"}
+                channelImageUrl={video.youtubeVideo?.channel.thumbnailUrl ?? ""}
+                channelUrl={video.youtubeVideo?.channel.channelUrl ?? ""}
+                lang={video.langs}
+                hideChannel
+              />
             ))}
-          </Grid>
+          </SimpleGrid>
         </GeneralRanking>
       </Stack>
     </Box>

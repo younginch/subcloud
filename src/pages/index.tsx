@@ -5,9 +5,8 @@ import {
   Box,
   Button,
   Center,
-  Grid,
-  GridItem,
   Heading,
+  SimpleGrid,
   Spacer,
   Stack,
   Text,
@@ -170,65 +169,52 @@ export default function Home() {
         >
           Subcloud&apos;s power is spreading all over the world
         </Text>
-        <Grid
+        <SimpleGrid
           gap={10}
-          templateRows={{ base: "repeat(2, 1fr)", md: "repeat(1, 1fr)" }}
-          templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(4, 1fr)" }}
+          columns={{ base: 2, md: 4 }}
           w={{ base: "90%", sm: "75%" }}
         >
-          <GridItem>
-            <Stack alignItems="center">
-              <Text
-                fontWeight="bold"
-                color="blue.400"
-                fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
-              >
-                346
-              </Text>
-              <Text fontSize={{ base: "15px", md: "20px" }}>
-                Total fundding
-              </Text>
-            </Stack>
-          </GridItem>
-          <GridItem>
-            <Stack alignItems="center">
-              <Text
-                fontWeight="bold"
-                color="blue.400"
-                fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
-              >
-                38
-              </Text>
-              <Text fontSize={{ base: "15px", md: "20px" }}>Subtitles</Text>
-            </Stack>
-          </GridItem>
-          <GridItem>
-            <Stack alignItems="center">
-              <Text
-                fontWeight="bold"
-                color="blue.400"
-                fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
-              >
-                106k+
-              </Text>
-              <Text fontSize={{ base: "15px", md: "20px" }}>Funded point</Text>
-            </Stack>
-          </GridItem>
-          <GridItem>
-            <Stack alignItems="center">
-              <Text
-                fontWeight="bold"
-                color="blue.400"
-                fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
-              >
-                23
-              </Text>
-              <Text fontSize={{ base: "15px", md: "20px" }}>
-                Funded channel
-              </Text>
-            </Stack>
-          </GridItem>
-        </Grid>
+          <Stack alignItems="center">
+            <Text
+              fontWeight="bold"
+              color="blue.400"
+              fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
+            >
+              346
+            </Text>
+            <Text fontSize={{ base: "15px", md: "20px" }}>Total fundding</Text>
+          </Stack>
+          <Stack alignItems="center">
+            <Text
+              fontWeight="bold"
+              color="blue.400"
+              fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
+            >
+              38
+            </Text>
+            <Text fontSize={{ base: "15px", md: "20px" }}>Subtitles</Text>
+          </Stack>
+          <Stack alignItems="center">
+            <Text
+              fontWeight="bold"
+              color="blue.400"
+              fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
+            >
+              106k+
+            </Text>
+            <Text fontSize={{ base: "15px", md: "20px" }}>Funded point</Text>
+          </Stack>
+          <Stack alignItems="center">
+            <Text
+              fontWeight="bold"
+              color="blue.400"
+              fontSize={{ base: "35px", md: "5xl", lg: "6xl" }}
+            >
+              23
+            </Text>
+            <Text fontSize={{ base: "15px", md: "20px" }}>Funded channel</Text>
+          </Stack>
+        </SimpleGrid>
       </Stack>
       <Stack alignItems="center" bg={useColorModeValue("#f8f8fa", undefined)}>
         <Box maxW="1340px" margin="auto" p={10}>

@@ -2,10 +2,9 @@ import {
   Stack,
   Text,
   useMediaQuery,
-  Grid,
-  GridItem,
   useColorModeValue,
   Box,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
@@ -32,46 +31,45 @@ function MyRequestPanel({
   const goalExpr = GoalExpr();
 
   return (
-    <Grid
-      templateColumns={`repeat(${
+    <SimpleGrid
+      columns={
         1 +
         Number(col2) +
         Number(col3) +
         Number(col4) +
         Number(col5) +
         Number(col6)
-      }, 1fr)`}
+      }
       gap={5}
       justifyItems="center"
     >
       {requests?.map(
         (request) =>
           request.video && (
-            <GridItem key={request.id}>
-              <RequestCard
-                title={request.video.youtubeVideo?.title ?? ""}
-                time={request.video.youtubeVideo?.duration ?? 0}
-                link={request.video.url ?? ""}
-                thumbnail={`http://img.youtube.com/vi/${request.video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
-                requestLang={request.lang}
-                requestStatus={request.status}
-                serviceId={request.video.serviceId}
-                videoId={request.video.videoId}
-                requestPoint={request.point}
-                requestGoal={
-                  PointGoal(
-                    request.video.youtubeVideo
-                      ? request.video.youtubeVideo.duration
-                      : undefined,
-                    goalExpr
-                  ) ?? 1000000
-                }
-                buttonType="request"
-              />
-            </GridItem>
+            <RequestCard
+              key={request.id}
+              title={request.video.youtubeVideo?.title ?? ""}
+              time={request.video.youtubeVideo?.duration ?? 0}
+              link={request.video.url ?? ""}
+              thumbnail={`http://img.youtube.com/vi/${request.video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
+              requestLang={request.lang}
+              requestStatus={request.status}
+              serviceId={request.video.serviceId}
+              videoId={request.video.videoId}
+              requestPoint={request.point}
+              requestGoal={
+                PointGoal(
+                  request.video.youtubeVideo
+                    ? request.video.youtubeVideo.duration
+                    : undefined,
+                  goalExpr
+                ) ?? 1000000
+              }
+              buttonType="request"
+            />
           )
       )}
-    </Grid>
+    </SimpleGrid>
   );
 }
 
