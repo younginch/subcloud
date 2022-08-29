@@ -111,16 +111,16 @@ export default function RequestPanel({
                       })
                       .then(() => {
                         toast({
-                          title: "성공",
-                          description: "자막 요청을 취소했습니다.",
+                          title: t("success"),
+                          description: t("success_ex"),
                           status: "success",
                         });
                         window.location.reload();
                       })
                       .catch(() => {
                         toast({
-                          title: "오류",
-                          description: "자막 요청을 취소하는데 실패했습니다.",
+                          title: t("error"),
+                          description: t("error_ex"),
                           status: "error",
                         });
                       });
@@ -138,7 +138,7 @@ export default function RequestPanel({
                   <MenuList>
                     <MenuItem>
                       <CopyToClipboard text={request.id}>
-                        <Button>요청 ID 복사</Button>
+                        <Button>{t("request_ID")}</Button>
                       </CopyToClipboard>
                     </MenuItem>
                   </MenuList>

@@ -1,0 +1,11 @@
+{
+  "notification": "通知センター",
+  "no_review": "通知なし",
+  "unchecked_title": "未読のお知らせ",
+  "detail": "クリックして詳細を見る",
+  "checked_title": "読んだお知らせ",
+  "notifyType_announce": "お知らせ",
+  "notifyType_newSubtitle": "字幕アップロードのお知らせ",
+  "notifyType_review": "新しいレビューのお知らせ",
+  "notifyType_statusChange": "検討済み"
+}

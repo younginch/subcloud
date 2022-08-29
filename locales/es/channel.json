@@ -6,14 +6,14 @@
   "gauge_high": "Indicador de subtítulos (más alto)",
   "gauge_low": "Indicador de subtítulos (más bajo)",
   "title_channel_ko": "",
-  "title_channel_other": "Ranking de canales de",
-  "funding_num_high": "진행중인 펀딩 수(많은 순)",
-  "funding_num_low": "진행중인 펀딩 수(적은 순)",
-  "sub_num_highest": "Subtítulos(más)",
-  "sub_num_lowest": "Subtítulos(menos)",
-  "subscriber_num_highest": "Suscriptores(más)",
-  "subscriber_num_lowest": "Suscriptores(menos)",
+  "title_channel_other": "Clasificación de solicitud de",
+  "title_channel_message": "Financie sus canales favoritos y obtenga subtítulos",
+  "funding_num_high": "Por punding en curso",
+  "sub_num_highest": "Por subtitulos",
+  "subscriber_num_highest": "Por suscriptores",
   "channel_component_subscriber": "Suscriptores ",
   "channel_component_subtitle": "Subtítulos",
-  "channel_component_funding": "진행중인 펀딩 수"
+  "channel_component_funding": "Financiamientos",
+  "pop_channel_list": "Lista de canales populares",
+  "pop_channel_list_ex": "Consulta los subtítulos de tus youtubers favoritos"
 }

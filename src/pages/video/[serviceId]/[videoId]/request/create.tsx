@@ -286,6 +286,7 @@ export default function RequestCreate() {
   }, [langList, router.query.lang, setValue]);
 
   const pointBg = useColorModeValue("gray.100", "gray.800");
+  const errorColor = useColorModeValue("red", "red.300");
 
   const selectedLang = ISO6391.getName(watch().lang);
 
@@ -326,7 +327,7 @@ export default function RequestCreate() {
               <Text color={textColor} fontSize="lg" fontWeight="bold">
                 {t("select_lang")}
               </Text>
-              <Text fontSize="xl" color="red" ml="4px !important">
+              <Text fontSize="xl" color={errorColor} ml="4px !important">
                 *
               </Text>
             </HStack>
@@ -398,7 +399,7 @@ export default function RequestCreate() {
           </Wrap>
           {session.data?.user.point &&
             session.data?.user.point < watch().fundPoint && (
-              <Text w="100%" textAlign="center" color="red">
+              <Text w="100%" textAlign="center" color={errorColor}>
                 포인트가 부족합니다.
               </Text>
             )}
@@ -483,7 +484,7 @@ export default function RequestCreate() {
 
           <Text
             fontWeight={selectedLang ? "bold" : "normal"}
-            color={selectedLang ? "none" : "red"}
+            color={selectedLang ? "none" : errorColor}
             fontSize={selectedLang ? "20px" : "15px"}
           >
             {selectedLang || t("check_subtitle_lang_required")}

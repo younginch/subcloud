@@ -120,7 +120,7 @@ export async function RankingVideo(
   { req, res, prisma }: RouteParams<ResRankingVideo>,
   sortBy: (a: VideoWithRequest, b: VideoWithRequest) => number
 ) {
-  const { lang, start, end, order, goalExpr, channelId } = req.query;
+  const { lang, start, end, userId, order, goalExpr, channelId } = req.query;
   const goalObject = goalExpr ? JSON.parse(goalExpr as string) : undefined;
   if (!start && !end) {
     return res
@@ -131,6 +131,9 @@ export async function RankingVideo(
   const isLang = lang && lang !== "All Lang";
   if (isLang) {
     where.lang = lang as string;
+  }
+  if (userId) {
+    where.users = { some: { id: userId as string } };
   }
   if (channelId) {
     where.video = {

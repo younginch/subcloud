@@ -17,7 +17,10 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
+  Checkbox,
+  useBoolean,
 } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import axios from "axios";
 import useSWRInfinite from "swr/infinite";
 import { useState } from "react";
@@ -46,6 +49,7 @@ export default function VideoRankingPage() {
     name: t("gauge_high"),
     sortBy: { by: "gauge", order: true },
   });
+  const [myRequest, toggleMyRequest] = useBoolean(false);
   const [{ run, steps }, setJoyride] = useState<{
     run: boolean;
     steps: Step[];
@@ -79,13 +83,30 @@ export default function VideoRankingPage() {
     { name: t("requests_high"), sortBy: { by: "request", order: true } },
     { name: t("points_most"), sortBy: { by: "point", order: true } },
   ];
-  const pageSize = 15;
+
+  const [col2, col3, col4, col5, col6] = useMediaQuery([
+    "(min-width: 750px)",
+    "(min-width: 1030px)",
+    "(min-width: 1400px)",
+    "(min-width: 1700px)",
+    "(min-width: 2000px)",
+  ]);
+  const colCount =
+    1 +
+    Number(col2) +
+    Number(col3) +
+    Number(col4) +
+    Number(col5) +
+    Number(col6);
+  const pageSize = colCount <= 2 ? colCount * 6 : colCount * 3;
+
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingVideo>(url);
     return res.data;
   };
   const goalExpr = GoalExpr();
   const router = useRouter();
+  const session = useSession();
 
   function onSubmit(values: RankQueryData) {
     const { keyword } = values;
@@ -96,7 +117,9 @@ export default function VideoRankingPage() {
     (index) =>
       `/api/public/ranking/video/${sortOption.sortBy.by}?start=${
         pageSize * index
-      }&end=${pageSize * (index + 1)}&lang=${lang ?? "All Lang"}&order=${
+      }&end=${pageSize * (index + 1)}${
+        myRequest ? `&userId=${session.data?.user.id}` : ""
+      }&lang=${lang ?? "All Lang"}&order=${
         sortOption.sortBy.order === true ? "desc" : "asc"
       }${goalExpr ? `&goalExpr=${JSON.stringify(goalExpr)}` : ""}`,
     fetcher
@@ -123,13 +146,16 @@ export default function VideoRankingPage() {
     />
   );
 
-  const [col2, col3, col4, col5, col6] = useMediaQuery([
-    "(min-width: 710px)",
-    "(min-width: 1030px)",
-    "(min-width: 1400px)",
-    "(min-width: 1700px)",
-    "(min-width: 2000px)",
-  ]);
+  const customQueries = (
+    <Checkbox
+      colorScheme="purple"
+      size="lg"
+      onChange={toggleMyRequest.toggle}
+      checked={myRequest}
+    >
+      {t("just_my_request")}
+    </Checkbox>
+  );
 
   return (
     <Box
@@ -209,6 +235,7 @@ export default function VideoRankingPage() {
           sortOption={sortOption}
           setSortOption={setSortOption}
           onSubmit={onSubmit}
+          customQueries={customQueries}
         />
       </Stack>
       <Joyride
@@ -229,14 +256,7 @@ export default function VideoRankingPage() {
       >
         <GeneralRanking btnComponent={loadMoreBtn}>
           <Grid
-            templateColumns={`repeat(${
-              1 +
-              Number(col2) +
-              Number(col3) +
-              Number(col4) +
-              Number(col5) +
-              Number(col6)
-            }, 1fr)`}
+            templateColumns={`repeat(${colCount}, 1fr)`}
             gap={5}
             justifyItems="center"
             className="rankGrid"

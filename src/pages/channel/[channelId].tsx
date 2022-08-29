@@ -34,10 +34,29 @@ export default function ChannelDetail() {
   });
   const sortOptionArray = [
     { name: t("gauge_high"), sortBy: { by: "gauge", order: true } },
+    { name: t("gauge_low"), sortBy: { by: "gauge", order: false } },
     { name: t("request_num_high"), sortBy: { by: "request", order: true } },
+    { name: t("request_num_low"), sortBy: { by: "request", order: false } },
     { name: t("request_point_high"), sortBy: { by: "point", order: true } },
+    { name: t("request_point_low"), sortBy: { by: "point", order: false } },
   ];
-  const pageSize = 15;
+
+  const [col2, col3, col4, col5, col6] = useMediaQuery([
+    "(min-width: 750px)",
+    "(min-width: 1030px)",
+    "(min-width: 1400px)",
+    "(min-width: 1700px)",
+    "(min-width: 2000px)",
+  ]);
+  const colCount =
+    1 +
+    Number(col2) +
+    Number(col3) +
+    Number(col4) +
+    Number(col5) +
+    Number(col6);
+  const pageSize = colCount <= 2 ? colCount * 6 : colCount * 3;
+
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingVideo>(url);
     return res.data;
@@ -86,14 +105,6 @@ export default function ChannelDetail() {
     />
   );
 
-  const [col2, col3, col4, col5, col6] = useMediaQuery([
-    "(min-width: 750px)",
-    "(min-width: 1030px)",
-    "(min-width: 1400px)",
-    "(min-width: 1700px)",
-    "(min-width: 2000px)",
-  ]);
-
   return (
     <Box overflowX={{ sm: "scroll", md: "hidden" }}>
       <Box
@@ -139,8 +150,12 @@ export default function ChannelDetail() {
       <Stack
         pl={{ base: "20px", md: "70px" }}
         pr={{ base: "20px", md: "70px" }}
-        pt="30px"
+        pt="10px"
+        spacing="20px"
       >
+        <Text fontSize={{ base: "12px", sm: "16px", md: "18px" }}>
+          {t("title_channel_message")}
+        </Text>
         <RankingController
           lang={lang}
           setLang={setLang}
@@ -157,14 +172,7 @@ export default function ChannelDetail() {
       >
         <GeneralRanking btnComponent={loadMoreBtn}>
           <Grid
-            templateColumns={`repeat(${
-              1 +
-              Number(col2) +
-              Number(col3) +
-              Number(col4) +
-              Number(col5) +
-              Number(col6)
-            }, 1fr)`}
+            templateColumns={`repeat(${colCount}, 1fr)`}
             gap={5}
             justifyItems="center"
           >

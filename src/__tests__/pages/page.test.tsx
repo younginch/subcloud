@@ -90,7 +90,7 @@ describe("Pages (ranking)", () => {
   });
 
   it("renders VideoRankingPage", () => {
-    render(<VideoRankingPage />);
+    renderWithThemeAndSession(<VideoRankingPage />);
   });
 });
 

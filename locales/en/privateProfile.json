@@ -72,5 +72,10 @@
   "withdraws_date": "Application date",
   "withdraws_status": "Status",
   "withdraws_processing": "Processing date",
-  "settings": "Settings"
+  "settings": "Settings",
+  "request_ID": "Copy request ID",
+  "success": "Success",
+  "success_ex": "Cancel subtitle request",
+  "error": "Error",
+  "error_ex": "Failed to cancel subtitle request"
 }

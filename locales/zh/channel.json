@@ -7,13 +7,13 @@
   "gauge_low": "字幕测量(靠下)",
   "title_channel_ko": "的频道排位",
   "title_channel_other": "的频道排位",
+  "title_channel_message": "좋아하는 채널의 영상에 펀딩하고 자막을 받아보세요",
   "funding_num_high": "在进行中的投资数(靠上)",
-  "funding_num_low": "在进行中的投资数(靠下)",
   "sub_num_highest": "字幕数(靠上)",
-  "sub_num_lowest": "字幕数(靠下)",
   "subscriber_num_highest": "订阅人数(靠上)",
-  "subscriber_num_lowest": "订阅人数(靠下)",
   "channel_component_subscriber": "订阅人",
   "channel_component_subtitle": "字幕数",
-  "channel_component_funding": "在进行中的投资数"
+  "channel_component_funding": "在进行中的投资数",
+  "pop_channel_list": "인기 채널 리스트",
+  "pop_channel_list_ex": "좋아하는 유튜버의 자막 현황을 확인해보세요"
 }

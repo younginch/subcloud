@@ -20,7 +20,7 @@ import { Box, useColorModeValue } from "@chakra-ui/react";
 
 export default function Card(props: any) {
   const { variant, children, ...rest } = props;
-  const bgColor = useColorModeValue("white", "#1F2733");
+  const bgColor = useColorModeValue("white", "gray.700");
   const styles = {
     p: "22px",
     display: "flex",

@@ -72,5 +72,10 @@
   "withdraws_date": "申请日期",
   "withdraws_status": "处理状态",
   "withdraws_processing": "处理日期",
-  "settings": "设置"
+  "settings": "设置",
+  "request_ID": "요청 ID 복사",
+  "success": "성공",
+  "success_ex": "자막 요청을 취소했습니다.",
+  "error": "오류",
+  "error_ex": "자막 요청을 취소하는데 실패했습니다."
 }

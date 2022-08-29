@@ -6,14 +6,14 @@
   "gauge_high": "Subtitle gauge(highest)",
   "gauge_low": "Subtitle gauge(lowest)",
   "title_channel_ko": "",
-  "title_channel_other": "Channel ranking of ",
-  "funding_num_high": "Ongoing fundings(more)",
-  "funding_num_low": "Ongoing fundings(less)",
-  "sub_num_highest": "Subtitles(more)",
-  "sub_num_lowest": "Subtitles(less)",
-  "subscriber_num_highest": "Subscribers(more)",
-  "subscriber_num_lowest": "Subscribers(less)",
+  "title_channel_other": "Request ranking of ",
+  "title_channel_message": "Fund your favorite channels' video and get subtitles",
+  "funding_num_high": "By ongoing fundings",
+  "sub_num_highest": "By number of Subtitles",
+  "subscriber_num_highest": "By subscribers",
   "channel_component_subscriber": "Subscribers ",
   "channel_component_subtitle": "Subtitles",
-  "channel_component_funding": "Ongoing fundings"
+  "channel_component_funding": "Ongoing fundings",
+  "pop_channel_list": "Popular channel list",
+  "pop_channel_list_ex": "Check the subtitles of your favorite YouTubers"
 }

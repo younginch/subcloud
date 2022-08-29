@@ -43,7 +43,23 @@ export default function ChannelRankingPage() {
       sortBy: { by: "subscriber", order: true },
     },
   ];
-  const pageSize = 12;
+
+  const [col2, col3, col4, col5, col6] = useMediaQuery([
+    "(min-width: 750px)",
+    "(min-width: 1030px)",
+    "(min-width: 1400px)",
+    "(min-width: 1700px)",
+    "(min-width: 2000px)",
+  ]);
+  const colCount =
+    1 +
+    Number(col2) +
+    Number(col3) +
+    Number(col4) +
+    Number(col5) +
+    Number(col6);
+  const pageSize = colCount <= 2 ? colCount * 6 : colCount * 3;
+
   const fetcher = async (url: string) => {
     const res = await axios.get<ResRankingChannel>(url);
     return res.data;
@@ -85,14 +101,6 @@ export default function ChannelRankingPage() {
     />
   );
 
-  const [col2, col3, col4, col5, col6] = useMediaQuery([
-    "(min-width: 750px)",
-    "(min-width: 1030px)",
-    "(min-width: 1400px)",
-    "(min-width: 1700px)",
-    "(min-width: 2000px)",
-  ]);
-
   return (
     <Box
       overflowX={{ sm: "scroll", md: "hidden" }}
@@ -115,7 +123,7 @@ export default function ChannelRankingPage() {
                 fontWeight="bold"
                 fontSize={{ base: "18px", sm: "25px", md: "35px" }}
               >
-                인기 채널 리스트
+                {t("pop_channel_list")}
               </Text>
               <Stack
                 minW={{ base: "30px", sm: "40px" }}
@@ -127,7 +135,7 @@ export default function ChannelRankingPage() {
               </Stack>
             </HStack>
             <Text fontSize={{ base: "12px", sm: "15px", md: "18px" }}>
-              좋아하는 유튜버의 자막 현황을 확인해보세요
+              {t("pop_channel_list_ex")}
             </Text>
           </Stack>
         </HStack>
@@ -146,14 +154,7 @@ export default function ChannelRankingPage() {
       >
         <GeneralRanking btnComponent={loadMoreBtn}>
           <Grid
-            templateColumns={`repeat(${
-              1 +
-              Number(col2) +
-              Number(col3) +
-              Number(col4) +
-              Number(col5) +
-              Number(col6)
-            }, 1fr)`}
+            templateColumns={`repeat(${colCount}, 1fr)`}
             gap={5}
             justifyItems="center"
           >
