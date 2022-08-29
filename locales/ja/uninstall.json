@@ -1,8 +1,8 @@
 {
-  "successful_uninstall": "SubCloudが成功裏に削除されました。",
+  "successful_uninstall": "SubCloudが成功的に削除されました。",
   "thanks_for_use": "SubCloudをご利用いただきありがとうございます。",
   "uninstall_message": "ご使用に不便な点がございましたら、簡単にご意見を残していただければ幸いです。 アンケートは完全に匿名で記録されます。",
-  "question_1": "どんな点が不便でしたか?",
+  "question_1": "どんな点が不便でしたか。",
   "option_1": "字幕不足",
   "option_2": "字幕の要請が無視される。",
   "option_3": "サービスの必要性を感じない",
