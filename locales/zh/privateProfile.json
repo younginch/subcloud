@@ -73,9 +73,9 @@
   "withdraws_status": "处理状态",
   "withdraws_processing": "处理日期",
   "settings": "设置",
-  "request_ID": "요청 ID 복사",
-  "success": "성공",
-  "success_ex": "자막 요청을 취소했습니다.",
-  "error": "오류",
-  "error_ex": "자막 요청을 취소하는데 실패했습니다."
+  "request_ID": "复制请求的ID",
+  "success": "成功",
+  "success_ex": "取消了请求字幕",
+  "error": "错误",
+  "error_ex": "失败了取消字幕请求"
 }
