@@ -18,7 +18,7 @@
   "my_up": "我在SubCloud上载的视频",
   "no_req": "没有请求。请求我想要视频的字幕",
   "no_up": "没有上载的字幕",
-  "urlInput_link": "요청할 영상 링크",
-  "urlInput_link_below": "영상을 요청하면 개인정보 이용 및 서비스 이용규칙에 동의한 것으로 간주합니다.",
-  "urlInput_link_button": "요청"
+  "urlInput_link": "要请求的视频的链接",
+  "urlInput_link_below": "如果要求视频,就视为同意了个人信息使用及服务使用规则",
+  "urlInput_link_button": "请求"
 }
