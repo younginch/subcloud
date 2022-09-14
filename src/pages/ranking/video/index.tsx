@@ -1,8 +1,6 @@
 import {
   Box,
   Button,
-  Grid,
-  GridItem,
   HStack,
   Spacer,
   Stack,
@@ -19,6 +17,7 @@ import {
   ModalBody,
   Checkbox,
   useBoolean,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
@@ -255,45 +254,40 @@ export default function VideoRankingPage() {
         pr={{ base: "10px", lg: "30px", xl: "70px" }}
       >
         <GeneralRanking btnComponent={loadMoreBtn}>
-          <Grid
-            templateColumns={`repeat(${colCount}, 1fr)`}
+          <SimpleGrid
+            columns={colCount}
             gap={5}
             justifyItems="center"
             className="rankGrid"
           >
             {videos.map((video) => (
-              <GridItem key={video.videoId + video.langs}>
-                <RequestRankCard
-                  duration={
-                    video.youtubeVideo ? video.youtubeVideo.duration : 0
-                  }
-                  videoName={
-                    video.youtubeVideo ? video.youtubeVideo.title : "no title"
-                  }
-                  videoUrl={video.url}
-                  serviceId={video.serviceId}
-                  videoId={video.videoId}
-                  imageUrl={`http://img.youtube.com/vi/${video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
-                  requestCount={video._count.requests}
-                  requestPoint={video._count.points}
-                  requestGoal={
-                    PointGoal(
-                      video.youtubeVideo
-                        ? video.youtubeVideo.duration
-                        : undefined,
-                      goalExpr
-                    ) ?? 1000000
-                  }
-                  channelName={video.youtubeVideo?.channel.title ?? "no name"}
-                  channelImageUrl={
-                    video.youtubeVideo?.channel.thumbnailUrl ?? ""
-                  }
-                  channelUrl={video.youtubeVideo?.channel.channelUrl ?? ""}
-                  lang={video.langs}
-                />
-              </GridItem>
+              <RequestRankCard
+                key={video.videoId + video.langs}
+                duration={video.youtubeVideo ? video.youtubeVideo.duration : 0}
+                videoName={
+                  video.youtubeVideo ? video.youtubeVideo.title : "no title"
+                }
+                videoUrl={video.url}
+                serviceId={video.serviceId}
+                videoId={video.videoId}
+                imageUrl={`http://img.youtube.com/vi/${video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
+                requestCount={video._count.requests}
+                requestPoint={video._count.points}
+                requestGoal={
+                  PointGoal(
+                    video.youtubeVideo
+                      ? video.youtubeVideo.duration
+                      : undefined,
+                    goalExpr
+                  ) ?? 1000000
+                }
+                channelName={video.youtubeVideo?.channel.title ?? "no name"}
+                channelImageUrl={video.youtubeVideo?.channel.thumbnailUrl ?? ""}
+                channelUrl={video.youtubeVideo?.channel.channelUrl ?? ""}
+                lang={video.langs}
+              />
             ))}
-          </Grid>
+          </SimpleGrid>
         </GeneralRanking>
       </Box>
     </Box>

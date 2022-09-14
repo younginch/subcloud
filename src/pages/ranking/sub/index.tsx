@@ -1,14 +1,13 @@
 import axios from "axios";
 import {
   Box,
-  Grid,
-  GridItem,
   useColorModeValue,
   useMediaQuery,
   Text,
   HStack,
   Stack,
   Divider,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { MdSubtitles } from "react-icons/md";
 import useSWRInfinite from "swr/infinite";
@@ -153,37 +152,29 @@ export default function SubRankingPage() {
         pr={{ base: "10px", lg: "30px", xl: "70px" }}
       >
         <GeneralRanking btnComponent={loadMoreBtn}>
-          <Grid
-            templateColumns={`repeat(${colCount}, 1fr)`}
-            gap={5}
-            justifyItems="center"
-          >
+          <SimpleGrid columns={colCount} gap={5} justifyItems="center">
             {subs.map((sub) => (
-              <GridItem key={sub.id}>
-                <VideoRankCard
-                  key={sub.id}
-                  duration={sub.video.youtubeVideo?.duration ?? 0}
-                  videoName={
-                    sub.video.youtubeVideo
-                      ? sub.video.youtubeVideo.title
-                      : "no title"
-                  }
-                  videoUrl={sub.video.url}
-                  imageUrl={`http://img.youtube.com/vi/${sub.video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
-                  viewCount={sub.views}
-                  channelName={
-                    sub.video.youtubeVideo?.channel.title ?? "no name"
-                  }
-                  channelImageUrl={
-                    sub.video.youtubeVideo?.channel.thumbnailUrl ?? ""
-                  }
-                  channelUrl={sub.video.youtubeVideo?.channel.channelUrl ?? ""}
-                  lang={sub.lang}
-                  uploadDate={sub.createdAt}
-                />
-              </GridItem>
+              <VideoRankCard
+                key={sub.id}
+                duration={sub.video.youtubeVideo?.duration ?? 0}
+                videoName={
+                  sub.video.youtubeVideo
+                    ? sub.video.youtubeVideo.title
+                    : "no title"
+                }
+                videoUrl={sub.video.url}
+                imageUrl={`http://img.youtube.com/vi/${sub.video.videoId}/0.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiRn-DycCbxyBJbKlGOXkfISW0FQ`}
+                viewCount={sub.views}
+                channelName={sub.video.youtubeVideo?.channel.title ?? "no name"}
+                channelImageUrl={
+                  sub.video.youtubeVideo?.channel.thumbnailUrl ?? ""
+                }
+                channelUrl={sub.video.youtubeVideo?.channel.channelUrl ?? ""}
+                lang={sub.lang}
+                uploadDate={sub.createdAt}
+              />
             ))}
-          </Grid>
+          </SimpleGrid>
         </GeneralRanking>
       </Box>
     </Box>
