@@ -101,7 +101,7 @@ model YoutubeVideo {
   title       String
   description String
   duration    Int
-  viewCount   Int
+  viewCount   BigInt
   likeCount   Int
 
   createAt DateTime @default(now())
